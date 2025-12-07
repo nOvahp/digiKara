@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
+import ChamferedButton from "./ChamferedButton";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -7,16 +8,17 @@ const Navbar = () => {
   return (
     <div className="w-full hidden lg:flex justify-between items-center bg-white">
       {/* Left Section (Login) */}
-      <div className="border-2 border-[#5E6B7E] p-[1%] rounded-md flex items-center">
-        <Link href="/login">
-          <Button
-            variant="ghost"
-            className="font-extrablack font-[950] text-[#222325] p-0 h-auto hover:bg-transparent hover:text-gray-600 transition-colors cursor-pointer"
-          >
+      {/* Left Section (Login) */}
+      <ChamferedButton className="h-auto">
+        <Link
+          href="/login"
+          className="w-full h-full flex items-center px-4 py-2"
+        >
+          <span className="font-extrabold text-[#222325] text-sm md:text-base">
             ورود به پلتفــــــــــرم
-          </Button>
+          </span>
         </Link>
-      </div>
+      </ChamferedButton>
 
       {/* Right Section (Menu & Logo) */}
       <div className="flex items-center gap-6 md:gap-22">

@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
 
 const Hero = () => {
   return (
@@ -48,25 +49,17 @@ const Hero = () => {
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 mt-20">
           {/* Demo Button */}
-          <div className="relative group cursor-pointer">
-            <div className="w-[148px] h-[43px] bg-[#FFE9B9] rounded-sm flex items-center justify-center relative">
-              {/* Custom Border Logic Sim from CSS */}
-              
-              <span className="absolute text-[#222325] text-sm font-extrabold uppercase">
-                مشاهده دمـــــــو
-              </span>
-            </div>
-          </div>
+          <Button className="w-[148px] h-[43px] bg-[#FFE9B9] hover:bg-[#ffe09e] text-[#222325] text-sm font-extrabold uppercase rounded-sm cursor-pointer">
+            مشاهده دمـــــــو
+          </Button>
 
           {/* Register Button */}
-          <div className="relative group cursor-pointer">
-            <div className="w-[148px] h-[43px] bg-white border border-gray-200 rounded-sm flex items-center justify-center relative">
-              {/* Custom Border Logic Sim from CSS - Inverted visuals potentially? Using simple button for now as per image logic */}
-              <span className="absolute text-[#222325] text-sm font-extrabold uppercase">
-                ثبت‌نام رایگان هنرستان
-              </span>
-            </div>
-          </div>
+          <Button
+            variant="outline"
+            className="w-[148px] h-[43px] bg-white border-gray-200 text-[#222325] text-sm font-extrabold uppercase rounded-sm hover:bg-gray-50 cursor-pointer"
+          >
+            ثبت‌نام رایگان هنرستان
+          </Button>
         </div>
       </div>
 
