@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const Loading = () => {
-  return (
-    <div>Loading</div>
-  )
-}
+  return <span className="loading loading-ring loading-lg"></span>;
+};
 
-export default Loading
+export default Loading;

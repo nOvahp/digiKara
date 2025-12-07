@@ -1,34 +1,66 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
 
 const Navbar = () => {
   return (
-    <div className="w-full   flex justify-between items-center bg-transparent">
+    <div className="w-full hidden lg:flex justify-between items-center bg-white">
       {/* Left Section (Login) */}
       <div className="border-2 border-[#5E6B7E] p-[1%] rounded-md flex items-center">
-        <Button
-          variant="ghost"
-          className="font-extrablack font-[950] text-[#222325] p-0 h-auto hover:bg-transparent hover:text-gray-600 transition-colors"
-        >
-          ورود به پلتفــــــــــرم
-        </Button>
+        <Link href="/login">
+          <Button
+            variant="ghost"
+            className="font-extrablack font-[950] text-[#222325] p-0 h-auto hover:bg-transparent hover:text-gray-600 transition-colors cursor-pointer"
+          >
+            ورود به پلتفــــــــــرم
+          </Button>
+        </Link>
       </div>
 
       {/* Right Section (Menu & Logo) */}
       <div className="flex items-center gap-6 md:gap-22">
         <div className="hidden md:flex items-center gap-4 lg:gap-4">
-          {["سوالات متداول", "تماس با ما", "دستاوردها", "درباره", " صفحه اصلی"].map(
-            (text) => (
-              <Button
-                key={text}
-                variant="ghost"
-                className="h-auto px-2 rounded-full text-[#222325] text-sm font-medium font-[500] hover:bg-gray-100 transition-colors"
-              >
-                {text}
-              </Button>
-            )
-          )}
+          <Link href="/faq">
+            <Button
+              variant="ghost"
+              className="h-auto px-2 rounded-full text-[#222325] text-sm font-medium font-[500] hover:bg-gray-100 transition-colors cursor-pointer"
+            >
+              سوالات متداول
+            </Button>
+          </Link>
+          <Link href="/contact">
+            <Button
+              variant="ghost"
+              className="h-auto px-2 rounded-full text-[#222325] text-sm font-medium font-[500] hover:bg-gray-100 transition-colors cursor-pointer"
+            >
+              تماس با ما
+            </Button>
+          </Link>
+          <Link href="/achievements">
+            <Button
+              variant="ghost"
+              className="h-auto px-2 rounded-full text-[#222325] text-sm font-medium font-[500] hover:bg-gray-100 transition-colors cursor-pointer"
+            >
+              دستاوردها
+            </Button>
+          </Link>
+          <Link href="/about">
+            <Button
+              variant="ghost"
+              className="h-auto px-2 rounded-full text-[#222325] text-sm font-medium font-[500] hover:bg-gray-100 transition-colors cursor-pointer"
+            >
+              درباره
+            </Button>
+          </Link>
+          <Link href="/">
+            <Button
+              variant="ghost"
+              className="h-auto px-2 rounded-full text-[#222325] text-sm font-medium font-[500] hover:bg-gray-100 transition-colors cursor-pointer"
+            >
+              صفحه اصلی
+            </Button>
+          </Link>
         </div>
 
         {/* Logo Section */}
