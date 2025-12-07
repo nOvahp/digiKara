@@ -1,9 +1,10 @@
 import Image from "next/image";
+import HomePage from "./homePgae/page";
 
 export default function Home() {
   return (
     <main>
-      <h1>Home</h1>
-      </main>
+      <HomePage />
+    </main>
   );
 }
