@@ -14,7 +14,7 @@ const Navbar = () => {
           href="/login"
           className="w-full h-full flex items-center px-4 py-2"
         >
-          <span className="font-extrabold text-[#222325] text-sm md:text-base">
+          <span className="font-extrabold text-[#222325] text-sm md:text-base lg:text-sm xl:text-base">
             ورود به پلتفــــــــــرم
           </span>
         </Link>
@@ -26,7 +26,7 @@ const Navbar = () => {
           <Link href="/faq">
             <Button
               variant="ghost"
-              className="h-auto px-2 rounded-full text-[#222325] text-sm font-medium font-[500] hover:bg-gray-100 transition-colors cursor-pointer"
+              className="h-auto px-2 rounded-full text-[#222325] text-sm lg:text-xs xl:text-sm font-medium font-[500] hover:bg-gray-100 transition-colors cursor-pointer"
             >
               سوالات متداول
             </Button>
@@ -34,7 +34,7 @@ const Navbar = () => {
           <Link href="/contact">
             <Button
               variant="ghost"
-              className="h-auto px-2 rounded-full text-[#222325] text-sm font-medium font-[500] hover:bg-gray-100 transition-colors cursor-pointer"
+              className="h-auto px-2 rounded-full text-[#222325] text-sm lg:text-xs xl:text-sm font-medium font-[500] hover:bg-gray-100 transition-colors cursor-pointer"
             >
               تماس با ما
             </Button>
@@ -42,7 +42,7 @@ const Navbar = () => {
           <Link href="/achievements">
             <Button
               variant="ghost"
-              className="h-auto px-2 rounded-full text-[#222325] text-sm font-medium font-[500] hover:bg-gray-100 transition-colors cursor-pointer"
+              className="h-auto px-2 rounded-full text-[#222325] text-sm lg:text-xs xl:text-sm font-medium font-[500] hover:bg-gray-100 transition-colors cursor-pointer"
             >
               دستاوردها
             </Button>
@@ -50,7 +50,7 @@ const Navbar = () => {
           <Link href="/about">
             <Button
               variant="ghost"
-              className="h-auto px-2 rounded-full text-[#222325] text-sm font-medium font-[500] hover:bg-gray-100 transition-colors cursor-pointer"
+              className="h-auto px-2 rounded-full text-[#222325] text-sm lg:text-xs xl:text-sm font-medium font-[500] hover:bg-gray-100 transition-colors cursor-pointer"
             >
               درباره
             </Button>
@@ -58,7 +58,7 @@ const Navbar = () => {
           <Link href="/">
             <Button
               variant="ghost"
-              className="h-auto px-2 rounded-full text-[#222325] text-sm font-medium font-[500] hover:bg-gray-100 transition-colors cursor-pointer"
+              className="h-auto px-2 rounded-full text-[#222325] text-sm lg:text-xs xl:text-sm font-medium font-[500] hover:bg-gray-100 transition-colors cursor-pointer"
             >
               صفحه اصلی
             </Button>
@@ -67,7 +67,7 @@ const Navbar = () => {
 
         {/* Logo Section */}
         <div className="flex items-center gap-4">
-          <div className="text-center text-[#4A4A4A] text-2xl font-extrablack font-[950] leading-none">
+          <div className="text-center text-[#4A4A4A] text-2xl lg:text-xl xl:text-2xl font-extrablack font-[950] leading-none">
             دیجی کارا
           </div>
           <Image

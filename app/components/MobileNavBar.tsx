@@ -14,7 +14,7 @@ const MobileNavBar = () => {
   };
 
   return (
-    <div className="w-full flex lg:hidden justify-between items-center  bg-white relative ">
+    <div className="w-full flex lg:hidden justify-between items-center bg-white relative z-50">
       {/* Logo Section (Left) */}
       <div className="flex items-center gap-4">
         <Image
