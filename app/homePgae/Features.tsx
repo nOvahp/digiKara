@@ -14,7 +14,7 @@ import { featuresData } from "./featuresData";
 const Features = () => {
   return (
     <div className="w-full mb-[10%]  " dir="rtl">
-      <div className="w-full text-center text-[#222325] text-[48px] font-extrablack  mb-[5%]">
+      <div className="w-full text-center text-[#222325] text-[24px] md:text-[48px] font-extrablack leading-[36px] md:leading-[60px] mb-[5%]">
         دیجی‌کارا چه کاری انجام می‌دهد؟
       </div>
       <Carousel
@@ -36,8 +36,8 @@ const Features = () => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        <CarouselPrevious className="hidden lg:flex" />
+        <CarouselNext className="hidden lg:flex" />
       </Carousel>
     </div>
   );

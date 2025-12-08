@@ -7,7 +7,7 @@ import ChamferedButton from "@/app/components/ChamferedButton";
 
 const Hero = () => {
   return (
-    <section className="relative flex flex-col lg:flex-row items-center justify-between h-[650px] sm:h-[700px] md:h-[750px] lg:h-[450px] xl:h-[600px] overflow-hidden bg-white lg:pl-10 xl:pl-20 lg:pr-0 lg:py-0 mb-[5%]">
+    <section className="relative flex flex-col lg:flex-row items-center justify-between h-[650px] sm:h-[700px] md:h-[750px] lg:h-[450px] xl:h-[600px] overflow-hidden bg-white lg:pl-10 xl:pl-20 lg:pr-0 lg:py-0 mb-[10%]">
       {/* Background Graphic 1 (Left Top) */}
       <div className="absolute z-0 left-0 top-[290px] min-[375px]:top-[250px] sm:top-[300px] sm:left-[20px] md:top-[25%] md:left-[40] lg:left-0 lg:top-[-5%] xl:left-0 xl:top-[-3%] opacity-80">
         <Image

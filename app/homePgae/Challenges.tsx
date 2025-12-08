@@ -14,8 +14,8 @@ const Challenges = () => {
       <div className="w-full lg:w-[643px] flex flex-col justify-start items-start  lg:gap-[56px]">
         {/* Header */}
         <div className="w-full flex flex-col justify-start items-start gap-[32px]">
-          <div className="w-full text-right text-[#222325] text-[24px] lg:text-[48px] font-['num-black'] font-black leading-[36px] lg:leading-[60px] break-words">
-            چالش‌ها
+          <div className="w-full text-center lg:text-right text-[#222325] text-[24px] lg:text-[48px] font-['num-black'] font-black leading-[36px] lg:leading-[60px] break-words">
+            چالش‌های آموزش فنی‌حرفه‌ای
           </div>
         </div>
 
