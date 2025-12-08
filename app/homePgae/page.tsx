@@ -6,6 +6,7 @@ import Features from "./Features";
 import Challenges from "./Challenges";
 import Solutions from "./Solutions";
 import Metrics from "./Metrics";
+import Services from "./Services";
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
       <Challenges />
       <Solutions />
       <Metrics />
+      <Services />
     </main>
   );
 }

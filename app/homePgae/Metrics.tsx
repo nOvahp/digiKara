@@ -8,7 +8,7 @@ import { metricsData } from "./metricsData";
 const Metrics = () => {
   return (
     <div
-      className="w-full flex justify-center items-center py-[30px] px-[20px] lg:px-[10px]"
+      className="w-full flex justify-center items-center py-[30px] px-[20px] lg:px-[10px] mb-[5%]"
       dir="rtl"
     >
       <div className="relative w-full max-w-[1440px]">
