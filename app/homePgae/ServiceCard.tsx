@@ -17,7 +17,8 @@ const ServiceCard = ({
   image = "/services1.png",
 }: ServiceCardProps) => {
   return (
-    <Card className="w-full max-w-[622px] min-h-[280px] md:h-[280px] rounded-[24px] border-[#CACACA] shadow-none hover:shadow-[0px_20px_32px_rgba(0,0,0,0.25)] transition-all duration-300 overflow-hidden relative bg-white border group cursor-pointer flex flex-col h-full">
+    // Removed max-w constraint to allow filling the grid cell
+    <Card className="w-full min-h-[280px] md:h-[280px] rounded-[24px] border-[#CACACA] shadow-none hover:shadow-[0px_20px_32px_rgba(0,0,0,0.25)] transition-all duration-300 overflow-hidden relative bg-white border group cursor-pointer flex flex-col h-full">
       {/* Simplified structure: Card is the container */}
 
       {/* Image Layer - Behind Text */}
