@@ -13,7 +13,7 @@ import { featuresData } from "./featuresData";
 
 const Features = () => {
   return (
-    <div className="w-full " dir="rtl">
+    <div className="w-full mb-[5%]  " dir="rtl">
       <div className="w-full text-center text-[#222325] text-[48px] font-extrablack  mb-[5%]">
         دیجی‌کارا چه کاری انجام می‌دهد؟
       </div>
