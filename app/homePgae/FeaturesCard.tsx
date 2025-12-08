@@ -13,8 +13,8 @@ interface FeaturesCardProps {
 
 const FeaturesCard = ({ title, description, image }: FeaturesCardProps) => {
   return (
-    <Card className="w-[300px] h-[280px] md:w-[420px] md:h-[355px] rounded-[24px] border-[#CACACA] shadow-none hover:shadow-[0px_20px_32px_rgba(0,0,0,0.25)] transition-all duration-300 overflow-hidden relative bg-[#D9D9D9] border-none">
-      <div className="absolute inset-0 bg-white rounded-[24px] border border-[#CACACA]">
+    <Card className="w-[260px] sm:w-[300px] h-auto min-h-[280px] md:w-[420px] md:h-[355px] rounded-[24px] border-[#CACACA] shadow-none hover:shadow-[0px_20px_32px_rgba(0,0,0,0.25)] transition-all duration-300 overflow-hidden relative bg-white border-none">
+      <div className="relative w-full h-full md:absolute md:inset-0 bg-white rounded-[24px] border border-[#CACACA]">
         <div className="flex flex-col h-full relative">
           <CardHeader className="text-right pt-[34px] pr-[40px] pl-[40px] pb-0">
             <CardTitle className="text-[#222325] text-[24px] md:text-[32px] font-black leading-[30px] md:leading-[38.4px]">
@@ -29,9 +29,9 @@ const FeaturesCard = ({ title, description, image }: FeaturesCardProps) => {
           </CardContent>
 
           {/* Footer Area with Link and Image */}
-          <div className="mt-auto flex items-end justify-end w-full pl-[40px] pb-[40px] pr-[40px]">
+          <div className="mt-[20px] sm:mt-auto  flex flex-col items-end md:flex-row md:items-end md:justify-end w-full pl-[40px] pb-[40px] pr-[40px] ">
             {/* 'Read More' Link */}
-            <div className="relative flex items-center gap-2 cursor-pointer z-10 transition-transform hover:scale-105 mb-2">
+            <div className="relative flex items-center gap-2 cursor-pointer z-10 transition-transform hover:scale-105 mb-2 md:mb-2">
               <span className="text-[#222325] text-[14px] md:text-[18px] font-medium leading-[22px] md:leading-[27px]">
                 بیشتر بدانید
               </span>
@@ -41,7 +41,7 @@ const FeaturesCard = ({ title, description, image }: FeaturesCardProps) => {
             </div>
 
             {/* Image positioned absolutely in the corner to match design */}
-            <div className="absolute right-0 bottom-0 w-[150px] h-[150px] md:w-[230px] md:h-[230px]">
+            <div className="relative right-auto bottom-auto md:absolute md:right-0 md:bottom-0 w-[170px] h-[170px] md:w-[230px] md:h-[230px] self-center">
               <Image
                 src={image}
                 alt="Feature Illustration"
