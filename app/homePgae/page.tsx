@@ -4,6 +4,8 @@ import FeaturesCard from "./FeaturesCard";
 import Features from "./Features";
 
 import Challenges from "./Challenges";
+import Solutions from "./Solutions";
+import Metrics from "./Metrics";
 
 export default function Home() {
   return (
@@ -11,6 +13,8 @@ export default function Home() {
       <Hero />
       <Features />
       <Challenges />
+      <Solutions />
+      <Metrics />
     </main>
   );
 }

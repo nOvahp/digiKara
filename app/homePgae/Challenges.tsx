@@ -9,7 +9,10 @@ import { challengesData } from "./challengesData";
 
 const Challenges = () => {
   return (
-    <div className="w-full h-full flex justify-between items-start" dir="rtl">
+    <div
+      className="w-full flex justify-between items-start mb-[10%] "
+      dir="rtl"
+    >
       {/* Visual Right: Content (Placed first in RTL Flex container) */}
       <div className="w-full lg:w-[643px] flex flex-col justify-start items-start  lg:gap-[56px]">
         {/* Header */}
@@ -44,7 +47,7 @@ const Challenges = () => {
           <div className="text-[#808080] text-[14px] lg:text-[18px] font-['num-regular'] font-normal leading-[27px] break-words cursor-pointer hover:text-black transition-colors">
             مطالعه بیشتر
           </div>
-          <ChamferedButton cutSide="right" className="!p-[2px]">
+          <ChamferedButton cutSide="right" className="p-[2px]!">
             <div className="px-[16px] py-[8px] lg:px-[24px] lg:py-[10px] flex justify-center items-center gap-8">
               <span className="text-[#222325] text-[12px] lg:text-[14px] font-['num-extrabold'] font-extrabold uppercase break-words z-10">
                 ورود به پلتفــــــــــرم
@@ -58,7 +61,7 @@ const Challenges = () => {
 
       {/* Visual Left: Image (Placed second in RTL Flex container) */}
       <div className="relative flex justify-start items-center gap-[10px] hidden lg:flex">
-        <div className="relative w-[350px] h-[350px] lg:w-[450px] lg:h-[450px] xl:w-[550px] xl:h-[550px] overflow-hidden -top-[70px]">
+        <div className="relative w-[350px] h-[350px] lg:w-[450px] lg:h-[450px] xl:w-[550px] xl:h-[550px] overflow-hidden mt-[-70px]">
           {/* Using the single image as requested */}
           <Image
             src="/challenges.png"
