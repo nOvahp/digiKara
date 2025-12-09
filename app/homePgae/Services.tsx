@@ -8,11 +8,11 @@ import { servicesData } from "./servicesData";
 const Services = () => {
   return (
     <section
-      className="w-full relative flex justify-center items-center py-10 px-4 overflow-hidden"
+      className="border w-full relative flex justify-center items-center py-10 px-4"
       dir="rtl"
     >
       {/* Container for content */}
-      <div className="flex flex-col-reverse lg:block w-full max-w-[1440px] relative">
+      <div className="flex flex-col-reverse lg:block w-full max-w-[1440px]">
         {/* Cards Grid - Right Side */}
         {/* Changed from mr-auto to ml-auto to push grid to the Right (physically) away from Left image in RTL context if margin logical props confuse. 
                 But margin-left: auto pushes to Right.
@@ -30,7 +30,7 @@ const Services = () => {
         </div>
 
         {/* Illustration Image - Absolute Left of Screen on Desktop */}
-        <div className="w-full h-[400px] relative mt-8 lg:mt-0 lg:absolute lg:left-0 lg:top-1/2 lg:-translate-y-1/2 lg:w-[35%] lg:h-[800px] z-10 pointer-events-none">
+        <div className="w-full h-[400px] relative mt-8 lg:mt-0 lg:absolute lg:left-[-16%] lg:top-[72%] lg:-translate-y-1/2 lg:w-[35%] lg:h-[400px] z-10 pointer-events-none">
           <Image
             src="/services.png"
             alt="Services Illustration"

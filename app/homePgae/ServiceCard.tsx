@@ -46,14 +46,14 @@ const ServiceCard = ({
       </CardContent>
 
       {/* Footer Area - On Top of Image */}
-      <div className="mt-auto flex flex-col md:flex-row items-end justify-end w-full px-[32px] pb-[24px] pt-[10px] relative z-10 w-full">
+      <div className="mt-auto flex flex-col md:flex-row items-start md:items-end justify-start w-full px-[32px] pb-[24px] pt-[10px] relative z-10">
         {/* "Buy Services" Link - Aligned Right */}
         <div className="flex items-center gap-2 cursor-pointer z-10 transition-transform hover:scale-105 mt-4 md:mt-0">
-          <div className="bg-[#222325] rounded-full p-1">
-            <ChevronLeft className="w-4 h-4 text-white" />
-          </div>
           <div className="text-[#5E6B7E] text-[14px] md:text-[18px] font-medium leading-[27px]">
             خرید خدمات
+          </div>
+          <div className="bg-[#222325] rounded-full p-1">
+            <ChevronLeft className="w-4 h-4 text-white" />
           </div>
         </div>
       </div>
