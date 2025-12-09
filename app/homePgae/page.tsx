@@ -10,6 +10,7 @@ import ServicesSection from "./ServicesSection/ServicesSection";
 import BlogCard from "./Blog/BlogCard";
 import Blog from "./Blog/Blog";
 import Values from "./Values/Values";
+import Partners from "./Partners/Partners";
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
       <ServicesSection />
       <Blog />
       <Values />
+      <Partners />
     </main>
   );
 }
