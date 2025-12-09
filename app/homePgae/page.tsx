@@ -9,6 +9,7 @@ import Metrics from "./Metrices/Metrics";
 import ServicesSection from "./ServicesSection/ServicesSection";
 import BlogCard from "./Blog/BlogCard";
 import Blog from "./Blog/Blog";
+import Values from "./Values/Values";
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
       <Metrics />
       <ServicesSection />
       <Blog />
+      <Values />
     </main>
   );
 }
