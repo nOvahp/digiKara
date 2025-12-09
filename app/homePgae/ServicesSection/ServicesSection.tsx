@@ -6,10 +6,10 @@ import ServicesGrid from "./ServicesGrid";
 import ServicesButton from "./ServicesButton";
 import ServicesIllustration from "./ServicesIllustration";
 
-const Services = () => {
+const ServicesSection = () => {
   return (
     <section
-      className="w-full relative flex justify-center items-center py-10 px-4"
+      className="w-full relative flex justify-center items-center py-10 px-4 mb-[8%]"
       dir="rtl"
     >
       {/* Container for content */}
@@ -30,4 +30,4 @@ const Services = () => {
   );
 };
 
-export default Services;
+export default ServicesSection;

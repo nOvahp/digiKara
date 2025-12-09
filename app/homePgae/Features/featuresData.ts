@@ -1,6 +1,6 @@
-import featureCard1 from "../../public/featureCard1.png";
-import featureCard2 from "../../public/featureCard2.png";
-import featureCard3 from "../../public/featureCard3.png";
+import featureCard1 from "../../../public/featureCard1.png";
+import featureCard2 from "../../../public/featureCard2.png";
+import featureCard3 from "../../../public/featureCard3.png";
 
 export interface FeatureItem {
   id: number;

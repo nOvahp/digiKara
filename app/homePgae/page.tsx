@@ -1,12 +1,14 @@
 import React from "react";
-import Hero from "./Hero";
-import FeaturesCard from "./FeaturesCard";
-import Features from "./Features";
+import Hero from "./Hero/Hero";
+import FeaturesCard from "./Features/FeaturesCard";
+import Features from "./Features/Features";
 
-import Challenges from "./Challenges";
-import Solutions from "./Solutions";
-import Metrics from "./Metrics";
-import Services from "./Services";
+import Challenges from "./Challenges/Challenges";
+import Solutions from "./Solutions/Solutions";
+import Metrics from "./Metrices/Metrics";
+import ServicesSection from "./ServicesSection/ServicesSection";
+import BlogCard from "./Blog/BlogCard";
+import Blog from "./Blog/Blog";
 
 export default function Home() {
   return (
@@ -16,7 +18,8 @@ export default function Home() {
       <Challenges />
       <Solutions />
       <Metrics />
-      <Services />
+      <ServicesSection />
+      <Blog />
     </main>
   );
 }
