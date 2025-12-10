@@ -12,6 +12,7 @@ import Blog from "./Blog/Blog";
 import Values from "./Values/Values";
 import Partners from "./Partners/Partners";
 import Quotes from "./Quotes/Quotes";
+import Faq from "./FAQ/Faq";
 
 export default function Home() {
   return (
@@ -26,6 +27,7 @@ export default function Home() {
       <Values />
       <Partners />
       <Quotes />
+      <Faq />
     </main>
   );
 }
