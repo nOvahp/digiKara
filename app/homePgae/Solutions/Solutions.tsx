@@ -10,7 +10,7 @@ const Solutions = () => {
   return (
     <div className="w-full flex justify-between items-start mb-[10%]" dir="rtl">
       {/* Visual Right: Image (Placed First in RTL Flex container) */}
-      <div className="relative flex justify-start items-center gap-[10px] lg:flex mr-10 xl:mt-[-100px]">
+      <div className="relative hidden lg:flex justify-start items-center gap-[10px] mr-10 xl:mt-[-100px]">
         <div className="relative w-[350px] h-[350px] lg:w-[450px] lg:h-[450px] xl:w-[550px] xl:h-[550px] overflow-visible">
           <SolutionsImage />
         </div>

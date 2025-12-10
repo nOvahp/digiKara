@@ -60,7 +60,7 @@ const Challenges = () => {
       </div>
 
       {/* Visual Left: Image (Placed second in RTL Flex container) */}
-      <div className="relative flex justify-start items-center gap-[10px] lg:flex">
+      <div className="relative hidden lg:flex justify-start items-center gap-[10px]">
         <div className="relative w-[350px] h-[350px] lg:w-[450px] lg:h-[450px] xl:w-[550px] xl:h-[550px] overflow-hidden mt-[-70px]">
           {/* Using the single image as requested */}
           <Image
