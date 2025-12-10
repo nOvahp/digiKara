@@ -5,7 +5,7 @@ import GetInvolvedImage from "./GetInvolvedImage";
 
 const GetInvolved = () => {
   return (
-    <div className="w-full h-auto lg:h-[500px] relative flex flex-col lg:flex-row items-center gap-10 py-5 px-5 overflow-hidden">
+    <div className="mb-[6%] w-full h-auto lg:h-[500px] relative flex flex-col lg:flex-row items-center gap-10 py-5 px-5 overflow-hidden">
       {/* Content Container */}
       <div className="flex flex-col justify-center items-start gap-16 z-10 lg:w-[70%] lg:max-w-4xl">
         <GetInvolvedContent />

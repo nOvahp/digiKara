@@ -14,6 +14,7 @@ import Partners from "./Partners/Partners";
 import Quotes from "./Quotes/Quotes";
 import Faq from "./FAQ/Faq";
 import GetInvolved from "./GetInvolved/GetInvolved";
+import Footer from "./Footer/Footer";
 
 export default function Home() {
   return (
@@ -30,6 +31,7 @@ export default function Home() {
       <Quotes />
       <Faq />
       <GetInvolved />
+      <Footer />
     </main>
   );
 }
