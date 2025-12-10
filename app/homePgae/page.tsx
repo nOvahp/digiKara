@@ -13,6 +13,7 @@ import Values from "./Values/Values";
 import Partners from "./Partners/Partners";
 import Quotes from "./Quotes/Quotes";
 import Faq from "./FAQ/Faq";
+import GetInvolved from "./GetInvolved/GetInvolved";
 
 export default function Home() {
   return (
@@ -28,6 +29,7 @@ export default function Home() {
       <Partners />
       <Quotes />
       <Faq />
+      <GetInvolved />
     </main>
   );
 }
