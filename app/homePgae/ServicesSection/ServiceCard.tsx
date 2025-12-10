@@ -34,7 +34,7 @@ const ServiceCard = ({
       {/* Text Content - On Top of Image */}
       {/* Compact padding to fit in 280px height */}
       <CardHeader className="text-right pt-[24px] pr-[32px] pl-[32px] pb-0 relative z-10">
-        <CardTitle className="text-[#222325] text-[24px] md:text-[32px] font-['num-black'] font-black leading-[30px] md:leading-[38.4px]">
+        <CardTitle className="text-[#222325] text-[24px] md:text-[32px] font-black leading-[30px] md:leading-[38.4px]">
           {title}
         </CardTitle>
       </CardHeader>

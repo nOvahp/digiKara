@@ -12,7 +12,7 @@ const BlogButton = () => {
         className="p-[2px]!"
       >
         <div className="flex w-[200px] h-[40px] items-center justify-center px-[14px] py-[9px] relative">
-          <span className="text-[#222325] text-[14px] md:text-[16px] font-extrabold uppercase relative z-10 font-['MeemFaNum']">
+          <span className="text-[#222325] text-[14px] md:text-[16px] font-extrabold uppercase relative z-10">
             همه مطالب
           </span>
         </div>

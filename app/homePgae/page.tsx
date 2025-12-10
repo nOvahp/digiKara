@@ -11,6 +11,7 @@ import BlogCard from "./Blog/BlogCard";
 import Blog from "./Blog/Blog";
 import Values from "./Values/Values";
 import Partners from "./Partners/Partners";
+import Quotes from "./Quotes/Quotes";
 
 export default function Home() {
   return (
@@ -24,6 +25,7 @@ export default function Home() {
       <Blog />
       <Values />
       <Partners />
+      <Quotes />
     </main>
   );
 }

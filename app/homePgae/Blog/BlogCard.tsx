@@ -29,7 +29,7 @@ const BlogCard = ({
           className="object-cover object-center"
         />
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-white" />
+        <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/50 to-white" />
       </div>
 
       {/* Content Section */}
