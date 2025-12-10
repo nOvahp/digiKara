@@ -7,8 +7,6 @@ import Link from "next/link";
 const Navbar = () => {
   return (
     <div className="w-full hidden lg:flex justify-between items-center bg-white">
-      {/* Left Section (Login) */}
-      {/* Left Section (Login) */}
       <ChamferedButton className="h-auto">
         <Link
           href="/login"
@@ -20,7 +18,6 @@ const Navbar = () => {
         </Link>
       </ChamferedButton>
 
-      {/* Right Section (Menu & Logo) */}
       <div className="flex items-center gap-6 md:gap-22">
         <div className="hidden md:flex items-center gap-4 lg:gap-4">
           <Link href="/faq">
@@ -65,7 +62,6 @@ const Navbar = () => {
           </Link>
         </div>
 
-        {/* Logo Section */}
         <div className="flex items-center gap-4">
           <div className="text-center text-[#4A4A4A] text-2xl lg:text-xl xl:text-2xl font-extrablack font-[950] leading-none">
             دیجی کارا

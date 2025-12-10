@@ -11,7 +11,6 @@ const Values = () => {
     <div className="w-full flex flex-col items-center relative mb-[10%]">
       <ValuesTitle />
 
-      {/* Mobile Image */}
       <div className="xl:hidden relative w-full flex justify-center mb-8">
         <Image
           src="/Values.png"
@@ -22,7 +21,6 @@ const Values = () => {
         />
       </div>
 
-      {/* Desktop Image Overlay */}
       <div className="hidden xl:block absolute top-[60%] left-[65%] -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none">
         <Image
           src="/Values.png"

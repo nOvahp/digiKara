@@ -15,7 +15,6 @@ const MobileNavBar = () => {
 
   return (
     <div className="w-full flex lg:hidden justify-between items-center bg-white relative z-50">
-      {/* Logo Section (Left) */}
       <div className="flex items-center gap-4">
         <Image
           src="/Logo.svg"
@@ -26,7 +25,6 @@ const MobileNavBar = () => {
         />
       </div>
 
-      {/* Hamburger Menu (Right) */}
       <Button
         variant="ghost"
         size="icon"
@@ -36,7 +34,6 @@ const MobileNavBar = () => {
         {isOpen ? <X size={28} /> : <Menu size={28} />}
       </Button>
 
-      {/* Dropdown Menu */}
       {isOpen && (
         <div className="absolute top-full left-0 w-full bg-white shadow-lg flex flex-col items-center gap-4 py-6 border-t border-gray-100">
           <Link href="/" onClick={toggleMenu} className="w-full text-center">

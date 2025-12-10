@@ -7,10 +7,9 @@ const Footer = () => {
       dir="rtl"
       className="w-[119.05%] ml-[-9.53%] bg-[#101010] flex flex-col pt-[60px] pb-[40px] px-5 lg:pt-[102px] lg:pb-[64px] lg:px-[80px] justify-between items-start gap-12"
     >
-      {/* Top Row: Logo & Links */}
       <div className="w-full flex flex-col lg:flex-row justify-between items-center lg:items-start gap-8 lg:gap-0">
         <div className="flex justify-end items-center gap-4">
-          <div className="text-center text-white text-[30px] lg:text-[36.8px] font-['MeemFaNum'] font-medium leading-[55.2px] break-words">
+          <div className="text-center text-white text-[30px] lg:text-[36.8px] font-medium leading-[55.2px] ">
             دیجی کارا
           </div>
           <div className="relative w-[50px] h-[50px] lg:w-[69px] lg:h-[69px]">
@@ -32,7 +31,7 @@ const Footer = () => {
           ].map((text) => (
             <div
               key={text}
-              className="text-center lg:text-right text-[#DDDDDD] text-base font-['MeemFaNum'] font-extrabold break-words cursor-pointer hover:text-white transition-colors"
+              className="text-center lg:text-right text-[#DDDDDD] text-base  font-extrabold cursor-pointer hover:text-white transition-colors"
             >
               {text}
             </div>
@@ -40,7 +39,6 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Middle Row: Description & Certificates */}
       <div className="w-full flex flex-col lg:flex-row justify-between items-center lg:items-center gap-8 lg:gap-0">
         <div className="lg:w-[468px] w-full text-center lg:text-right text-[#7B7B7B] text-base lg:text-lg  font-medium leading-[27.9px] ">
           ما در کنار شما هستیم تا با هم، آینده ای روشن تر و پربارتر برای هنرستان
@@ -74,7 +72,6 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Bottom Row: Socials & Copyright */}
       <div className="w-full flex flex-col lg:flex-row justify-between items-center lg:items-end gap-6 lg:gap-0">
         <div className="flex justify-start items-center gap-4">
           <div className="text-[#DDDDDD] text-base  font-medium leading-6 ">

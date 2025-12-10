@@ -28,9 +28,7 @@ const FeaturesCard = ({ title, description, image }: FeaturesCardProps) => {
             </p>
           </CardContent>
 
-          {/* Footer Area with Link and Image */}
           <div className="mt-[20px] sm:mt-auto  flex flex-col items-end md:flex-row md:items-end md:justify-end w-full pl-[40px] pb-[40px] pr-[40px] ">
-            {/* 'Read More' Link */}
             <div className="relative flex items-center gap-2 cursor-pointer z-10 transition-transform hover:scale-105 mb-2 md:mb-2">
               <span className="text-[#222325] text-[14px] md:text-[18px] font-medium leading-[22px] md:leading-[27px]">
                 بیشتر بدانید
@@ -40,7 +38,6 @@ const FeaturesCard = ({ title, description, image }: FeaturesCardProps) => {
               </div>
             </div>
 
-            {/* Image positioned absolutely in the corner to match design */}
             <div className="relative right-auto bottom-auto md:absolute md:right-0 md:bottom-0 w-[170px] h-[170px] md:w-[230px] md:h-[230px] self-center">
               <Image
                 src={image}

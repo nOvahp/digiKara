@@ -8,7 +8,6 @@ interface ChallengeItemProps {
 const ChallengeItem = ({ title, desc }: ChallengeItemProps) => {
   return (
     <div className="w-full flex justify-center items-start gap-4">
-      {/* Bullet Point */}
       <div className="relative w-[32px] h-[32px] shrink-0">
         <div className="absolute left-0 top-0 w-[32px] h-[32px] opacity-10 rounded-full border-[4] border-[#808080]" />
         <div className="absolute left-[13px] top-[13px] w-[6px] h-[6px] bg-[#808080] rounded-full" />

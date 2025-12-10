@@ -28,13 +28,11 @@ const FaqCard: React.FC<FaqCardProps> = ({
           }`}
         >
           {!isOpen ? (
-            // Plus Icon (Closed)
             <>
               <div className="w-4 h-1 absolute bg-[#222325] rounded-md transition-transform duration-300" />
               <div className="w-4 h-1 absolute bg-[#222325] rounded-md rotate-90 transition-transform duration-300" />
             </>
           ) : (
-            // Minus Icon (Open)
             <>
               <div className="w-4 h-1 absolute bg-[#808080] rounded-md transition-transform duration-300" />
             </>

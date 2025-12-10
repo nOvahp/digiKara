@@ -9,8 +9,6 @@ import BlogButton from "./BlogButton";
 const Blog = () => {
   return (
     <div className="relative w-full flex flex-col lg:block mb-[10%]">
-      {/* Background/Illustration Image */}
-
       <div className="lg:hidden w-full relative mb-6 flex justify-center items-center left-[8%]">
         <Image
           src="/blog.png"
@@ -21,7 +19,6 @@ const Blog = () => {
         />
       </div>
 
-      {/* Desktop: Absolute Left Image */}
       <div className="hidden lg:block absolute -left-[35%]  xl:-left-[15%]  -top-[18%] pointer-events-none z-20">
         <Image
           src="/blog.png"
@@ -32,7 +29,6 @@ const Blog = () => {
         />
       </div>
 
-      {/* Cards List */}
       <div className="relative z-10 flex flex-col gap-6 justify-start items-end w-full lg:w-auto">
         {blogData.map((item, index) => (
           <BlogCard

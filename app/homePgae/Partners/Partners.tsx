@@ -10,13 +10,11 @@ import { partnersData } from "./partnersData";
 const Partners = () => {
   return (
     <div className="w-full flex flex-col lg:flex-row-reverse items-start justify-between gap-6 lg:gap-12 relative mb-[10%]">
-      {/* Left Column (Desktop) / Split Items (Mobile) */}
       <div className="contents lg:flex lg:flex-col lg:w-[40%]">
         <div className="order-1 w-full ">
           <PartnersTitle />
         </div>
 
-        {/* Image */}
         <div className="order-3 w-full mt-8 lg:-mt-[8%] flex justify-center lg:justify-end z-20 pointer-events-none">
           <Image
             src="/Partners.png"
@@ -27,13 +25,11 @@ const Partners = () => {
           />
         </div>
 
-        {/* Button */}
         <div className="order-4 w-full -mt-25 lg:-mt-22 xl:ml-30 lg:ml-15 xl:-mt-34 flex justify-center lg:justify-start relative z-30">
           <PartnerButton />
         </div>
       </div>
 
-      {/* Right Column (Desktop) / Middle Item (Mobile) */}
       <div className="order-2 w-full lg:w-[55%] flex flex-col gap-6">
         {partnersData.map((item, index) => (
           <PartnersCard

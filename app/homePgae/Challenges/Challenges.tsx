@@ -13,16 +13,13 @@ const Challenges = () => {
       className="w-full flex justify-between items-start mb-[10%] "
       dir="rtl"
     >
-      {/* Visual Right: Content (Placed first in RTL Flex container) */}
       <div className="w-full lg:w-[643px] flex flex-col justify-start items-start  lg:gap-[56px]">
-        {/* Header */}
         <div className="w-full flex flex-col justify-start items-start gap-[32px]">
           <div className="w-full text-center lg:text-right text-[#222325] text-[24px] lg:text-[48px] font-black leading-[36px] lg:leading-[60px] ">
             چالش‌های آموزش فنی‌حرفه‌ای
           </div>
         </div>
 
-        {/* Mobile Image (Visible only on mobile, placed between Title and List) */}
         <div className="relative w-full flex justify-center items-center lg:hidden">
           <div className="relative w-[250px] h-[250px] md:w-[450px] md:h-[450px]">
             <Image
@@ -34,16 +31,13 @@ const Challenges = () => {
           </div>
         </div>
 
-        {/* List */}
         <div className="w-full flex flex-col justify-start items-start gap-[24px]">
           {challengesData.map((item) => (
             <ChallengeItem key={item.id} title={item.title} desc={item.desc} />
           ))}
         </div>
 
-        {/* Action Buttons */}
         <div className="w-full flex justify-end items-center gap-[32px] mt-[40px] lg:mt-0">
-          {/* Custom Button */}
           <div className="text-[#808080] text-[14px] lg:text-[18px] font-normal leading-[27px] cursor-pointer hover:text-black transition-colors">
             مطالعه بیشتر
           </div>
@@ -54,15 +48,11 @@ const Challenges = () => {
               </span>
             </div>
           </ChamferedButton>
-
-          {/* Link */}
         </div>
       </div>
 
-      {/* Visual Left: Image (Placed second in RTL Flex container) */}
       <div className="relative hidden lg:flex justify-start items-center gap-[10px]">
         <div className="relative w-[350px] h-[350px] lg:w-[450px] lg:h-[450px] xl:w-[550px] xl:h-[550px] overflow-hidden mt-[-70px]">
-          {/* Using the single image as requested */}
           <Image
             src="/challenges.png"
             alt="Challenges Illustration"

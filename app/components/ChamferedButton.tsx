@@ -23,21 +23,13 @@ const ChamferedButton: React.FC<ChamferedButtonProps> = ({
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  // Determine styles based on cutSide
   const maskGradient =
     cutSide === "left"
-      ? "linear-gradient(135deg, transparent 10px, black 10px)" // Cut Top-Left
-      : "linear-gradient(225deg, transparent 10px, black 10px)"; // Cut Top-Right
+      ? "linear-gradient(135deg, transparent 10px, black 10px)"
+      : "linear-gradient(225deg, transparent 10px, black 10px)";
 
   const borderRadius =
-    cutSide === "left"
-      ? "0px 6px 6px 6px" // Top-Left is 0/flat
-      : "6px 0px 6px 6px"; // Top-Right is 0/flat usually?
-  // Wait, standard order: TL TR BR BL
-  // My previous code: "6px" was global.
-  // If I want smooth corners elsewhere:
-  // Right Cut (Default): TL=6, TR=0 (cut), BR=6, BL=6. -> "6px 0px 6px 6px"
-  // Left Cut: TL=0 (cut), TR=6, BR=6, BL=6. -> "0px 6px 6px 6px"
+    cutSide === "left" ? "0px 6px 6px 6px" : "6px 0px 6px 6px";
 
   return (
     <div
@@ -55,11 +47,7 @@ const ChamferedButton: React.FC<ChamferedButtonProps> = ({
       <div
         className="w-full h-full flex items-center justify-center transition-colors duration-200"
         style={{
-          borderRadius: "4px", // Inner matches generally, or we can fine tune. leaving generic 4px or matching logic?
-          // If we mask the inner div too, the inner radius at the cut doesn't matter as much (it gets cut),
-          // but keeping it small prevents bleeding.
-          // Let's use similar logic for inner slightly separate if specific perfection needed,
-          // but "4px" generic is usually fine as mask handles the cut.
+          borderRadius: "4px",
           background: isHovered ? hoverColor : backgroundColor,
           WebkitMask: maskGradient,
           mask: maskGradient,

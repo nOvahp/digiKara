@@ -14,7 +14,7 @@ const Faq = () => {
 
   return (
     <div className="w-full h-full py-20 px-5 md:px-20 flex flex-col justify-start items-center gap-20">
-      <div className="text-right text-[#222325] text-4xl md:text-6xl font-['MeemFaNum'] font-black leading-[72px] break-words">
+      <div className="text-right text-[#222325] text-4xl md:text-6xl  font-black leading-[72px] ">
         سوالات متداول
       </div>
       <div className="w-full max-w-5xl flex flex-col justify-start items-start gap-10">
