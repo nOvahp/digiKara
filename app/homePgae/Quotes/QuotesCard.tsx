@@ -15,15 +15,15 @@ const QuotesCard: React.FC<QuotesCardProps> = ({
 }) => {
   return (
     <div className="flex-1 flex flex-col justify-start items-start gap-6 ">
-      <div className="self-stretch text-right text-[#222325] text-2xl  font-medium leading-[41.60px] ">
+      <div className="self-stretch text-right text-[#222325] text-lg lg:text-2xl font-medium leading-8 lg:leading-[41.60px] ">
         {quote}
       </div>
       <div className="self-stretch justify-start items-center gap-4 flex">
         <div className="flex-1 flex flex-col justify-start items-start gap-1 ">
-          <div className="self-stretch text-right text-[#222325] text-base  font-extrabold ">
+          <div className="self-stretch text-right text-[#222325] text-sm lg:text-base font-extrabold ">
             {name}
           </div>
-          <div className="self-stretch text-right text-[#5e6b7e] text-base  font-medium ">
+          <div className="self-stretch text-right text-[#5e6b7e] text-sm lg:text-base font-medium ">
             {role}
           </div>
         </div>

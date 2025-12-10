@@ -5,7 +5,7 @@ import QuotesIllustration from "./QuotesIllustration";
 
 const Quotes = () => {
   return (
-    <div className="w-[119.05%] -ml-[9.53%] py-[60px] pl-[325px] pr-[80px] bg-[#E7E7E7] justify-start items-start gap-[68px] flex relative">
+    <div className="w-[119.05%] -ml-[9.53%] py-10 px-5 lg:py-[60px] lg:pl-[325px] lg:pr-[80px] bg-[#E7E7E7] flex flex-col lg:flex-row relative gap-6 lg:gap-[68px]">
       <QuotesCard
         quote="به کمک دیجی‌کارا، هنرستان فارابی توانست با حذف فرایندهای پیچیده ، فروش محصولات خود را افزایش دهد و پرداخت‌های هنرجویان را به موقع انجام دهد."
         name="المیرا  محمدی"

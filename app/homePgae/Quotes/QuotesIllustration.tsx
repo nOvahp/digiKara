@@ -1,7 +1,7 @@
 import React from "react";
 
 const QuotesIllustration = () => (
-  <div className="border absolute left-0 top-[60px] w-[312px] h-[312px] overflow-hidden">
+  <div className="relative lg:absolute left-0 lg:top-[60px] w-[312px] h-[312px] mx-auto lg:mx-0 mt-8 lg:mt-0 overflow-hidden">
     <img
       src="/Quotes.png"
       alt="Quotes Illustration"
