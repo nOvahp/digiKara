@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const Navbar = () => {
   return (
-    <div className="w-full hidden lg:flex justify-between items-center bg-white">
+    <div className="w-full hidden lg:flex justify-between items-center bg-transparent">
       <ChamferedButton className="h-auto">
         <Link
           href="/login"
@@ -66,13 +66,15 @@ const Navbar = () => {
           <div className="text-center text-[#4A4A4A] text-2xl lg:text-xl xl:text-2xl font-extrablack font-[950] leading-none">
             دیجی کارا
           </div>
-          <Image
-            src="/Logo.svg"
-            alt="DigiKara Logo"
-            width={45}
-            height={45}
-            className="w-10 h-10 md:w-[45px] md:h-[45px]"
-          />
+          <Link href="/">
+            <Image
+              src="/Logo.svg"
+              alt="DigiKara Logo"
+              width={45}
+              height={45}
+              className="w-10 h-10 md:w-[45px] md:h-[45px]"
+            />
+          </Link>
         </div>
       </div>
     </div>

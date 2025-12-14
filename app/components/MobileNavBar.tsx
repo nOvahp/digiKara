@@ -14,15 +14,17 @@ const MobileNavBar = () => {
   };
 
   return (
-    <div className="w-full flex lg:hidden justify-between items-center bg-white relative z-50">
+    <div className="w-full flex lg:hidden justify-between items-center bg-transparent relative z-50">
       <div className="flex items-center gap-4">
-        <Image
-          src="/Logo.svg"
-          alt="DigiKara Logo"
-          width={40}
-          height={40}
-          className="w-10 h-10"
-        />
+        <Link href="/">
+          <Image
+            src="/Logo.svg"
+            alt="DigiKara Logo"
+            width={40}
+            height={40}
+            className="w-10 h-10"
+          />
+        </Link>
       </div>
 
       <Button

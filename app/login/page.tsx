@@ -1,11 +1,25 @@
-import React from "react";
+"use client"
 
-const LoginPage = () => {
-  return (
-    <div className="flex justify-center items-center h-screen">
-      <h1 className="text-3xl font-bold">صفحه ورود</h1>
-    </div>
-  );
-};
+import * as React from "react"
+import { LoginView } from "./login-view"
+import { LoginView2 } from "./login-view2"
+import { LoginView3 } from "./login-view3"
+import { Login } from "./logIn"
 
-export default LoginPage;
+export default function LoginPage() {
+  const [step, setStep] = React.useState(1)
+
+  if (step === 1) {
+    return <LoginView onNext={() => setStep(2)} />
+  }
+
+  if (step === 2) {
+    return <LoginView2 onNext={() => setStep(3)} />
+  }
+
+  if (step === 3) {
+    return <LoginView3 onNext={() => setStep(4)} />
+  }
+
+  return <Login />
+}

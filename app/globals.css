@@ -264,6 +264,7 @@ body {
   padding-right: 8%;
   padding-top: 3%;
   padding-bottom: 0%;
+  max-width: 1440px;
 }
 
 :root {
@@ -341,5 +342,10 @@ body {
   }
   body {
     @apply bg-background text-foreground;
-  }
+  }   
+
+
+
+  
 }
+
