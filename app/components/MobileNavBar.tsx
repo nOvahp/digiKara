@@ -5,13 +5,17 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 const MobileNavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
+  if (pathname?.startsWith("/StudentDashboard")) return null;
 
   return (
     <div className="w-full flex lg:hidden justify-between items-center bg-transparent relative z-50">

@@ -6,6 +6,8 @@ import { LoginView2 } from "./login-view2"
 import { LoginView3 } from "./login-view3"
 import { Login } from "./logIn"
 
+import { LogInForm } from "./logInForm"
+
 export default function LoginPage() {
   const [step, setStep] = React.useState(1)
 
@@ -21,5 +23,9 @@ export default function LoginPage() {
     return <LoginView3 onNext={() => setStep(4)} />
   }
 
-  return <Login />
+  if (step === 4) {
+    return <Login onNext={() => setStep(5)} />
+  }
+
+  return <LogInForm />
 }

@@ -1,10 +1,17 @@
+"use client";
+
 import React from "react";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import ChamferedButton from "./ChamferedButton";
 import Image from "next/image";
 import Link from "next/link";
 
 const Navbar = () => {
+  const pathname = usePathname();
+
+  if (pathname?.startsWith("/StudentDashboard")) return null;
+
   return (
     <div className="w-full hidden lg:flex justify-between items-center bg-transparent">
       <ChamferedButton className="h-auto">
