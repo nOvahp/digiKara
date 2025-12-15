@@ -1,12 +1,17 @@
 "use client"
 
-import React from 'react';
-import { DashboardNavBar } from '../DashboardNavBar';
-import { Navigation } from '../Navigation';
-import { StatCard } from './components/StatCard';
-import { ProductTable } from './components/ProductTable';
+import { useState } from 'react';
+import { DashboardNavBar } from "../DashboardNavBar";
+import { Navigation } from "../Navigation";
+import { ProductTable } from "./components/ProductTable";
+import { StatCard } from "./components/StatCard";
+import { NewProduct } from "./components/NewProduct";
+import { NewProductPage2 } from "./components/NewProductPage2";
+import { NewProductPage3 } from "./components/NewProductPage3";
 
 export default function SellsPage() {
+    const [activePopup, setActivePopup] = useState<'none' | 'step1' | 'step2' | 'step3'>('none');
+
     return (
         <div className="w-full min-h-screen bg-transparent flex flex-col relative" dir="ltr">
              <div className="sticky top-0 z-50">
@@ -16,12 +21,15 @@ export default function SellsPage() {
              <div className="flex-1 w-full flex flex-col items-center gap-6 px-0 py-0 pb-24">
                  
                  {/* Page Header */}
-                 <div className="w-full flex flex-col items-end gap-4">
+                 <div className="w-full flex flex-col items-end gap-4 px-0 py-0">
                      <div className="text-center text-[#0D0D12] text-xl font-semibold font-['PeydaWeb'] leading-[27px]">
                          همه محصولات
                      </div>
                      
-                     <button className="w-full h-10 px-4 py-2 bg-gradient-to-t from-[rgba(255,255,255,0.15)] to-[rgba(255,255,255,0.15)] bg-[#FFD369] shadow-[0px_1px_2px_rgba(13,13,18,0.06)] rounded-lg border border-[#FFD369] flex justify-center items-center gap-2 hover:opacity-90 transition-opacity">
+                     <button 
+                        onClick={() => setActivePopup('step1')}
+                        className="w-full h-10 px-0 py-0 bg-gradient-to-t from-[rgba(255,255,255,0.15)] to-[rgba(255,255,255,0.15)] bg-[#FFD369] shadow-[0px_1px_2px_rgba(13,13,18,0.06)] rounded-lg border border-[#FFD369] flex justify-center items-center gap-2 hover:opacity-90 transition-opacity"
+                     >
                          <div className="w-4 h-4 relative overflow-hidden">
                              <div className="absolute left-[4.67px] top-[4.67px] w-[6.67px] h-[6.67px] border-2 border-[#393E46]" />
                              {/* Mocking the plus icon from user's CSS shapes */}
@@ -35,7 +43,7 @@ export default function SellsPage() {
                  </div>
 
                  {/* Stats Grid */}
-                 <div className="w-full flex flex-col gap-3">
+                 <div className="w-full flex flex-col gap-3 px-0">
                      <div className="w-full flex gap-3">
                          <StatCard 
                             title="کل محصولات"
@@ -55,12 +63,6 @@ export default function SellsPage() {
                             trend="+412 مورد"
                             trendType="positive" // Using positive styles for visual match
                             trendLabel="از ماه گذشته"
-                             // Special case for this card, trend badge is different in design "text only"?
-                             // User design: "+412 مورد" is just text?
-                             // Wait, looking at user code for "Inventory":
-                             // <div ...>+412 مورد</div> <div...>از ماه گذشته</div>
-                             // It doesn't use the badge. I'll need to adapt StatCard or just use generic props.
-                             // I'll stick to the badge look for consistency unless strictly requested. The user code actually has a custom flex row for this card.
                             icon={
                                 <div className="w-5 h-5 relative overflow-hidden">
                                      <div className="absolute left-[2.50px] top-[2.50px] w-[15px] h-[15px] border-[1.67px] border-[#393E46]" />
@@ -100,6 +102,29 @@ export default function SellsPage() {
              <div className="fixed bottom-0 w-full z-50">
                 <Navigation />
              </div>
+
+             {/* Popup Layer */}
+             {activePopup === 'step1' && (
+                 <NewProduct 
+                    onClose={() => setActivePopup('none')} 
+                    onNext={() => setActivePopup('step2')}
+                 />
+             )}
+             {activePopup === 'step2' && (
+                 <NewProductPage2 
+                    onClose={() => setActivePopup('none')} 
+                    onNext={() => setActivePopup('step3')}
+                 />
+             )}
+             {activePopup === 'step3' && (
+                 <NewProductPage3 
+                    onClose={() => setActivePopup('none')} 
+                    onNext={() => {
+                        // For now, close or go to next (if Step 4 exists later)
+                        setActivePopup('none');
+                    }}
+                 />
+             )}
         </div>
     );
 }
