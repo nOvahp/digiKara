@@ -93,35 +93,14 @@ function ProductTableRow({ product, index, isChecked, onToggle }: ProductTableRo
 }
 
 // Expanded Mock Data
-const products: ProductData[] = [
-    { id: 1, name: "عسل آویشن ارگانیک", soldCount: 300, revenue: "۴,۵۰۰,۰۰۰ ریال", inventoryCount: 100, trendPercentage: "+5.0%", trendType: "positive" },
-    { id: 2, name: "عسل چهل گیاه ارگانیک", soldCount: 400, revenue: "۶,۰۰۰,۰۰۰ ریال", inventoryCount: 150, trendPercentage: "+7.5%", trendType: "negative" },
-    { id: 3, name: "عسل زعفران ارگانیک", soldCount: 500, revenue: "۷,۵۰۰,۰۰۰ ریال", inventoryCount: 120, trendPercentage: "+6.0%", trendType: "positive" },
-    { id: 4, name: "موم عسل طبیعی", soldCount: 250, revenue: "۳,۰۰۰,۰۰۰ ریال", inventoryCount: 80, trendPercentage: "+3.5%", trendType: "negative" },
-    { id: 5, name: "شهد گلهای وحشی ارگانیک", soldCount: 320, revenue: "۵,۲۰۰,۰۰۰ ریال", inventoryCount: 90, trendPercentage: "+5.5%", trendType: "positive" },
-    { id: 6, name: "گرده گل ارگانیک", soldCount: 150, revenue: "۲,۰۰۰,۰۰۰ ریال", inventoryCount: 50, trendPercentage: "+4.1%", trendType: "positive" },
-    { id: 7, name: "سیب زمینی ارگانیک", soldCount: 600, revenue: "۱,۵۰۰,۰۰۰ ریال", inventoryCount: 300, trendPercentage: "+2.0%", trendType: "negative" },
-    { id: 8, name: "گوجه فرنگی ارگانیک", soldCount: 550, revenue: "۱,۲۰۰,۰۰۰ ریال", inventoryCount: 250, trendPercentage: "+3.0%", trendType: "positive" },
-    { id: 9, name: "شیرینی عسل ارگانیک", soldCount: 200, revenue: "۳,۵۰۰,۰۰۰ ریال", inventoryCount: 60, trendPercentage: "+5.2%", trendType: "positive" },
-    { id: 10, name: "عسل گلابی ارگانیک", soldCount: 280, revenue: "۴,۰۰۰,۰۰۰ ریال", inventoryCount: 110, trendPercentage: "+6.5%", trendType: "negative" },
-    { id: 11, name: "عسل نعنا ارگانیک", soldCount: 430, revenue: "۶,۰۰۰,۰۰۰ ریال", inventoryCount: 130, trendPercentage: "+4.5%", trendType: "positive" },
-    { id: 12, name: "سیب ارگانیک", soldCount: 350, revenue: "۳,۰۰۰,۰۰۰ ریال", inventoryCount: 150, trendPercentage: "+3.5%", trendType: "positive" },
-    { id: 13, name: "روغن حیوانی", soldCount: 80, revenue: "۸,۰۰۰,۰۰۰ ریال", inventoryCount: 20, trendPercentage: "+10.0%", trendType: "positive" },
-    { id: 14, name: "کشک محلی", soldCount: 120, revenue: "۱,۰۰۰,۰۰۰ ریال", inventoryCount: 40, trendPercentage: "+1.5%", trendType: "negative" },
-    { id: 15, name: "قره قروت", soldCount: 500, revenue: "۵۰۰,۰۰۰ ریال", inventoryCount: 200, trendPercentage: "+8.0%", trendType: "positive" },
-    { id: 16, name: "لواشک خانگی", soldCount: 600, revenue: "۹۰۰,۰۰۰ ریال", inventoryCount: 100, trendPercentage: "+12.0%", trendType: "positive" },
-    { id: 17, name: "سرکه سیب", soldCount: 90, revenue: "۱,۱۰۰,۰۰۰ ریال", inventoryCount: 30, trendPercentage: "+2.5%", trendType: "negative" },
-    { id: 18, name: "آبغوره", soldCount: 110, revenue: "۱,۳۰۰,۰۰۰ ریال", inventoryCount: 45, trendPercentage: "+3.0%", trendType: "positive" },
-    { id: 19, name: "رب انار", soldCount: 130, revenue: "۲,۵۰۰,۰۰۰ ریال", inventoryCount: 55, trendPercentage: "+4.0%", trendType: "positive" },
-    { id: 20, name: "زعفران مثقالی", soldCount: 40, revenue: "۵,۰۰۰,۰۰۰ ریال", inventoryCount: 15, trendPercentage: "+9.0%", trendType: "negative" },
-    { id: 21, name: "هل سبز", soldCount: 60, revenue: "۳,۲۰۰,۰۰۰ ریال", inventoryCount: 25, trendPercentage: "+5.0%", trendType: "positive" },
-    { id: 22, name: "دارچین قلم", soldCount: 100, revenue: "۸۰۰,۰۰۰ ریال", inventoryCount: 70, trendPercentage: "+2.2%", trendType: "positive" },
-    { id: 23, name: "زردچوبه", soldCount: 200, revenue: "۶۰۰,۰۰۰ ریال", inventoryCount: 80, trendPercentage: "+1.0%", trendType: "negative" },
-    { id: 24, name: "فلفل سیاه", soldCount: 150, revenue: "۹۰۰,۰۰۰ ریال", inventoryCount: 60, trendPercentage: "+3.8%", trendType: "positive" },
-    { id: 25, name: "آویشن کوهی", soldCount: 85, revenue: "۱,۵۰۰,۰۰۰ ریال", inventoryCount: 35, trendPercentage: "+6.1%", trendType: "positive" },
-];
+// Product data moved to parent
 
-export function ProductTable() {
+
+interface ProductTableProps {
+    products: ProductData[];
+}
+
+export function ProductTable({ products }: ProductTableProps) {
     const [currentPage, setCurrentPage] = useState(1);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [checkedIds, setCheckedIds] = useState<number[]>([]);

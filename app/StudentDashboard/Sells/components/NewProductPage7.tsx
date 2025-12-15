@@ -1,33 +1,13 @@
 import React from 'react';
 import { X } from 'lucide-react';
-import { PricingForm } from './shared/PricingForm';
-import { toast } from 'sonner';
-import axios from 'axios';
 
-interface NewProductPage3Props {
+interface NewProductPage7Props {
     onClose: () => void;
-    onNext: () => void;
+    onReset: () => void;
     onStepClick: (step: string) => void;
-    formData: any;
-    updateFormData: (data: any) => void;
 }
 
-export function NewProductPage3({ onClose, onNext, onStepClick, formData, updateFormData }: NewProductPage3Props) {
-    const handleNext = () => {
-        try {
-            if (!formData.price || formData.price === '0') throw new Error("لطفا قیمت کالا را وارد کنید");
-            // Add other mandatory fields if any
-            
-            onNext();
-        } catch (error) {
-             if (axios.isAxiosError(error)) {
-                toast.error("خطای شبکه رخ داده است");
-            } else {
-                toast.error((error as Error).message);
-            }
-        }
-    };
-
+export function NewProductPage7({ onClose, onReset, onStepClick }: NewProductPage7Props) {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             {/* Backdrop */}
@@ -37,7 +17,7 @@ export function NewProductPage3({ onClose, onNext, onStepClick, formData, update
             />
 
             {/* Modal Content */}
-            <div className="relative w-[375px] max-h-[90vh] bg-white rounded-2xl shadow-xl flex flex-col overflow-hidden">
+            <div className="relative w-[375px] bg-white rounded-2xl shadow-xl flex flex-col overflow-hidden items-center">
                 
                 {/* Header */}
                 <div className="w-full px-5 py-5 border-b border-[#DFE1E7] flex justify-between items-center bg-white z-10">
@@ -51,60 +31,74 @@ export function NewProductPage3({ onClose, onNext, onStepClick, formData, update
                     </div>
                 </div>
 
-                {/* Scrollable Body */}
-                <div className="flex-1 overflow-y-auto w-full">
+                {/* Scrollable Body - Aligned with previous pages (Progress Bar) */}
+                <div className="w-full">
                     {/* Progress Steps */}
                     <div className="w-full px-5 py-5 border-b border-[#DFE1E7] flex items-center gap-4 overflow-x-auto" dir="rtl">
                          <StepItem number="1" label="اطلاعات پایه" state="completed" onClick={() => onStepClick('step1')} />
-                         <StepItem number="2" label="قیمت گذاری" state="active" onClick={() => onStepClick('step3')} />
-                         <StepItem number="3" label="موجودی" state="inactive" onClick={() => onStepClick('step4')} />
-                         <StepItem number="4" label="تائید نهایی" state="inactive" onClick={() => onStepClick('step6')} />
+                         <StepItem number="2" label="قیمت گذاری" state="completed" onClick={() => onStepClick('step3')} />
+                         <StepItem number="3" label="موجودی" state="completed" onClick={() => onStepClick('step4')} />
+                         <StepItem number="4" label="دسته بندی و برچسب ها" state="completed" onClick={() => onStepClick('step5')} />
+                         <StepItem number="5" label="تائید نهایی" state="active" onClick={() => onStepClick('step6')} />
                     </div>
+                </div>
 
-                    {/* Form Fields - Replaced with Shared Component */}
-                    <div className="w-full px-5 py-5 flex flex-col gap-4" dir="rtl">
-                        {/* Pricing Type Toggle - Kept here as it feels specific to the wizard step */}
-                        <div className="w-full h-9 p-0.5 bg-[#F6F6F6] rounded-lg border border-[#D7D8DA] flex items-center mb-2">
-                             <div className="flex-1 h-[29px] px-3 py-1 rounded-md flex justify-center items-center gap-2.5 cursor-pointer text-[#0A0A0A] text-sm font-semibold font-['PeydaWeb'] opacity-50">
-                                 دارای چند قیمت
-                             </div>
-                             <div className="flex-1 h-[29px] px-3 py-1 bg-[#FFDD8A] shadow-sm rounded-md border border-[#D7D8DA] flex justify-center items-center gap-2.5 cursor-pointer text-[#0D0D12] text-sm font-semibold font-['PeydaWeb']">
-                                 تک قیمتی
+                {/* Success Content */}
+                <div className="w-full h-[610px] flex flex-col justify-center items-center gap-6">
+                    
+                    {/* Icon Construction */}
+                    <div className="w-[120px] h-[120px] relative bg-[#FFDD89] overflow-hidden rounded-[80px]">
+                        <div className="absolute left-[22.5px] top-[22.5px] w-[75px] h-[75px] bg-[#FFB600] overflow-hidden rounded-[80px]">
+                             {/* Inner graphic elements based on provided styling */}
+                             <div className="absolute left-[18px] top-[18px] w-[64px] h-[64px]" /> 
+                             <div className="absolute left-[21.5px] top-[21.5px] w-[32px] h-[32px] overflow-hidden">
+                                 <div className="absolute w-[26.67px] h-[26.67px] left-[2.67px] top-[2.67px] border-2 border-[#0D0D12] rounded-sm"></div>
+                                 <div className="absolute w-[10.67px] h-[8px] left-[10.67px] top-[12px] border-2 border-[#0D0D12] rounded-sm"></div>
                              </div>
                         </div>
-
-                        <PricingForm 
-                            values={formData}
-                            onChange={(updates) => updateFormData(updates)} 
-                        />
                     </div>
+
+                    {/* Message */}
+                    <div className="w-full flex flex-col items-center gap-1.5 ">
+                        <div className="text-center text-black text-[28px] font-semibold font-['PeydaWeb']">
+                            با موفقیت افزوده شد
+                        </div>
+                        <div className="text-center text-black text-xs font-light font-['PeydaWeb'] w-[293px]">
+                            محصول پس از تائید مدرسه به انتشار عمومی درخواهد آمد.
+                        </div>
+                    </div>
+
                 </div>
 
                 {/* Footer */}
-                <div className="w-full px-5 py-5 border-t border-[#DFE1E7] bg-white flex justify-end items-center gap-3.5 z-10 mt-auto">
+                <div className="w-full px-5 py-5 border-t border-[#DFE1E7] bg-white flex justify-end items-center gap-3.5 mt-auto">
                      <button 
-                        onClick={handleNext}
+                        onClick={onReset}
                         className="flex-1 h-10 px-4 py-2 bg-gradient-to-t from-[rgba(255,255,255,0)] to-[rgba(255,255,255,0.15)] bg-[#0A33FF] shadow-[0px_1px_2px_rgba(13,13,18,0.06)] rounded-lg border border-[#0A33FF] flex justify-center items-center gap-2 hover:opacity-90 transition-opacity"
                      >
-                         <span className="text-center text-white text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">ادامه</span>
+                         <span className="text-center text-white text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">
+                             افزودن محصول جدید
+                         </span>
                      </button>
                 </div>
+
             </div>
         </div>
     );
 }
 
 // Helpers
+
 function StepItem({ number, label, state, onClick }: { number: string, label: string, state: 'active' | 'completed' | 'inactive', onClick?: () => void }) {
     let circleClass = 'bg-[#DFE1E7] text-white';
     let textClass = 'text-[#818898] font-semibold';
 
     if (state === 'active') {
-        circleClass = 'bg-[#FFD369] text-[#393E46]'; 
+        circleClass = 'bg-[#FFD369] text-white'; 
         textClass = 'text-[#0D0D12] font-semibold'; 
     } else if (state === 'completed') {
         circleClass = 'bg-[#DFE1E7] text-white'; 
-        textClass = 'text-[#C1C7D0] font-semibold'; 
+        textClass = 'text-[#818898] font-semibold'; 
     }
 
     return (

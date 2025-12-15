@@ -1,10 +1,9 @@
 import React from 'react';
 import { X } from 'lucide-react';
-import { PricingForm } from './shared/PricingForm';
 import { toast } from 'sonner';
 import axios from 'axios';
 
-interface NewProductPage3Props {
+interface NewProductPage4Props {
     onClose: () => void;
     onNext: () => void;
     onStepClick: (step: string) => void;
@@ -12,15 +11,14 @@ interface NewProductPage3Props {
     updateFormData: (data: any) => void;
 }
 
-export function NewProductPage3({ onClose, onNext, onStepClick, formData, updateFormData }: NewProductPage3Props) {
+export function NewProductPage4({ onClose, onNext, onStepClick, formData, updateFormData }: NewProductPage4Props) {
     const handleNext = () => {
         try {
-            if (!formData.price || formData.price === '0') throw new Error("لطفا قیمت کالا را وارد کنید");
-            // Add other mandatory fields if any
+            if (!formData.stock) throw new Error("لطفا موجودی محصول را وارد کنید");
             
             onNext();
         } catch (error) {
-             if (axios.isAxiosError(error)) {
+            if (axios.isAxiosError(error)) {
                 toast.error("خطای شبکه رخ داده است");
             } else {
                 toast.error((error as Error).message);
@@ -56,27 +54,52 @@ export function NewProductPage3({ onClose, onNext, onStepClick, formData, update
                     {/* Progress Steps */}
                     <div className="w-full px-5 py-5 border-b border-[#DFE1E7] flex items-center gap-4 overflow-x-auto" dir="rtl">
                          <StepItem number="1" label="اطلاعات پایه" state="completed" onClick={() => onStepClick('step1')} />
-                         <StepItem number="2" label="قیمت گذاری" state="active" onClick={() => onStepClick('step3')} />
-                         <StepItem number="3" label="موجودی" state="inactive" onClick={() => onStepClick('step4')} />
+                         <StepItem number="2" label="قیمت گذاری" state="completed" onClick={() => onStepClick('step3')} />
+                         <StepItem number="3" label="موجودی" state="active" onClick={() => onStepClick('step4')} />
                          <StepItem number="4" label="تائید نهایی" state="inactive" onClick={() => onStepClick('step6')} />
                     </div>
 
-                    {/* Form Fields - Replaced with Shared Component */}
+                    {/* Form Fields */}
                     <div className="w-full px-5 py-5 flex flex-col gap-4" dir="rtl">
-                        {/* Pricing Type Toggle - Kept here as it feels specific to the wizard step */}
-                        <div className="w-full h-9 p-0.5 bg-[#F6F6F6] rounded-lg border border-[#D7D8DA] flex items-center mb-2">
-                             <div className="flex-1 h-[29px] px-3 py-1 rounded-md flex justify-center items-center gap-2.5 cursor-pointer text-[#0A0A0A] text-sm font-semibold font-['PeydaWeb'] opacity-50">
-                                 دارای چند قیمت
-                             </div>
-                             <div className="flex-1 h-[29px] px-3 py-1 bg-[#FFDD8A] shadow-sm rounded-md border border-[#D7D8DA] flex justify-center items-center gap-2.5 cursor-pointer text-[#0D0D12] text-sm font-semibold font-['PeydaWeb']">
-                                 تک قیمتی
+                        
+                        {/* Inventory Count */}
+                        <div className="w-full flex flex-col gap-2">
+                             <Label text="موجودی" />
+                             <div className="w-full h-[52px] bg-white rounded-xl border border-[#DFE1E7] px-3 flex items-center gap-2">
+                                 <input 
+                                     type="text" 
+                                     value={formData.stock}
+                                     placeholder="تعداد موجودی"
+                                     onChange={(e) => updateFormData({ stock: e.target.value })}
+                                     className="flex-1 h-full bg-transparent border-none outline-none text-[#0D0D12] text-base font-semibold font-['PeydaFaNum'] text-right tracking-wider placeholder:text-gray-400" 
+                                     dir="rtl"
+                                 />
+                                 <div className="w-px h-6 bg-[#DFE1E7]"></div>
+                                 <div className="w-11 text-center text-[#0D0D12] text-base font-semibold font-['PeydaWeb'] h-full flex items-center justify-center">
+                                     عدد
+                                 </div>
                              </div>
                         </div>
 
-                        <PricingForm 
-                            values={formData}
-                            onChange={(updates) => updateFormData(updates)} 
-                        />
+                        {/* Reminder Count */}
+                        <div className="w-full flex flex-col gap-2">
+                             <Label text="ایجاد یادآوری در موجودی" />
+                             <div className="w-full h-[52px] bg-white rounded-xl border border-[#DFE1E7] px-3 flex items-center gap-2">
+                                 <input 
+                                     type="text" 
+                                     value={formData.reminder}
+                                     placeholder="حداقل موجودی (مثلا 10)"
+                                     onChange={(e) => updateFormData({ reminder: e.target.value })}
+                                     className="flex-1 h-full bg-transparent border-none outline-none text-[#0D0D12] text-base font-semibold font-['PeydaFaNum'] text-right tracking-wider placeholder:text-gray-400" 
+                                     dir="rtl"
+                                 />
+                                 <div className="w-px h-6 bg-[#DFE1E7]"></div>
+                                 <div className="w-11 text-center text-[#0D0D12] text-base font-semibold font-['PeydaWeb'] h-full flex items-center justify-center">
+                                     عدد
+                                 </div>
+                             </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -89,22 +112,24 @@ export function NewProductPage3({ onClose, onNext, onStepClick, formData, update
                          <span className="text-center text-white text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">ادامه</span>
                      </button>
                 </div>
+
             </div>
         </div>
     );
 }
 
 // Helpers
+
 function StepItem({ number, label, state, onClick }: { number: string, label: string, state: 'active' | 'completed' | 'inactive', onClick?: () => void }) {
     let circleClass = 'bg-[#DFE1E7] text-white';
     let textClass = 'text-[#818898] font-semibold';
 
     if (state === 'active') {
-        circleClass = 'bg-[#FFD369] text-[#393E46]'; 
-        textClass = 'text-[#0D0D12] font-semibold'; 
+        circleClass = 'bg-[#FFD369] text-white'; // Yellow active, white text per user snippet/image? Image shows white number.
+        textClass = 'text-[#0D0D12] font-semibold'; // Black text
     } else if (state === 'completed') {
         circleClass = 'bg-[#DFE1E7] text-white'; 
-        textClass = 'text-[#C1C7D0] font-semibold'; 
+        textClass = 'text-[#818898] font-semibold'; // Grey text 
     }
 
     return (
@@ -115,6 +140,14 @@ function StepItem({ number, label, state, onClick }: { number: string, label: st
             <span className={`text-sm font-['PeydaWeb'] leading-[21px] tracking-wide whitespace-nowrap ${textClass}`}>
                 {label}
             </span>
+        </div>
+    );
+}
+
+function Label({ text }: { text: string }) {
+    return (
+        <div className="w-full text-right text-[#666D80] text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">
+            {text}
         </div>
     );
 }

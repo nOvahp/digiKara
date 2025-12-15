@@ -1,12 +1,49 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
+import { CategoryTagsForm } from './shared/CategoryTagsForm';
 import { X } from 'lucide-react';
+import { toast } from 'sonner';
+import axios from 'axios';
 
 interface NewProductProps {
     onClose: () => void;
     onNext: () => void;
+    onStepClick: (step: string) => void;
+    formData: any; 
+    updateFormData: (data: any) => void;
 }
 
-export function NewProduct({ onClose, onNext }: NewProductProps) {
+export function NewProduct({ onClose, onNext, onStepClick, formData, updateFormData }: NewProductProps) {
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleNext = () => {
+        try {
+            if (!formData.name) throw new Error("لطفا نام محصول را وارد کنید");
+            if (!formData.description) throw new Error("لطفا توضیحات محصول را وارد کنید");
+            if (formData.images.length === 0) throw new Error("لطفا حداقل یک تصویر برای محصول انتخاب کنید");
+            if (!formData.category) throw new Error("لطفا دسته بندی را انتخاب کنید");
+            
+            onNext();
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                toast.error("خطای شبکه رخ داده است");
+            } else {
+                toast.error((error as Error).message);
+            }
+        }
+    };
+
+    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            const newImages = Array.from(e.target.files).map(file => URL.createObjectURL(file));
+            updateFormData({ images: [...formData.images, ...newImages] });
+        }
+    };
+
+    const removeImage = (index: number) => {
+        const newImages = formData.images.filter((_: string, i: number) => i !== index);
+        updateFormData({ images: newImages });
+    };
+
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             {/* Backdrop */}
@@ -21,7 +58,9 @@ export function NewProduct({ onClose, onNext }: NewProductProps) {
                 {/* Header */}
                 <div className="w-full px-5 py-5 border-b border-[#DFE1E7] flex justify-between items-center bg-white z-10">
                     <div className="w-10 h-10 relative overflow-hidden rounded-full border border-[#DFE1E7] flex items-center justify-center cursor-pointer hover:bg-gray-50" onClick={onClose}>
-                        <X className="w-5 h-5 text-[#0D0D12]" />
+                        <div className="absolute w-6 h-6 overflow-hidden flex items-center justify-center">
+                            <X className="w-5 h-5 text-[#0D0D12]" />
+                        </div>
                     </div>
                     <div className="text-[#0D0D12] text-lg font-semibold font-['PeydaWeb'] leading-relaxed tracking-wide">
                         افزودن محصول جدید
@@ -32,11 +71,10 @@ export function NewProduct({ onClose, onNext }: NewProductProps) {
                 <div className="flex-1 overflow-y-auto w-full">
                     {/* Progress Steps */}
                     <div className="w-full px-5 py-5 border-b border-[#DFE1E7] flex items-center gap-4 overflow-x-auto" dir="rtl">
-                        <StepItem number="1" label="اطلاعات پایه" isActive={true} />
-                        <StepItem number="2" label="قیمت گذاری" isActive={false} />
-                        <StepItem number="3" label="موجودی" isActive={false} />
-                        <StepItem number="4" label="دسته بندی و برچسب ها" isActive={false} />
-                        <StepItem number="5" label="تائید نهایی" isActive={false} />
+                        <StepItem number="1" label="اطلاعات پایه" isActive={true} onClick={() => onStepClick('step1')} />
+                        <StepItem number="2" label="قیمت گذاری" isActive={false} onClick={() => onStepClick('step3')} />
+                        <StepItem number="3" label="موجودی" isActive={false} onClick={() => onStepClick('step4')} />
+                        <StepItem number="4" label="تائید نهایی" isActive={false} onClick={() => onStepClick('step6')} />
                     </div>
 
                     {/* Form Fields */}
@@ -50,6 +88,9 @@ export function NewProduct({ onClose, onNext }: NewProductProps) {
                                     type="text" 
                                     className="w-full h-full bg-transparent border-none outline-none text-[#0D0D12] text-right font-['PeydaWeb'] placeholder-[#A4ACB9]" 
                                     dir="rtl"
+                                    value={formData.name}
+                                    onChange={(e) => updateFormData({ name: e.target.value })}
+                                    placeholder="نام محصول را وارد کنید"
                                 />
                             </div>
                         </div>
@@ -61,71 +102,81 @@ export function NewProduct({ onClose, onNext }: NewProductProps) {
                                  <textarea 
                                     className="w-full flex-1 bg-transparent border-none outline-none resize-none text-[#0D0D12] text-sm font-['PeydaWeb'] text-right placeholder-[#A4ACB9]" 
                                     dir="rtl"
+                                    value={formData.description}
+                                    onChange={(e) => updateFormData({ description: e.target.value })}
+                                    placeholder="توضیحات محصول را بنویسید..."
                                  />
                                  <div className="w-full text-left text-[#A4ACB9] text-xs font-light font-['PeydaFaNum'] leading-[18px] tracking-wide">
-                                     0/200
+                                     {formData.description.length}/200
                                  </div>
                              </div>
                         </div>
 
-                        {/* Product Images - Drag & Drop */}
-                        <div className="w-full h-[180px] flex flex-col gap-2">
-                            <Label text="تصاویر محصول" />
-                            <div className="w-full flex-1 bg-[#FFDC85]/20 rounded-xl border border-[#FFD369] px-3 flex justify-center items-center cursor-pointer border-dashed">
-                                <span className="text-center">
-                                    <span className="text-[#666D80] text-base font-light font-['PeydaWeb'] leading-normal tracking-wide">فایل های خود را بکشید و رها کنید یا </span>
-                                    <span className="text-[#666D80] text-base font-semibold font-['PeydaWeb'] leading-normal tracking-wide">کلیک کنید</span>
-                                </span>
-                            </div>
-                        </div>
-
-                         {/* Category */}
-                         <div className="w-full flex flex-col gap-2">
-                            <Label text="دسته بندی" />
-                            <div className="w-full h-[52px] bg-white rounded-xl border border-[#DFE1E7] px-3 flex justify-between items-center relative">
-                                <select 
-                                    className="w-full h-full appearance-none bg-transparent border-none outline-none text-[#0D0D12] text-base font-light font-['PeydaWeb'] leading-normal cursor-pointer text-right dir-rtl pr-2 z-10" 
-                                    dir="rtl"
-                                    defaultValue=""
-                                >
-                                    <option value="" disabled>انتخاب کنید</option>
-                                    <option value="1">دسته بندی ۱</option>
-                                    <option value="2">دسته بندی ۲</option>
-                                </select>
-                                <div className="absolute left-3 w-5 h-5 pointer-events-none">
-                                    <div className="absolute left-[5px] top-[7.5px] w-[10px] h-[5px] border-[1.67px] border-[#818898] rounded-[0.83px] border-t-0 border-l-0 rotate-45 transform origin-center" style={{ transform: 'rotate(45deg)' }} /> 
-                                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute inset-0">
-                                        <path d="M5 7.5 L10 12.5 L15 7.5" stroke="#818898" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
-                                     </svg>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Tags */}
+                        {/* Product Images - Drag & Drop & Preview */}
                         <div className="w-full flex flex-col gap-2">
-                            <Label text="برچسب ها" />
-                            <div className="w-full h-[52px] bg-white rounded-xl border border-[#DFE1E7] px-3 flex justify-between items-center relative">
-                                <select 
-                                    className="w-full h-full appearance-none bg-transparent border-none outline-none text-[#0D0D12] text-base font-light font-['PeydaWeb'] leading-normal cursor-pointer text-right dir-rtl pr-2 z-10" 
-                                    dir="rtl"
-                                    defaultValue=""
+                            <Label text="تصاویر محصول" />
+                            
+                            {formData.images.length > 0 ? (
+                                <div className="w-full h-[180px] flex gap-2 overflow-x-auto pb-2">
+                                     <div 
+                                        className="min-w-[120px] h-full bg-[#FFDC85]/20 rounded-xl border border-[#FFD369] flex flex-col justify-center items-center cursor-pointer border-dashed flex-shrink-0 hover:bg-[#FFDC85]/30 transition-colors"
+                                        onClick={() => fileInputRef.current?.click()}
+                                     >
+                                        <div className="w-8 h-8 rounded-full bg-[#FFD369] flex items-center justify-center mb-2">
+                                            <span className="text-[#0D0D12] text-xl font-bold">+</span>
+                                        </div>
+                                        <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">افزودن</span>
+                                     </div>
+                                     {formData.images.map((img: string, index: number) => (
+                                         <div key={index} className="relative min-w-[180px] h-full rounded-xl border border-[#DFE1E7] overflow-hidden flex-shrink-0 group">
+                                             <img src={img} alt={`Product ${index}`} className="w-full h-full object-cover" />
+                                             <div 
+                                                className="absolute top-2 right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
+                                                onClick={() => removeImage(index)}
+                                             >
+                                                 <X className="w-4 h-4 text-white" />
+                                             </div>
+                                         </div>
+                                     ))}
+                                </div>
+                            ) : (
+                                <div 
+                                    className="w-full h-[180px] flex-1 bg-[#FFDC85]/20 rounded-xl border border-[#FFD369] px-3 flex justify-center items-center cursor-pointer border-dashed hover:bg-[#FFDC85]/30 transition-colors"
+                                    onClick={() => fileInputRef.current?.click()}
                                 >
-                                    <option value="" disabled>انتخاب کنید</option>
-                                    <option value="tag1">برچسب ۱</option>
-                                    <option value="tag2">برچسب ۲</option>
-                                </select>
-                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute left-3 pointer-events-none">
-                                    <path d="M5 7.5 L10 12.5 L15 7.5" stroke="#818898" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
-                                </svg>
-                            </div>
+                                    <span className="text-center">
+                                        <span className="text-[#666D80] text-base font-light font-['PeydaWeb'] leading-normal tracking-wide">فایل های خود را بکشید و رها کنید یا </span>
+                                        <span className="text-[#666D80] text-base font-semibold font-['PeydaWeb'] leading-normal tracking-wide">کلیک کنید</span>
+                                    </span>
+                                </div>
+                            )}
+
+                            <input 
+                                type="file" 
+                                ref={fileInputRef} 
+                                className="hidden" 
+                                multiple 
+                                accept="image/*"
+                                onChange={handleImageUpload}
+                            />
                         </div>
+
+                        {/* Category and Tags - Replaced with Shared Component */}
+                        <CategoryTagsForm 
+                            values={{
+                                category: formData.category,
+                                tags: formData.tags,
+                                metadata: '' // Assuming metadata isn't in main formData yet, or add it
+                            }}
+                            onChange={(updates) => updateFormData(updates)}
+                        />
 
                          {/* Product ID */}
                          <div className="w-full flex flex-col gap-2">
                              <Label text="شناسه محصول" />
                              <div className="w-full h-[52px] bg-white rounded-xl border border-[#DFE1E7] px-3 flex items-center">
                                  <div className="flex-1 text-left text-[#818898] text-base font-normal font-['Geist'] leading-normal tracking-wide" dir="ltr">
-                                     NK-PEG40-GRY-001
+                                     {formData.id}
                                  </div>
                              </div>
                          </div>
@@ -135,7 +186,7 @@ export function NewProduct({ onClose, onNext }: NewProductProps) {
                 {/* Footer */}
                 <div className="w-full px-5 py-5 border-t border-[#DFE1E7] bg-white flex justify-end items-center gap-3.5 z-10 mt-auto">
                      <button 
-                        onClick={onNext}
+                        onClick={handleNext}
                         className="flex-1 h-10 px-4 py-2 bg-gradient-to-t from-[rgba(255,255,255,0)] to-[rgba(255,255,255,0.15)] bg-[#FFDA7F] shadow-[0px_1px_2px_rgba(13,13,18,0.06)] rounded-lg border border-[#FFDA7F] flex justify-center items-center gap-2 hover:opacity-90 transition-opacity"
                      >
                          <span className="text-center text-[#393E46] text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">ادامه</span>
@@ -149,9 +200,9 @@ export function NewProduct({ onClose, onNext }: NewProductProps) {
 
 // Helper Components
 
-function StepItem({ number, label, isActive }: { number: string, label: string, isActive: boolean }) {
+function StepItem({ number, label, isActive, onClick }: { number: string, label: string, isActive: boolean, onClick?: () => void }) {
     return (
-        <div className="flex items-center gap-2.5 flex-shrink-0">
+        <div className="flex items-center gap-2.5 flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity" onClick={onClick}>
             <div className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-sm font-bold font-['PeydaFaNum'] leading-[21px] tracking-wide ${isActive ? 'bg-[#FFD369] text-[#393E46]' : 'bg-[#DFE1E7]'}`}>
                 {number}
             </div>

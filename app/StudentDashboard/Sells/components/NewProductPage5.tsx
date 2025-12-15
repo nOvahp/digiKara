@@ -1,33 +1,14 @@
 import React from 'react';
 import { X } from 'lucide-react';
-import { PricingForm } from './shared/PricingForm';
-import { toast } from 'sonner';
-import axios from 'axios';
+import { CategoryTagsForm } from './shared/CategoryTagsForm';
 
-interface NewProductPage3Props {
+interface NewProductPage5Props {
     onClose: () => void;
     onNext: () => void;
     onStepClick: (step: string) => void;
-    formData: any;
-    updateFormData: (data: any) => void;
 }
 
-export function NewProductPage3({ onClose, onNext, onStepClick, formData, updateFormData }: NewProductPage3Props) {
-    const handleNext = () => {
-        try {
-            if (!formData.price || formData.price === '0') throw new Error("لطفا قیمت کالا را وارد کنید");
-            // Add other mandatory fields if any
-            
-            onNext();
-        } catch (error) {
-             if (axios.isAxiosError(error)) {
-                toast.error("خطای شبکه رخ داده است");
-            } else {
-                toast.error((error as Error).message);
-            }
-        }
-    };
-
+export function NewProductPage5({ onClose, onNext, onStepClick }: NewProductPage5Props) {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             {/* Backdrop */}
@@ -56,39 +37,28 @@ export function NewProductPage3({ onClose, onNext, onStepClick, formData, update
                     {/* Progress Steps */}
                     <div className="w-full px-5 py-5 border-b border-[#DFE1E7] flex items-center gap-4 overflow-x-auto" dir="rtl">
                          <StepItem number="1" label="اطلاعات پایه" state="completed" onClick={() => onStepClick('step1')} />
-                         <StepItem number="2" label="قیمت گذاری" state="active" onClick={() => onStepClick('step3')} />
-                         <StepItem number="3" label="موجودی" state="inactive" onClick={() => onStepClick('step4')} />
-                         <StepItem number="4" label="تائید نهایی" state="inactive" onClick={() => onStepClick('step6')} />
+                         <StepItem number="2" label="قیمت گذاری" state="completed" onClick={() => onStepClick('step3')} />
+                         <StepItem number="3" label="موجودی" state="completed" onClick={() => onStepClick('step4')} />
+                         <StepItem number="4" label="دسته بندی و برچسب ها" state="active" onClick={() => onStepClick('step5')} />
+                         <StepItem number="5" label="تائید نهایی" state="inactive" onClick={() => onStepClick('step6')} />
                     </div>
 
                     {/* Form Fields - Replaced with Shared Component */}
                     <div className="w-full px-5 py-5 flex flex-col gap-4" dir="rtl">
-                        {/* Pricing Type Toggle - Kept here as it feels specific to the wizard step */}
-                        <div className="w-full h-9 p-0.5 bg-[#F6F6F6] rounded-lg border border-[#D7D8DA] flex items-center mb-2">
-                             <div className="flex-1 h-[29px] px-3 py-1 rounded-md flex justify-center items-center gap-2.5 cursor-pointer text-[#0A0A0A] text-sm font-semibold font-['PeydaWeb'] opacity-50">
-                                 دارای چند قیمت
-                             </div>
-                             <div className="flex-1 h-[29px] px-3 py-1 bg-[#FFDD8A] shadow-sm rounded-md border border-[#D7D8DA] flex justify-center items-center gap-2.5 cursor-pointer text-[#0D0D12] text-sm font-semibold font-['PeydaWeb']">
-                                 تک قیمتی
-                             </div>
-                        </div>
-
-                        <PricingForm 
-                            values={formData}
-                            onChange={(updates) => updateFormData(updates)} 
-                        />
+                        <CategoryTagsForm />
                     </div>
                 </div>
 
                 {/* Footer */}
                 <div className="w-full px-5 py-5 border-t border-[#DFE1E7] bg-white flex justify-end items-center gap-3.5 z-10 mt-auto">
                      <button 
-                        onClick={handleNext}
+                        onClick={onNext}
                         className="flex-1 h-10 px-4 py-2 bg-gradient-to-t from-[rgba(255,255,255,0)] to-[rgba(255,255,255,0.15)] bg-[#0A33FF] shadow-[0px_1px_2px_rgba(13,13,18,0.06)] rounded-lg border border-[#0A33FF] flex justify-center items-center gap-2 hover:opacity-90 transition-opacity"
                      >
                          <span className="text-center text-white text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">ادامه</span>
                      </button>
                 </div>
+
             </div>
         </div>
     );
@@ -100,11 +70,11 @@ function StepItem({ number, label, state, onClick }: { number: string, label: st
     let textClass = 'text-[#818898] font-semibold';
 
     if (state === 'active') {
-        circleClass = 'bg-[#FFD369] text-[#393E46]'; 
+        circleClass = 'bg-[#FFD369] text-white'; 
         textClass = 'text-[#0D0D12] font-semibold'; 
     } else if (state === 'completed') {
         circleClass = 'bg-[#DFE1E7] text-white'; 
-        textClass = 'text-[#C1C7D0] font-semibold'; 
+        textClass = 'text-[#818898] font-semibold'; 
     }
 
     return (
