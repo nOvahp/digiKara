@@ -6,6 +6,8 @@ import { QuickAccess } from "./Quickaccess"
 import { DashboardOverview } from "./DashboardOverView"
 import { Progress } from "./Progress"
 import { SmartSugesstions } from "./SmartSugesstions"
+import OrderReviews from "./OrderReviews"
+import { Navigation } from "./Navigation"
 
 export function HomePage() {
   return (
@@ -13,12 +15,14 @@ export function HomePage() {
       <DashboardNavBar />
       
       
-      <div className="mt-8 flex flex-col gap-8 px-0 pb-6">
+      <div className="mt-8 flex flex-col gap-8 px-0 pb-20">
         <DashboardOverview />
         <QuickAccess />
         <Progress />
         <SmartSugesstions />
+        <OrderReviews />
       </div>
+      <Navigation />
     </div>
   )
 }
