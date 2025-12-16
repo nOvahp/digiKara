@@ -267,6 +267,11 @@ body {
   max-width: 1440px;
 }
 
+body.full-width {
+  padding: 0 !important;
+  max-width: 100% !important;
+}
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);

@@ -18,7 +18,7 @@ const SectionHeader = ({ title, subtitle, moreText = "مشاهده همه" }: { 
 );
 
 const ProductCard = ({ title, price, rating, originalPrice, discount }: { title: string, price: string, rating: number, originalPrice?: string, discount?: string }) => (
-    <div className="flex flex-col items-start gap-2 w-[170px] shrink-0">
+    <Link href="/Bazzar/ProductDetails" className="flex flex-col items-start gap-2 w-[170px] shrink-0 cursor-pointer">
         <div className="relative w-[170px] h-[150px] bg-[#F6F6F6] rounded-lg overflow-hidden">
              <Image 
                 src="/ProductBazzar.png" 
@@ -38,7 +38,7 @@ const ProductCard = ({ title, price, rating, originalPrice, discount }: { title:
             </div>
             <div className="text-[#1F2029] text-sm font-['PeydaWeb'] font-semibold text-right w-full">{price}</div>
         </div>
-    </div>
+    </Link>
 );
 
 const CategoryItem = ({ title, color = "#FDD00A" }: { title: string, color?: string }) => (
@@ -141,9 +141,9 @@ export default function HomePage() {
                          </div>
                          
                          <div className="z-10 mt-3">
-                              <div className="bg-[#FDD00A] px-4 py-2 rounded-lg shadow-sm flex items-center justify-center cursor-pointer">
+                               <Link href="/Bazzar/ProductDetails" className="bg-[#FDD00A] px-4 py-2 rounded-lg shadow-sm flex items-center justify-center cursor-pointer">
                                   <span className="text-[#393E46] text-xs font-['PeydaWeb'] font-bold">همین حالا خرید کنید</span>
-                              </div>
+                               </Link>
                          </div>
                      </div>
 
