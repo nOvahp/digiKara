@@ -4,7 +4,10 @@ import React, { useState, useEffect } from "react"
 import Image from "next/image"
 import { Search, MapPin, ChevronLeft } from 'lucide-react'
 import Link from "next/link"
+
 import NavBar from "./NavBar"
+import SearchBar from "../components/SearchBar"
+import { products } from "../data/product"
 
 // Helper Components
 const SectionHeader = ({ title, subtitle, moreText = "مشاهده همه" }: { title: string, subtitle?: string, moreText?: string }) => (
@@ -17,8 +20,8 @@ const SectionHeader = ({ title, subtitle, moreText = "مشاهده همه" }: { 
     </div>
 );
 
-const ProductCard = ({ title, price, rating, originalPrice, discount }: { title: string, price: string, rating: number, originalPrice?: string, discount?: string }) => (
-    <Link href="/Bazzar/ProductDetails" className="flex flex-col items-start gap-2 w-[170px] shrink-0 cursor-pointer">
+const ProductCard = ({ id, title, price, rating, originalPrice, discount }: { id: number, title: string, price: string, rating: number, originalPrice?: string, discount?: string }) => (
+    <Link href={`/Bazzar/ProductDetails?id=${id}`} className="flex flex-col items-start gap-2 w-[170px] shrink-0 cursor-pointer">
         <div className="relative w-[170px] h-[150px] bg-[#F6F6F6] rounded-lg overflow-hidden">
              <Image 
                 src="/ProductBazzar.png" 
@@ -31,12 +34,15 @@ const ProductCard = ({ title, price, rating, originalPrice, discount }: { title:
         </div>
         <div className="w-full flex flex-col items-start gap-1">
             <div className="w-full flex justify-between items-center">
+                 <h3 className="text-[#1F2029] text-sm font-['PeydaWeb'] font-light text-right overflow-hidden whitespace-nowrap text-ellipsis max-w-[100px]">{title}</h3>
                  <div className="flex items-center gap-1 opacity-90">
-                    <span className="text-[#797979] text-xs font-['PeydaWeb'] font-light">{rating}</span>
+                    <span className="text-[#797979] text-xs font-['PeydaWeb'] font-light pt-0.5">{rating}</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="#FDD00A" stroke="none" className="mb-0.5">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
                  </div>
-                 <h3 className="text-[#1F2029] text-sm font-['PeydaWeb'] font-light text-right">{title}</h3>
             </div>
-            <div className="text-[#1F2029] text-sm font-['PeydaWeb'] font-semibold text-right w-full">{price}</div>
+            <div className="text-[#1F2029] text-sm font-['PeydaWeb'] font-semibold text-left w-full">{price}</div>
         </div>
     </Link>
 );
@@ -56,25 +62,13 @@ export default function HomePage() {
     // Timer Mock
     const [timeLeft, setTimeLeft] = React.useState({ h: 12, m: 56, s: 2 });
 
-    React.useEffect(() => {
-        // Add full-width class to body to remove global padding
-        document.body.classList.add('full-width');
-        
-        const timer = setInterval(() => {
-            setTimeLeft(prev => {
-                if (prev.s > 0) return { ...prev, s: prev.s - 1 };
-                if (prev.m > 0) return { ...prev, m: prev.m - 1, s: 59 };
-                if (prev.h > 0) return { ...prev, h: prev.h - 1, m: 59, s: 59 };
-                return prev;
-            });
-        }, 1000);
+    const specialSaleProducts = products.filter(p => p.isSpecialSale);
+    const newCollectionProducts = products.filter(p => p.isNewCollection);
+    const bestSellerProducts = products.filter(p => p.isBestSeller);
+    const suggestedProducts = products.filter(p => p.isSuggested);
+    const popularProducts = products.filter(p => p.isPopular);
 
-        return () => {
-            clearInterval(timer);
-            document.body.classList.remove('full-width');
-        };
-    }, []);
-
+    
     return (
         <div className="w-full min-h-screen bg-white relative flex flex-col items-center pb-[150px] mt-[5%] overflow-x-hidden" dir="rtl">
             
@@ -105,22 +99,7 @@ export default function HomePage() {
                 </div>
 
                 {/* Search Bar */}
-                <div className="w-full flex gap-2.5">
-                    <div className="flex-1 h-11 border border-[#D7D8DA] rounded-lg px-3 flex items-center justify-between">
-                         <div className="flex items-center gap-2">
-                            <Search size={20} className="text-[#707F81]" />
-                            <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-light">جستجو</span>
-                         </div>
-                    </div>
-                     <div className="w-[48px] h-11 bg-[#FDD00A] rounded-lg shadow-sm flex items-center justify-center cursor-pointer">
-                         {/* Filter Icon Mock */}
-                         <div className="w-5 h-5 flex flex-col justify-between items-center py-1">
-                             <div className="w-full h-[2px] bg-[#393E46] rounded-full"/>
-                             <div className="w-[80%] h-[2px] bg-[#393E46] rounded-full"/>
-                             <div className="w-[60%] h-[2px] bg-[#393E46] rounded-full"/>
-                         </div>
-                     </div>
-                </div>
+                <SearchBar />
 
                 {/* Hero Banner (Image Background + Text Overlay) */}
                 <div className="w-full relative rounded-lg overflow-hidden group cursor-pointer h-[300px]" dir="ltr">
@@ -190,9 +169,9 @@ export default function HomePage() {
                      
                      {/* Horizontal Scroll Products */}
                      <div className="flex gap-4 overflow-x-auto pb-4 pt-2 pl-6 -ml-6 w-[calc(100%+24px)] scrollbar-hide pr-1">
-                         <ProductCard title="میز غذاخوری" price="500,000 تومان" rating={5.0} />
-                         <ProductCard title="صندلی ناهارخوری" price="180,000 تومان" rating={4.2} />
-                         <ProductCard title="کمد لباس" price="700,000 تومان" rating={4.8} />
+                         {specialSaleProducts.map(product => (
+                             <ProductCard key={product.id} id={product.id} title={product.title} price={product.price} rating={product.rating} />
+                         ))}
                      </div>
                 </div>
 
@@ -200,9 +179,9 @@ export default function HomePage() {
                  <div className="w-full flex flex-col gap-3">
                      <SectionHeader title="مجموعه جدید" subtitle="۵۰٪ تخفیف برای اولین معامله" />
                      <div className="flex gap-4 overflow-x-auto pb-4 pt-2 pl-6 -ml-6 w-[calc(100%+24px)] scrollbar-hide pr-1">
-                         <ProductCard title="صندلی دسته دار" price="180,000 تومان" rating={4.9} />
-                         <ProductCard title="صندلی راحتی" price="250,000 تومان" rating={4.5} />
-                         <ProductCard title="میز تحریر" price="300,000 تومان" rating={4.7} />
+                         {newCollectionProducts.map(product => (
+                             <ProductCard key={product.id} id={product.id} title={product.title} price={product.price} rating={product.rating} />
+                         ))}
                      </div>
                 </div>
 
@@ -210,8 +189,9 @@ export default function HomePage() {
                  <div className="w-full flex flex-col gap-3">
                      <SectionHeader title="پرفروش" moreText="دیدن همه" />
                      <div className="flex gap-4 overflow-x-auto pb-4 pt-2 pl-6 -ml-6 w-[calc(100%+24px)] scrollbar-hide pr-1">
-                         <ProductCard title="صندلی دسته دار" price="180,000 تومان" rating={4.9} />
-                         <ProductCard title="صندلی راحتی" price="250,000 تومان" rating={4.5} />
+                         {bestSellerProducts.map(product => (
+                             <ProductCard key={product.id} id={product.id} title={product.title} price={product.price} rating={product.rating} />
+                         ))}
                      </div>
                 </div>
 
@@ -219,144 +199,42 @@ export default function HomePage() {
                 <div className="w-full flex flex-col gap-3">
                      <SectionHeader title="پیشنهادی برای شما" moreText="مشاهده همه" />
                      <div className="flex gap-4 overflow-x-auto pb-4 pt-2 pl-6 -ml-6 w-[calc(100%+24px)] scrollbar-hide pr-1">
-                         <ProductCard title="تابلو نقاشی" price="1,200,000 تومان" rating={4.7} />
-                         <ProductCard title="گلدان سفالی" price="150,000 تومان" rating={4.3} />
-                         <ProductCard title="آینه دکوراتیو" price="450,000 تومان" rating={4.6} />
+                         {suggestedProducts.map(product => (
+                             <ProductCard key={product.id} id={product.id} title={product.title} price={product.price} rating={product.rating} />
+                         ))}
                      </div>
                 </div>
 
                 {/* Popular (Custom Grid) */}
                 <div className="w-full flex flex-col gap-3">
                      <SectionHeader title="پرطرفدار" moreText="مشاهده همه" />
-                     <div className="w-full flex flex-wrap justify-end items-center gap-6 content-center pb-0 pl-0 -ml-0 pr-0">
-                         {/* Item 1 */}
-                         <div className="w-[calc(50%-12px)] flex flex-col items-start gap-2 inline-flex" dir="rtl">
-                             <div className="self-stretch aspect-[170/150] relative">
-                                 <div className="w-full h-full left-0 top-0 absolute bg-[#F6F6F6] rounded-lg overflow-hidden">
-                                     <Image src="/ProductBazzar.png" alt="صندلی دسته دار" fill className="object-cover" />
-                                 </div>
-                                 <div className="w-[37%] h-[3%] left-[31%] top-[80%] absolute origin-top-left rotate-1 bg-black/80 blur-[11px]" />
-                             </div>
-                             <div className="self-stretch flex-col justify-start items-start gap-2.5 flex">
-                                 <div className="self-stretch flex-col justify-start items-start gap-[7px] flex">
-                                     <div className="self-stretch justify-between items-center inline-flex">
-                                         <div className="justify-start items-start gap-1 flex">
-                                             <div className="opacity-90 text-[#797979] text-xs font-['PeydaWeb'] font-light">۴.۹</div>
-                                         </div>
-                                         <div className="text-[#1F2029] text-sm font-['PeydaWeb'] font-light text-right">صندلی دسته دار</div>
+                     <div className="w-full flex-wrap justify-end items-center gap-6 content-center pb-0 pl-0 -ml-0 pr-0 flex">
+                         {popularProducts.map(product => (
+                             <div key={product.id} className="w-[calc(50%-12px)] flex flex-col items-start gap-2 inline-flex" dir="rtl">
+                                 <Link href={`/Bazzar/ProductDetails?id=${product.id}`} className="self-stretch aspect-[170/150] relative">
+                                     <div className="w-full h-full left-0 top-0 absolute bg-[#F6F6F6] rounded-lg overflow-hidden">
+                                         <Image src={product.image} alt={product.title} fill className="object-cover" />
                                      </div>
-                                     <div className="self-stretch text-right text-[#1F2029] text-sm font-['PeydaWeb'] font-semibold">۱۸۰،۰۰۰ تومان</div>
-                                 </div>
-                             </div>
-                         </div>
-
-                         {/* Item 2 */}
-                         <div className="w-[calc(50%-12px)] flex flex-col items-start gap-2 inline-flex" dir="rtl">
-                             <div className="self-stretch aspect-[170/150] relative">
-                                 <div className="w-full h-full left-0 top-0 absolute bg-[#F6F6F6] rounded-lg overflow-hidden">
-                                      <Image src="/ProductBazzar.png" alt="صندلی دسته دار" fill className="object-cover" />
-                                 </div>
-                                 <div className="w-[37%] h-[3%] left-[31%] top-[80%] absolute origin-top-left rotate-1 bg-black/80 blur-[11px]" />
-                             </div>
-                             <div className="self-stretch flex-col justify-start items-start gap-2.5 flex">
-                                 <div className="self-stretch flex-col justify-start items-start gap-[7px] flex">
-                                     <div className="self-stretch justify-between items-center inline-flex">
-                                         <div className="justify-start items-start gap-1 flex">
-                                             <div className="opacity-90 text-[#797979] text-xs font-['PeydaWeb'] font-light">۴.۹</div>
+                                     <div className="w-[37%] h-[3%] left-[31%] top-[80%] absolute origin-top-left rotate-1 bg-black/80 blur-[11px]" />
+                                 </Link>
+                                 <div className="self-stretch flex-col justify-start items-start gap-2.5 flex">
+                                     <div className="self-stretch flex-col justify-start items-start gap-[7px] flex">
+                                         <div className="self-stretch justify-between items-center inline-flex">
+                                             <div className="text-[#1F2029] text-sm font-['PeydaWeb'] font-light text-right overflow-hidden whitespace-nowrap text-ellipsis max-w-[100px]">{product.title}</div>
+                                             <div className="justify-start items-center gap-1 flex opacity-90">
+                                                 <span className="text-[#797979] text-xs font-['PeydaWeb'] font-light pt-0.5">{product.rating}</span>
+                                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="#FDD00A" stroke="none" className="mb-0.5">
+                                                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                                 </svg>
+                                             </div>
                                          </div>
-                                         <div className="text-[#1F2029] text-sm font-['PeydaWeb'] font-light text-right">صندلی دسته دار</div>
+                                         <div className="self-stretch text-left text-[#1F2029] text-sm font-['PeydaWeb'] font-semibold">{product.price}</div>
                                      </div>
-                                     <div className="self-stretch text-right text-[#1F2029] text-sm font-['PeydaWeb'] font-semibold">۱۸۰،۰۰۰ تومان</div>
                                  </div>
                              </div>
-                         </div>
-
-                         {/* Item 3 */}
-                         <div className="w-[calc(50%-12px)] flex flex-col items-start gap-2 inline-flex" dir="rtl">
-                             <div className="self-stretch aspect-[170/150] relative">
-                                 <div className="w-full h-full left-0 top-0 absolute bg-[#F6F6F6] rounded-lg overflow-hidden">
-                                      <Image src="/ProductBazzar.png" alt="صندلی راحتی" fill className="object-cover" />
-                                 </div>
-                                 <div className="w-[37%] h-[3%] left-[31%] top-[80%] absolute origin-top-left rotate-1 bg-black/80 blur-[11px]" />
-                             </div>
-                             <div className="self-stretch flex-col justify-start items-start gap-2.5 flex">
-                                 <div className="self-stretch flex-col justify-start items-start gap-[7px] flex">
-                                     <div className="self-stretch justify-between items-center inline-flex">
-                                         <div className="justify-start items-start gap-1 flex">
-                                             <div className="opacity-90 text-[#797979] text-xs font-['PeydaWeb'] font-light">۴.۵</div>
-                                         </div>
-                                         <div className="text-[#1F2029] text-sm font-['PeydaWeb'] font-light text-right">صندلی راحتی</div>
-                                     </div>
-                                     <div className="self-stretch text-right text-[#1F2029] text-sm font-['PeydaWeb'] font-semibold">۲۵۰،۰۰۰ تومان</div>
-                                 </div>
-                             </div>
-                         </div>
-                         
-                         {/* Item 4 */}
-                         <div className="w-[calc(50%-12px)] flex flex-col items-start gap-2 inline-flex" dir="rtl">
-                             <div className="self-stretch aspect-[170/150] relative">
-                                 <div className="w-full h-full left-0 top-0 absolute bg-[#F6F6F6] rounded-lg overflow-hidden">
-                                      <Image src="/ProductBazzar.png" alt="میز تحریر" fill className="object-cover" />
-                                 </div>
-                                 <div className="w-[37%] h-[3%] left-[31%] top-[80%] absolute origin-top-left rotate-1 bg-black/80 blur-[11px]" />
-                             </div>
-                             <div className="self-stretch flex-col justify-start items-start gap-2.5 flex">
-                                 <div className="self-stretch flex-col justify-start items-start gap-[7px] flex">
-                                     <div className="self-stretch justify-between items-center inline-flex">
-                                         <div className="justify-start items-start gap-1 flex">
-                                             <div className="opacity-90 text-[#797979] text-xs font-['PeydaWeb'] font-light">۴.۷</div>
-                                         </div>
-                                         <div className="text-[#1F2029] text-sm font-['PeydaWeb'] font-light text-right">میز تحریر</div>
-                                     </div>
-                                     <div className="self-stretch text-right text-[#1F2029] text-sm font-['PeydaWeb'] font-semibold">۳۰۰،۰۰۰ تومان</div>
-                                 </div>
-                             </div>
-                         </div>
-
-                          {/* Item 5 */}
-                         <div className="w-[calc(50%-12px)] flex flex-col items-start gap-2 inline-flex" dir="rtl">
-                             <div className="self-stretch aspect-[170/150] relative">
-                                 <div className="w-full h-full left-0 top-0 absolute bg-[#F6F6F6] rounded-lg overflow-hidden">
-                                      <Image src="/ProductBazzar.png" alt="میز غذاخوری" fill className="object-cover" />
-                                 </div>
-                                 <div className="w-[37%] h-[3%] left-[31%] top-[80%] absolute origin-top-left rotate-1 bg-black/80 blur-[11px]" />
-                             </div>
-                             <div className="self-stretch flex-col justify-start items-start gap-2.5 flex">
-                                 <div className="self-stretch flex-col justify-start items-start gap-[7px] flex">
-                                     <div className="self-stretch justify-between items-center inline-flex">
-                                         <div className="justify-start items-start gap-1 flex">
-                                             <div className="opacity-90 text-[#797979] text-xs font-['PeydaWeb'] font-light">۵.۰</div>
-                                         </div>
-                                         <div className="text-[#1F2029] text-sm font-['PeydaWeb'] font-light text-right">میز غذاخوری</div>
-                                     </div>
-                                     <div className="self-stretch text-right text-[#1F2029] text-sm font-['PeydaWeb'] font-semibold">۵۰۰،۰۰۰ تومان</div>
-                                 </div>
-                             </div>
-                         </div>
-
-                          {/* Item 6 */}
-                         <div className="w-[calc(50%-12px)] flex flex-col items-start gap-2 inline-flex" dir="rtl">
-                             <div className="self-stretch aspect-[170/150] relative">
-                                 <div className="w-full h-full left-0 top-0 absolute bg-[#F6F6F6] rounded-lg overflow-hidden">
-                                      <Image src="/ProductBazzar.png" alt="صندلی ناهارخوری" fill className="object-cover" />
-                                 </div>
-                                 <div className="w-[37%] h-[3%] left-[31%] top-[80%] absolute origin-top-left rotate-1 bg-black/80 blur-[11px]" />
-                             </div>
-                             <div className="self-stretch flex-col justify-start items-start gap-2.5 flex">
-                                 <div className="self-stretch flex-col justify-start items-start gap-[7px] flex">
-                                     <div className="self-stretch justify-between items-center inline-flex">
-                                         <div className="justify-start items-start gap-1 flex">
-                                             <div className="opacity-90 text-[#797979] text-xs font-['PeydaWeb'] font-light">۴.۲</div>
-                                         </div>
-                                         <div className="text-[#1F2029] text-sm font-['PeydaWeb'] font-light text-right">صندلی ناهارخوری</div>
-                                     </div>
-                                     <div className="self-stretch text-right text-[#1F2029] text-sm font-['PeydaWeb'] font-semibold">۱۸۰،۰۰۰ تومان</div>
-                                 </div>
-                             </div>
-                         </div>
-
+                         ))}
                      </div>
-                </div>
+                 </div>
 
                  {/* Popular Schools (Mock) - Keeping Grid as is but checking bleed */}
                  <div className="w-full flex flex-col gap-3">
