@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { DashboardNavBar } from "../DashboardNavBar";
 import { Navigation } from "../Navigation";
+import ExportPopUp from './ExportPopUp';
 
 interface Order {
     id: string;
@@ -30,6 +31,56 @@ const ordersData: Order[] = [
     { id: '#سفارش-۹۴۸۷', customer: 'رضا گودرزی', date: '۲۴ آبان ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'انتقال بانکی', amount: '$۱۵۰.۰۰' },
     { id: '#سفارش-۹۴۸۸', customer: 'مینا محمدی', date: '۲۵ آبان ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '$۷۵.۲۵' },
     { id: '#سفارش-۹۴۸۹', customer: 'امیر یوسفی', date: '۲۶ آبان ۱۴۰۴', status: 'Cancelled', statusText: 'لغو شده', paymentMethod: 'کارت هدیه', amount: '$۰.۰۰' },
+    { id: '#سفارش-۹۴۹۰', customer: 'علی رضایی', date: '۲۷ آبان ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '$۲۳۰.۰۰' },
+    { id: '#سفارش-۹۴۹۱', customer: 'زهرا ابراهیمی', date: '۲۸ آبان ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'پی پال', amount: '$۴۵.۵۰' },
+    { id: '#سفارش-۹۴۹۲', customer: 'حسین مرادی', date: '۲۹ آبان ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت نقدی', amount: '$۱۱۰.۰۰' },
+    { id: '#سفارش-۹۴۹۳', customer: 'فاطمه اکبری', date: '۳۰ آبان ۱۴۰۴', status: 'Cancelled', statusText: 'لغو شده', paymentMethod: 'کارت اعتباری', amount: '$۲۵.۰۰' },
+    { id: '#سفارش-۹۴۹۴', customer: 'محمد موسوی', date: '۱ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'اپل پی', amount: '$۸۰.۰۰' },
+    { id: '#سفارش-۹۴۹۵', customer: 'مریم جعفری', date: '۲ آذر ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'انتقال بانکی', amount: '$۱۹۰.۰۰' },
+    { id: '#سفارش-۹۴۹۶', customer: 'سعید کریمی', date: '۳ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '$۶۵.۰۰' },
+    { id: '#سفارش-۹۴۹۷', customer: 'نیلوفر رحیمی', date: '۴ آذر ۱۴۰۴', status: 'Cancelled', statusText: 'لغو شده', paymentMethod: 'کارت هدیه', amount: '$۱۰.۰۰' },
+    { id: '#سفارش-۹۴۹۸', customer: 'کامران سلیمی', date: '۵ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '$۱۵۰.۰۰' },
+    { id: '#سفارش-۹۴۹۹', customer: 'الهام زارع', date: '۶ آذر ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'پی پال', amount: '$۷۰.۰۰' },
+    { id: '#سفارش-۹۵۰۰', customer: 'رضا علیزاده', date: '۷ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت نقدی', amount: '$۹۵.۰۰' },
+    { id: '#سفارش-۹۵۰۱', customer: 'سیمین دانشور', date: '۸ آذر ۱۴۰۴', status: 'Cancelled', statusText: 'لغو شده', paymentMethod: 'کارت اعتباری', amount: '$۴۰.۰۰' },
+    { id: '#سفارش-۹۵۰۲', customer: 'بهروز وثوقی', date: '۹ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'اپل پی', amount: '$۳۰۰.۰۰' },
+    { id: '#سفارش-۹۵۰۳', customer: 'گوگوش آتشین', date: '۱۰ آذر ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'انتقال بانکی', amount: '$۲۵۰.۰۰' },
+    { id: '#سفارش-۹۵۰۴', customer: 'داریوش اقبالی', date: '۱۱ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '$۱۲۰.۰۰' },
+    { id: '#سفارش-۹۵۰۵', customer: 'ابی حامدی', date: '۱۲ آذر ۱۴۰۴', status: 'Cancelled', statusText: 'لغو شده', paymentMethod: 'کارت هدیه', amount: '$۱۵.۰۰' },
+    { id: '#سفارش-۹۵۰۶', customer: 'سیاوش قمیشی', date: '۱۳ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '$۱۸۰.۰۰' },
+    { id: '#سفارش-۹۵۰۷', customer: 'معین اصفهانی', date: '۱۴ آذر ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'پی پال', amount: '$۶۰.۰۰' },
+    { id: '#سفارش-۹۵۰۸', customer: 'هایده فراهانی', date: '۱۵ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت نقدی', amount: '$۲۱۰.۰۰' },
+    { id: '#سفارش-۹۵۰۹', customer: 'مهستی گنجی', date: '۱۶ آذر ۱۴۰۴', status: 'Cancelled', statusText: 'لغو شده', paymentMethod: 'کارت اعتباری', amount: '$۵۵.۰۰' },
+    { id: '#سفارش-۹۵۱۰', customer: 'ستار بهروزی', date: '۱۷ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'اپل پی', amount: '$۹۰.۰۰' },
+    { id: '#سفارش-۹۵۱۱', customer: 'عارف عارف‌کیا', date: '۱۸ آذر ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'انتقال بانکی', amount: '$۱۳۰.۰۰' },
+    { id: '#سفارش-۹۵۱۲', customer: 'ویگن دردریان', date: '۱۹ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '$۷۵.۰۰' },
+    { id: '#سفارش-۹۵۱۳', customer: 'فرهاد مهراد', date: '۲۰ آذر ۱۴۰۴', status: 'Cancelled', statusText: 'لغو شده', paymentMethod: 'کارت هدیه', amount: '$۲۰.۰۰' },
+    { id: '#سفارش-۹۵۱۴', customer: 'فریدون فروغی', date: '۲۱ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '$۱۶۰.۰۰' },
+    { id: '#سفارش-۹۵۱۵', customer: 'سیمین غانم', date: '۲۲ آذر ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'پی پال', amount: '$۸۵.۰۰' },
+    { id: '#سفارش-۹۵۱۶', customer: 'گیتی پاشایی', date: '۲۳ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت نقدی', amount: '$۱۰۵.۰۰' },
+    { id: '#سفارش-۹۵۱۷', customer: 'پروین اعتصامی', date: '۲۴ آذر ۱۴۰۴', status: 'Cancelled', statusText: 'لغو شده', paymentMethod: 'کارت اعتباری', amount: '$۵۰.۰۰' },
+    { id: '#سفارش-۹۵۱۸', customer: 'جلال آل‌احمد', date: '۲۵ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'اپل پی', amount: '$۳۲۰.۰۰' },
+    { id: '#سفارش-۹۵۱۹', customer: 'صادق هدایت', date: '۲۶ آذر ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'انتقال بانکی', amount: '$۲۷۰.۰۰' },
+    { id: '#سفارش-۹۵۲۰', customer: 'نیما یوشیج', date: '۲۷ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '$۱۴۰.۰۰' },
+    { id: '#سفارش-۹۵۲۱', customer: 'سهراب سپهری', date: '۲۸ آذر ۱۴۰۴', status: 'Cancelled', statusText: 'لغو شده', paymentMethod: 'کارت هدیه', amount: '$۳۰.۰۰' },
+    { id: '#سفارش-۹۵۲۲', customer: 'فروغ فرخزاد', date: '۲۹ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '$۲۰۰.۰۰' },
+    { id: '#سفارش-۹۵۲۳', customer: 'احمد شاملو', date: '۳۰ آذر ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'پی پال', amount: '$۷۵.۰۰' },
+    { id: '#سفارش-۹۵۲۴', customer: 'مهدی اخوان ثالث', date: '۱ دی ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت نقدی', amount: '$۲۲۵.۰۰' },
+    { id: '#سفارش-۹۵۲۵', customer: 'هوشنگ ابتهاج', date: '۲ دی ۱۴۰۴', status: 'Cancelled', statusText: 'لغو شده', paymentMethod: 'کارت اعتباری', amount: '$۶۵.۰۰' },
+    { id: '#سفارش-۹۵۲۶', customer: 'محمدرضا شجریان', date: '۳ دی ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'اپل پی', amount: '$۹۵.۰۰' },
+    { id: '#سفارش-۹۵۲۷', customer: 'شهرام ناظری', date: '۴ دی ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'انتقال بانکی', amount: '$۱۵۵.۰۰' },
+    { id: '#سفارش-۹۵۲۸', customer: 'کیهان کلهر', date: '۵ دی ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '$۸۰.۰۰' },
+    { id: '#سفارش-۹۵۲۹', customer: 'حسین علیزاده', date: '۶ دی ۱۴۰۴', status: 'Cancelled', statusText: 'لغو شده', paymentMethod: 'کارت هدیه', amount: '$۲۵.۰۰' },
+    { id: '#سفارش-۹۵۳۰', customer: 'پرویز مشکاتیان', date: '۷ دی ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '$۱۷۰.۰۰' },
+    { id: '#سفارش-۹۵۳۱', customer: 'جلیل شهناز', date: '۸ دی ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'پی پال', amount: '$۹۰.۰۰' },
+    { id: '#سفارش-۹۵۳۲', customer: 'فرهنگ شریف', date: '۹ دی ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت نقدی', amount: '$۱۱۵.۰۰' },
+    { id: '#سفارش-۹۵۳۳', customer: 'غلامحسین بنان', date: '۱۰ دی ۱۴۰۴', status: 'Cancelled', statusText: 'لغو شده', paymentMethod: 'کارت اعتباری', amount: '$۶۰.۰۰' },
+    { id: '#سفارش-۹۵۳۴', customer: 'محمدرضا لطفی', date: '۱۱ دی ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'اپل پی', amount: '$۳۳۰.۰۰' },
+    { id: '#سفارش-۹۵۳۵', customer: 'حسن کسایی', date: '۱۲ دی ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'انتقال بانکی', amount: '$۲۸۰.۰۰' },
+    { id: '#سفارش-۹۵۳۶', customer: 'علی تجویدی', date: '۱۳ دی ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '$۱۴۵.۰۰' },
+    { id: '#سفارش-۹۵۳۷', customer: 'همایون خرم', date: '۱۴ دی ۱۴۰۴', status: 'Cancelled', statusText: 'لغو شده', paymentMethod: 'کارت هدیه', amount: '$۳۵.۰۰' },
+    { id: '#سفارش-۹۵۳۸', customer: 'پرویز یاحقی', date: '۱۵ دی ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '$۲۰۵.۰۰' },
+    { id: '#سفارش-۹۵۳۹', customer: 'حبیب‌الله بدیعی', date: '۱۶ دی ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'پی پال', amount: '$۸۰.۰۰' }
 ];
 
 const getStatusStyles = (status: string) => {
@@ -46,8 +97,9 @@ const getStatusStyles = (status: string) => {
 };
 
 export default function ManageOrders() {
+    const [showExportPopup, setShowExportPopup] = React.useState(false);
     const [currentPage, setCurrentPage] = React.useState(1);
-    const ITEMS_PER_PAGE = 5;
+    const ITEMS_PER_PAGE = 10;
 
     const totalPages = Math.ceil(ordersData.length / ITEMS_PER_PAGE);
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -76,7 +128,9 @@ export default function ManageOrders() {
                     {/* Title & Action */}
                     <div className="w-full flex flex-col items-start gap-4 pr-0">
                         <h1 className="w-full text-END text-[#0D0D12] text-xl font-semibold font-['PeydaWeb']">مدیریت سفارشات</h1>
-                        <button className="w-full h-[47px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-2 hover:bg-yellow-400 transition-colors">
+                        <button 
+                            onClick={() => setShowExportPopup(true)}
+                            className="w-full h-[47px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-2 hover:bg-yellow-400 transition-colors">
                             <span className="text-[#1A1C1E] text-lg font-semibold font-['PeydaWeb']">خروجی از سفارشات</span>
                         </button>
                     </div>
@@ -256,8 +310,8 @@ export default function ManageOrders() {
                         <div className="w-full h-[64px] px-5 py-4 flex justify-between items-center bg-white border-t border-[#DFE1E7]">
                              <div className="flex items-center gap-2">
                                  <button 
-                                     onClick={handlePrevPage}
-                                     disabled={currentPage === 1}
+                                     onClick={handleNextPage}
+                                     disabled={currentPage === totalPages}
                                      className="w-8 h-8 rounded-lg border border-[#DFE1E7] flex items-center justify-center bg-white hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                                      <ChevronRight size={16} className="text-[#0D0D12]" />
                                  </button>
@@ -265,8 +319,8 @@ export default function ManageOrders() {
                                      <span className="text-[#0D0D12] text-xs font-medium font-['Geist']">{currentPage.toLocaleString('fa-IR')}/{totalPages.toLocaleString('fa-IR')}</span>
                                  </div>
                                  <button 
-                                     onClick={handleNextPage}
-                                     disabled={currentPage === totalPages}
+                                     onClick={handlePrevPage}
+                                     disabled={currentPage === 1}
                                      className="w-8 h-8 rounded-lg border border-[#DFE1E7] flex items-center justify-center bg-white hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                                      <ChevronLeft size={16} className="text-[#0D0D12]" />
                                  </button>
@@ -283,6 +337,9 @@ export default function ManageOrders() {
             <div dir="ltr">
                 <Navigation />
             </div>
+
+            {/* Export Popup */}
+            {showExportPopup && <ExportPopUp onClose={() => setShowExportPopup(false)} ordersData={ordersData} />}
         </div>
     );
 }

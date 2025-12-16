@@ -10,7 +10,7 @@ import Link from "next/link";
 const Navbar = () => {
   const pathname = usePathname();
 
-  if (pathname?.startsWith("/StudentDashboard")) return null;
+  if (pathname?.startsWith("/StudentDashboard") || pathname?.startsWith("/Bazzar")) return null;
 
   return (
     <div className="w-full hidden lg:flex justify-between items-center bg-transparent">

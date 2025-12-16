@@ -1,13 +1,6 @@
 import React from "react";
+import HomePage from "./HomePage";
 
-
-const BazzarPage = {
-
-    return (
-
-
-    )
-
+export default function BazzarPage() {
+    return <HomePage />;
 }
-
-export default BazzarPage;

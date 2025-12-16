@@ -15,7 +15,7 @@ const MobileNavBar = () => {
     setIsOpen(!isOpen);
   };
 
-  if (pathname?.startsWith("/StudentDashboard")) return null;
+  if (pathname?.startsWith("/StudentDashboard") || pathname?.startsWith("/Bazzar")) return null;
 
   return (
     <div className="w-full flex lg:hidden justify-between items-center bg-transparent relative z-50">
