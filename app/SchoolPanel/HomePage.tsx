@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { 
   ChevronLeft, 
+  ChevronRight,
   Wallet, 
   Store, 
   Users, 
@@ -21,6 +22,17 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
 const SchoolHomePage = () => {
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const totalPages = 15;
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) setCurrentPage(prev => prev - 1);
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(prev => prev + 1);
+  };
+
   return (
     <div className="w-full min-h-screen bg-white pb-32 pt-5 px-0 flex flex-col gap-6" dir="rtl">
       
@@ -189,11 +201,12 @@ const SchoolHomePage = () => {
          
          <div className="w-full p-3.5 rounded-xl border border-[#DCE4E8] flex flex-col justify-start items-center gap-3">
              <div className="w-full flex justify-start items-start gap-2.5">
+                 <Image src="/tform.png" alt="Project" width={96} height={96} className="p-2.5 rounded-xl" />
                  <div className="flex-1 flex flex-col justify-start items-start gap-4">
                      <div className="w-full flex flex-col justify-start items-start">
                          <div className="w-full text-right flex flex-col justify-center">
                             <div className="text-[#0F172A] text-base font-['PeydaWeb'] font-semibold leading-relaxed tracking-wide break-word">
-                                دوخت لباس فرم - <span className="font-['peyda-Num']">10254</span>
+                                دوخت لباس فرم - <span className="font-num-medium">10254</span>
                             </div>
                          </div>
                          <div className="flex justify-start items-center gap-2.5">
@@ -202,16 +215,15 @@ const SchoolHomePage = () => {
                             </div>
                          </div>
                      </div>
-                     <div className="w-full flex justify-end items-center gap-2.5">
+                     <div className="w-full flex justify-start items-center gap-2.5">
                          <div className="flex justify-center items-center gap-1.5">
-                             <div className="text-[#0F172A] text-sm font-['peyda-Num'] font-semibold leading-snug tracking-wide break-word">6</div>
+                             <div className="text-[#0F172A] text-sm font-num-bold  leading-snug tracking-wide break-word">6</div>
                          </div>
                          <div className="rounded-br-[10px] rounded-tl-[10px] rounded-tr-[10px] flex justify-end items-center gap-2.5">
                              <div className="text-right text-[#0F172A] text-sm font-['PeydaWeb'] font-semibold leading-snug tracking-wide break-word">تعداد هنرستان های همکار</div>
                          </div>
                      </div>
                  </div>
-                 <Image src="https://placehold.co/96x96" alt="Project" width={96} height={96} className="p-2.5 rounded-xl" />
              </div>
              <div className="w-full h-12 px-6 py-[13px] bg-[#F7C61A] rounded-xl flex justify-center items-center gap-2.5 cursor-pointer hover:bg-[#e5b818]">
                  <div className="text-center text-[#393E46] text-base font-['peyda-Num'] font-extrabold leading-snug break-word">برو به صفحه همکاری</div>
@@ -227,12 +239,13 @@ const SchoolHomePage = () => {
          </div>
          
          {/* Request Item 1 */}
-         <div className="w-full h-[61px] py-2 pl-[14px] pr-8 bg-white rounded-xl border border-[#DCE4E8] flex justify-start items-center gap-3">
-             <div className="flex justify-start items-center gap-2">
-                 <div className="w-8 h-8 px-4 py-2 bg-white shadow-[0px_1px_2px_rgba(13,13,18,0.06)] rounded-lg border border-[#DFE1E7] flex justify-center items-center gap-2">
-                     <div className="w-4 h-4 relative flex items-center justify-center">
-                         <List className="w-4 h-4 text-[#818898]" strokeWidth={1.5} />
-                     </div>
+         <div className="w-full h-[61px] py-2 pl-[14px] pr-4 rounded-xl border border-[#DCE4E8] flex justify-start items-center gap-3">
+             <div className="relative flex justify-start items-center gap-3">
+                 <div className="flex justify-start items-center gap-2.5">
+                     <div className="w-[46.13px] h-[46.13px] bg-[#F8CB2E] rounded-lg" />
+                 </div>
+                 <div className="w-6 h-6 left-[11.07px] top-[11.07px] absolute flex items-center justify-center">
+                     <Briefcase className="w-5 h-5 text-[#0D0D12]" strokeWidth={1.5} />
                  </div>
              </div>
              <div className="flex-1 pl-4 flex flex-col justify-center items-end gap-1">
@@ -244,23 +257,23 @@ const SchoolHomePage = () => {
                      </div>
                  </div>
              </div>
+             <div className="flex justify-start items-center gap-2">
+                 <div className="w-8 h-8 px-4 py-2 bg-white shadow-[0px_1px_2px_rgba(13,13,18,0.06)] rounded-lg border border-[#DFE1E7] flex justify-center items-center gap-2">
+                     <div className="w-4 h-4 relative flex items-center justify-center">
+                         <List className="w-4 h-4 text-[#818898]" strokeWidth={1.5} />
+                     </div>
+                 </div>
+             </div>
+         </div>
+
+         {/* Request Item 2 */}
+         <div className="w-full h-[61px] py-2 pl-[14px] pr-4 rounded-xl border border-[#DCE4E8] flex justify-start items-center gap-3">
              <div className="relative flex justify-start items-center gap-3">
                  <div className="flex justify-start items-center gap-2.5">
                      <div className="w-[46.13px] h-[46.13px] bg-[#F8CB2E] rounded-lg" />
                  </div>
                  <div className="w-6 h-6 left-[11.07px] top-[11.07px] absolute flex items-center justify-center">
                      <Briefcase className="w-5 h-5 text-[#0D0D12]" strokeWidth={1.5} />
-                 </div>
-             </div>
-         </div>
-
-         {/* Request Item 2 */}
-         <div className="w-full h-[61px] py-2 pl-[14px] pr-8 bg-white rounded-xl border border-[#DCE4E8] flex justify-start items-center gap-3">
-             <div className="flex justify-start items-center gap-2">
-                 <div className="w-8 h-8 px-4 py-2 bg-white shadow-[0px_1px_2px_rgba(13,13,18,0.06)] rounded-lg border border-[#DFE1E7] flex justify-center items-center gap-2">
-                     <div className="w-4 h-4 relative flex items-center justify-center">
-                         <List className="w-4 h-4 text-[#818898]" strokeWidth={1.5} />
-                     </div>
                  </div>
              </div>
              <div className="flex-1 pl-4 flex flex-col justify-center items-end gap-1">
@@ -272,12 +285,11 @@ const SchoolHomePage = () => {
                      </div>
                  </div>
              </div>
-             <div className="relative flex justify-start items-center gap-3">
-                 <div className="flex justify-start items-center gap-2.5">
-                     <div className="w-[46.13px] h-[46.13px] bg-[#F8CB2E] rounded-lg" />
-                 </div>
-                 <div className="w-6 h-6 left-[11.07px] top-[11.07px] absolute flex items-center justify-center">
-                     <Briefcase className="w-5 h-5 text-[#0D0D12]" strokeWidth={1.5} />
+             <div className="flex justify-start items-center gap-2">
+                 <div className="w-8 h-8 px-4 py-2 bg-white shadow-[0px_1px_2px_rgba(13,13,18,0.06)] rounded-lg border border-[#DFE1E7] flex justify-center items-center gap-2">
+                     <div className="w-4 h-4 relative flex items-center justify-center">
+                         <List className="w-4 h-4 text-[#818898]" strokeWidth={1.5} />
+                     </div>
                  </div>
              </div>
          </div>
@@ -306,75 +318,143 @@ const SchoolHomePage = () => {
 
       {/* Projects */}
       <div className="flex flex-col gap-4 w-full mt-2">
-         <h2 className="text-[#0D0D12] text-xl font-['PeydaWeb'] font-semibold text-start">پروژه ها</h2>
-         
+         <div className="flex justify-between items-center w-full">
+             <h2 className="text-[#0D0D12] text-xl font-['PeydaWeb'] font-semibold leading-[27px]">پروژه ها</h2>
+         </div>
+
          {/* Toggle */}
-         <div className="w-full bg-[#F6F6F6] p-1 rounded-lg flex border border-gray-300">
-             <div className="flex-1 py-1 text-center text-[#0A0A0A] text-sm font-['PeydaWeb'] font-semibold cursor-pointer">
-                 پروژه های دانش آموزان
+         <div className="w-full h-[36px] p-[3px] bg-[#F6F6F6] rounded-lg outline outline-1 outline-[#D7D8DA] flex justify-center items-center">
+             <div className="flex-1 h-[29px] px-3 py-1 bg-transparent rounded-md flex justify-center items-center gap-2.5 cursor-pointer">
+                 <div className="text-[#0A0A0A] text-sm font-['PeydaWeb'] font-semibold leading-5 text-center">پروژه های دانش آموزان</div>
              </div>
-             <div className="flex-1 py-1 text-center bg-[#F7C61A] rounded-md shadow-sm text-[#0A0A0A] text-sm font-['PeydaWeb'] font-semibold cursor-pointer">
-                 پروژه های مدرسه
+             <div className="flex-1 h-[29px] px-3 py-1 bg-[#F7C61A] shadow-[0px_1px_3px_rgba(0,0,0,0.10)] rounded-md outline outline-1 outline-[#D7D8DA] flex justify-center items-center gap-2.5 cursor-pointer">
+                 <div className="text-[#0A0A0A] text-sm font-['PeydaWeb'] font-semibold leading-5 text-center">پروژه های مدرسه</div>
              </div>
          </div>
 
          {/* Active Orders List */}
-         <Card className="w-full bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
-             <div className="p-4 border-b border-gray-200 flex justify-between items-center bg-white">
-                 <span className="text-[#0D0D12] text-base font-['PeydaWeb'] font-semibold">سفارش های فعال</span>
-                 <div className="flex gap-2">
-                     <Button variant="outline" size="icon" className="w-8 h-8 rounded-lg">
-                        <MoreHorizontal className="w-4 h-4 text-[#818898]" />
-                     </Button>
-                     <Button variant="outline" size="icon" className="w-8 h-8 rounded-lg">
-                         <MoreHorizontal className="w-4 h-4 text-[#818898]" />
-                     </Button>
+         <div className="w-full bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] flex flex-col justify-start items-end overflow-hidden">
+             
+             {/* Header */}
+             <div className="w-full h-16 px-5 py-2 border-b border-[#DFE1E7] flex justify-between items-center bg-white">
+                 <div className="text-[#0D0D12] text-16 font-['PeydaWeb'] font-semibold leading-24 tracking-wide">سفارش های فعال</div>
+                 <div className="flex justify-start items-center gap-2">
+                     <div className="w-8 h-8 px-4 py-2 bg-white rounded-lg outline outline-1 outline-[#DFE1E7] flex justify-center items-center gap-2 cursor-pointer">
+                         <div className="w-4 h-4 relative overflow-hidden">
+                             <div className="w-3 h-3 left-[2px] top-[2px] absolute border-[1.33px] border-[#818898] rounded-[1px]" />
+                         </div>
+                     </div>
+                     <div className="w-8 h-8 p-2 bg-white rounded-lg outline outline-1 outline-[#DFE1E7] flex justify-center items-center gap-2 cursor-pointer">
+                         <div className="w-4 h-4 relative overflow-hidden">
+                             <div className="w-3 h-3 left-[2px] top-[2px] absolute border-[1.33px] border-[#818898] rounded-[1px]" />
+                         </div>
+                     </div>
                  </div>
              </div>
-             
-             {/* Table Headers (Mobile hidden or adapted) */}
-             <div className="bg-[#F6F8FA] p-3 text-right hidden md:block">
-                 <span className="text-[#666D80] text-sm font-['PeydaWeb'] font-semibold">لیست سفارشات</span>
-             </div>
-             
-             {/* Order Rows */}
-             {[
-                 { id: 1, title: "طراحی ست اداری | کامل", team: "امیرحسین رضایی, محمد کریمی...", price: "۴,۵۰۰,۰۰۰", days: 1, status: "تحویل به مدرسه", statusColor: "bg-[#ECF9F7] text-[#267666]" },
-                 { id: 2, title: "طراحی بسته بندی محصول | خلاقانه", team: "امیرحسین رضایی, محمد کریمی...", price: "۶,۰۰۰,۰۰۰", days: 1, status: "ارسال نشده", statusColor: "bg-[#FCE8EC] text-[#B21634]" },
-                 { id: 3, title: "طراحی لوگو | 3 طرح اولیه", team: "محمد کریمی", price: "۷,۵۰۰,۰۰۰", days: 1, status: "ارسال شده", statusColor: "bg-[#ECF9F7] text-[#267666]" },
-             ].map((order, idx) => (
-                 <div key={idx} className="p-4 border-b border-gray-100 flex flex-col gap-3">
-                     <div className="flex justify-between items-start">
-                         <Badge className={`${order.statusColor} hover:${order.statusColor} rounded-full px-2 py-0.5 text-xs font-['PeydaWeb']`}>
-                             {order.status}
-                         </Badge>
-                         <span className="text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold text-right">{order.title}</span>
-                     </div>
-                     <div className="flex justify-between items-center text-xs">
-                         <span className="text-[#0D0D12] font-['PeydaWeb']">{order.price} ریال</span>
-                         <span className="text-[#666D80] font-['PeydaWeb'] text-right">{order.team}</span>
-                     </div>
-                     <div className="flex justify-between items-center mt-1">
-                         <span className="text-[#0D0D12] text-xs font-['peyda-Num'] font-semibold">{order.days} روز تا تحویل</span>
-                         <span className="text-[#0D0D12] text-xs font-['peyda-Num'] font-semibold">{order.id}</span>
-                     </div>
-                 </div>
-             ))}
 
-               {/* Pagination */}
-               <div className="flex justify-between items-center p-4">
-                   <div className="flex items-center gap-2">
-                       <Button variant="outline" size="icon" className="w-8 h-8 rounded-lg  bg-white">
-                           <ChevronLeft className="w-4 h-4 rotate-180" />
-                       </Button>
-                       <span className="text-xs font-['peyda-Num'] border px-3 py-1.5 rounded-lg">1/15</span>
-                       <Button variant="outline" size="icon" className="w-8 h-8 rounded-lg bg-white">
-                           <ChevronLeft className="w-4 h-4" />
-                       </Button>
-                   </div>
-                   <span className="text-[#0D0D12] text-sm font-['peyda-Num']">صفحه 1 از 15</span>
-               </div>
-         </Card>
+             {/* Table */}
+             <div className="w-full overflow-x-auto no-scrollbar">
+                 <div className="min-w-[1000px] flex flex-col">
+                     
+                     {/* Table Header */}
+                     <div className="w-full bg-[#F6F8FA] border-b border-[#DFE1E7] flex justify-end items-center px-2">
+                        <div className="w-20 h-10 px-3 flex justify-end items-center">
+                            <div className="w-4 h-4 bg-white rounded border border-[#DFE1E7]" />
+                        </div>
+                        <div className="w-[272px] h-10 px-3 flex justify-end items-center">
+                            <div className="text-right text-[#666D80] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">محصول</div>
+                        </div>
+                        <div className="w-[73px] h-10 px-3 flex justify-center items-center">
+                            <div className="text-center text-[#666D80] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">تعداد</div>
+                        </div>
+                        <div className="w-[127px] h-10 px-3 flex justify-center items-center">
+                            <div className="text-center text-[#666D80] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">موعد تحویل</div>
+                        </div>
+                        <div className="w-[140px] h-10 px-3 flex justify-center items-center">
+                            <div className="text-center text-[#666D80] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">درآمد شما از فروش</div>
+                        </div>
+                        <div className="w-[104px] h-10 px-3 flex justify-center items-center">
+                            <div className="text-[#666D80] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">وضعیت</div>
+                        </div>
+                        <div className="w-[272px] h-10 px-3 flex justify-end items-center">
+                            <div className="text-right text-[#666D80] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">تیم اجرایی</div>
+                        </div>
+                        <div className="w-11 h-10 px-3 bg-[#F6F8FA]" />
+                     </div>
+
+                     {/* Table Body - Rows */}
+             {/* Table Body - Rows */}
+                     {Array.from({ length: 10 }).map((_, idx) => {
+                        const itemIndex = (currentPage - 1) * 10 + idx + 1;
+                        // Mock data generation based on page and index
+                        const isEven = itemIndex % 2 === 0;
+                        const status = isEven ? "ارسال نشده" : "تحویل به مدرسه";
+                        const statusBg = isEven ? "#FCE8EC" : "#ECF9F7";
+                        const statusColor = isEven ? "#B21634" : "#267666";
+                        
+                        return (
+                         <div key={idx} className="w-full h-16 border-b border-[#DFE1E7] flex justify-end items-center px-2 hover:bg-gray-50 transition-colors">
+                            <div className="w-20 h-16 px-3 flex justify-start items-center gap-2.5">
+                                <span className="text-center text-[#0D0D12] text-sm font-num-medium font-semibold flex-1">{itemIndex}</span>
+                                <div className="w-4 h-4 bg-white rounded border border-[#DFE1E7] cursor-pointer" />
+                            </div>
+                            <div className="w-[272px] h-16 px-3 flex justify-start items-center gap-2.5">
+                                <span className="text-right text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide truncate">
+                                    {isEven ? "طراحی بسته بندی محصول | خلاقانه" : "طراحی ست اداری | کامل"}
+                                </span>
+                            </div>
+                            <div className="w-[73px] h-16 px-3 flex justify-end items-center gap-2.5">
+                                <span className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium font-semibold">{itemIndex * 2}</span>
+                            </div>
+                            <div className="w-[127px] h-16 px-3 flex justify-end items-center gap-2.5">
+                                <span className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium font-semibold">{Math.max(1, itemIndex % 5)} روز تا تحویل</span>
+                            </div>
+                            <div className="w-[140px] h-16 px-3 flex justify-end items-center gap-2.5">
+                                <span className="flex-1 text-center text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold">
+                                    {(4500000 + itemIndex * 100000).toLocaleString()} ریال
+                                </span>
+                            </div>
+                            <div className="w-[104px] h-16 px-3 flex justify-center items-center gap-2.5">
+                                <div className="px-2 py-0.5 rounded-2xl flex justify-center items-center" style={{ backgroundColor: statusBg }}>
+                                    <span className="text-[12px] font-num-medium" style={{ color: statusColor }}>{status}</span>
+                                </div>
+                            </div>
+                            <div className="w-[272px] h-16 px-3 flex justify-start items-center gap-2.5">
+                                <span className="text-right text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold truncate">
+                                    امیرحسین رضایی, محمد کریمی...
+                                </span>
+                            </div>
+                            <div className="w-11 h-16 px-3 flex justify-start items-center gap-2">
+                                <MoreHorizontal className="w-5 h-5 text-[#666D80]" />
+                            </div>
+                         </div>
+                        );
+                     })}
+                 </div>
+             </div>
+
+             {/* Footer */}
+             <div className="w-full px-5 py-4 flex justify-between items-center">
+                 <div className="flex items-center gap-2">
+                     <div 
+                        onClick={handleNextPage}
+                        className={`w-8 h-8 flex items-center justify-center bg-white rounded-lg border border-[#DFE1E7] cursor-pointer ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'}`}
+                     >
+                          <ChevronRight className="w-5 h-5 text-[#0D0D12]" />
+                     </div>
+                     <div className="w-[55px] h-8 rounded-lg border border-[#DFE1E7] flex justify-center items-center">
+                         <span className="text-[#0D0D12] text-xs font-num-medium font-medium">{currentPage}/{totalPages}</span>
+                     </div>
+                     <div 
+                        onClick={handlePrevPage}
+                        className={`w-8 h-8 flex items-center justify-center bg-white rounded-lg border border-[#DFE1E7] cursor-pointer ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'}`}
+                     >
+                          <ChevronLeft className="w-5 h-5 text-[#0D0D12]" />
+                     </div>
+                 </div>
+                 <span className="text-center text-[#0D0D12] text-sm font-num-medium font-medium">صفحه {currentPage} از {totalPages}</span>
+             </div>
+          </div>
       </div>
 
     </div>
