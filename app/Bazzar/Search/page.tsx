@@ -5,7 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { products, searchProducts } from '../../data/product';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ChevronRight, Search as SearchIcon, MapPin } from 'lucide-react';
+import { ChevronLeft, Search as SearchIcon, MapPin } from 'lucide-react';
 import SearchBar from '../../components/SearchBar';
 
 function SearchContent() {
@@ -19,15 +19,12 @@ function SearchContent() {
     }, [query]);
 
     return (
-        <div className="w-full min-h-screen bg-white flex flex-col items-center pb-[50px]" dir="rtl">
+        <div className="w-full min-h-screen  flex flex-col items-center pb-[50px]" dir="rtl">
              {/* Header Fixed Area */}
-            <div className="w-full max-w-[440px] px-0 pt-8 pb-4 flex flex-col gap-4 bg-white sticky top-0 z-10">
+            <div className="w-full max-w-[440px] px-0 pt-2 pb-4 flex flex-col gap-4 bg-white sticky top-0 z-10">
                 {/* Top Bar: Back & Location */}
-                <div className="w-full flex justify-between items-center">
+                <div className="w-full flex justify-between items-center bg-white z-10">
                     <div className="flex items-center gap-2">
-                         <div className="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center cursor-pointer" onClick={() => router.back()}>
-                             <ChevronRight size={20} className="text-[#0C1415]" />
-                         </div>
                          <div className="flex flex-col items-start">
                              <span className="text-[#707F81] text-xs font-['PeydaWeb'] font-light">موقعیت</span>
                              <div className="flex items-center gap-1">
@@ -36,6 +33,9 @@ function SearchContent() {
                              </div>
                          </div>
                     </div>
+                     <div className="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center cursor-pointer" onClick={() => router.back()}>
+                         <ChevronLeft size={20} className="text-[#0C1415]" />
+                     </div>
                 </div>
 
                 {/* Search Input Area */}
@@ -43,12 +43,12 @@ function SearchContent() {
 
                 {/* Results Info */}
                 <div className="w-full flex justify-between items-center mt-2">
-                    <span className="text-[#3C5A5D] text-sm font-['PeydaFaNum'] font-medium">
-                        {filteredProducts.length} مورد یافت شد
-                    </span>
                     <h1 className="text-[#0C1415] text-lg font-['PeydaFaNum'] font-medium">
                         نتایج جستجو “{query}”
                     </h1>
+                    <span className="text-[#3C5A5D] text-sm font-['PeydaFaNum'] font-medium">
+                        {filteredProducts.length} مورد یافت شد
+                    </span>
                 </div>
             </div>
 
