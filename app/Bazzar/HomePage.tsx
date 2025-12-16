@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react"
 import Image from "next/image"
 import { Search, MapPin, ChevronLeft } from 'lucide-react'
+import Link from "next/link"
 import NavBar from "./NavBar"
 
 // Helper Components
@@ -121,20 +122,34 @@ export default function HomePage() {
                      </div>
                 </div>
 
-                {/* Hero Banner */}
-                <div className="w-full relative rounded-lg overflow-hidden group cursor-pointer" dir="rtl">
-                     <div className="w-full h-[300px]  relative rounded-lg overflow-hidden">
-                        <Image 
-                            src="/BazzarHeader.png" 
-                            alt="Hero" 
-                            fill 
-                            className="object-cover"
-                        />
+                {/* Hero Banner (Image Background + Text Overlay) */}
+                <div className="w-full relative rounded-lg overflow-hidden group cursor-pointer h-[300px]" dir="ltr">
+                     {/* Background Image */}
+                     <Image 
+                        src="/BazzarHeader.png" 
+                        alt="Hero Banner"
+                        fill
+                        className="object-cover"
+                        priority
+                     />
+                     
+                     {/* Content Overlay */}
+                     <div className="w-[50%] absolute inset-0 p-2 flex flex-col items-start justify-start gap-3" dir="rtl">
+                         <div className="flex flex-col items-end gap-1 z-10">
+                              <h2 className="text-[#0C1415] text-lg font-['PeydaWeb'] font-bold">مجموعه جدید</h2>
+                              <p className="text-[#4E4E4E] text-xs font-['PeydaWeb'] font-light">۵۰٪ تخفیف برای اولین معامله</p>
+                         </div>
+                         
+                         <div className="z-10 mt-3">
+                              <div className="bg-[#FDD00A] px-4 py-2 rounded-lg shadow-sm flex items-center justify-center cursor-pointer">
+                                  <span className="text-[#393E46] text-xs font-['PeydaWeb'] font-bold">همین حالا خرید کنید</span>
+                              </div>
+                         </div>
                      </div>
-                     <div className="absolute bottom-4 right-4 flex gap-2">
-                          <div className="w-2 h-2 bg-white/20 rounded-full" />
-                          <div className="w-2 h-2 bg-[#FDD00A] rounded-full" />
-                          <div className="w-2 h-2 bg-white/20 rounded-full" />
+
+                     {/* Extra Decoration Image */}
+                     <div className="absolute right-0 bottom-0 w-[250px] h-[250px] pointer-events-none">
+                          <Image src="/BazzarHeader1.png" alt="Decoration" fill className="object-contain object-bottom-right" />
                      </div>
                 </div>
 
@@ -142,7 +157,9 @@ export default function HomePage() {
                 <div className="w-full flex flex-col gap-3" dir="rtl">
                     <div className="w-full flex justify-between items-center">
                          <span className="text-[#0C1415] text-lg font-['PeydaWeb'] font-semibold">دسته بندی</span>
-                         <span className="text-[#FDD00A] text-xs font-['PeydaWeb'] font-light">مشاهده همه</span>
+                         <Link href="/Bazzar/Categories">
+                             <span className="text-[#FDD00A] text-xs font-['PeydaWeb'] font-light cursor-pointer">مشاهده همه</span>
+                         </Link>
                     </div>
                     {/* Full bleed left */}
                     <div className="flex justify-between items-center overflow-x-auto gap-4 py-2 no-scrollbar pl-6 -ml-6 w-[calc(100%+24px)] pr-1">
@@ -352,20 +369,18 @@ export default function HomePage() {
                          I'll assume they want the same 'flush left' effect. 
                          I will apply the negative margin to the grid container wrapper.
                      */}
-                     <div className="pl-6 -ml-6 w-[calc(100%+24px)] pr-1">
-                        <div className="grid grid-cols-3 gap-3">
-                              {[1, 2, 3].map(i => (
-                                  <div key={i} className="flex flex-col gap-2">
-                                       <div className="w-full aspect-square bg-gray-100 rounded-lg relative overflow-hidden">
-                                            <Image src="/ProductBazzar.png" alt="School" fill className="object-cover" />
-                                       </div>
-                                       <div className="flex flex-col items-end">
-                                            <span className="text-[#1F2029] text-xs font-['PeydaWeb'] font-semibold">خلاقیت</span>
-                                            <span className="text-[#1F2029] text-[10px] font-['PeydaWeb'] font-light opacity-60">هنرستان دخترانه</span>
-                                       </div>
-                                  </div>
-                              ))}
-                         </div>
+                     <div className="flex gap-4 overflow-x-auto pb-4 pt-2 pl-6 -ml-[8vw] w-[calc(100%+8vw)] scrollbar-hide pr-1">
+                          {[1, 2, 3, 4, 5].map(i => (
+                              <div key={i} className="flex flex-col gap-2 shrink-0 w-[100px]">
+                                   <div className="w-[100px] h-[100px] bg-gray-100 rounded-lg relative overflow-hidden">
+                                        <Image src="/ProductBazzar.png" alt="School" fill className="object-cover" />
+                                   </div>
+                                   <div className="flex flex-col items-center w-full">
+                                        <span className="text-[#1F2029] text-xs font-['PeydaWeb'] font-semibold text-center">خلاقیت</span>
+                                        <span className="text-[#1F2029] text-[10px] font-['PeydaWeb'] font-light opacity-60 text-center">هنرستان دخترانه</span>
+                                   </div>
+                              </div>
+                          ))}
                      </div>
                 </div>
 
