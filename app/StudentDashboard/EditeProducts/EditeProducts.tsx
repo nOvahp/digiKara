@@ -1,14 +1,41 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { DashboardNavBar } from "../DashboardNavBar";
 import { Navigation } from "../Navigation";
 import { BasicInfoForm } from "../Sells/components/shared/BasicInfoForm";
 import { PricingForm } from "../Sells/components/shared/PricingForm";
 import { CategoryTagsForm } from "../Sells/components/shared/CategoryTagsForm";
 import { ProductPreviewCard } from "../Sells/components/shared/ProductPreviewCard";
+import { NewProductPage6 } from "../Sells/components/NewProductPage6";
+import { productService } from '@/app/StudentDashboard/data/products';
 
 export function EditeProducts() {
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const productId = searchParams.get('id');
+    const [showPreview, setShowPreview] = useState(false);
+    const [formData, setFormData] = useState<any>({});
+
+    useEffect(() => {
+        if (productId) {
+            const product = productService.getById(productId);
+            if (product) {
+                setFormData(product);
+            }
+        }
+    }, [productId]);
+
+    const handleUpdateChange = (updates: any) => {
+        setFormData((prev: any) => ({ ...prev, ...updates }));
+    };
+
+    const handleSave = () => {
+        // In a real app we would call productService.update(productId, formData);
+        router.push('/StudentDashboard/Sells');
+    };
+
     return (
         <div className="w-full min-h-screen bg-transparent flex flex-col relative pb-28" dir="ltr">
              {/* Sticky Navbar */}
@@ -27,11 +54,17 @@ export function EditeProducts() {
                      
                      <div className="w-full flex flex-col gap-3">
                          {/* Save Button (Primary) */}
-                         <button className="w-full h-10 bg-[#0A33FF] rounded-lg shadow-sm border border-[#FFD369] flex justify-center items-center gap-2 hover:opacity-90 transition-opacity">
+                         <button 
+                            onClick={handleSave}
+                            className="w-full h-10 bg-[#0A33FF] rounded-lg shadow-sm border border-[#FFD369] flex justify-center items-center gap-2 hover:opacity-90 transition-opacity"
+                         >
                              <span className="text-white text-sm font-semibold font-['PeydaWeb']">ذخیره محصول</span>
                          </button>
                          {/* Preview Button (Secondary) */}
-                         <button className="w-full h-10 bg-white rounded-lg shadow-sm border border-[#DFE1E7] flex justify-center items-center gap-2 hover:bg-gray-50 transition-colors">
+                         <button 
+                            onClick={() => setShowPreview(true)}
+                            className="w-full h-10 bg-white rounded-lg shadow-sm border border-[#DFE1E7] flex justify-center items-center gap-2 hover:bg-gray-50 transition-colors"
+                         >
                              <span className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb']">پیش نمایش محصول</span>
                          </button>
                      </div>
@@ -50,13 +83,16 @@ export function EditeProducts() {
                 </div>
 
                 {/* Shared Forms */}
-                <BasicInfoForm />
-                <PricingForm />
-                <CategoryTagsForm />
-                <ProductPreviewCard />
+                <BasicInfoForm values={formData} onChange={handleUpdateChange} />
+                <PricingForm values={formData} onChange={handleUpdateChange} />
+                <CategoryTagsForm values={formData} onChange={handleUpdateChange} />
+                <ProductPreviewCard product={formData} />
 
                 {/* Final Save Button */}
-                <button className="w-full h-10 bg-[#FFD369] rounded-lg shadow-sm border border-[#FFD369] flex justify-center items-center gap-2 hover:opacity-90 transition-opacity">
+                <button 
+                    onClick={handleSave}
+                    className="w-full h-10 bg-[#FFD369] rounded-lg shadow-sm border border-[#FFD369] flex justify-center items-center gap-2 hover:opacity-90 transition-opacity"
+                >
                      <span className="text-[#393E46] text-sm font-semibold font-['PeydaWeb']">ذخیره محصول</span>
                 </button>
 
@@ -66,6 +102,16 @@ export function EditeProducts() {
              <div className="fixed bottom-0 w-full z-40">
                  <Navigation />
              </div>
+
+             {/* Preview Popup */}
+             {showPreview && (
+                <NewProductPage6 
+                    onClose={() => setShowPreview(false)}
+                    onNext={() => setShowPreview(false)}
+                    onStepClick={() => {}} 
+                    formData={formData} // Passing actual form data to preview
+                />
+             )}
         </div>
     );
 }

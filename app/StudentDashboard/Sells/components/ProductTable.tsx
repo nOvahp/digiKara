@@ -1,40 +1,47 @@
+"use client";
+
 import React, { useState } from 'react';
 import { cn } from "@/lib/utils";
-import { ChevronLeft, ChevronRight, Filter, Search } from "lucide-react";
+import { ChevronLeft, ChevronRight, Filter, Search, MoreHorizontal } from "lucide-react";
+import { useRouter } from 'next/navigation';
 
 // Types for our data
-export interface ProductData {
-    id: number;
-    name: string;
-    soldCount: number;
-    revenue: string;
-    inventoryCount: number;
-    trendPercentage: string;
-    trendType: 'positive' | 'negative';
-}
+import { Product } from '@/app/StudentDashboard/data/products';
+
+// Types from shared data
+export interface ProductData extends Product {}
 
 interface ProductTableRowProps {
     product: ProductData;
     index: number;
     isChecked: boolean;
-    onToggle: (id: number) => void;
+    onToggle: (id: number | string) => void;
 }
 
 function ProductTableRow({ product, index, isChecked, onToggle }: ProductTableRowProps) {
+    const router = useRouter();
     const isPositive = product.trendType === 'positive';
     const trendBg = isPositive ? 'bg-[#ECF9F7]' : 'bg-[#FCE8EC]';
     const trendText = isPositive ? 'text-[#267666]' : 'text-[#B21634]';
+
+    const handleEdit = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        router.push(`/StudentDashboard/EditeProducts?id=${product.id}`);
+    };
 
     return (
         <div 
             onClick={() => onToggle(product.id)}
             className="flex min-w-max h-16 px-[9px] border-b border-[#DFE1E7] justify-end items-center hover:bg-gray-50 transition-colors cursor-pointer bg-white"
         >
-            {/* Trend Icon */}
+            {/* Edit Menu - Replaces Trend Icon */}
             <div className="h-16 px-3 border-b border-[#DFE1E7] flex justify-start items-center gap-2">
-                <div className="w-5 h-5 relative">
-                    <div className="absolute left-[1.67px] top-[8.33px] w-[16.67px] h-[3.33px] bg-[#666D80]" />
-                </div>
+                <button 
+                    onClick={handleEdit}
+                    className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 transition-colors"
+                >
+                    <MoreHorizontal className="w-5 h-5 text-[#666D80]" />
+                </button>
             </div>
 
             {/* Badge */}
@@ -103,7 +110,7 @@ interface ProductTableProps {
 export function ProductTable({ products }: ProductTableProps) {
     const [currentPage, setCurrentPage] = useState(1);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [checkedIds, setCheckedIds] = useState<number[]>([]);
+    const [checkedIds, setCheckedIds] = useState<(number | string)[]>([]);
     const itemsPerPage = 8; 
 
     // Calculate total pages
@@ -127,7 +134,7 @@ export function ProductTable({ products }: ProductTableProps) {
         }
     };
 
-    const toggleId = (id: number) => {
+    const toggleId = (id: number | string) => {
         setCheckedIds(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
     };
 

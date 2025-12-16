@@ -47,7 +47,7 @@ export function PricingForm({ defaultValues = {}, values, onChange }: PricingFor
         onChange(updates);
     };
 
-    const val = (field: string) => values ? (values as any)[field] : (defaultValues[field] || "");
+    const val = (field: string) => values ? ((values as any)[field] || "") : (defaultValues[field] || "");
 
     return (
         <div className="w-full bg-white rounded-xl border border-[#DFE1E7] p-5 flex flex-col gap-5 shadow-[0px_1px_2px_rgba(13,13,18,0.06)]">

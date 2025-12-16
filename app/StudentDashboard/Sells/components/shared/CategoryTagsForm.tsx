@@ -11,7 +11,7 @@ interface CategoryTagsFormProps {
 export function CategoryTagsForm({ defaultValues = {}, values, onChange }: CategoryTagsFormProps) {
     const [localTags, setLocalTags] = useState<string[]>( defaultValues.tags || ["ارگانیک", "عسل طبیعی"] );
 
-    const currentTags = values ? values.tags : localTags;
+    const currentTags = values?.tags || localTags;
     const currentCategory = values ? values.category : (defaultValues.category || "agricultural");
     const currentMetadata = values ? values.metadata : (defaultValues.metadata || "");
 
@@ -57,7 +57,6 @@ export function CategoryTagsForm({ defaultValues = {}, values, onChange }: Categ
                           dir="rtl"
                           value={currentCategory}
                           onChange={(e) => onChange ? onChange({ category: e.target.value }) : null}
-                          defaultValue={!values ? currentCategory : undefined}
                       >
                           <option value="agricultural">محصولات کشاورزی</option>
                           <option value="electronic">کالای دیجیتال</option>
@@ -119,7 +118,6 @@ export function CategoryTagsForm({ defaultValues = {}, values, onChange }: Categ
                      className="h-[100px] w-full p-3 bg-white rounded-xl border border-[#DFE1E7] resize-none outline-none text-right font-['PeydaWeb']"
                      value={currentMetadata}
                      onChange={(e) => onChange ? onChange({ metadata: e.target.value }) : null}
-                     defaultValue={!values ? currentMetadata : undefined}
                      dir="rtl"
                   />
                  <div className="text-[#818898] text-sm font-light font-['PeydaWeb'] text-right">برای بهبود رتبه بندی در موتورهای جستجو، توضیحات متا را اضافه کنید.</div>

@@ -1,5 +1,4 @@
-import React from 'react';
-import Image from 'next/image';
+import React, { useState, useRef } from 'react';
 import { Star, Heart, Eye } from 'lucide-react';
 
 export interface ProductPreviewProps {
@@ -13,13 +12,23 @@ export interface ProductPreviewProps {
 }
 
 export function ProductPreviewCard({ product }: ProductPreviewProps) {
-    const mainImage = product?.images?.[0] || "/Product.png";
-    const thumbs = product?.images?.slice(1, 4) || [1, 2, 3]; // Show up to 3 thumbs or placeholders if empty? Actually better to show nothing if empty? Let's fallback for now or show what we have.
-    
-    // If we want placeholders when empty:
-    const displayThumbs = product?.images?.length ? product.images.slice(0, 4) : [1, 2, 3, 4]; 
-    // Wait, main image is index 0. Thumbs should be indices.
-    
+    const [activeImage, setActiveImage] = useState(1);
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+    const handleScroll = () => {
+        if (scrollContainerRef.current) {
+            const scrollLeft = Math.abs(scrollContainerRef.current.scrollLeft);
+            const width = scrollContainerRef.current.offsetWidth;
+            const calculatedIndex = Math.round(scrollLeft / width) + 1;
+            
+            if (calculatedIndex !== activeImage) {
+                 setActiveImage(calculatedIndex);
+            }
+        }
+    };
+
+    const productImages = product?.images && product.images.length > 0 ? product.images : ["/Product.png"];
+
     return (
         <div className="w-full bg-white rounded-xl border border-[#DFE1E7] p-5 flex flex-col gap-5 shadow-[0px_1px_2px_rgba(13,13,18,0.06)]">
             <div className="text-[#0D0D12] text-base font-semibold font-['PeydaWeb'] tracking-wide text-right">
@@ -27,28 +36,50 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
             </div>
             
             <div className="w-full flex flex-col gap-4">
-                {/* Preview Image Card */}
-                {/* Preview Image Card */}
-                <div className="w-full">
-                    {product?.images && product.images.length > 0 ? (
-                        <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar" dir="rtl">
-                            {product.images.map((img, i) => (
-                                <div key={i} className="relative min-w-[280px] h-[305px] rounded-xl border border-[#DFE1E7] overflow-hidden flex-shrink-0 bg-gray-50">
-                                    <Image 
-                                        src={img} 
-                                        alt={`Product ${i}`} 
-                                        layout="fill" 
-                                        objectFit="cover" 
-                                        className="w-full h-full"
-                                    />
+                {/* Preview Image Card - Carousel */}
+                <div className="w-full h-[305px] rounded-xl border border-[#DFE1E7] overflow-hidden relative bg-gray-50">
+                    <div 
+                        ref={scrollContainerRef}
+                        className="w-full h-full flex overflow-x-auto snap-x snap-mandatory no-scrollbar"
+                        onScroll={handleScroll}
+                        dir="ltr"
+                    >
+                        {productImages.map((img, i) => (
+                            <div 
+                                key={i} 
+                                id={`preview-img-${i + 1}`}
+                                className="w-full h-full flex-shrink-0 bg-center bg-contain bg-no-repeat snap-center"
+                                style={{ backgroundImage: `url('${img}')` }}
+                            />
+                        ))}
+                    </div>
+                     {/* Dots */}
+                     <div className="absolute flex gap-2 z-10 bottom-3 right-3">
+                        <div className="flex gap-2 items-center flex-row-reverse">
+                            {productImages.map((_, i) => {
+                                const num = i + 1;
+                                return (
+                                <div 
+                                    key={num} 
+                                    onClick={() => {
+                                        if (scrollContainerRef.current) {
+                                            const width = scrollContainerRef.current.offsetWidth;
+                                            scrollContainerRef.current.scrollTo({
+                                                left: width * (num - 1),
+                                                behavior: 'smooth'
+                                            });
+                                        }
+                                        setActiveImage(num);
+                                    }}
+                                    className="cursor-pointer"
+                                >
+                                    <div className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold font-['PeydaFaNum'] ${activeImage === num ? 'bg-[#FFD369] text-[#0D0D12]' : 'bg-[#0D0D12]/45 text-white'}`}>
+                                        {num}
+                                    </div>
                                 </div>
-                            ))}
+                            )})}
                         </div>
-                    ) : (
-                         <div className="w-full h-[305px] rounded-xl border border-[#DFE1E7] overflow-hidden relative bg-gray-50 flex items-center justify-center text-gray-300">
-                             <span className="text-4xl">🖼️</span>
-                         </div>
-                    )}
+                    </div>
                 </div>
 
                 {/* Preview Header */}
@@ -86,7 +117,7 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
                 {/* Preview Desc */}
                 <div className="flex flex-col gap-2 items-end">
                     <div className="text-[#0D0D12] text-base font-semibold font-['PeydaWeb']">توضیحات</div>
-                    <div className="text-right text-[#818898] text-base font-light font-['PeydaWeb'] leading-relaxed w-full">
+                    <div className="text-right text-[#818898] text-base font-light font-['PeydaWeb'] leading-relaxed w-full break-words whitespace-pre-wrap">
                         {product?.description || "توضیحات محصول در اینجا نمایش داده می‌شود..."}
                     </div>
                 </div>
