@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
+import { useNewTimche } from "./NewTimcheContext";
 import { 
     ChevronLeft,
     ChevronDown,
@@ -29,6 +30,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 const NewTimche4 = () => {
     const router = useRouter();
+    const { saveStep4, completeCreation } = useNewTimche();
     
     // Hardcoded step 4
     const step = 4;
@@ -56,6 +58,8 @@ const NewTimche4 = () => {
     const onCreateTimche = (data: FormValues) => {
         // Handle final submission logic here
         console.log("Creating Timche with data:", data);
+        saveStep4(data);
+        completeCreation();
         router.push('/SchoolPanel/Timche/New/Step5'); 
     };
 
@@ -123,10 +127,11 @@ const NewTimche4 = () => {
                                     </SelectTrigger>
                                     <SelectContent className="text-right font-medium" dir="rtl">
                                         <SelectGroup>
-                                            <SelectItem value="math">ریاضی فیزیک</SelectItem>
-                                            <SelectItem value="science">علوم تجربی</SelectItem>
-                                            <SelectItem value="humanities">علوم انسانی</SelectItem>
-                                            <SelectItem value="art">هنر</SelectItem>
+                                            <SelectItem value="computer">شبکه و نرم‌افزار</SelectItem>
+                                            <SelectItem value="graphics">گرافیک</SelectItem>
+                                            <SelectItem value="accounting">حسابداری</SelectItem>
+                                            <SelectItem value="architecture">معماری</SelectItem>
+                                            <SelectItem value="electronics">الکترونیک</SelectItem>
                                         </SelectGroup>
                                     </SelectContent>
                                 </Select>

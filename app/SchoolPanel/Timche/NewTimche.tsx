@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useNewTimche } from "./New/NewTimcheContext";
 import { 
     ChevronRight,
     User,
@@ -36,7 +37,11 @@ type FormValues = z.infer<typeof formSchema>;
 
 const NewTimche = () => {
     const router = useRouter();
+    const { saveStep1, step1Data } = useNewTimche();
     
+    // Hardcoded step 1 for this page
+    const step = 1;
+
     const { 
         register, 
         handleSubmit, 
@@ -47,7 +52,7 @@ const NewTimche = () => {
         formState: { errors } 
     } = useForm<FormValues>({
         resolver: zodResolver(formSchema),
-        defaultValues: {
+        defaultValues: step1Data || {
             name: "",
             category: "product",
             description: "",
@@ -61,6 +66,8 @@ const NewTimche = () => {
     const onContinue = async () => {
         const isValid = await trigger();
         if (isValid) {
+            const data = watch();
+            saveStep1(data);
             router.push('/SchoolPanel/Timche/New/Step2');
         }
     };
@@ -212,10 +219,10 @@ const NewTimche = () => {
                                         style={{ width: "var(--radix-select-trigger-width)" }}
                                     >
                                         <SelectGroup>
-                                            <SelectItem value="manager1">مهندس رضایی</SelectItem>
-                                            <SelectItem value="manager2">مهندس کریمی</SelectItem>
-                                            <SelectItem value="manager3">خانم محمدی</SelectItem>
-                                            <SelectItem value="manager4">دکتر حسینی</SelectItem>
+                                            <SelectItem value="مهندس رضایی">مهندس رضایی</SelectItem>
+                                            <SelectItem value="مهندس کریمی">مهندس کریمی</SelectItem>
+                                            <SelectItem value="خانم محمدی">خانم محمدی</SelectItem>
+                                            <SelectItem value="دکتر حسینی">دکتر حسینی</SelectItem>
                                         </SelectGroup>
                                     </SelectContent>
                                 </Select>

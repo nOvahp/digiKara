@@ -16,42 +16,10 @@ import {
     TrendingUp
 } from "lucide-react";
 
-// Sample Timche data
-const timcheData = [
-    {
-        id: 1,
-        title: "تیمچه صنایع دستی",
-        boothCount: "12",
-        manager: "مهندس رضایی",
-        lastUpdate: "3 روز قبل",
-        performance: "عالی",
-        totalSales: "۵۰,۰۰۰,۰۰۰ ریال",
-        status: "active",
-        image: "/Timche.png"
-    },
-    {
-        id: 2,
-        title: "محصولات کشاورزی",
-        boothCount: "14",
-        manager: "مهندس کریمی",
-        lastUpdate: "امروز",
-        performance: "عالی",
-        totalSales: "۱۲۰,۰۰۰,۰۰۰ ریال",
-        status: "active",
-        image: "/Timche2.png"
-    },
-    {
-        id: 3,
-        title: "تیمچه رباتیک و الکترونیک",
-        boothCount: "۵ حجره",
-        manager: "خانم محمدی",
-        lastUpdate: "ثبت نشده",
-        performance: "برآورد نشده",
-        totalSales: "هنوز فروشی ثبت نشده است",
-        status: "pending",
-        image: "/Timche3.png"
-    }
-];
+import { getTimches, TimcheItem } from "./TimcheStorage";
+
+// Remove static timcheData array
+/* const timcheData = ... */
 
 const filterTabs = [
     { id: "all", label: "همه", active: true },
@@ -65,6 +33,11 @@ const Timche = () => {
     const router = useRouter();
     const [activeFilter, setActiveFilter] = useState("all");
     const [searchQuery, setSearchQuery] = useState("");
+    const [timcheData, setTimcheData] = useState<TimcheItem[]>([]);
+
+    React.useEffect(() => {
+        setTimcheData(getTimches());
+    }, []);
 
     return (
         <div className="w-full min-h-screen pb-12 pt-0 px-0 flex flex-col justify-start items-center gap-6" dir="rtl">
@@ -250,7 +223,7 @@ const Timche = () => {
                                         </div>
 
                                         {/* Row 3 - Sales */}
-                                        <div className="h-6 border flex justify-end items-center gap-1.5">
+                                        <div className="h-6 flex justify-end items-center gap-1.5">
                                                 <Wallet className="w-5 h-5 text-[#0A0A0A]" strokeWidth={1.25} />
                                                 <div className="text-right flex flex-col justify-center text-[#0F172A] text-xs font-['PeydaWeb'] font-semibold leading-tight tracking-wide">
                                                     {timche.totalSales}

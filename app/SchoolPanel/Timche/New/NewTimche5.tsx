@@ -15,7 +15,7 @@ const NewTimche5 = () => {
         <div className="w-full min-h-screen flex flex-col items-center pb-10" dir="rtl">
             
             {/* Header */}
-            <div className="w-full max-w-[440px] pt-4 flex flex-col gap-5">
+            <div className="w-full max-w-[440px] pt-0 flex flex-col gap-5">
                 <div className="w-full px-4 flex justify-between items-center">
                     <h1 className="text-center text-[#0D0D12] text-xl font-['PeydaWeb'] font-semibold leading-[27px]">
                         افزودن پروژه
@@ -27,7 +27,7 @@ const NewTimche5 = () => {
             </div>
 
             {/* Success Content */}
-            <div className="w-full max-w-[440px] px-4 flex-1 flex flex-col justify-center items-center gap-6 mt-20">
+            <div className="w-full max-w-[440px] px-0 flex-1 flex flex-col justify-center items-center gap-6 mt-0">
                 
                 {/* Icon Circles */}
                 <div className="relative w-[120px] h-[120px] bg-[#FFF5C7] rounded-full flex items-center justify-center">
