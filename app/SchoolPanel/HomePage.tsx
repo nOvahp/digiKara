@@ -20,10 +20,25 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { products, Product } from "./Reports/product";
+import ProductPopUp from "./Reports/ProductPopUp";
 
 const SchoolHomePage = () => {
   const [currentPage, setCurrentPage] = React.useState(1);
-  const totalPages = 15;
+  const [isProductPopUpOpen, setIsProductPopUpOpen] = React.useState(false);
+  const [selectedProduct, setSelectedProduct] = React.useState<Product | null>(null);
+  
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(products.length / itemsPerPage);
+
+  const indexOfLastProduct = currentPage * itemsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
+  const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  const handleProductClick = (product: Product) => {
+      setSelectedProduct(product);
+      setIsProductPopUpOpen(true);
+  };
 
   const handlePrevPage = () => {
     if (currentPage > 1) setCurrentPage(prev => prev - 1);
@@ -34,7 +49,7 @@ const SchoolHomePage = () => {
   };
 
   return (
-    <div className="w-full min-h-screen bg-white pb-32 pt-5 px-0 flex flex-col gap-6" dir="rtl">
+    <div className="w-full min-h-screen bg-white pb-12 pt-5 px-0 flex flex-col gap-6" dir="rtl">
       
       {/* Header Title */}
       <div className="flex flex-col items-start gap-4 w-full">
@@ -400,46 +415,43 @@ const SchoolHomePage = () => {
                         <div className="w-11 h-10 px-3 bg-[#F6F8FA]" />
                      </div>
 
-                     {/* Table Body - Rows */}
              {/* Table Body - Rows */}
-                     {Array.from({ length: 10 }).map((_, idx) => {
-                        const itemIndex = (currentPage - 1) * 10 + idx + 1;
-                        // Mock data generation based on page and index
+                     {currentProducts.map((product, idx) => {
+                        const itemIndex = indexOfFirstProduct + idx + 1;
                         const isEven = itemIndex % 2 === 0;
-                        const status = isEven ? "ارسال نشده" : "تحویل به مدرسه";
-                        const statusBg = isEven ? "#FCE8EC" : "#ECF9F7";
-                        const statusColor = isEven ? "#B21634" : "#267666";
+                        const statusBg = product.statusLabel === "ارسال شده" || product.statusLabel === "تحویل به مدرسه" ? "#ECF9F7" : "#FCE8EC";
+                        const statusColor = product.statusLabel === "ارسال شده" || product.statusLabel === "تحویل به مدرسه" ? "#267666" : "#B21634";
                         
                         return (
-                         <div key={idx} className="w-full h-16 border-b border-[#DFE1E7] flex justify-end items-center px-2 hover:bg-gray-50 transition-colors">
+                         <div key={product.id} onClick={() => handleProductClick(product)} className="w-full h-16 border-b border-[#DFE1E7] flex justify-end items-center px-2 hover:bg-gray-50 transition-colors cursor-pointer group">
                             <div className="w-20 h-16 px-3 flex justify-start items-center gap-2.5">
                                 <span className="text-center text-[#0D0D12] text-sm font-num-medium font-semibold flex-1">{itemIndex}</span>
                                 <div className="w-4 h-4 bg-white rounded border border-[#DFE1E7] cursor-pointer" />
                             </div>
                             <div className="w-[272px] h-16 px-3 flex justify-start items-center gap-2.5">
                                 <span className="text-right text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide truncate">
-                                    {isEven ? "طراحی بسته بندی محصول | خلاقانه" : "طراحی ست اداری | کامل"}
+                                    {product.productName}
                                 </span>
                             </div>
                             <div className="w-[73px] h-16 px-3 flex justify-end items-center gap-2.5">
-                                <span className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium font-semibold">{itemIndex * 2}</span>
+                                <span className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium font-semibold">{product.count}</span>
                             </div>
                             <div className="w-[127px] h-16 px-3 flex justify-end items-center gap-2.5">
-                                <span className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium font-semibold">{Math.max(1, itemIndex % 5)} روز تا تحویل</span>
+                                <span className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium font-semibold">{product.deliveryTime}</span>
                             </div>
                             <div className="w-[140px] h-16 px-3 flex justify-end items-center gap-2.5">
                                 <span className="flex-1 text-center text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold">
-                                    {(4500000 + itemIndex * 100000).toLocaleString()} ریال
+                                    {product.price} ریال
                                 </span>
                             </div>
                             <div className="w-[104px] h-16 px-3 flex justify-center items-center gap-2.5">
                                 <div className="px-2 py-0.5 rounded-2xl flex justify-center items-center" style={{ backgroundColor: statusBg }}>
-                                    <span className="text-[12px] font-num-medium" style={{ color: statusColor }}>{status}</span>
+                                    <span className="text-[12px] font-num-medium" style={{ color: statusColor }}>{product.statusLabel}</span>
                                 </div>
                             </div>
                             <div className="w-[272px] h-16 px-3 flex justify-start items-center gap-2.5">
                                 <span className="text-right text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold truncate">
-                                    امیرحسین رضایی, محمد کریمی...
+                                    {product.team}
                                 </span>
                             </div>
                             <div className="w-11 h-16 px-3 flex justify-start items-center gap-2">
@@ -474,6 +486,17 @@ const SchoolHomePage = () => {
              </div>
           </div>
       </div>
+
+      {/* Product PopUp */}
+      {isProductPopUpOpen && selectedProduct && (
+          <ProductPopUp 
+              product={selectedProduct} 
+              onClose={() => {
+                  setIsProductPopUpOpen(false);
+                  setSelectedProduct(null);
+              }} 
+          />
+      )}
 
     </div>
   );

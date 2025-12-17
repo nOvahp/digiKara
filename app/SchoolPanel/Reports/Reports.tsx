@@ -16,6 +16,7 @@ import {
   Star,
   FileText
 } from "lucide-react";
+import { products, Product } from "./product";
 import ProductPopUp from "./ProductPopUp";
 import {
   BarChart, 
@@ -57,8 +58,20 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 const ReportsPage = () => {
     const [isProductPopUpOpen, setIsProductPopUpOpen] = React.useState(false);
+    const [selectedProduct, setSelectedProduct] = React.useState<Product | null>(null);
     const [currentPage, setCurrentPage] = React.useState(1);
-    const totalPages = 15;
+    const itemsPerPage = 10;
+    const totalPages = Math.ceil(products.length / itemsPerPage);
+    
+    // Get current products
+    const indexOfLastProduct = currentPage * itemsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
+    const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+
+    const handleProductClick = (product: Product) => {
+        setSelectedProduct(product);
+        setIsProductPopUpOpen(true);
+    };
 
     const handlePrevPage = () => {
         if (currentPage > 1) setCurrentPage(prev => prev - 1);
@@ -413,18 +426,14 @@ const ReportsPage = () => {
                             </div>
 
                             {/* Table Body - Rows */}
-                            {Array.from({ length: 10 }).map((_, idx) => {
-                                const itemIndex = (currentPage - 1) * 10 + idx + 1;
+                            {currentProducts.map((product, idx) => {
+                                const itemIndex = indexOfFirstProduct + idx + 1;
                                 const isEven = itemIndex % 2 === 0;
-                                // Mock data matching styles
-                                const status = isEven ? "ارسال نشده" : "تحویل به مدرسه";
-                                const statusBg = isEven ? "#FCE8EC" : "#ECF9F7";
-                                const statusColor = isEven ? "#B21634" : "#267666";
-                                const price = isEven ? "۶,۰۰۰,۰۰۰" : "۴,۵۰۰,۰۰۰";
-                                // Using PeydaFaNum for numbers
+                                const statusBg = product.statusLabel === "ارسال شده" || product.statusLabel === "تحویل به مدرسه" ? "#ECF9F7" : "#FCE8EC";
+                                const statusColor = product.statusLabel === "ارسال شده" || product.statusLabel === "تحویل به مدرسه" ? "#267666" : "#B21634";
                                 
                                 return (
-                                <div key={idx} onClick={() => setIsProductPopUpOpen(true)} className="w-full h-16 border-b border-[#DFE1E7] flex justify-start items-center px-2 hover:bg-gray-50 transition-colors cursor-pointer group">
+                                <div key={product.id} onClick={() => handleProductClick(product)} className="w-full h-16 border-b border-[#DFE1E7] flex justify-start items-center px-2 hover:bg-gray-50 transition-colors cursor-pointer group">
                                      <div className="w-11 h-16 px-3 flex justify-center items-center gap-2">
                                         <MoreHorizontal className="w-5 h-5 text-[#666D80]" />
                                     </div>
@@ -434,28 +443,28 @@ const ReportsPage = () => {
                                     </div>
                                     <div className="w-[272px] h-16 px-3 flex justify-start items-center gap-2.5">
                                         <span className="text-right text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide truncate w-full">
-                                            {isEven ? "طراحی بسته بندی محصول | خلاقانه" : "طراحی ست اداری | کامل"}
+                                            {product.productName}
                                         </span>
                                     </div>
                                     <div className="w-[73px] h-16 px-3 flex justify-center items-center gap-2.5">
-                                        <span className="flex-1 text-center text-[#0D0D12] text-sm font-['PeydaFaNum'] font-semibold">{isEven ? "۲" : "۱"}</span>
+                                        <span className="flex-1 text-center text-[#0D0D12] text-sm font-['PeydaFaNum'] font-semibold">{product.count}</span>
                                     </div>
                                     <div className="w-[127px] h-16 px-3 flex justify-center items-center gap-2.5">
-                                        <span className="flex-1 text-center text-[#0D0D12] text-sm font-['PeydaFaNum'] font-semibold">{isEven ? "۱ روز تا تحویل" : "۱ روز تا تحویل"}</span>
+                                        <span className="flex-1 text-center text-[#0D0D12] text-sm font-['PeydaFaNum'] font-semibold">{product.deliveryTime}</span>
                                     </div>
                                     <div className="w-[140px] h-16 px-3 flex justify-center items-center gap-2.5">
                                         <span className="flex-1 text-center text-[#0D0D12] text-sm font-['PeydaFaNum'] font-semibold">
-                                            {price} <span className="font-['PeydaWeb']">ریال</span>
+                                            {product.price} <span className="font-['PeydaWeb']">ریال</span>
                                         </span>
                                     </div>
                                     <div className="w-[104px] h-16 px-3 flex justify-center items-center gap-2.5">
                                         <div className="px-2 py-0.5 rounded-2xl flex justify-center items-center" style={{ backgroundColor: statusBg }}>
-                                            <span className="text-[12px] font-['PeydaFaNum']" style={{ color: statusColor }}>{status}</span>
+                                            <span className="text-[12px] font-['PeydaFaNum']" style={{ color: statusColor }}>{product.statusLabel}</span>
                                         </div>
                                     </div>
                                     <div className="w-[272px] h-16 px-3 flex justify-end items-center gap-2.5">
                                         <span className="text-right text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold truncate">
-                                            امیرحسین رضایی, محمد کریمی...
+                                            {product.team}
                                         </span>
                                     </div>
                                 </div>
@@ -488,8 +497,15 @@ const ReportsPage = () => {
             </div>
 
             {/* Product PopUp */}
-            {isProductPopUpOpen && (
-                <ProductPopUp onClose={() => setIsProductPopUpOpen(false)} />
+            {/* Product PopUp */}
+            {isProductPopUpOpen && selectedProduct && (
+                <ProductPopUp 
+                    product={selectedProduct} 
+                    onClose={() => {
+                        setIsProductPopUpOpen(false);
+                        setSelectedProduct(null);
+                    }} 
+                />
             )}
 
         </div>

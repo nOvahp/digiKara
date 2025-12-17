@@ -2,12 +2,14 @@
 
 import React, { useRef, useEffect } from "react";
 import { X, ChevronLeft } from "lucide-react";
+import { Product } from "./product";
 
 interface ProductPopUpProps {
     onClose: () => void;
+    product: Product;
 }
 
-const ProductPopUp = ({ onClose }: ProductPopUpProps) => {
+const ProductPopUp = ({ onClose, product }: ProductPopUpProps) => {
     const modalRef = useRef<HTMLDivElement>(null);
 
     // Close on click outside
@@ -23,18 +25,6 @@ const ProductPopUp = ({ onClose }: ProductPopUpProps) => {
              document.removeEventListener("mousedown", handleClickOutside);
         };
     }, [onClose]);
-
-    // Hardcoded mock data to match the layout requirements
-    const order = {
-        productName: "عسل آویشن ارگانیک",
-        weight: "500 گرم",
-        count: "۱",
-        deliveryTime: "۱ روز تا تحویل",
-        price: "۴,۵۰۰,۰۰۰ ریال",
-        statusLabel: "ارسال نشده",
-        description: "-",
-        team: "آرش یوسفی, محمد کریمی"
-    };
 
     return (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4" dir="rtl">
@@ -53,10 +43,10 @@ const ProductPopUp = ({ onClose }: ProductPopUpProps) => {
                 {/* Title */}
                 <div className="self-stretch text-right mt-2">
                     <span className="text-[#0D0D12] text-base font-semibold font-['PeydaWeb'] leading-relaxed tracking-wide">
-                        {order.productName} | 
+                        {product.productName} | 
                     </span>
                     <span className="text-[#0D0D12] text-base font-semibold font-['PeydaFaNum'] leading-relaxed tracking-wide mx-1">
-                        ۵۰۰
+                        {parseInt(product.weight.replace(/\D/g,'')) || 500}
                     </span>
                     <span className="text-[#0D0D12] text-base font-semibold font-['PeydaWeb'] leading-relaxed tracking-wide">
                          گرم
@@ -69,8 +59,8 @@ const ProductPopUp = ({ onClose }: ProductPopUpProps) => {
                     <div className="self-stretch flex-col justify-start items-start gap-3 flex w-full">
                         <img 
                             className="self-stretch h-[118px] w-full object-cover rounded-xl border border-[#DFE1E7] p-2.5" 
-                            src="/Product.png" 
-                            alt={order.productName}
+                            src={product.image} 
+                            alt={product.productName}
                         />
                     </div>
 
@@ -85,7 +75,7 @@ const ProductPopUp = ({ onClose }: ProductPopUpProps) => {
                                 </div>
                             </div>
                             <div className="flex-1 text-[#818898] text-base font-medium leading-relaxed tracking-wide text-left">
-                                {order.count} عدد
+                                {product.count} عدد
                             </div>
                             
                         </div>
@@ -98,7 +88,7 @@ const ProductPopUp = ({ onClose }: ProductPopUpProps) => {
                                 </div>
                             </div>
                             <div className="flex-1 text-[#818898] text-base  font-medium leading-relaxed tracking-wide text-left">
-                                {order.deliveryTime}
+                                {product.deliveryTime}
                             </div>
                             
                         </div>
@@ -111,7 +101,7 @@ const ProductPopUp = ({ onClose }: ProductPopUpProps) => {
                                 </div>
                             </div>
                             <div className="flex-1 text-[#818898] text-base font-num-medium  leading-relaxed tracking-wide text-left">
-                                {order.price}
+                                {product.price}
                             </div>
                             
                         </div>
@@ -124,23 +114,22 @@ const ProductPopUp = ({ onClose }: ProductPopUpProps) => {
                                 </div>
                             </div>
                             <div className={`h-5 px-2 py-0.5 rounded-2xl flex justify-start items-center ${
-                                 order.statusLabel.includes("ارسال شده") || order.statusLabel.includes("تحویل") 
+                                 product.statusLabel.includes("ارسال شده") || product.statusLabel.includes("تحویل") 
                                  ? "bg-[#ECF9F7]" 
                                  : "bg-[#FCE8EC]"
                             }`}>
                                 <div className={`text-center text-xs font-normal font-['PeydaFaNum'] leading-[18px] tracking-wide ${
-                                    order.statusLabel.includes("ارسال شده") || order.statusLabel.includes("تحویل") 
+                                    product.statusLabel.includes("ارسال شده") || product.statusLabel.includes("تحویل") 
                                     ? "text-[#267666]" 
                                     : "text-[#B21634]"
                                 }`}>
-                                    {order.statusLabel}
+                                    {product.statusLabel}
                                 </div>
                             </div>
                             
                         </div>
 
-                         {/* Team (Custom addition for Reports context if needed, or stick to Student style strict) */}
-                         {/* Student style doesn't have Team, but Reports data has it. I'll include it to be safe, matching style. */}
+                         {/* Team */}
                          <div className="self-stretch h-[52px] px-3 py-2 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] flex justify-between items-center">
                             <div className="flex justify-end items-center gap-2 w-[79px]">
                                 <div className="w-full text-right text-[#666D80] text-sm font-semibold font-['PeydaWeb'] leading-tight tracking-wide">
@@ -148,7 +137,7 @@ const ProductPopUp = ({ onClose }: ProductPopUpProps) => {
                                 </div>
                             </div>
                              <div className="flex-1 text-[#818898] text-base font-medium  leading-relaxed tracking-wide text-left truncate">
-                                {order.team}
+                                {product.team}
                              </div>
                              
                         </div>
@@ -164,7 +153,7 @@ const ProductPopUp = ({ onClose }: ProductPopUpProps) => {
                         </div>
                         <div className="self-stretch flex-1 px-3 py-2.5 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] overflow-hidden flex flex-col justify-start items-start">
                             <div className="self-stretch flex-1 text-right text-[#0D0D12] text-base font-light font-['PeydaWeb'] leading-relaxed tracking-wide">
-                                {order.description}
+                                {product.description}
                             </div>
                         </div>
                     </div>
