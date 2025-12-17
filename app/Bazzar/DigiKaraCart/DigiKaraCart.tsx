@@ -27,10 +27,10 @@ export default function DigiKaraCart() {
     };
 
     return (
-        <div className="w-full min-h-screen  flex flex-col items-center relative" dir="rtl">
+        <div className="w-full h-[100dvh] flex flex-col items-center relative overflow-hidden bg-white" dir="rtl">
             
             {/* Header */}
-            <div className="w-full flex justify-between items-center px-0 py-4">
+            <div className="w-full flex justify-between items-center px-0 py-4 shrink-0">
                 
                  <div className="text-[#0C1415] text-base font-['PeydaWeb'] font-semibold">
                      سبد خرید
@@ -44,13 +44,14 @@ export default function DigiKaraCart() {
             </div>
 
             {/* Cart Items List */}
+            <div className="w-full flex-1 overflow-y-auto no-scrollbar">
             {items.length === 0 ? (
                 <div className="flex flex-col items-center justify-center pt-20 gap-4 opacity-50">
                     <ShoppingBag className="w-16 h-16 text-gray-400" />
                     <span className="text-gray-500 font-['PeydaWeb']">سبد خرید خالی است</span>
                 </div>
             ) : (
-                <div className="w-full flex flex-col items-center gap-0 px-0 pb-[600px] relative z-0">
+                <div className="w-full flex flex-col items-center gap-0 px-0 pb-[360px] relative z-0">
                     {items.map((item, index) => (
                         <div key={item.id} className="w-full flex flex-col">
                             <div className="w-full max-w-[364px] h-auto flex flex-row justify-between items-center relative py-4">
@@ -139,6 +140,7 @@ export default function DigiKaraCart() {
                     ))}
                 </div>
             )}
+            </div>
 
             {/* Bottom Sheet / Summary */}
              <div className="fixed bottom-0 left-0 right-0 z-40 w-full max-w-[440px] mx-auto">
@@ -185,7 +187,10 @@ export default function DigiKaraCart() {
                     </div>
 
                     {/* Submit Button */}
-                    <button className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-2 hover:bg-[#e5bc09] transition-colors">
+                    <button 
+                        onClick={() => router.push('/Bazzar/DigiKaraCart/FinalCheck')}
+                        className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-2 hover:bg-[#e5bc09] transition-colors"
+                    >
                         <span className="text-[#1A1C1E] text-lg font-['PeydaWeb'] font-semibold">
                             تکمیل فرایند خرید
                         </span>
