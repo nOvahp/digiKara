@@ -128,9 +128,9 @@ const ReportsPage = () => {
                      {/* Total Orders */}
                      <div className="flex-1 p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] -outline-offset-1 flex flex-col justify-start items-start gap-2.5 relative">
                         <div className="w-full flex flex-col justify-start items-start gap-0.5">
-                           <div className="w-full flex justify-center items-center gap-2.5">
-                               <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">کل سفارشات</div>
-                           </div>
+                                <div className="w-full flex justify-start items-center gap-2.5">
+                                    <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">در کشور</div>
+                                </div>
                            <div className="w-full flex justify-center items-center gap-2">
                                <div className="text-[#0D0D12] text-2xl font-['PeydaFaNum'] font-semibold leading-[31.2px]">۲۳۴</div>
                            </div>
@@ -270,6 +270,85 @@ const ReportsPage = () => {
             </div>
 
 
+
+            {/* School Rank Section */}
+            <div className="w-full flex justify-between items-center mt-4">
+                 <div className="w-full flex flex-col justify-start items-start gap-1">
+                    <div className="w-full flex justify-start items-center px-2">
+                        <div className="text-center text-[#0D0D12] text-xl font-['PeydaWeb'] font-semibold leading-[27px]">رتبه هنرستان</div>
+                     </div>
+                    <div className="w-full flex justify-start items-start gap-3">
+                        {/* Rank Card 1: In Country */}
+                        <div className="flex-1 p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] -outline-offset-1 flex flex-col justify-start items-start gap-2.5 relative">
+                             <div className="w-full flex flex-col justify-start items-start gap-0.5">
+                                <div className="w-full flex justify-start items-center gap-2.5">
+                                    <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">در کشور</div>
+                                </div>
+                                <div className="w-full flex justify-center items-center gap-2">
+                                    <div className="text-center text-[#0D0D12] text-2xl font-['PeydaFaNum'] font-semibold leading-[31.2px]">۳۴۰</div>
+                                </div>
+                             </div>
+                             <div className="w-full flex justify-center items-center gap-1">
+                                <div className="flex-1 text-center text-[#818898] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide">از ماه گذشته</div>
+                             </div>
+                             <div className="absolute left-1/2 -translate-x-1/2 top-[105px] px-2 py-[1px] bg-[#DDF3EF] rounded-[36px] flex justify-center items-center gap-0.5 z-10">
+                                <div className="text-[#28806F] text-[10px] font-['PeydaFaNum'] font-semibold leading-[15px]">۴۲ پله ارتقاء</div>
+                             </div>
+                        </div>
+
+                        {/* Rank Card 2: In Region */}
+                        <div className="flex-1 p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] -outline-offset-1 flex flex-col justify-start items-start gap-2.5 relative">
+                             <div className="w-full flex flex-col justify-start items-start gap-0.5">
+                                <div className="w-full flex justify-start items-center gap-2.5">
+                                    <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">در منطقه</div>
+                                </div>
+                                <div className="w-full flex justify-center items-center gap-2">
+                                    <div className="text-center text-[#0D0D12] text-2xl font-['PeydaFaNum'] font-semibold leading-[31.2px]">۵</div>
+                                </div>
+                             </div>
+                             <div className="w-full flex justify-center items-center gap-1">
+                                <div className="flex-1 text-center text-[#818898] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide">براساس عملکرد کلی</div>
+                             </div>
+                             <div className="absolute left-1/2 -translate-x-1/2 top-[105px] px-2 py-[1px] bg-[#DDF3EF] rounded-[36px] flex justify-center items-center gap-0.5 z-10">
+                                <div className="text-[#28806F] text-[10px] font-['PeydaFaNum'] font-semibold leading-[15px]">۲ پله ارتقاء</div>
+                             </div>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+
+            {/* Smart Suggestions */}
+            <div className="flex flex-col gap-4 w-full mt-10">
+                <h2 className="text-[#0D0D12] text-xl font-['PeydaWeb'] font-semibold text-right">پیشنهادات هوشمند</h2>
+                <div className="flex gap-2 overflow-x-auto pb-4 no-scrollbar">
+                    <div className="min-w-[250px] bg-white shadow-[0px_0px_4px_rgba(0,0,0,0.25)] rounded-lg outline outline-1 outline-[#DFE1E7] -outline-offset-1 p-2.5 flex flex-col justify-end items-end gap-1.5">
+                        <div className="w-6 h-6 relative overflow-hidden">
+                            <div className="w-3 h-3 absolute left-[2px] top-[10px] border-[1.5px] border-[#FDD00A]" />
+                            <div className="w-[11px] h-[11px] absolute left-[11px] top-[2px] border-[1.5px] border-[#FDD00A]" />
+                        </div>
+                        <div className="flex justify-start items-center w-full">
+                            <div className="text-right text-[#0F172A] text-sm font-['Meem'] font-medium leading-[21.7px]">دوره آموزشی مناسب</div>
+                        </div>
+                        <div className="flex justify-start items-center w-full">
+                             <div className="flex-1 text-right text-[#888B90] text-[10px] font-['MeemFaNum'] font-medium leading-[15.5px]">دوره «عکاسی از محصول با موبایل» می‌تواند به فروش شما کمک کند.</div>
+                        </div>
+                    </div>
+
+                    <div className="min-w-[250px] bg-white shadow-[0px_0px_4px_rgba(0,0,0,0.25)] rounded-lg outline outline-1 outline-[#DFE1E7] -outline-offset-1 p-2.5 flex flex-col justify-end items-end gap-1.5">
+                        <div className="w-6 h-6 relative overflow-hidden">
+                            <div className="w-3 h-3 absolute left-[2px] top-[10px] border-[1.5px] border-[#FDD00A]" />
+                            <div className="w-[11px] h-[11px] absolute left-[11px] top-[2px] border-[1.5px] border-[#FDD00A]" />
+                        </div>
+                        <div className="flex justify-start items-center w-full">
+                             <div className="text-right text-[#0F172A] text-sm font-['Meem'] font-medium leading-[21.7px]">این محصول پرفروش است.</div>
+                        </div>
+                        <div className="flex justify-start items-center w-full">
+                             <div className="flex-1 text-right text-[#888B90] text-[10px] font-['MeemFaNum'] font-medium leading-[15.5px]">«کارهای دستی چوبی» در منطقه شما محبوبیت زیادی پیدا کرده است.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {/* Projects Section */}
             <div className="flex flex-col gap-4 w-full mt-4">
                 <div className="flex justify-between items-center w-full">
@@ -386,21 +465,24 @@ const ReportsPage = () => {
                     </div>
 
                     {/* Footer */}
+                    {/* Footer - Hydrated with Logic */}
                     <div className="w-full px-5 py-4 flex justify-between items-center">
                          <div className="flex items-center gap-2">
-                           <div className="w-8 h-8 flex items-center justify-center bg-white rounded-lg border border-[#DFE1E7] cursor-pointer">
-                                <div className="w-5 h-5 flex justify-center items-center">
-                                    <ChevronLeft className="w-5 h-5 text-[#0D0D12]" />
-                                </div>
-                           </div>
-                             <div className="w-[55px] h-8 rounded-lg border border-[#DFE1E7] flex justify-center items-center">
-                                <span className="text-[#0D0D12] text-xs font-['PeydaFaNum'] font-medium">1/15</span>
-                            </div>
-                           <div className="w-8 h-8 flex items-center justify-center bg-white rounded-lg border border-[#DFE1E7] cursor-pointer">
+                           <div onClick={handleNextPage} className={`w-8 h-8 flex items-center justify-center bg-white rounded-lg border border-[#DFE1E7] cursor-pointer hover:bg-gray-50 transition-colors ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}`}>
                                 <ChevronRight className="w-5 h-5 text-[#0D0D12]" />
                            </div>
+                             <div className="w-[55px] h-8 rounded-lg border border-[#DFE1E7] flex justify-center items-center">
+                                <span className="text-[#0D0D12] text-xs font-['PeydaFaNum'] font-medium">{currentPage}/{totalPages}</span>
+                            </div>
+                            <div onClick={handlePrevPage} className={`w-8 h-8 flex items-center justify-center bg-white rounded-lg border border-[#DFE1E7] cursor-pointer hover:bg-gray-50 transition-colors ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                                <div className="w-5 h-5 flex justify-center items-center">
+                                     <ChevronLeft className="w-5 h-5 text-[#0D0D12]" />
+                                    
+                                </div>
+                           </div>
+                           
                         </div>
-                        <span className="text-center text-[#0D0D12] text-sm font-['PeydaFaNum'] font-medium">صفحه 1 از 15</span>
+                        <span className="text-center text-[#0D0D12] text-sm font-['PeydaFaNum'] font-medium">صفحه {currentPage} از {totalPages}</span>
                     </div>
                 </div>
             </div>
