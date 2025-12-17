@@ -70,7 +70,7 @@ const ProjectManagment = () => {
                 
             </div>
             {/* Add Timche Button */}
-                <div onClick={() => router.push('/SchoolPanel/Timche/New')} className="w-full px-6 py-2 bg-[#FDD00A] rounded-xl flex justify-center items-center gap-2.5 cursor-pointer hover:bg-[#e5c109] transition-colors">
+                <div onClick={() => router.push('/SchoolPanel/Projects/NewProject/Step1')} className="w-full px-6 py-2 bg-[#FDD00A] rounded-xl flex justify-center items-center gap-2.5 cursor-pointer hover:bg-[#e5c109] transition-colors">
                     <div className="text-center text-[#1A1C1E] text-[17.58px] font-['PeydaWeb'] font-semibold leading-[24.61px]">
                         افزودن پروژه جدید
                     </div>

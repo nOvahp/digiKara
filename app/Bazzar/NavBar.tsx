@@ -43,9 +43,9 @@ export function NavBar() {
                 </Link>
 
                 {/* Cart */}
-                <Link href="/Bazzar/Cart" className={getItemClasses(isActive('/Bazzar/Cart'))}>
-                    <ShoppingBag className={cn("w-6 h-6", getIconColor(isActive('/Bazzar/Cart')))} strokeWidth={1.5} />
-                    <div className={getTextClasses(isActive('/Bazzar/Cart'))}>سبد خرید</div>
+                <Link href="/Bazzar/DigiKaraCart" className={getItemClasses(isActive('/Bazzar/DigiKaraCart'))}>
+                    <ShoppingBag className={cn("w-6 h-6", getIconColor(isActive('/Bazzar/DigiKaraCart')))} strokeWidth={1.5} />
+                    <div className={getTextClasses(isActive('/Bazzar/DigiKaraCart'))}>سبد خرید</div>
                 </Link>
 
                 {/* Home */}

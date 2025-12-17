@@ -16,10 +16,12 @@ import {
 } from "lucide-react"
 import { getProductDetail, ProductDetail } from "../data/productDetails"
 import { products } from "../data/product"
+import { useCart } from "./CartContext";
 
 const PRODUCT_IMAGE = "/ProductDetails.png";
 
 export default function ProductDetails() {
+    const { addItem } = useCart();
     const searchParams = useSearchParams();
     const id = searchParams.get('id');
     
@@ -316,7 +318,19 @@ export default function ProductDetails() {
                          </div>
 
                          {/* Add to Cart Button */}
-                         <button className="flex-1 bg-[#FDD00A] h-12 rounded-xl flex items-center justify-center gap-2 hover:bg-[#EAC009] transition-colors">
+                         <button 
+                            onClick={() => {
+                                const priceNumber = parseInt(product.price.replace(/\D/g, '')) || 0;
+                                addItem({
+                                    id: product.id,
+                                    name: product.title,
+                                    shopName: "فروشنده نمونه", // Default shop name as it's not in product details yet
+                                    price: priceNumber,
+                                    image: product.images[0] || PRODUCT_IMAGE
+                                });
+                            }}
+                            className="flex-1 bg-[#FDD00A] h-12 rounded-xl flex items-center justify-center gap-2 hover:bg-[#EAC009] transition-colors"
+                         >
                              <span className="text-[#1A1C1E] text-base font-['PeydaWeb'] font-semibold">افزودن به سبد خرید</span>
                              <ShoppingBag className="w-5 h-5 text-[#0A0A0A]" />
                          </button>

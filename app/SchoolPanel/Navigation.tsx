@@ -33,9 +33,9 @@ export function Navigation() {
             <div className="w-full flex justify-between items-center px-4">
                 
                 {/* School Profile */}
-                <Link href="/SchoolPanel/Profile" className={getItemClasses(isActive('/SchoolPanel/Profile'))}>
-                    <School className={cn("w-6 h-6", getIconColor(isActive('/SchoolPanel/Profile')))} strokeWidth={1.5} />
-                    <div className={getTextClasses(isActive('/SchoolPanel/Profile'))}>پروفایل مدرسه</div>
+                <Link href="/SchoolPanel/SchoolProfile" className={getItemClasses(isActive('/SchoolPanel/SchoolProfile'))}>
+                    <School className={cn("w-6 h-6", getIconColor(isActive('/SchoolPanel/SchoolProfile')))} strokeWidth={1.5} />
+                    <div className={getTextClasses(isActive('/SchoolPanel/SchoolProfile'))}>پروفایل مدرسه</div>
                 </Link>
 
                 {/* Report */}
