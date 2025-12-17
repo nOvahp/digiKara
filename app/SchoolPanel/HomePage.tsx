@@ -66,66 +66,84 @@ const SchoolHomePage = () => {
       {/* Stats Section 2: Middle Row (Booths & Students) */}
       <div className="flex gap-3 w-full">
          {/* Active Booths */}
-         <Card className="flex-1 p-4 bg-white shadow-sm border border-gray-200 rounded-xl flex flex-col gap-2.5">
-            <div className="flex flex-col gap-0.5 w-full">
-               <span className="text-[#818898] text-sm font-['PeydaWeb'] font-semibold text-center w-full">حجره های فعال</span>
-               <span className="text-[#0D0D12] text-2xl font-num-medium text-center w-full">45</span>
+         {/* Active Booths */}
+         <div className="flex-1 p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] -outline-offset-1 flex flex-col justify-start items-start gap-2.5 relative">
+            <div className="self-stretch flex flex-col justify-start items-start gap-0.5">
+               <div className="self-stretch flex justify-start items-center gap-2.5">
+                  <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide break-word">حجره های فعال</div>
+               </div>
+               <div className="self-stretch flex justify-start items-center gap-2">
+                  <div className="w-full text-center text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px] break-word">45</div>
+               </div>
             </div>
-            <div className="flex justify-between items-center w-full relative">
-               <span className="text-[#818898] text-[10px] font-['PeydaWeb'] font-light text-center w-full">از ماه گذشته</span>
-                <Badge className="absolute left-0 -bottom-1 bg-[#DDF3EF] text-[#28806F] hover:bg-[#DDF3EF] rounded-full px-1.5 py-0 text-[10px] font-num-medium">
-                 +3.6٪
-               </Badge>
+            <div className="self-stretch flex justify-start items-center gap-1">
+               <div className="flex-1 text-center text-[#818898] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">از ماه گذشته</div>
             </div>
-         </Card>
+            <div className="absolute left-1/2 -translate-x-1/2 -bottom-3 bg-[#DDF3EF] rounded-[36px] flex justify-center items-center px-2 py-[1px] gap-0.5">
+               <div className="text-[#28806F] text-[10px] font-num-medium font-semibold leading-[15px] tracking-wide break-word">+3.6٪</div>
+            </div>
+         </div>
 
          {/* Active Students */}
-         <Card className="flex-1 p-4 bg-white shadow-sm border border-gray-200 rounded-xl flex flex-col gap-2.5">
-            <div className="flex flex-col gap-0.5 w-full">
-               <span className="text-[#818898] text-sm font-['PeydaWeb'] font-semibold text-center w-full">هنرجویان فعال</span>
-               <div className="text-center w-full rtl:flex rtl:justify-center rtl:items-baseline rtl:gap-1">
-                  <span className="text-[#0D0D12] text-2xl font-num-medium">105</span>
+         {/* Active Students */}
+         <div className="flex-1 p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] -outline-offset-1 flex flex-col justify-start items-start gap-2.5 relative">
+            <div className="self-stretch flex flex-col justify-start items-start gap-0.5">
+               <div className="self-stretch flex justify-start items-center gap-2.5">
+                  <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide break-word">هنرجویان فعال</div>
+               </div>
+               <div className="w-full text-center rtl:flex rtl:justify-center rtl:items-baseline rtl:gap-1">
+                  <span className="text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px]">105</span>
                   <span className="text-[#818898] text-sm font-num-medium">/120</span>
                </div>
             </div>
-            <div className="flex justify-between items-center w-full relative">
-               <span className="text-[#818898] text-[10px] font-['PeydaWeb'] font-light text-center w-full">از ماه گذشته</span>
-               <Badge className="absolute left-0 -bottom-1 bg-[#DDF3EF] text-[#28806F] hover:bg-[#DDF3EF] rounded-full px-1.5 py-0 text-[10px] font-num-medium">
-                 +15.1٪
-               </Badge>
+            <div className="self-stretch flex justify-start items-center gap-1">
+               <div className="flex-1 text-center text-[#818898] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">از ماه گذشته</div>
             </div>
-         </Card>
+            <div className="absolute left-1/2 -translate-x-1/2 -bottom-3 bg-[#DDF3EF] rounded-[36px] flex justify-center items-center px-2 py-[1px] gap-0.5">
+               <div className="text-[#28806F] text-[10px] font-num-medium font-semibold leading-[15px] tracking-wide break-word">+15.1٪</div>
+            </div>
+         </div>
       </div>
 
        {/* Stats Section 3: Bottom Row (Orders & Teams) */}
        <div className="flex gap-3 w-full">
          {/* Orders */}
-         <Card className="flex-1 p-4 bg-white shadow-sm border border-gray-200 rounded-xl flex flex-col gap-2.5">
-            <div className="flex flex-col gap-0.5 w-full">
-               <span className="text-[#818898] text-sm font-['PeydaWeb'] font-semibold text-center w-full">سفارشات</span>
-               <span className="text-[#0D0D12] text-2xl font-num-medium text-center w-full">340</span>
+         {/* Orders */}
+         <div className="flex-1 p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] -outline-offset-1 flex flex-col justify-start items-start gap-2.5 relative">
+            <div className="self-stretch flex flex-col justify-start items-start gap-0.5">
+               <div className="self-stretch flex justify-start items-center gap-2.5">
+                  <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide break-word">سفارشات</div>
+               </div>
+               <div className="self-stretch flex justify-start items-center gap-2">
+                  <div className="w-full text-center text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px] break-word">340</div>
+               </div>
             </div>
-             <div className="flex justify-between items-center w-full relative">
-               <span className="text-[#818898] text-[10px] font-['PeydaWeb'] font-light text-center w-full">از ماه گذشته</span>
-               <Badge className="absolute left-0 -bottom-1 bg-[#DDF3EF] text-[#28806F] hover:bg-[#DDF3EF] rounded-full px-1.5 py-0 text-[10px] font-num-medium">
-                 +3.6٪
-               </Badge>
+            <div className="self-stretch flex justify-start items-center gap-1">
+               <div className="flex-1 text-center text-[#818898] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">از ماه گذشته</div>
             </div>
-         </Card>
+            <div className="absolute left-1/2 -translate-x-1/2 -bottom-3 bg-[#DDF3EF] rounded-[36px] flex justify-center items-center px-2 py-[1px] gap-0.5">
+               <div className="text-[#28806F] text-[10px] font-num-medium font-semibold leading-[15px] tracking-wide break-word">+3.6٪</div>
+            </div>
+         </div>
 
          {/* Active Teams */}
-         <Card className="flex-1 p-4 bg-white shadow-sm border border-gray-200 rounded-xl flex flex-col gap-2.5">
-            <div className="flex flex-col gap-0.5 w-full">
-               <span className="text-[#818898] text-sm font-['PeydaWeb'] font-semibold text-center w-full">تیمچه های فعال</span>
-               <span className="text-[#0D0D12] text-2xl font-num-medium text-center w-full">8</span>
+         {/* Active Teams */}
+         <div className="flex-1 p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] -outline-offset-1 flex flex-col justify-start items-start gap-2.5 relative">
+            <div className="self-stretch flex flex-col justify-start items-start gap-0.5">
+               <div className="self-stretch flex justify-start items-center gap-2.5">
+                  <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide break-word">تیمچه های فعال</div>
+               </div>
+               <div className="self-stretch flex justify-start items-center gap-2">
+                  <div className="w-full text-center text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px] break-word">8</div>
+               </div>
             </div>
-             <div className="flex justify-between items-center w-full relative">
-               <span className="text-[#818898] text-[10px] font-['PeydaWeb'] font-light text-center w-full">از ماه گذشته</span>
-               <Badge className="absolute left-0 -bottom-1 bg-[#DDF3EF] text-[#28806F] hover:bg-[#DDF3EF] rounded-full px-1.5 py-0 text-[10px] font-num-medium whitespace-nowrap">
-                 1 مورد جدید
-               </Badge>
+            <div className="self-stretch flex justify-start items-center gap-1">
+               <div className="flex-1 text-center text-[#818898] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">از ماه گذشته</div>
             </div>
-         </Card>
+            <div className="absolute left-1/2 -translate-x-1/2 -bottom-3 bg-[#DDF3EF] rounded-[36px] flex justify-center items-center px-2 py-[1px] gap-0.5">
+               <div className="text-[#28806F] text-[10px] font-num-medium font-semibold leading-[15px] tracking-wide break-word whitespace-nowrap">1 مورد جدید</div>
+            </div>
+         </div>
       </div>
 
       {/* Recent Reports Section */}
@@ -251,7 +269,7 @@ const SchoolHomePage = () => {
              <div className="flex-1 pl-4 flex flex-col justify-center items-end gap-1">
                  <div className="w-full text-right text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold break-word">درخواست همکاری در دوخت</div>
                  <div className="w-full flex justify-between items-center">
-                     <div className="w-[52px] h-4" />
+                    
                      <div className="flex justify-start items-center">
                          <div className="text-center text-[#818898] text-[10px] font-['PeydaWeb'] font-semibold break-word">هنرستان فن کاران هیدج</div>
                      </div>
@@ -279,7 +297,7 @@ const SchoolHomePage = () => {
              <div className="flex-1 pl-4 flex flex-col justify-center items-end gap-1">
                  <div className="w-full text-right text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold break-word">درخواست همکاری در تولید محتوا</div>
                  <div className="w-full flex justify-between items-center">
-                     <div className="w-[52px] h-4" />
+                     
                      <div className="flex justify-start items-center">
                          <div className="text-center text-[#818898] text-[10px] font-['PeydaWeb'] font-semibold break-word">هنرستان کارآفرینان ابهر</div>
                      </div>

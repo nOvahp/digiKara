@@ -1,11 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { Bell, Wallet } from "lucide-react";
 import profileImg from "../../public/DashboardProfile.png";
+import Notifications from "./Reports/Notifications";
 
 const DashBoardNavbar = () => {
+    const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+
   return (
     <div className="w-full flex flex-col justify-start items-center inline-flex bg-white pb-3 pt-0" dir="ltr">
       
@@ -15,9 +18,17 @@ const DashBoardNavbar = () => {
         {/* Left: Icons */}
         <div className="w-[70px] flex justify-between items-center">
              {/* Notification Icon (Bell) */}
-             <div className="w-[33px] h-[33px] flex justify-center items-center cursor-pointer hover:bg-gray-50 rounded-full transition-colors">
-                  <Bell className="w-6 h-6 text-[#393E46]" />
-              </div>
+             <div 
+                onClick={() => setIsNotificationsOpen(true)}
+                className="w-[33px] h-[33px] flex justify-center items-center cursor-pointer hover:bg-gray-50 rounded-full transition-colors"
+             >
+                <Bell className="w-6 h-6 text-[#393E46]" />
+             </div>
+             
+             {/* Notifications Modal */}
+             {isNotificationsOpen && (
+                 <Notifications onClose={() => setIsNotificationsOpen(false)} />
+             )}
               
               {/* Wallet Icon */}
               <div className="w-[33px] h-[33px] flex justify-center items-center cursor-pointer hover:bg-gray-50 rounded-full transition-colors">
