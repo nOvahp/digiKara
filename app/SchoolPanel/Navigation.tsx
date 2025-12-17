@@ -51,9 +51,9 @@ export function Navigation() {
                 </Link>
 
                 {/* Projects */}
-                <Link href="/SchoolPanel/Projects" className={getItemClasses(pathname === '/SchoolPanel/Projects' || pathname === '/SchoolPanel/Timche')}>
-                    <FolderKanban className={cn("w-6 h-6", getIconColor(pathname === '/SchoolPanel/Projects' || pathname === '/SchoolPanel/Timche'))} strokeWidth={1.5} />
-                    <div className={getTextClasses(pathname === '/SchoolPanel/Projects' || pathname === '/SchoolPanel/Timche')}>پروژه ها</div>
+                <Link href="/SchoolPanel/Projects" className={getItemClasses(pathname.startsWith('/SchoolPanel/Projects') || pathname.startsWith('/SchoolPanel/Timche'))}>
+                    <FolderKanban className={cn("w-6 h-6", getIconColor(pathname.startsWith('/SchoolPanel/Projects') || pathname.startsWith('/SchoolPanel/Timche')))} strokeWidth={1.5} />
+                    <div className={getTextClasses(pathname.startsWith('/SchoolPanel/Projects') || pathname.startsWith('/SchoolPanel/Timche'))}>پروژه ها</div>
                 </Link>
 
                 {/* Education */}
