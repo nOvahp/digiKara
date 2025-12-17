@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { 
     MoreHorizontal, 
     ChevronLeft,
@@ -17,6 +18,7 @@ import { products, Product } from "../Reports/product";
 import ProductPopUp from "../Reports/ProductPopUp";
 
 const Projects = () => {
+    const router = useRouter();
     // State for pagination and popup
     const [currentPage, setCurrentPage] = useState(1);
     const [isProductPopUpOpen, setIsProductPopUpOpen] = useState(false);
@@ -53,7 +55,7 @@ const Projects = () => {
                 
                 {/* Tabs / Controls */}
                 <div className="self-stretch flex flex-col justify-start items-center gap-3">
-                     <div className="w-full py-2 px-6 bg-[#FDD00A] rounded-xl flex justify-center items-center gap-2 cursor-pointer shadow-sm">
+                     <div onClick={() => router.push('/SchoolPanel/Timche')} className="w-full py-2 px-6 bg-[#FDD00A] rounded-xl flex justify-center items-center gap-2 cursor-pointer shadow-sm">
                         <div className="text-center text-[#1A1C1E] text-lg font-['PeydaWeb'] font-semibold leading-6">
                             مدیریت تیمچه ها
                         </div>
