@@ -1,10 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { ArrowLeft, User, GraduationCap, School, Building2 } from "lucide-react";
+import { User, GraduationCap, School, Building2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export default function AccountTypeSelection() {
+interface LoginViewProps {
+  onNext?: () => void;
+}
+
+export function LoginView4({ onNext }: LoginViewProps) {
   const [selectedType, setSelectedType] = useState<string | null>("student"); // Default to first option
   const router = useRouter();
 
@@ -16,9 +20,9 @@ export default function AccountTypeSelection() {
       icon: <User className="w-8 h-8 text-[#393E46]" strokeWidth={1.5} />,
     },
     {
-      id: "teacher",
-      title: "هنرآموز",
-      subtitle: "هنرآموزان و کادر آموزشی هنرستان ها",
+      id: "customer",
+      title: "مشتری",
+      subtitle: "ورود به بازارچه و خرید محصولات",
       icon: <GraduationCap className="w-8 h-8 text-[#393E46]" strokeWidth={1.5} />,
     },
     {
@@ -37,7 +41,20 @@ export default function AccountTypeSelection() {
 
   const handleSelect = () => {
     console.log("Selected Account Type:", selectedType);
-    // router.push("/next-step"); 
+    
+    if (selectedType === "student") {
+        router.push("/StudentDashboard");
+    } else if (selectedType === "manager") {
+        router.push("/SchoolPanel");
+    } else if (selectedType === "customer") {
+        router.push("/Bazzar");
+    } else if (selectedType === "supervisor") {
+        alert("در دست ساخت");
+    }
+
+    if (onNext) {
+      onNext();
+    }
   };
 
   return (

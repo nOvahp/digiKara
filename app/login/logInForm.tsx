@@ -14,7 +14,7 @@ type LoginStage = "PHONE_ENTRY" | "OTP_ENTRY"
 const MOCK_OTP = "12345"
 const RESEND_DELAY = 120 // 2 minutes
 
-export function LogInForm() {
+export function LogInForm({ onNext }: { onNext?: () => void }) {
   const router = useRouter()
   const [stage, setStage] = useState<LoginStage>("PHONE_ENTRY")
   const [phoneNumber, setPhoneNumber] = useState("")
@@ -75,7 +75,11 @@ export function LogInForm() {
     setTimeout(() => {
       setIsLoading(false)
       console.log("Logged in!")
-      router.push("/StudentDashboard")
+      if (onNext) {
+          onNext(); // Proceed to next step instead of redirect
+      } else {
+          router.push("/StudentDashboard"); // Fallback
+      }
     }, 1000)
   }
 
