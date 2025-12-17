@@ -60,7 +60,7 @@ const Projects = () => {
                             مدیریت تیمچه ها
                         </div>
                     </div>
-                    <div className="w-full py-2.5 px-6 rounded-xl outline outline-1 outline-[#DFE1E7] -outline-offset-1 flex justify-center items-center gap-2 cursor-pointer hover:bg-gray-50 transition-colors">
+                    <div onClick={() => router.push('/SchoolPanel/Projects/ProjectManagment')} className="w-full py-2.5 px-6 rounded-xl outline outline-1 outline-[#DFE1E7] -outline-offset-1 flex justify-center items-center gap-2 cursor-pointer hover:bg-gray-50 transition-colors">
                         <div className="text-center text-[#1A1C1E] text-lg font-['PeydaWeb'] font-semibold leading-6">
                             مدیریت پروژه ها
                         </div>
