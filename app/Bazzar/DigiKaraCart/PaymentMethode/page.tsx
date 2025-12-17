@@ -183,6 +183,7 @@ export default function PaymentMethodPage() {
              <div className="fixed bottom-0 left-0 right-0 z-40 w-full max-w-[440px] mx-auto p-6 bg-transparent">
                  <div className="w-full bg-white rounded-2xl shadow-[0px_0px_30px_rgba(0,0,0,0.10)] border border-[rgba(0,0,0,0.10)] p-3">
                     <button 
+                        onClick={() => router.push('/Bazzar/DigiKaraCart/Transition')}
                         className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-3 hover:bg-[#e5bc09] transition-colors shadow-sm"
                     >
                         <span className="text-[#1A1C1E] text-[17px] font-['PeydaWeb'] font-semibold">
