@@ -43,6 +43,7 @@ const NewTimche = () => {
         setValue, 
         watch,
         control,
+        trigger,
         formState: { errors } 
     } = useForm<FormValues>({
         resolver: zodResolver(formSchema),
@@ -57,14 +58,22 @@ const NewTimche = () => {
     const category = watch("category");
     const description = watch("description");
 
-    const onSubmit = (data: FormValues) => {
-        console.log("Form Data:", data);
-        // Navigate or process data
-        router.push('/SchoolPanel/Timche');
+    const onContinue = async () => {
+        const isValid = await trigger();
+        if (isValid) {
+            router.push('/SchoolPanel/Timche/New/Step2');
+        }
     };
 
+    const steps = [
+        { id: 1, title: "اطلاعات پایه" },
+        { id: 2, title: "پروژه‌ها" },
+        { id: 3, title: "اعضا" },
+        { id: 4, title: "معیارها" },
+    ];
+
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="w-full min-h-screen flex flex-col items-center pb-10" dir="rtl">
+        <div className="w-full min-h-screen flex flex-col items-center pb-10" dir="rtl">
             
             {/* Header */}
             <div className="w-full max-w-[440px] pt-4 flex flex-col gap-5">
@@ -79,44 +88,22 @@ const NewTimche = () => {
 
                 {/* Stepper */}
                 <div className="w-full px-0 py-5 border-b border-[#DFE1E7] flex justify-between items-center overflow-x-auto no-scrollbar gap-4">
-                    {/* Step 1: Basic Info (Active) */}
-                    <div className="flex items-center gap-2.5">
-                        <span className="text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide whitespace-nowrap">
-                            اطلاعات پایه
-                        </span>
-                        <div className="w-6 h-6 bg-[#FDD00A] rounded-full flex items-center justify-center shadow-sm">
-                             <span className="text-white text-sm font-num-bold font-bold leading-[21px]">1</span>
+                    {steps.map((s) => (
+                        <div key={s.id} className={cn("flex items-center gap-2.5", s.id !== 1 && "opacity-50")}>
+                            <span className={cn(
+                                "text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide whitespace-nowrap",
+                                s.id === 1 ? "text-[#0D0D12]" : "text-[#818898]"
+                            )}>
+                                {s.title}
+                            </span>
+                            <div className={cn(
+                                "w-6 h-6 rounded-full flex items-center justify-center shadow-sm",
+                                s.id === 1 ? "bg-[#FDD00A]" : "bg-[#DFE1E7]"
+                            )}>
+                                 <span className="text-white text-sm font-num-bold font-bold leading-[21px]">{s.id}</span>
+                            </div>
                         </div>
-                    </div>
-                    {/* Step 2: Projects */}
-                     <div className="flex items-center gap-2.5 opacity-50">
-                        <span className="text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide whitespace-nowrap">
-                            پروژه‌ها
-                        </span>
-                        <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center">
-                             <span className="text-white text-sm font-num-bold font-bold leading-[21px]">2</span>
-                        </div>
-                    </div>
-                     
-                    
-                    {/* Step 3: Members */}
-                    <div className="flex items-center gap-2.5 opacity-50">
-                        <span className="text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide whitespace-nowrap">
-                            اعضا
-                        </span>
-                        <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center">
-                            <span className="text-white text-sm font-num-bold font-bold leading-[21px]">3</span>
-                        </div>
-                    </div>
-{/* Step 4: Criteria */}
-                     <div className="flex items-center gap-2.5 opacity-50">
-                        <span className="text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide whitespace-nowrap">
-                            معیارها
-                        </span>
-                        <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center">
-                            <span className="text-white text-sm font-num-bold font-bold leading-[21px]">4</span>
-                        </div>
-                    </div>
+                    ))}
                 </div>
             </div>
 
@@ -145,8 +132,6 @@ const NewTimche = () => {
                         دسته‌بندی فعالیت
                     </label>
                     <div className="w-full h-12 p-1 bg-white rounded-xl border border-[#E5E5E5] shadow-sm flex items-center">
-                        
-                        {/* Product Based */}
                         <div 
                              onClick={() => setValue("category", "product")}
                              className={cn(
@@ -162,9 +147,7 @@ const NewTimche = () => {
                             </span>
                              <Box className={cn("w-5 h-5", category === "product" ? "text-[#0D0D12]" : "text-[#666D80]")} />
                         </div>
-                        {/* Divider */}
                         <div className="w-[1px] h-6 bg-[#E5E5E5] mx-1" />
-                         {/* Project Based */}
                         <div 
                             onClick={() => setValue("category", "project")}
                             className={cn(
@@ -241,19 +224,22 @@ const NewTimche = () => {
                     </div>
                     {errors.manager && <span className="text-red-500 text-xs font-['PeydaWeb']">{errors.manager.message}</span>}
                 </div>
-
             </div>
 
             {/* Footer / Continue Button */}
-            <div className="fixed bottom-0 w-full max-w-[440px] p-4 bg-white/80 backdrop-blur-sm border-t border-[#F0F0F0] mb-20">
-                <button type="submit" className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center cursor-pointer hover:bg-[#e5c109] transition-colors shadow-sm border-none outline-none">
+            <div className="fixed bottom-0 w-full max-w-[440px] p-4 bg-white/80 backdrop-blur-sm border-t border-[#F0F0F0] mb-25">
+                <button 
+                    onClick={onContinue}
+                    type="button"
+                    className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center cursor-pointer hover:bg-[#e5c109] transition-colors shadow-sm border-none outline-none"
+                >
                     <span className="text-[#1A1C1E] text-lg font-['PeydaWeb'] font-semibold leading-6">
                         ادامه
                     </span>
                 </button>
             </div>
 
-        </form>
+        </div>
     );
 };
 
