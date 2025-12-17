@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { Bell, Wallet } from "lucide-react";
-import profileImg from "../../public/DashboardProfile.png";
+import profileImg from "../../public/SchoolAvatar.png";
 import Notifications from "./Reports/Notifications";
 
 const DashBoardNavbar = () => {
