@@ -4,9 +4,11 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Box, Check, ChevronLeft, MapPin, Truck, ShoppingBag } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useCart } from "@/app/Bazzar/CartContext";
 
 export default function FinalCheckPage() {
     const router = useRouter();
+    const { items } = useCart();
 
     return (
         <div className="w-full min-h-screen bg-white flex flex-col items-center relative" dir="rtl">
@@ -44,7 +46,10 @@ export default function FinalCheckPage() {
                                  </p>
                              </div>
                         </div>
-                        <button className="px-5 py-2 rounded border border-[rgba(0,0,0,0.10)] text-[#3C5A5D] text-xs font-['PeydaWeb'] font-semibold hover:bg-gray-50 transition-colors tracking-wide">
+                        <button 
+                            onClick={() => router.push('/Bazzar/DigiKaraCart/Address')}
+                            className="px-5 py-2 rounded border border-[rgba(0,0,0,0.10)] text-[#3C5A5D] text-xs font-['PeydaWeb'] font-semibold hover:bg-gray-50 transition-colors tracking-wide"
+                        >
                             تغییر
                         </button>
                     </div>
@@ -71,7 +76,10 @@ export default function FinalCheckPage() {
                                  </span>
                              </div>
                         </div>
-                        <button className="px-5 py-2 rounded border border-[rgba(0,0,0,0.10)] text-[#3C5A5D] text-xs font-['PeydaWeb'] font-semibold hover:bg-gray-50 transition-colors tracking-wide">
+                        <button 
+                            onClick={() => router.push('/Bazzar/DigiKaraCart/SendType')}
+                            className="px-5 py-2 rounded border border-[rgba(0,0,0,0.10)] text-[#3C5A5D] text-xs font-['PeydaWeb'] font-semibold hover:bg-gray-50 transition-colors tracking-wide"
+                        >
                             تغییر
                         </button>
                     </div>
@@ -83,63 +91,44 @@ export default function FinalCheckPage() {
                 <div className="w-full flex flex-col gap-6 py-6">
                     <h3 className="text-[#0C1415] text-base font-['PeydaWeb'] font-semibold">لیست سفارش</h3>
                     
-                    {/* Item 1 */}
-                    <div className="flex gap-4 items-center justify-end w-full">
-                         <div className="flex-1 flex flex-col items-end gap-1">
-                             <span className="text-[#0C1415] text-sm font-['PeydaFaNum']">صندلی راحتی</span>
-                             <span className="text-[#707F81] text-xs font-['PeydaFaNum']">کارگاه نجاری هنرمندان</span>
-                             <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-medium mt-1">30,000,000 تومان</span>
+                    {items.length === 0 ? (
+                         <div className="w-full text-center text-[#707F81] py-8 text-sm font-['PeydaWeb']">
+                             سبد خرید خالی است
                          </div>
-                         <div className="w-[84px] h-[84px] bg-[#F6F6F6] rounded-lg shrink-0 overflow-hidden relative">
-                             <img src="https://placehold.co/84x84" alt="Product" className="w-full h-full object-cover" />
-                             {/* Shadow effect from design */}
-                             <div className="absolute -bottom-2 -left-2 w-full h-4 bg-black/80 blur-lg opacity-20 rotate-1"></div>
-                         </div>
-                    </div>
-
-                    {/* Item 2 */}
-                    <div className="flex gap-4 items-center justify-end w-full">
-                         <div className="flex-1 flex flex-col items-end gap-1">
-                             <span className="text-[#0C1415] text-sm font-['PeydaFaNum']">میز ناهارخوری</span>
-                             <span className="text-[#707F81] text-xs font-['PeydaFaNum']">کارگاه نجاری هنرمندان</span>
-                             <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-medium mt-1">45,000,000 تومان</span>
-                         </div>
-                         <div className="w-[84px] h-[84px] bg-[#F6F6F6] rounded-lg shrink-0 overflow-hidden relative">
-                             <img src="https://placehold.co/84x84" alt="Product" className="w-full h-full object-cover" />
-                         </div>
-                    </div>
-
-                    {/* Item 3 */}
-                    <div className="flex gap-4 items-center justify-end w-full">
-                         <div className="flex-1 flex flex-col items-end gap-1">
-                             <span className="text-[#0C1415] text-sm font-['PeydaFaNum']">کیف دستی چرم مدرن 2x</span>
-                             <span className="text-[#707F81] text-xs font-['PeydaFaNum']">فروشگاه چرم آرش</span>
-                             <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-medium mt-1">9,000,000 تومان</span>
-                         </div>
-                         <div className="w-[84px] h-[84px] bg-[#F6F6F6] rounded-lg shrink-0 overflow-hidden relative">
-                             <img src="https://placehold.co/84x84" alt="Product" className="w-full h-full object-cover" />
-                         </div>
-                    </div>
-
-                    {/* Item 4 */}
-                    <div className="flex gap-4 items-center justify-end w-full">
-                         <div className="flex-1 flex flex-col items-end gap-1">
-                             <span className="text-[#0C1415] text-sm font-['PeydaFaNum']">میز مطالعه مدرن</span>
-                             <span className="text-[#707F81] text-xs font-['PeydaFaNum']">فروشگاه صنایع چوب دهقان</span>
-                             <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-medium mt-1">90,000,000 تومان</span>
-                         </div>
-                         <div className="w-[84px] h-[84px] bg-[#F6F6F6] rounded-lg shrink-0 overflow-hidden relative">
-                             <img src="https://placehold.co/84x84" alt="Product" className="w-full h-full object-cover" />
-                         </div>
-                    </div>
-
+                    ) : (
+                        items.map((item, index) => (
+                            <div key={item.id} className="flex gap-4 items-center justify-end w-full">
+                                <div className="flex-1 flex flex-col items-end gap-1">
+                                    <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] line-clamp-1">{item.name}</span>
+                                    <span className="text-[#707F81] text-xs font-['PeydaFaNum']">{item.shopName || "فروشگاه"}</span>
+                                    <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-medium mt-1">
+                                        {(item.price * item.count).toLocaleString()} تومان
+                                    </span>
+                                </div>
+                                <div className="w-[84px] h-[84px] bg-[#F6F6F6] rounded-lg shrink-0 overflow-hidden relative group">
+                                    <img 
+                                        src={item.image} 
+                                        alt={item.name} 
+                                        className="w-full h-full object-cover" 
+                                    />
+                                    {/* Shadow effect only on first item or if needed, let's keep it simple or strictly per design */}
+                                    {index === 0 && (
+                                         <div className="absolute -bottom-2 -left-2 w-full h-4 bg-black/80 blur-lg opacity-20 rotate-1"></div>
+                                    )}
+                                </div>
+                            </div>
+                        ))
+                    )}
                 </div>
             </div>
 
             {/* Bottom Bar */}
              <div className="fixed bottom-0 left-0 right-0 z-40 w-full max-w-[440px] mx-auto p-6 bg-transparent">
                  <div className="w-full bg-white rounded-2xl shadow-[0px_0px_30px_rgba(0,0,0,0.10)] border border-[rgba(0,0,0,0.10)] p-3">
-                    <button className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-3 hover:bg-[#e5bc09] transition-colors shadow-sm">
+                    <button 
+                        onClick={() => router.push('/Bazzar/DigiKaraCart/PaymentMethode')}
+                        className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-3 hover:bg-[#e5bc09] transition-colors shadow-sm"
+                    >
                         <span className="text-[#1A1C1E] text-[17px] font-['PeydaWeb'] font-semibold">
                             ادامه به پرداخت
                         </span>
