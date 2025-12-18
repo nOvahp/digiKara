@@ -3,6 +3,11 @@ import { X } from 'lucide-react';
 import { toast } from 'sonner';
 import axios from 'axios';
 
+const toFarsiNumber = (n: number | string | undefined): string => {
+    if (n === undefined || n === null) return '';
+    return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
+}
+
 interface NewProductPage4Props {
     onClose: () => void;
     onNext: () => void;
@@ -88,7 +93,7 @@ export function NewProductPage4({ onClose, onNext, onStepClick, formData, update
                                  <input 
                                      type="text" 
                                      value={formData.reminder}
-                                     placeholder="حداقل موجودی (مثلا 10)"
+                                     placeholder={`حداقل موجودی (مثلا ${toFarsiNumber(10)})`}
                                      onChange={(e) => updateFormData({ reminder: e.target.value })}
                                      className="flex-1 h-full bg-transparent border-none outline-none text-[#0D0D12] text-base font-semibold font-num-medium text-right tracking-wider placeholder:text-gray-400" 
                                      dir="rtl"
@@ -135,7 +140,7 @@ function StepItem({ number, label, state, onClick }: { number: string, label: st
     return (
         <div className="flex items-center gap-2.5 flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity" onClick={onClick}>
             <div className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold font-num-medium leading-[21px] tracking-wide ${circleClass}`}>
-                {number}
+                {toFarsiNumber(number)}
             </div>
             <span className={`text-sm font-['PeydaWeb'] leading-[21px] tracking-wide whitespace-nowrap ${textClass}`}>
                 {label}

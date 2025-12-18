@@ -213,7 +213,7 @@ const Projects = () => {
                     <div className="w-full h-16 px-5 py-2 border-b border-[#DFE1E7] flex justify-between items-center bg-white">
                         <div className="text-[#0D0D12] text-16 font-['PeydaWeb'] font-semibold leading-24 tracking-wide">سفارش های فعال</div>
                         <div className="flex justify-start items-center gap-2">
-                            <div className="w-8 h-8 px-4 py-2 bg-white rounded-lg outline outline-1 outline-[#DFE1E7] flex justify-center items-center gap-2 cursor-pointer">
+                            <div className="w-8 h-8 px-0 py-0 bg-white rounded-lg outline outline-1 outline-[#DFE1E7] flex justify-center items-center gap-2 cursor-pointer">
                                 <Filter className="w-4 h-4 text-[#818898]" />
                             </div>
                             <div className="w-8 h-8 p-2 bg-white rounded-lg outline outline-1 outline-[#DFE1E7] flex justify-center items-center gap-2 cursor-pointer">

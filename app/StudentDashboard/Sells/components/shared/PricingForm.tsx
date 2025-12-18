@@ -1,6 +1,11 @@
 import React from 'react';
 import { FormLabel } from './FormLabel';
 
+const toFarsiNumber = (n: number | string | undefined): string => {
+    if (n === undefined || n === null) return '';
+    return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
+}
+
 interface PricingFormProps {
     defaultValues?: any;
     values?: { price: string; fee: string; receive: string; discount: string; code: string; percent: string };
@@ -63,7 +68,7 @@ export function PricingForm({ defaultValues = {}, values, onChange }: PricingFor
                         type="text" 
                         className="flex-1 h-full bg-transparent border-none outline-none text-right text-[#0D0D12] text-base font-semibold font-num-medium"
                         value={val('price')}
-                        placeholder="2.300.000"
+                        placeholder={toFarsiNumber('2300000')}
                         onChange={(e) => handleChange('price', e.target.value)}
                         dir="rtl"
                      />
@@ -81,7 +86,7 @@ export function PricingForm({ defaultValues = {}, values, onChange }: PricingFor
                               <input 
                                 className="w-20 bg-transparent border-none outline-none text-left text-[#666D80] font-num-medium font-semibold"
                                 value={val('fee')}
-                                placeholder="230.000"
+                                placeholder={toFarsiNumber('230000')}
                                 onChange={(e) => handleChange('fee', e.target.value)}
                               />
                               <span className="text-[#666D80] font-['PeydaWeb'] font-semibold">ریال</span>
@@ -93,7 +98,7 @@ export function PricingForm({ defaultValues = {}, values, onChange }: PricingFor
                               <input 
                                 className="w-20 bg-transparent border-none outline-none text-left text-[#666D80] font-num-medium font-semibold"
                                 value={val('receive')}
-                                placeholder="2.070.000"
+                                placeholder={toFarsiNumber('2070000')}
                                 onChange={(e) => handleChange('receive', e.target.value)}
                               />
                               <span className="text-[#666D80] font-['PeydaWeb'] font-semibold">ریال</span>
@@ -114,7 +119,7 @@ export function PricingForm({ defaultValues = {}, values, onChange }: PricingFor
                         type="text" 
                         className="flex-1 h-full bg-transparent border-none outline-none text-right text-[#0D0D12] text-base font-semibold font-num-medium"
                         value={val('discount')}
-                        placeholder="0"
+                        placeholder={toFarsiNumber('0')}
                         onChange={(e) => handleChange('discount', e.target.value)}
                         dir="rtl"
                      />

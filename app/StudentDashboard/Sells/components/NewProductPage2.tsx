@@ -3,6 +3,11 @@ import { X } from 'lucide-react';
 import { BasicInfoForm } from './shared/BasicInfoForm';
 import { CategoryTagsForm } from './shared/CategoryTagsForm';
 
+const toFarsiNumber = (n: number | string | undefined): string => {
+    if (n === undefined || n === null) return '';
+    return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
+}
+
 interface NewProductPage2Props {
     onClose: () => void;
     onNext: () => void;
@@ -100,7 +105,7 @@ function StepItem({ number, label, isActive, onClick }: { number: string, label:
     return (
         <div className="flex items-center gap-2.5 flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity" onClick={onClick}>
             <div className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-sm font-bold font-num-medium leading-[21px] tracking-wide ${isActive ? 'bg-[#FFD369] text-[#393E46]' : 'bg-[#DFE1E7]'}`}>
-                {number}
+                {toFarsiNumber(number)}
             </div>
             <span className={`text-sm font-['PeydaWeb'] leading-[21px] tracking-wide whitespace-nowrap ${isActive ? "text-[#0D0D12] font-bold" : "text-[#818898] font-semibold"}`}>
                 {label}

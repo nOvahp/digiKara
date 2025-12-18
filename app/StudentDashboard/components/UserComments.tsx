@@ -3,6 +3,11 @@ import React from 'react';
 import Image from 'next/image';
 import { Star, MoreHorizontal, ChevronRight, ChevronLeft, Check, Search, Filter } from 'lucide-react';
 
+const toFarsiNumber = (n: number | string | undefined): string => {
+    if (n === undefined || n === null) return '';
+    return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
+}
+
 interface Comment {
     id: number;
     user: string;
@@ -172,7 +177,7 @@ export default function UserComments() {
 
                                             {/* Date */}
                                             <div className="flex-1 h-16 px-3 flex items-center justify-end gap-2.5">
-                                                <span className="text-[#0D0D12] text-sm font-semibold font-num-medium">{comment.date}</span>
+                                                <span className="text-[#0D0D12] text-sm font-semibold font-num-medium">{toFarsiNumber(comment.date)}</span>
                                             </div>
 
                                             {/* Review */}
@@ -212,7 +217,7 @@ export default function UserComments() {
                     {/* Footer / Pagination */}
                     <div className="w-full h-[60px] px-5 py-4 flex justify-between items-center border-t border-[#DFE1E7] bg-white">
                          <div className="text-[#0D0D12] text-sm font-medium font-num-medium">
-                             صفحه {currentPage} از {totalPages}
+                             صفحه {toFarsiNumber(currentPage)} از {toFarsiNumber(totalPages)}
                          </div>
                          <div className="flex items-center gap-2">
                              <button 
@@ -223,7 +228,7 @@ export default function UserComments() {
                                  <ChevronLeft size={16} className="text-[#0D0D12]" />
                              </button>
                              <div className="h-8 px-3 rounded-lg border border-[#DFE1E7] flex items-center justify-center bg-white">
-                                 <span className="text-[#0D0D12] text-xs font-medium font-num-medium">{currentPage}/{totalPages}</span>
+                                 <span className="text-[#0D0D12] text-xs font-medium font-num-medium">{toFarsiNumber(currentPage)}/{toFarsiNumber(totalPages)}</span>
                              </div>
                              <button 
                                 onClick={handleNextPage}

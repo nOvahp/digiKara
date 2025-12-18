@@ -1,6 +1,11 @@
 import React, { useState, useRef } from 'react';
 import { FormLabel } from './FormLabel';
 
+const toFarsiNumber = (n: number | string | undefined): string => {
+    if (n === undefined || n === null) return '';
+    return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
+}
+
 interface BasicInfoFormProps {
     defaultValues?: any;
     values?: { name: string; description: string; id: string; images?: string[] };
@@ -62,7 +67,7 @@ export function BasicInfoForm({ defaultValues = {}, values, onChange }: BasicInf
                         onChange={(e) => handleChange('description', e.target.value)}
                         dir="rtl"
                      />
-                     <div className="text-left text-[#A4ACB9] text-xs font-light font-num-medium mt-2">{((val('description') || "").length)}/200</div>
+                     <div className="text-left text-[#A4ACB9] text-xs font-light font-num-medium mt-2">{toFarsiNumber(((val('description') || "").length))}/{toFarsiNumber(200)}</div>
                  </div>
             </div>
 
@@ -115,7 +120,7 @@ export function BasicInfoForm({ defaultValues = {}, values, onChange }: BasicInf
                                     className="cursor-pointer"
                                 >
                                     <div className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold font-num-medium ${activeImage === num ? 'bg-[#FFD369] text-[#0D0D12]' : 'bg-[#0D0D12]/45 text-white'}`}>
-                                        {num}
+                                        {toFarsiNumber(num)}
                                     </div>
                                 </div>
                             )})}

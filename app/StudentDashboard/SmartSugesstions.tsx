@@ -18,7 +18,7 @@ export function SmartSugesstions() {
         <div className="self-stretch flex justify-start items-center gap-2 overflow-x-auto pb-2">
             
             {/* Card 1 */}
-            <div className="min-w-[250px] bg-white shadow-[0px_0px_4px_rgba(0,0,0,0.25)] rounded-lg flex justify-start items-center gap-2 p-2.5">
+            <div className="min-w-[250px] bg-white border border-[#DFE1E7] shadow-sm rounded-lg flex justify-start items-center gap-2 p-2.5">
                 <div className="flex-1 flex flex-col justify-start items-start gap-1.5">
                     {/* Icon */}
                     <div className="w-6 h-6 relative">
@@ -40,7 +40,7 @@ export function SmartSugesstions() {
             </div>
 
             {/* Card 2 */}
-            <div className="min-w-[250px] bg-white shadow-[0px_0px_4px_rgba(0,0,0,0.25)] rounded-lg flex justify-start items-center gap-2 p-2.5">
+            <div className="min-w-[250px] bg-white border border-[#DFE1E7] shadow-sm rounded-lg flex justify-start items-center gap-2 p-2.5">
                 <div className="flex-1 flex flex-col justify-start items-start gap-1.5">
                      {/* Icon */}
                     <div className="w-6 h-6 relative">
