@@ -3,8 +3,9 @@
 import React, { useState } from "react";
 import { User, GraduationCap, School, Building2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { LoginHeader } from "./login-header";
 import headerImg from "../../public/OtpHeader.png";
+import Image from "next/image";
+import { LoginHeader } from "./login-header";
 
 interface LoginViewProps {
   onNext?: () => void;
@@ -60,12 +61,12 @@ export function LoginView4({ onNext }: LoginViewProps) {
   };
 
   return (
-    <div className="w-full h-full   flex flex-col items-center " dir="rtl">
+   <div className="flex h-full w-full flex-col">
       
       <LoginHeader imageSrc={headerImg} />
       {/* Header Content */}
       <div className="absolute top-0 left-0 right-0 mx-auto w-full max-w-[440px] px-10 pt-15 z-10 flex flex-col gap-8">
-         <div className="w-full flex justify-between items-center">
+         <div className="w-full flex justify-end items-center">
             <span className="text-[#393E46] text-lg font-['PeydaWeb'] font-black">دیجی کارا</span>
          </div>
          
@@ -80,7 +81,7 @@ export function LoginView4({ onNext }: LoginViewProps) {
          </div>
       </div>
       {/* Main Content */}
-      <div className="w-full  px-0 mt-12 z-10 flex flex-col gap-8 flex-1 pb-24">
+      <div className="w-full max-w-[440px] mx-auto px-0 mt-12 z-10 flex flex-col gap-8 flex-1 pb-24">
         
         {/* Title Section */}
 
@@ -93,23 +94,23 @@ export function LoginView4({ onNext }: LoginViewProps) {
                     onClick={() => setSelectedType(type.id)}
                     className="flex justify-between items-center cursor-pointer group"
                 >
-                    {/* Right: Icon & Text */}
-                    <div className="flex items-center gap-4">
-                        <div className="w-[52px] h-[52px] rounded-full border border-black/10 bg-white flex items-center justify-center shrink-0">
-                            {type.icon}
-                        </div>
-                        <div className="flex flex-col gap-1">
-                            <span className="text-[#393E46] text-base font-['PeydaWeb'] font-black">{type.title}</span>
-                            <span className="text-[#393E46] text-sm font-['PeydaWeb'] font-semibold">{type.subtitle}</span>
-                        </div>
-                    </div>
-
                     {/* Left: Radio */}
                     <div className="relative w-6 h-6 flex items-center justify-center shrink-0">
                         <div className={`w-6 h-6 rounded-full border-[1.5px] transition-colors ${selectedType === type.id ? 'border-[#0C1415]' : 'border-[#D1D1D6]'}`}></div>
                         {selectedType === type.id && (
                             <div className="absolute w-3 h-3 bg-[#0C1415] rounded-full"></div>
                         )}
+                    </div>
+
+                    {/* Right: Icon & Text */}
+                    <div className="flex items-center gap-4">
+                        <div className="flex flex-col gap-1 text-right">
+                            <span className="text-[#393E46] text-base font-['PeydaWeb'] font-black">{type.title}</span>
+                            <span className="text-[#393E46] text-sm font-['PeydaWeb'] font-semibold">{type.subtitle}</span>
+                        </div>
+                        <div className="w-[52px] h-[52px] rounded-full border border-black/10 bg-white flex items-center justify-center shrink-0">
+                            {type.icon}
+                        </div>
                     </div>
                     
                     

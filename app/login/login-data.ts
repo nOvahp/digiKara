@@ -22,3 +22,5 @@ export const loginContent3 = {
   headerImage: headerImg3,
   overlayImage: "/man repairs broken robot.png"
 }
+
+
