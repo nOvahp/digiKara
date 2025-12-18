@@ -10,15 +10,15 @@ export const loginContent = {
 }
 
 export const loginContent2 = {
-  title: "مهارت",
-  description: "ارسال، بحث با مشتری، کار، به اشتراک گذاری فایل ها، تکمیل پروژه",
+  title: "با تمرین و ساختن پروژه ها، مهارت هات رو افزایش می‌دی ",
+  description: "با تمرین مهارت‌های واقعی و انجام پروژه‌های عملی، کنارتیم تا هر روز یه پله مهارت‌هات رو بالاتر ببری",
   headerImage: headerImg2,
   overlayImage: "/logInNew2.png"
 }
 
 export const loginContent3 = {
-  title: "فروش",
-  description: "ما به شما کمک می کنیم تا در یک فضای امن  وارد بازار بشوید و با مدرسه و هنرستان ها همکاری کنید",
+  title: " با توانمندی‌هایی که به دست میاری، محصول واقعی خودت رو می‌سازی",
+  description: "یادگیری اینجا با اجرا همراهه؛ مهارت‌هات رو به کار می‌گیری و در نهایت به یک محصول مشخص و واقعی می‌رسی",
   headerImage: headerImg3,
-  overlayImage: "/logInNew3.png"
+  overlayImage: "/man repairs broken robot.png"
 }

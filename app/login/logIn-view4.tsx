@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import { User, GraduationCap, School, Building2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { LoginHeader } from "./login-header";
+import headerImg from "../../public/OtpHeader.png";
 
 interface LoginViewProps {
   onNext?: () => void;
@@ -58,32 +60,30 @@ export function LoginView4({ onNext }: LoginViewProps) {
   };
 
   return (
-    <div className="w-full min-h-screen bg-white relative flex flex-col items-center overflow-hidden" dir="rtl">
+    <div className="w-full h-full   flex flex-col items-center " dir="rtl">
       
-      {/* Yellow Gradient Header Background */}
-      <div className="absolute top-0 left-0 w-full h-[225px] bg-gradient-to-b from-[#F7C309] to-white z-0 pointer-events-none" />
-
+      <LoginHeader imageSrc={headerImg} imageClassName="!object-cover" />
       {/* Header Content */}
-      <div className="w-full max-w-[440px] px-6 pt-8 z-10 flex justify-between items-center">
-         <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
-             {/* Back Button Placeholder if needed */}
-             {/* <ArrowLeft className="w-6 h-6 text-[#393E46]" /> */}
+      <div className="absolute top-0 left-0 right-0 mx-auto w-full max-w-[440px] px-10 pt-15 z-10 flex flex-col gap-8">
+         <div className="w-full flex justify-between items-center">
+            <span className="text-[#393E46] text-lg font-['PeydaWeb'] font-black">دیجی کارا</span>
          </div>
-         <span className="text-[#393E46] text-lg font-['PeydaWeb'] font-black">دیجی کارا</span>
-      </div>
-
-      {/* Main Content */}
-      <div className="w-full max-w-[440px] px-6 mt-12 z-10 flex flex-col gap-8 flex-1 pb-24">
-        
-        {/* Title Section */}
-        <div className="flex flex-col gap-4 text-right">
+         
+         {/* Title Section */}
+         <div className="flex flex-col gap-4 text-right">
             <h1 className="text-[#393E46] text-4xl font-['PeydaWeb'] font-black leading-tight">
                 نوع حساب کاربری
             </h1>
             <p className="text-[#393E46] text-sm font-['PeydaWeb'] font-semibold">
                 نوع حساب کاربری خود را انتخاب کنید.
             </p>
-        </div>
+         </div>
+      </div>
+      {/* Main Content */}
+      <div className="w-full  px-0 mt-12 z-10 flex flex-col gap-8 flex-1 pb-24">
+        
+        {/* Title Section */}
+
 
         {/* Account Types List */}
         <div className="flex flex-col gap-6 mt-4">
@@ -93,28 +93,26 @@ export function LoginView4({ onNext }: LoginViewProps) {
                     onClick={() => setSelectedType(type.id)}
                     className="flex justify-between items-center cursor-pointer group"
                 >
-                    {/* Left: Radio & Text */}
-                    <div className="flex items-center gap-4 flex-1">
-                        
-                        {/* Radio Button */}
-                        <div className="relative w-6 h-6 flex items-center justify-center">
-                            <div className={`w-6 h-6 rounded-full border-[1.5px] transition-colors ${selectedType === type.id ? 'border-[#0C1415]' : 'border-[#D1D1D6]'}`}></div>
-                            {selectedType === type.id && (
-                                <div className="absolute w-3 h-3 bg-[#0C1415] rounded-full"></div>
-                            )}
+                    {/* Right: Icon & Text */}
+                    <div className="flex items-center gap-4">
+                        <div className="w-[52px] h-[52px] rounded-full border border-black/10 bg-white flex items-center justify-center shrink-0">
+                            {type.icon}
                         </div>
-
-                        {/* Text */}
                         <div className="flex flex-col gap-1">
                             <span className="text-[#393E46] text-base font-['PeydaWeb'] font-black">{type.title}</span>
                             <span className="text-[#393E46] text-sm font-['PeydaWeb'] font-semibold">{type.subtitle}</span>
                         </div>
                     </div>
 
-                    {/* Right: Avatar/Icon */}
-                    <div className="w-[52px] h-[52px] rounded-full border border-black/10 bg-white flex items-center justify-center shrink-0">
-                        {type.icon}
+                    {/* Left: Radio */}
+                    <div className="relative w-6 h-6 flex items-center justify-center shrink-0">
+                        <div className={`w-6 h-6 rounded-full border-[1.5px] transition-colors ${selectedType === type.id ? 'border-[#0C1415]' : 'border-[#D1D1D6]'}`}></div>
+                        {selectedType === type.id && (
+                            <div className="absolute w-3 h-3 bg-[#0C1415] rounded-full"></div>
+                        )}
                     </div>
+                    
+                    
 
                 </div>
             ))}

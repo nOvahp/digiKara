@@ -17,7 +17,7 @@ export function LoginView2({ onNext }: LoginViewProps) {
     <div className="flex h-full w-full flex-col ">
           <LoginHeader 
             imageSrc={loginContent2.headerImage}
-           
+           overlayImageSrc={loginContent2.overlayImage}
           />
           <div className="flex flex-1 flex-col items-center justify-start    bg-background rounded-t-3xl z-10">
             <LoginDescription onNext={onNext} title={loginContent2.title}

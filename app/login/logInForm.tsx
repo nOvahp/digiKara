@@ -4,18 +4,23 @@ import * as React from "react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { LoginHeader } from "./login-header"
-import headerImg from "../../public/logIn5.png"
+import headerImg from "../../public/OtpHeader.png"
 import { LoginTopNav } from "./login-top-nav"
 import { LoginHeaderText } from "./login-header-text"
 import { LoginFormContent } from "./login-form-content"
 import { SmsNotification } from "./sms-notification"
 
 type LoginStage = "PHONE_ENTRY" | "OTP_ENTRY"
-const MOCK_OTP = "12345"
+
 const RESEND_DELAY = 120 // 2 minutes
 
 export function LogInForm({ onNext }: { onNext?: () => void }) {
   const router = useRouter()
+  const [mockOtp, setMockOtp] = useState("12345")
+
+  useEffect(() => {
+    setMockOtp(Math.floor(10000 + Math.random() * 90000).toString())
+  }, [])
   const [stage, setStage] = useState<LoginStage>("PHONE_ENTRY")
   const [phoneNumber, setPhoneNumber] = useState("")
   const [otp, setOtp] = useState("")
@@ -60,13 +65,13 @@ export function LogInForm({ onNext }: { onNext?: () => void }) {
   const handleOtpSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
-    if (otp !== MOCK_OTP) {
+    if (otp !== mockOtp) {
         if (otp.length < 4) {
              setError("کد تایید معتبر نیست")
              return
         }
-        if (otp !== MOCK_OTP) {
-            setError("کد وارد شده صحیح نیست (کد آزمایشی: 12345)")
+        if (otp !== mockOtp) {
+            setError(`کد وارد شده صحیح نیست (کد آزمایشی: ${mockOtp})`)
             return
         }
     }
@@ -103,7 +108,7 @@ export function LogInForm({ onNext }: { onNext?: () => void }) {
   return (
     <div className="flex h-full w-full flex-col relative">
       <SmsNotification 
-        code={MOCK_OTP} 
+        code={mockOtp} 
         visible={showNotification} 
         onDismiss={() => setShowNotification(false)}
       />

@@ -20,7 +20,7 @@ const Hero = () => {
 
       <div className="relative z-10 order-2 flex justify-center lg:justify-start lg:absolute lg:inset-x-0 w-[120%] sm:w-full lg:w-6/9 xl:w-6/9 mt-0 lg:mt-0 top-[-20px] sm:top-[-20px] md:top-0 lg:top-5 xl:top-[10px] left-[5%] sm:left-0 md:left-[10] lg:left-[-10] xl:left-[-20] lg:right-auto pointer-events-none">
         <Image
-          src="/iPhone Double Stylized Mockup 1.png"
+          src="/hero.png"
           alt="iPhone Mockup"
           width={1040}
           height={720}

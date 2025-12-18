@@ -18,7 +18,7 @@ export function LoginDescription({
 }: LoginDescriptionProps) {
   return (
     <div className="flex flex-col items-center gap-2 text-center">
-      <h2 className="text-[30px] font-bold text-foreground">
+      <h2 className="text-[25px] font-bold text-foreground">
         {title}
       </h2>
       <p className="text-[16px] text-[#6C7278] font-medium px-4">
