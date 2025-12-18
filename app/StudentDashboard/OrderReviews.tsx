@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
-import { Search, Filter, ChevronLeft, ChevronRight } from "lucide-react"
+import { Search, Filter, ChevronLeft, ChevronRight, Eye } from "lucide-react"
 import { PopUpProduct } from "./PopUpProduct"
 
 // Interface for Order Data
@@ -473,9 +473,7 @@ export function OrderReviews() {
                     >
                          {/* Action / Icon Column */}
                          <div className="w-[44px] h-16 px-3 flex items-center justify-center border-b border-[#DFE1E7]">
-                             <div className="w-5 h-5 relative">
-                                  <div className="absolute left-[1.67px] top-[8.33px] w-[16.67px] h-[3.33px] bg-[#666D80]" />
-                             </div>
+                             <Eye className="w-5 h-5 text-[#666D80]" />
                          </div>
                          
                          {/* Description/Note */}

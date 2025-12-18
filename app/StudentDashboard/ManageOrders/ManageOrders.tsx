@@ -4,9 +4,14 @@ import {
     Filter, 
     Search,
     BarChart3,
+
     MoreHorizontal, 
     ChevronRight, 
-    ChevronLeft
+    ChevronLeft,
+    ShoppingBag,
+    DollarSign,
+    Clock,
+    Truck
 } from 'lucide-react';
 import { DashboardNavBar } from "../DashboardNavBar";
 import { Navigation } from "../Navigation";
@@ -142,7 +147,7 @@ export default function ManageOrders() {
                             <div className="flex flex-col gap-2">
                                 <div className="flex justify-start items-center gap-2 min-w-0">
                                     <div className="w-9 h-9 bg-[#FFD369] rounded-lg shadow-inner flex items-center justify-center flex-shrink-0">
-                                        <BarChart3 size={20} className="text-[#393E46]" />
+                                        <ShoppingBag size={20} className="text-[#393E46]" />
                                     </div>
                                     <span className="text-right text-[#818898] text-sm font-semibold font-['PeydaWeb'] truncate">کل سفارشات</span>
                                 </div>
@@ -160,7 +165,7 @@ export default function ManageOrders() {
                             <div className="flex flex-col gap-2">
                                 <div className="flex justify-start items-center gap-2 min-w-0">
                                     <div className="w-9 h-9 bg-[#FFD369] rounded-lg shadow-inner flex items-center justify-center flex-shrink-0">
-                                        <BarChart3 size={20} className="text-[#393E46]" />
+                                        <DollarSign size={20} className="text-[#393E46]" />
                                     </div>
                                     <span className="text-right text-[#818898] text-sm font-semibold font-['PeydaWeb'] truncate">کل درآمد</span>
                                 </div>
@@ -178,7 +183,7 @@ export default function ManageOrders() {
                             <div className="flex flex-col gap-2">
                                 <div className="flex justify-start items-center gap-2 min-w-0">
                                     <div className="w-9 h-9 bg-[#FFD369] rounded-lg shadow-inner flex items-center justify-center flex-shrink-0">
-                                        <BarChart3 size={20} className="text-[#393E46]" />
+                                        <Clock size={20} className="text-[#393E46]" />
                                     </div>
                                     <span className="text-right text-[#818898] text-sm font-semibold font-['PeydaWeb'] truncate">سفارشات در انتظار</span>
                                 </div>
@@ -196,7 +201,7 @@ export default function ManageOrders() {
                             <div className="flex flex-col gap-2">
                                 <div className="flex justify-start items-center gap-2 min-w-0">
                                     <div className="w-9 h-9 bg-[#FFD369] rounded-lg shadow-inner flex items-center justify-center flex-shrink-0">
-                                        <BarChart3 size={20} className="text-[#393E46]" />
+                                        <Truck size={20} className="text-[#393E46]" />
                                     </div>
                                     <span className="text-right text-[#818898] text-sm font-semibold font-['PeydaWeb'] truncate">ارسال شده</span>
                                 </div>

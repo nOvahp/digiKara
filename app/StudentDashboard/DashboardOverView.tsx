@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Image from "next/image"
+import { Store, ShoppingBag, Package } from "lucide-react"
 import earningBg from "../../public/DashboardEarning.png"
 
 export function DashboardOverview() {
@@ -34,9 +35,9 @@ export function DashboardOverview() {
         {/* Stats Row */}
         <div className="w-full flex gap-3">
             
-            {/* Card 1: New Orders */}
-            <div className="flex-1 bg-white shadow-sm rounded-lg p-3.5 flex flex-col justify-between items-center h-[81px]">
+            <div className="flex-1 bg-white shadow-sm rounded-lg p-3.5 flex flex-col justify-center items-center gap-3 min-h-[110px]">
                 <div className="flex flex-col items-center gap-1">
+                    <Store className="w-6 h-6 text-[#64B327] mb-1" />
                     <div className="text-[#64B327] text-[18px] font-['PeydaFaNum'] font-extrabold leading-[25.2px]">
                         فعال
                     </div>
@@ -45,8 +46,9 @@ export function DashboardOverview() {
                     وضعیت غرفه
                 </div>
             </div>
-            <div className="flex-1 bg-white shadow-sm rounded-lg p-3.5 flex flex-col justify-between items-center h-[81px]">
+            <div className="flex-1 bg-white shadow-sm rounded-lg p-3.5 flex flex-col justify-center items-center gap-3 min-h-[110px]">
                 <div className="flex flex-col items-center gap-1">
+                    <ShoppingBag className="w-6 h-6 text-[#393E46] mb-1" />
                     <div className="text-[#393E46] text-[20px] font-['PeydaFaNum'] font-extrabold leading-7">
                         3
                     </div>
@@ -57,8 +59,9 @@ export function DashboardOverview() {
             </div>
 
             {/* Card 2: Active Products */}
-            <div className="flex-1 bg-white shadow-sm rounded-lg p-3.5 flex flex-col justify-between items-center h-[81px]">
+            <div className="flex-1 bg-white shadow-sm rounded-lg p-3.5 flex flex-col justify-center items-center gap-3 min-h-[110px]">
                <div className="flex flex-col items-center gap-1">
+                    <Package className="w-6 h-6 text-[#393E46] mb-1" />
                     <div className="text-[#393E46] text-[20px] font-['PeydaFaNum'] font-extrabold leading-7">
                         23
                     </div>

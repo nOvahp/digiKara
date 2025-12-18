@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { ClipboardList, Plus, Package, Layers, PackageX, AlertTriangle } from 'lucide-react';
 import { DashboardNavBar } from "../DashboardNavBar";
 import { Navigation } from "../Navigation";
 import { ProductTable, ProductData } from "./components/ProductTable";
@@ -91,11 +92,7 @@ export default function SellsPage() {
                         <div className="text-center text-[#1A1C1E] text-[17.58px] font-semibold font-['PeydaWeb'] leading-6">
                             مدیریت سفارشات
                         </div>
-                        <div className="w-6 h-6 relative overflow-hidden">
-                            <div className="w-[10px] h-[15px] left-[10px] top-[7px] absolute border-[1.5px] border-[#0A0A0A] rounded-[1px]" />
-                            <div className="w-[10px] h-[14px] left-[4px] top-[6px] absolute border-[1.5px] border-[#0A0A0A] rounded-[1px]" />
-                            <div className="w-[7px] h-[8px] left-[10px] top-[2px] absolute border-[1.5px] border-[#0A0A0A] rounded-[1px]" />
-                        </div>
+                        <ClipboardList className="w-6 h-6 text-[#1A1C1E]" strokeWidth={1.5} />
                     </div>
 
                     {/* Add Product Button */}
@@ -106,22 +103,18 @@ export default function SellsPage() {
                         <div className="text-center text-[#1A1C1E] text-[17.58px] font-semibold font-['PeydaWeb'] leading-6">
                             اضافه کردن محصول
                         </div>
-                        <div className="w-6 h-6 relative overflow-hidden">
-                            <div className="w-[10px] h-[10px] left-[7px] top-[7px] absolute border-2 border-[#1A1C1E]" />
-                            <div className="w-[2px] h-[10px] left-[11px] top-[7px] absolute bg-[#1A1C1E]" />
-                            <div className="w-[10px] h-[2px] left-[7px] top-[11px] absolute bg-[#1A1C1E]" />
-                        </div>
+                        <Plus className="w-6 h-6 text-[#1A1C1E]" strokeWidth={1.5} />
                     </button>
                 </div>
 
                  <div className="w-full flex flex-col gap-3 px-0">
                      <div className="w-full flex gap-3">
-                         <StatCard title="کل محصولات" value={productsList.length.toLocaleString('fa-IR')} trend="+۱۲.۴٪" trendType="positive" trendLabel="از ماه گذشته" icon={<div className="w-5 h-5 relative overflow-hidden"><div className="absolute left-[2.50px] top-[2.50px] w-[15px] h-[15px] border-[1.67px] border-[#393E46]" /></div>} />
-                         <StatCard title="موجودی ها" value="980" trend="+412 مورد" trendType="positive" trendLabel="از ماه گذشته" icon={<div className="w-5 h-5 relative overflow-hidden"><div className="absolute left-[2.50px] top-[2.50px] w-[15px] h-[15px] border-[1.67px] border-[#393E46]" /></div>} />
+                         <StatCard title="کل محصولات" value={productsList.length.toLocaleString('fa-IR')} trend="+۱۲.۴٪" trendType="positive" trendLabel="از ماه گذشته" icon={<Package className="w-5 h-5 text-[#393E46]" strokeWidth={1.5} />} />
+                         <StatCard title="موجودی ها" value="980" trend="+412 مورد" trendType="positive" trendLabel="از ماه گذشته" icon={<Layers className="w-5 h-5 text-[#393E46]" strokeWidth={1.5} />} />
                      </div>
                      <div className="w-full flex gap-3">
-                         <StatCard title="ناموجود ها" value="180" trend="+۷.۳٪" trendType="negative" trendLabel="از ماه گذشته" icon={<div />} />
-                         <StatCard title="موجودی کم" value="80" trend="+۱۲.۴٪" trendType="positive" trendLabel="از ماه گذشته" icon={<div className="w-5 h-5 relative overflow-hidden"><div className="absolute left-[2.50px] top-[2.50px] w-[15px] h-[15px] border-[1.67px] border-[#393E46]" /></div>} />
+                         <StatCard title="ناموجود ها" value="180" trend="+۷.۳٪" trendType="negative" trendLabel="از ماه گذشته" icon={<PackageX className="w-5 h-5 text-[#393E46]" strokeWidth={1.5} />} />
+                         <StatCard title="موجودی کم" value="80" trend="+۱۲.۴٪" trendType="positive" trendLabel="از ماه گذشته" icon={<AlertTriangle className="w-5 h-5 text-[#393E46]" strokeWidth={1.5} />} />
                      </div>
                  </div>
 

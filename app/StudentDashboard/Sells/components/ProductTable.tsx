@@ -144,17 +144,11 @@ export function ProductTable({ products }: ProductTableProps) {
             {/* Header */}
             <div className="w-full h-16 px-5 py-2 border-b border-[#DFE1E7] flex justify-between items-center bg-white">
                 <div className="flex justify-start items-center gap-2">
-                    <div className="w-8 h-8 px-4 py-2 bg-white rounded-lg border border-[#DFE1E7] flex justify-center items-center gap-2 cursor-pointer hover:bg-gray-50">
-                        <div className="w-4 h-4 relative">
-                            {/* Filter Icon Placeholder from User Snippet */}
-                            <div className="absolute left-[2px] top-[2px] w-3 h-3 border-[1.33px] border-[#818898] rounded-full" />
-                        </div>
+                    <div className="w-8 h-8 px-0 py-0 bg-white rounded-lg border border-[#DFE1E7] flex justify-center items-center gap-2 cursor-pointer hover:bg-gray-50">
+                        <Filter className="w-4 h-4 text-[#818898]" />
                     </div>
                     <div className="w-8 h-8 p-2 bg-white rounded-lg border border-[#DFE1E7] flex justify-center items-center gap-2 cursor-pointer hover:bg-gray-50">
-                        <div className="w-4 h-4 relative">
-                             {/* icon placeholder */}
-                            <div className="absolute left-[2px] top-[2px] w-3 h-3 border-[1.33px] border-[#818898] rounded-full" />
-                        </div>
+                        <Search className="w-4 h-4 text-[#818898]" />
                     </div>
                 </div>
                 <div className="text-[#0D0D12] text-base font-semibold font-['PeydaWeb'] leading-normal tracking-wide">
@@ -240,9 +234,7 @@ export function ProductTable({ products }: ProductTableProps) {
                             currentPage === 1 ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-50 bg-white"
                         )}
                     >
-                         <div className="w-5 h-5 relative overflow-hidden">
-                             <div className="absolute left-[7.50px] top-[19.51px] w-[14.51px] h-[5px] border-[1.50px] border-[#0D0D12] rounded-[0.83px] transform -rotate-90 origin-top-left" />
-                         </div>
+                         <ChevronLeft className="w-5 h-5 text-[#0D0D12]" />
                     </button>
 
                     {/* Page Indicator */}
@@ -261,9 +253,7 @@ export function ProductTable({ products }: ProductTableProps) {
                             currentPage === totalPages ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-50 bg-white"
                          )}
                     >
-                         <div className="w-5 h-5 relative overflow-hidden">
-                             <div className="absolute left-[12.50px] top-[5px] w-[14.51px] h-[5px] border-[1.50px] border-[#0D0D12] rounded-[0.83px] transform rotate-90 origin-top-left" />
-                         </div>
+                         <ChevronRight className="w-5 h-5 text-[#0D0D12]" />
                     </button>
                 </div>
             </div>

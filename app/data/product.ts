@@ -26,7 +26,7 @@ export const products: Product[] = [
     
     // -- Special / Featured Items --
     { id: 101, title: "میز غذاخوری", price: "500,000 تومان", rating: 5.0, image: "/ProductBazzar.png", category: "صنایع چوبی", isSpecialSale: true },
-    { id: 102, title: "صندلی ناهارخوری", price: "180,000 تومان", rating: 4.2, image: "/ProductBazzar.png", category: "صنایع چوبی", isSpecialSale: true },
+    { id: 102, title: "صندلی ناهارخوری", price: "180,000 تومان", rating: 4.2, image: "/1.png", category: "صنایع چوبی", isSpecialSale: true },
     { id: 103, title: "کمد لباس MDF", price: "700,000 تومان", rating: 4.8, image: "/ProductBazzar.png", category: "صنایع چوبی", isSpecialSale: true },
     { id: 201, title: "صندلی دسته دار کلاسیک", price: "180,000 تومان", rating: 4.9, image: "/ProductBazzar.png", category: "صنایع چوبی", isNewCollection: true, isPopular: true, isBestSeller: true },
     { id: 202, title: "صندلی راحتی مدرن", price: "250,000 تومان", rating: 4.5, image: "/ProductBazzar.png", category: "صنایع چوبی", isNewCollection: true, isPopular: true, isBestSeller: true },
