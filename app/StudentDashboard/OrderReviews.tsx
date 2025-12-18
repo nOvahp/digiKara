@@ -4,6 +4,11 @@ import React, { useState } from "react"
 import { Search, Filter, ChevronLeft, ChevronRight, Eye } from "lucide-react"
 import { PopUpProduct } from "./PopUpProduct"
 
+const toFarsiNumber = (n: number | string | undefined): string => {
+    if (n === undefined || n === null) return '';
+    return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
+}
+
 // Interface for Order Data
 export interface Order {
   id: number
@@ -391,8 +396,8 @@ export function OrderReviews() {
       )}
 
       {/* Header */}
-      <div className="self-stretch justify-between items-center px-1 inline-flex w-full">
-         <div className="text-[#222831] text-lg font-extrabold font-['PeydaFaNum'] leading-relaxed">
+      <div className="self-stretch justify-end items-center px-1 inline-flex w-full">
+         <div className="text-[#222831] text-lg font-extrabold font-num-medium leading-relaxed">
             سفارش ها
          </div>
          {/* Spacer or extra actions could go here */}
@@ -422,7 +427,7 @@ export function OrderReviews() {
             <div className="w-full h-16 px-5 py-2 border-b border-[#DFE1E7] justify-between items-center inline-flex bg-white">
                 <div className="flex justify-start items-center gap-2">
                     {/* Filter Button */}
-                    <div className="w-8 h-8 px-4 py-2 bg-white rounded-lg border border-[#DFE1E7] justify-center items-center gap-2 flex cursor-pointer hover:bg-gray-50">
+                    <div className="w-8 h-8 px-0 py-2 bg-white rounded-lg border border-[#DFE1E7] justify-center items-center gap-2 flex cursor-pointer hover:bg-gray-50">
                         <Filter className="w-4 h-4 text-[#666D80]" />
                     </div>
                     {/* Search Button */}
@@ -486,7 +491,7 @@ export function OrderReviews() {
                          {/* Status */}
                          <div className="w-[104px] h-16 px-3 flex items-center justify-center border-b border-[#DFE1E7]">
                              <div className={`px-2 py-0.5 rounded-2xl flex items-center justify-center ${getStatusStyles(order.statusLabel)}`}>
-                                 <span className="text-center text-xs font-normal font-['PeydaFaNum'] tracking-wide whitespace-nowrap">
+                                 <span className="text-center text-xs font-normal font-num-medium tracking-wide whitespace-nowrap">
                                      {order.statusLabel}
                                  </span>
                              </div>
@@ -495,34 +500,34 @@ export function OrderReviews() {
                          {/* Price */}
                          <div className="w-[140px] h-16 px-3 flex items-center justify-end border-b border-[#DFE1E7]">
                               <span className="text-center text-[#0D0D12] text-sm font-semibold font-['PeydaWeb'] tracking-wide w-full">
-                                  {order.price}
+                                  {toFarsiNumber(order.price)}
                               </span>
                          </div>
 
                          {/* Delivery Time */}
                          <div className="w-[127px] h-16 px-3 flex items-center justify-end border-b border-[#DFE1E7]">
-                              <span className="text-center text-[#0D0D12] text-sm font-semibold font-['PeydaFaNum'] tracking-wide w-full">
-                                  {order.deliveryTime}
+                              <span className="text-center text-[#0D0D12] text-sm font-semibold font-num-medium tracking-wide w-full">
+                                  {toFarsiNumber(order.deliveryTime)}
                               </span>
                          </div>
 
                          {/* Count */}
                          <div className="w-[73px] h-16 px-3 flex items-center justify-end border-b border-[#DFE1E7]">
-                              <span className="text-center text-[#0D0D12] text-sm font-semibold font-['PeydaFaNum'] tracking-wide w-full">
-                                  {order.count}
+                              <span className="text-center text-[#0D0D12] text-sm font-semibold font-num-medium tracking-wide w-full">
+                                  {toFarsiNumber(order.count)}
                               </span>
                          </div>
 
                          {/* Product Name */}
                          <div className="w-[272px] h-16 px-3 flex items-center justify-end gap-1 border-b border-[#DFE1E7]">
                               <span className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb'] tracking-wide"> {order.productName} | </span>
-                              <span className="text-[#0D0D12] text-sm font-semibold font-['PeydaFaNum'] tracking-wide"> {order.weight} </span>
+                              <span className="text-[#0D0D12] text-sm font-semibold font-num-medium tracking-wide"> {toFarsiNumber(order.weight)} </span>
                          </div>
 
                          {/* Index & Checkbox */}
                          <div className="w-[80px] h-16 px-3 flex items-center justify-start gap-2.5 border-b border-[#DFE1E7]">
-                             <span className="flex-1 text-center text-[#0D0D12] text-sm font-semibold font-['PeydaFaNum'] tracking-wide">
-                                 {order.id}
+                             <span className="flex-1 text-center text-[#0D0D12] text-sm font-semibold font-num-medium tracking-wide">
+                                 {toFarsiNumber(order.id)}
                              </span>
                              <div className="w-4 h-4 bg-white rounded border border-[#DFE1E7]" />
                          </div>
@@ -533,8 +538,8 @@ export function OrderReviews() {
 
             {/* Footer / Pagination */}
             <div className="self-stretch px-5 py-4 flex justify-between items-center w-full">
-                 <div className="text-center text-[#0D0D12] text-sm font-medium font-['PeydaFaNum'] tracking-wide">
-                     صفحه {currentPage} از {totalPages}
+                 <div className="text-center text-[#0D0D12] text-sm font-medium font-num-medium tracking-wide">
+                     صفحه {toFarsiNumber(currentPage)} از {toFarsiNumber(totalPages)}
                  </div>
                  <div className="flex justify-start items-center gap-2">
                      <button 
@@ -545,7 +550,7 @@ export function OrderReviews() {
                          <ChevronLeft className="w-4 h-4 text-[#0D0D12]" />
                      </button>
                      <div className="w-[55px] h-8 rounded-lg border border-[#DFE1E7] flex flex-col justify-center items-center">
-                         <span className="text-[#0D0D12] text-xs font-medium font-['PeydaFaNum'] tracking-wide">{currentPage}/{totalPages}</span>
+                         <span className="text-[#0D0D12] text-xs font-medium font-num-medium tracking-wide">{toFarsiNumber(currentPage)}/{toFarsiNumber(totalPages)}</span>
                      </div>
                      <button
                         onClick={handleNextPage}

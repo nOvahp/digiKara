@@ -110,11 +110,11 @@ export default function SellsPage() {
                  <div className="w-full flex flex-col gap-3 px-0">
                      <div className="w-full flex gap-3">
                          <StatCard title="کل محصولات" value={productsList.length.toLocaleString('fa-IR')} trend="+۱۲.۴٪" trendType="positive" trendLabel="از ماه گذشته" icon={<Package className="w-5 h-5 text-[#393E46]" strokeWidth={1.5} />} />
-                         <StatCard title="موجودی ها" value="980" trend="+412 مورد" trendType="positive" trendLabel="از ماه گذشته" icon={<Layers className="w-5 h-5 text-[#393E46]" strokeWidth={1.5} />} />
+                         <StatCard title="موجودی ها" value="۹۸۰" trend="+۴۱۲ مورد" trendType="positive" trendLabel="از ماه گذشته" icon={<Layers className="w-5 h-5 text-[#393E46]" strokeWidth={1.5} />} />
                      </div>
                      <div className="w-full flex gap-3">
-                         <StatCard title="ناموجود ها" value="180" trend="+۷.۳٪" trendType="negative" trendLabel="از ماه گذشته" icon={<PackageX className="w-5 h-5 text-[#393E46]" strokeWidth={1.5} />} />
-                         <StatCard title="موجودی کم" value="80" trend="+۱۲.۴٪" trendType="positive" trendLabel="از ماه گذشته" icon={<AlertTriangle className="w-5 h-5 text-[#393E46]" strokeWidth={1.5} />} />
+                         <StatCard title="ناموجود ها" value="۱۸۰" trend="+۷.۳٪" trendType="negative" trendLabel="از ماه گذشته" icon={<PackageX className="w-5 h-5 text-[#393E46]" strokeWidth={1.5} />} />
+                         <StatCard title="موجودی کم" value="۸۰" trend="+۱۲.۴٪" trendType="positive" trendLabel="از ماه گذشته" icon={<AlertTriangle className="w-5 h-5 text-[#393E46]" strokeWidth={1.5} />} />
                      </div>
                  </div>
 

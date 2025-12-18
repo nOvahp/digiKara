@@ -18,6 +18,11 @@ interface ProductTableRowProps {
     onToggle: (id: number | string) => void;
 }
 
+function toFarsiNumber(n: number | string | undefined): string {
+    if (n === undefined || n === null) return '';
+    return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
+}
+
 function ProductTableRow({ product, index, isChecked, onToggle }: ProductTableRowProps) {
     const router = useRouter();
     const isPositive = product.trendType === 'positive';
@@ -47,30 +52,30 @@ function ProductTableRow({ product, index, isChecked, onToggle }: ProductTableRo
             {/* Badge */}
             <div className="w-[104px] h-16 px-3 border-b border-[#DFE1E7] flex justify-end items-center gap-1.5">
                 <div className={cn("h-5 px-2 py-[2px] rounded-2xl flex justify-start items-center", trendBg)}>
-                    <div className={cn("text-center text-xs font-normal font-['PeydaFaNum'] leading-[18px] tracking-wide", trendText)}>
-                        {product.trendPercentage}
+                    <div className={cn("text-center text-xs font-normal font-num-medium leading-[18px] tracking-wide", trendText)}>
+                        {toFarsiNumber(product.trendPercentage)}
                     </div>
                 </div>
             </div>
 
             {/* Inventory Count */}
             <div className="w-[127px] h-16 px-3 border-b border-[#DFE1E7] flex justify-end items-center gap-2.5">
-                <div className="flex-1 text-center text-[#0D0D12] text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">
-                    {product.inventoryCount}
+                <div className="flex-1 text-center text-[#0D0D12] text-sm font-semibold font-num-medium leading-[21px] tracking-wide">
+                    {toFarsiNumber(product.inventoryCount)}
                 </div>
             </div>
 
             {/* Revenue */}
             <div className="w-[140px] h-16 px-3 border-b border-[#DFE1E7] flex justify-end items-center gap-2.5">
-                <div className="flex-1 text-center text-[#0D0D12] text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">
-                    {product.revenue}
+                <div className="flex-1 text-center text-[#0D0D12] text-sm font-semibold font-num-medium leading-[21px] tracking-wide">
+                    {toFarsiNumber(product.revenue)}
                 </div>
             </div>
 
             {/* Sold Count */}
             <div className="w-[138px] h-16 px-3 border-b border-[#DFE1E7] flex justify-end items-center gap-2.5">
-                <div className="flex-1 text-center text-[#0D0D12] text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">
-                    {product.soldCount}
+                <div className="flex-1 text-center text-[#0D0D12] text-sm font-semibold font-num-medium leading-[21px] tracking-wide">
+                    {toFarsiNumber(product.soldCount)}
                 </div>
             </div>
 
@@ -83,8 +88,8 @@ function ProductTableRow({ product, index, isChecked, onToggle }: ProductTableRo
 
             {/* Number & Checkbox */}
             <div className="w-20 h-16 px-3 border-b border-[#DFE1E7] flex justify-start items-center gap-2.5">
-                <div className="flex-1 text-right text-[#0D0D12] text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">
-                    {product.id}
+                <div className="flex-1 text-right text-[#0D0D12] text-sm font-semibold font-num-medium leading-[21px] tracking-wide">
+                    {toFarsiNumber(product.id)}
                 </div>
                 <div className={cn(
                     "w-4 h-4 relative rounded border flex items-center justify-center",
@@ -221,8 +226,8 @@ export function ProductTable({ products }: ProductTableProps) {
 
             {/* Pagination Footer */}
             <div className="w-full px-5 py-4 flex justify-between items-center">
-                <div className="text-center text-[#0D0D12] text-sm font-medium font-['PeydaFaNum'] leading-[21px] tracking-wide">
-                    صفحه {currentPage} از {totalPages}
+                <div className="text-center text-[#0D0D12] text-sm font-medium font-num-medium leading-[21px] tracking-wide">
+                    صفحه {currentPage.toLocaleString('fa-IR')} از {totalPages.toLocaleString('fa-IR')}
                 </div>
                 <div className="flex justify-start items-center gap-2">
                     {/* Previous Button */}
@@ -239,8 +244,8 @@ export function ProductTable({ products }: ProductTableProps) {
 
                     {/* Page Indicator */}
                     <div className="w-[55px] h-8 rounded-lg border border-[#DFE1E7] flex flex-col justify-center items-center gap-2">
-                        <div className="flex flex-col justify-center text-[#0D0D12] text-xs font-medium font-['PeydaFaNum'] leading-[18px] tracking-wide">
-                             {currentPage}/{totalPages}
+                        <div className="flex flex-col justify-center text-[#0D0D12] text-xs font-medium font-num-medium leading-[18px] tracking-wide">
+                             {currentPage.toLocaleString('fa-IR')}/{totalPages.toLocaleString('fa-IR')}
                         </div>
                     </div>
 

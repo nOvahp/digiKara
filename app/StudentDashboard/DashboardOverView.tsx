@@ -11,10 +11,10 @@ export function DashboardOverview() {
       
       {/* Header Section */}
       <div className="w-full flex justify-between items-center">
-        <div className="text-[#222831] text-[18px] font-['PeydaFaNum'] font-extrabold leading-[25.20px]">
+        <div className="text-[#222831] text-[18px] font-num-medium font-extrabold leading-[25.20px]">
            عملکرد این ماهت عالیه!
         </div>
-        <div className="text-[#61656B] text-[12px] font-['PeydaFaNum'] font-medium">
+        <div className="text-[#61656B] text-[12px] font-num-medium font-medium">
            10 مهر 1404
         </div>
       </div>
@@ -38,22 +38,22 @@ export function DashboardOverview() {
             <div className="flex-1 bg-white shadow-sm rounded-lg p-3.5 flex flex-col justify-center items-center gap-3 min-h-[110px]">
                 <div className="flex flex-col items-center gap-1">
                     <Store className="w-6 h-6 text-[#64B327] mb-1" />
-                    <div className="text-[#64B327] text-[18px] font-['PeydaFaNum'] font-extrabold leading-[25.2px]">
+                    <div className="text-[#64B327] text-[18px] font-num-medium font-extrabold leading-[25.2px]">
                         فعال
                     </div>
                 </div>
-                <div className="text-[#222831] text-[12px] font-['PeydaFaNum'] font-extrabold">
+                <div className="text-[#222831] text-[12px] font-num-medium font-extrabold">
                     وضعیت غرفه
                 </div>
             </div>
             <div className="flex-1 bg-white shadow-sm rounded-lg p-3.5 flex flex-col justify-center items-center gap-3 min-h-[110px]">
                 <div className="flex flex-col items-center gap-1">
                     <ShoppingBag className="w-6 h-6 text-[#393E46] mb-1" />
-                    <div className="text-[#393E46] text-[20px] font-['PeydaFaNum'] font-extrabold leading-7">
+                    <div className="text-[#393E46] text-[20px] font-num-medium font-extrabold leading-7">
                         3
                     </div>
                 </div>
-                <div className="text-[#222831] text-[12px] font-['PeydaFaNum'] font-extrabold">
+                <div className="text-[#222831] text-[12px] font-num-medium font-extrabold">
                     سفارشات جدید
                 </div>
             </div>
@@ -62,11 +62,11 @@ export function DashboardOverview() {
             <div className="flex-1 bg-white shadow-sm rounded-lg p-3.5 flex flex-col justify-center items-center gap-3 min-h-[110px]">
                <div className="flex flex-col items-center gap-1">
                     <Package className="w-6 h-6 text-[#393E46] mb-1" />
-                    <div className="text-[#393E46] text-[20px] font-['PeydaFaNum'] font-extrabold leading-7">
+                    <div className="text-[#393E46] text-[20px] font-num-medium font-extrabold leading-7">
                         23
                     </div>
                 </div>
-                <div className="text-[#222831] text-[12px] font-['PeydaFaNum'] font-extrabold">
+                <div className="text-[#222831] text-[12px] font-num-medium font-extrabold">
                     محصولات فعال
                 </div>
             </div>

@@ -55,7 +55,7 @@ export function SmartSuggestions() {
         
         {/* Header */}
         <div className="w-full flex justify-start items-center px-6">
-            <div className="text-[#222831] text-[18px] font-['PeydaFaNum'] font-extrabold leading-[25.20px]">
+            <div className="text-[#222831] text-[18px] font-num-medium font-extrabold leading-[25.20px]">
                 پیشنهادات هوشمند
             </div>
         </div>
@@ -86,7 +86,7 @@ export function SmartSuggestions() {
                                                 <h3 className="text-[#0F172A] text-sm font-['Meem'] font-bold leading-tight">
                                                     {item.title}
                                                 </h3>
-                                                <p className="text-[#61656B] text-xs font-['MeemFaNum'] leading-relaxed">
+                                                <p className="text-[#61656B] text-xs font-num-medium leading-relaxed">
                                                     {item.description}
                                                 </p>
                                             </div>

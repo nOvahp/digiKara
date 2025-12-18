@@ -73,7 +73,7 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
                                     }}
                                     className="cursor-pointer"
                                 >
-                                    <div className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold font-['PeydaFaNum'] ${activeImage === num ? 'bg-[#FFD369] text-[#0D0D12]' : 'bg-[#0D0D12]/45 text-white'}`}>
+                                    <div className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold font-num-medium ${activeImage === num ? 'bg-[#FFD369] text-[#0D0D12]' : 'bg-[#0D0D12]/45 text-white'}`}>
                                         {num}
                                     </div>
                                 </div>
@@ -87,7 +87,7 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
                      <div className="bg-[#ECF9F7] px-3 py-1 rounded-2xl">
                          <span className="text-[#267666] text-sm font-semibold font-['PeydaWeb']">پرفروش ترین</span>
                      </div>
-                     <div className="text-[#0047AB] text-lg font-semibold font-['PeydaFaNum'] dir-rtl">
+                     <div className="text-[#0047AB] text-lg font-semibold font-num-medium dir-rtl">
                         {product?.price ? `${product.price} ریال` : '--- ریال'}
                      </div>
                 </div>
@@ -102,15 +102,15 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
                          <div className="bg-[#FFBE4C] w-5 h-5 rounded-full flex items-center justify-center p-[3px]">
                              <Star className="text-white fill-white w-full h-full" />
                          </div>
-                         <span className="text-[#666D80] text-sm font-normal font-['PeydaFaNum']">0 (0 نظر)</span>
+                         <span className="text-[#666D80] text-sm font-normal font-num-medium">0 (0 نظر)</span>
                     </div>
                     <div className="h-7 px-3 bg-white border border-[#DFE1E7] rounded-lg flex items-center justify-center gap-2">
                          <Heart className="w-4 h-4 text-[#DF1C41] fill-[#DF1C41]" />
-                         <span className="text-[#666D80] text-sm font-normal font-['PeydaFaNum']">0</span>
+                         <span className="text-[#666D80] text-sm font-normal font-num-medium">0</span>
                     </div>
                     <div className="h-7 px-3 bg-white border border-[#DFE1E7] rounded-lg flex items-center justify-center gap-2">
                          <Eye className="w-4 h-4 text-[#A4ACB9]" />
-                         <span className="text-[#666D80] text-sm font-normal font-['PeydaFaNum']">0</span>
+                         <span className="text-[#666D80] text-sm font-normal font-num-medium">0</span>
                     </div>
                 </div>
 

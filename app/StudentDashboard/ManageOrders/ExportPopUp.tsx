@@ -164,7 +164,7 @@ export default function ExportPopUp({ onClose, ordersData }: ExportPopUpProps) {
                 
                 {/* Header */}
                 <div className="w-full h-20 px-5 border-b border-[#DFE1E7] flex justify-between items-center bg-white rounded-t-xl">
-                     <span className="text-[#0D0D12] text-lg font-semibold font-['PeydaFaNum']">خروجی از سفارشات</span>
+                     <span className="text-[#0D0D12] text-lg font-semibold font-num-medium">خروجی از سفارشات</span>
                     <button 
                         onClick={onClose}
                         className="w-10 h-10 rounded-full border border-[#DFE1E7] flex items-center justify-center hover:bg-gray-50 transition-colors"
@@ -183,13 +183,13 @@ export default function ExportPopUp({ onClose, ordersData }: ExportPopUpProps) {
                             onClick={() => { setIsFormatOpen(!isFormatOpen); setIsStatusOpen(false); setIsColumnsOpen(false); }}
                             className="w-full h-[52px] px-3 bg-white rounded-xl border border-[#DFE1E7] flex items-center justify-between cursor-pointer hover:border-gray-300 transition-colors"
                          >
-                            <span className="text-[#0D0D12] text-base font-normal font-['Geist']">{format}</span>
+                            <span className="text-[#0D0D12] text-base font-normal font-num-medium">{format}</span>
                             {isFormatOpen ? <ChevronUp size={20} className="text-[#818898]" /> : <ChevronDown size={20} className="text-[#818898]" />}
                          </div>
                          {isFormatOpen && (
                              <div className="absolute top-[80px] w-full bg-white border border-[#DFE1E7] rounded-xl shadow-lg flex flex-col overflow-hidden animate-in fade-in slide-in-from-top-2 duration-150">
                                  {['CSV', 'Excel', 'PDF'].map((fmt) => (
-                                     <div key={fmt} onClick={() => { setFormat(fmt); setIsFormatOpen(false); }} className="px-4 py-3 hover:bg-gray-50 cursor-pointer text-[#0D0D12] text-sm font-['Geist']">{fmt}</div>
+                                     <div key={fmt} onClick={() => { setFormat(fmt); setIsFormatOpen(false); }} className="px-4 py-3 hover:bg-gray-50 cursor-pointer text-[#0D0D12] text-sm font-num-medium">{fmt}</div>
                                  ))}
                              </div>
                          )}
@@ -199,7 +199,7 @@ export default function ExportPopUp({ onClose, ordersData }: ExportPopUpProps) {
                     <div className="w-full flex flex-col gap-2 relative z-0">
                          <span className="text-right text-[#818898] text-sm font-semibold font-['PeydaWeb']">محدوده تاریخ</span>
                          <div className="w-full h-[52px] px-3 bg-white rounded-xl border border-[#DFE1E7] flex items-center justify-between cursor-pointer hover:border-gray-300 transition-colors">
-                            <span className="text-[#0D0D12] text-base font-normal font-['PeydaFaNum']">۱۰ مرداد - ۱۷ مرداد ۱۴۰۴</span>
+                            <span className="text-[#0D0D12] text-base font-normal font-num-medium">۱۰ مرداد - ۱۷ مرداد ۱۴۰۴</span>
                              <Calendar size={20} className="text-[#818898]" />
                          </div>
                     </div>
@@ -211,13 +211,13 @@ export default function ExportPopUp({ onClose, ordersData }: ExportPopUpProps) {
                             onClick={() => { setIsStatusOpen(!isStatusOpen); setIsFormatOpen(false); setIsColumnsOpen(false); }}
                             className="w-full h-[52px] px-3 bg-white rounded-xl border border-[#DFE1E7] flex items-center justify-between cursor-pointer hover:border-gray-300 transition-colors"
                          >
-                            <span className="text-[#0D0D12] text-base font-normal font-['PeydaFaNum']">{statusFilter}</span>
+                            <span className="text-[#0D0D12] text-base font-normal font-num-medium">{statusFilter}</span>
                              {isStatusOpen ? <ChevronUp size={20} className="text-[#818898]" /> : <ChevronDown size={20} className="text-[#818898]" />}
                          </div>
                          {isStatusOpen && (
                              <div className="absolute top-[80px] w-full bg-white border border-[#DFE1E7] rounded-xl shadow-lg flex flex-col overflow-hidden animate-in fade-in slide-in-from-top-2 duration-150">
                                  {Object.keys(statusMap).map((st) => (
-                                     <div key={st} onClick={() => { setStatusFilter(st); setIsStatusOpen(false); }} className="px-4 py-3 hover:bg-gray-50 cursor-pointer text-[#0D0D12] text-sm font-['PeydaFaNum']">{st}</div>
+                                     <div key={st} onClick={() => { setStatusFilter(st); setIsStatusOpen(false); }} className="px-4 py-3 hover:bg-gray-50 cursor-pointer text-[#0D0D12] text-sm font-num-medium">{st}</div>
                                  ))}
                              </div>
                          )}
@@ -230,13 +230,13 @@ export default function ExportPopUp({ onClose, ordersData }: ExportPopUpProps) {
                             onClick={() => { setIsColumnsOpen(!isColumnsOpen); setIsFormatOpen(false); setIsStatusOpen(false); }}
                             className="w-full h-[52px] px-3 bg-white rounded-xl border border-[#DFE1E7] flex items-center justify-between cursor-pointer hover:border-gray-300 transition-colors"
                          >
-                            <span className="text-[#0D0D12] text-base font-normal font-['PeydaFaNum']">{columnsFilter}</span>
+                            <span className="text-[#0D0D12] text-base font-normal font-num-medium">{columnsFilter}</span>
                              {isColumnsOpen ? <ChevronUp size={20} className="text-[#818898]" /> : <ChevronDown size={20} className="text-[#818898]" />}
                          </div>
                          {isColumnsOpen && (
                              <div className="absolute top-[80px] w-full bg-white border border-[#DFE1E7] rounded-xl shadow-lg mb-10 flex flex-col overflow-hidden animate-in fade-in slide-in-from-top-2 duration-150">
                                  {Object.keys(columnMap).map((col) => (
-                                     <div key={col} onClick={() => { setColumnsFilter(col); setIsColumnsOpen(false); }} className="px-4 py-3 hover:bg-gray-50 cursor-pointer text-[#0D0D12] text-sm font-['PeydaFaNum']">{col}</div>
+                                     <div key={col} onClick={() => { setColumnsFilter(col); setIsColumnsOpen(false); }} className="px-4 py-3 hover:bg-gray-50 cursor-pointer text-[#0D0D12] text-sm font-num-medium">{col}</div>
                                  ))}
                              </div>
                          )}

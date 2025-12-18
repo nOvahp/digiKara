@@ -31,11 +31,11 @@ export function StatCard({ title, value, trend, trendType, trendLabel, icon }: S
                 </div>
                 
                 <div className="w-full flex justify-start items-center gap-2">
-                    <div className="text-[#0D0D12] text-2xl font-semibold font-['PeydaFaNum'] leading-[31.2px]">
+                    <div className="text-[#0D0D12] text-2xl font-semibold font-num-medium leading-[31.2px]">
                         {value}
                     </div>
                     <div className={cn("px-2 py-[1px] rounded-[36px] flex justify-center items-center gap-0.5", trendBgColor)}>
-                         <div className={cn("text-xs font-semibold font-['PeydaWeb'] leading-[18px] tracking-wide", trendTextColor)}>
+                         <div className={cn("text-xs font-semibold font-num-medium leading-[18px] tracking-wide", trendTextColor)}>
                             {trend}
                          </div>
                     </div>

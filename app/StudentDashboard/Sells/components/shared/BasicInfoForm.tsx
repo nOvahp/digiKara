@@ -62,7 +62,7 @@ export function BasicInfoForm({ defaultValues = {}, values, onChange }: BasicInf
                         onChange={(e) => handleChange('description', e.target.value)}
                         dir="rtl"
                      />
-                     <div className="text-left text-[#A4ACB9] text-xs font-light font-['PeydaFaNum'] mt-2">{((val('description') || "").length)}/200</div>
+                     <div className="text-left text-[#A4ACB9] text-xs font-light font-num-medium mt-2">{((val('description') || "").length)}/200</div>
                  </div>
             </div>
 
@@ -70,7 +70,7 @@ export function BasicInfoForm({ defaultValues = {}, values, onChange }: BasicInf
             <div className="flex flex-col gap-2">
                  <FormLabel text="شناسه محصول" />
                  <div className="h-[52px] px-3 bg-white rounded-xl border border-[#DFE1E7] flex items-center">
-                     <div className="w-full text-left text-[#0D0D12] text-base font-normal font-['Geist'] dir-ltr" dir="ltr">{val('id') || "NK-PEG40-GRY-001"}</div>
+                     <div className="w-full text-left text-[#0D0D12] text-base font-normal font-num-medium dir-ltr" dir="ltr">{val('id') || "NK-PEG40-GRY-001"}</div>
                  </div>
             </div>
 
@@ -114,7 +114,7 @@ export function BasicInfoForm({ defaultValues = {}, values, onChange }: BasicInf
                                     }}
                                     className="cursor-pointer"
                                 >
-                                    <div className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold font-['PeydaFaNum'] ${activeImage === num ? 'bg-[#FFD369] text-[#0D0D12]' : 'bg-[#0D0D12]/45 text-white'}`}>
+                                    <div className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold font-num-medium ${activeImage === num ? 'bg-[#FFD369] text-[#0D0D12]' : 'bg-[#0D0D12]/45 text-white'}`}>
                                         {num}
                                     </div>
                                 </div>

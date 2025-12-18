@@ -99,7 +99,7 @@ export function NewProductPage2({ onClose, onNext, onStepClick }: NewProductPage
 function StepItem({ number, label, isActive, onClick }: { number: string, label: string, isActive: boolean, onClick?: () => void }) {
     return (
         <div className="flex items-center gap-2.5 flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity" onClick={onClick}>
-            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-sm font-bold font-['PeydaFaNum'] leading-[21px] tracking-wide ${isActive ? 'bg-[#FFD369] text-[#393E46]' : 'bg-[#DFE1E7]'}`}>
+            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-sm font-bold font-num-medium leading-[21px] tracking-wide ${isActive ? 'bg-[#FFD369] text-[#393E46]' : 'bg-[#DFE1E7]'}`}>
                 {number}
             </div>
             <span className={`text-sm font-['PeydaWeb'] leading-[21px] tracking-wide whitespace-nowrap ${isActive ? "text-[#0D0D12] font-bold" : "text-[#818898] font-semibold"}`}>

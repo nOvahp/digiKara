@@ -106,7 +106,7 @@ export function NewProduct({ onClose, onNext, onStepClick, formData, updateFormD
                                     onChange={(e) => updateFormData({ description: e.target.value })}
                                     placeholder="توضیحات محصول را بنویسید..."
                                  />
-                                 <div className="w-full text-left text-[#A4ACB9] text-xs font-light font-['PeydaFaNum'] leading-[18px] tracking-wide">
+                                 <div className="w-full text-left text-[#A4ACB9] text-xs font-light font-num-medium leading-[18px] tracking-wide">
                                      {formData.description.length}/200
                                  </div>
                              </div>
@@ -175,7 +175,7 @@ export function NewProduct({ onClose, onNext, onStepClick, formData, updateFormD
                          <div className="w-full flex flex-col gap-2">
                              <Label text="شناسه محصول" />
                              <div className="w-full h-[52px] bg-white rounded-xl border border-[#DFE1E7] px-3 flex items-center">
-                                 <div className="flex-1 text-left text-[#818898] text-base font-normal font-['Geist'] leading-normal tracking-wide" dir="ltr">
+                                 <div className="flex-1 text-left text-[#818898] text-base font-normal font-num-medium leading-normal tracking-wide" dir="ltr">
                                      {formData.id}
                                  </div>
                              </div>
@@ -203,7 +203,7 @@ export function NewProduct({ onClose, onNext, onStepClick, formData, updateFormD
 function StepItem({ number, label, isActive, onClick }: { number: string, label: string, isActive: boolean, onClick?: () => void }) {
     return (
         <div className="flex items-center gap-2.5 flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity" onClick={onClick}>
-            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-sm font-bold font-['PeydaFaNum'] leading-[21px] tracking-wide ${isActive ? 'bg-[#FFD369] text-[#393E46]' : 'bg-[#DFE1E7]'}`}>
+            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-sm font-bold font-num-medium leading-[21px] tracking-wide ${isActive ? 'bg-[#FFD369] text-[#393E46]' : 'bg-[#DFE1E7]'}`}>
                 {number}
             </div>
             <span className={`text-sm font-['PeydaWeb'] leading-[21px] tracking-wide whitespace-nowrap ${isActive ? "text-[#0D0D12] font-bold" : "text-[#818898] font-semibold"}`}>

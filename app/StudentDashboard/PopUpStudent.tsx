@@ -59,7 +59,7 @@ export function PopUpStudent({ onClose }: PopUpStudentProps) {
                 
                 {/* Support Type */}
                 <div className="w-full h-[52px] px-3 py-2 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] flex justify-between items-center gap-2">
-                    <div className="flex-1 text-[#818898] text-base font-normal font-['PeydaFaNum'] leading-relaxed tracking-wide text-left">
+                    <div className="flex-1 text-[#818898] text-base font-normal font-num-medium leading-relaxed tracking-wide text-left">
                         سرمایه اولیه نقدی/ تسهیلات بانکی
                     </div>
                     <div className="flex justify-end items-center gap-2 w-[80px]">
@@ -71,7 +71,7 @@ export function PopUpStudent({ onClose }: PopUpStudentProps) {
 
                 {/* Amount */}
                 <div className="w-full h-[52px] px-3 py-2 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] flex justify-between items-center gap-2">
-                    <div className="flex-1 text-[#818898] text-base font-normal font-['PeydaFaNum'] leading-relaxed tracking-wide text-left">
+                    <div className="flex-1 text-[#818898] text-base font-normal font-num-medium leading-relaxed tracking-wide text-left">
                         ۲۰.۰۰۰.۰۰۰.۰۰۰ ریال
                     </div>
                     <div className="flex justify-end items-center gap-2 w-[80px]">
@@ -83,7 +83,7 @@ export function PopUpStudent({ onClose }: PopUpStudentProps) {
 
                 {/* Organization */}
                 <div className="w-full h-[52px] px-3 py-2 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] flex justify-between items-center gap-2">
-                    <div className="flex-1 text-[#818898] text-base font-normal font-['PeydaFaNum'] leading-relaxed tracking-wide text-left">
+                    <div className="flex-1 text-[#818898] text-base font-normal font-num-medium leading-relaxed tracking-wide text-left">
                         جهاد کشاورزی
                     </div>
                     <div className="flex justify-end items-center gap-2 w-[115px]">
@@ -95,7 +95,7 @@ export function PopUpStudent({ onClose }: PopUpStudentProps) {
 
                 {/* Location */}
                 <div className="w-full h-[52px] px-3 py-2 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] flex justify-between items-center gap-2">
-                    <div className="flex-1 text-[#818898] text-base font-normal font-['PeydaFaNum'] leading-relaxed tracking-wide text-left">
+                    <div className="flex-1 text-[#818898] text-base font-normal font-num-medium leading-relaxed tracking-wide text-left">
                         سیستان و بلوچستان_ ایرانشهر
                     </div>
                      <div className="flex justify-end items-center gap-2 w-[115px]">

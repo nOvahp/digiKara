@@ -159,7 +159,7 @@ export default function UserComments() {
                                             <div className="flex-1 h-16 px-3 flex items-center justify-center gap-1.5">
                                                 <div className={`h-5 px-2 py-0.5 rounded-2xl flex items-center gap-1 ${styles.bg}`}>
                                                     <div className={`w-1.5 h-1.5 rounded-full ${styles.dot}`} />
-                                                    <span className={`text-xs font-normal font-['PeydaFaNum'] ${styles.text}`}>{comment.statusText}</span>
+                                                    <span className={`text-xs font-normal font-num-medium ${styles.text}`}>{comment.statusText}</span>
                                                 </div>
                                             </div>
 
@@ -172,7 +172,7 @@ export default function UserComments() {
 
                                             {/* Date */}
                                             <div className="flex-1 h-16 px-3 flex items-center justify-end gap-2.5">
-                                                <span className="text-[#0D0D12] text-sm font-semibold font-['PeydaFaNum']">{comment.date}</span>
+                                                <span className="text-[#0D0D12] text-sm font-semibold font-num-medium">{comment.date}</span>
                                             </div>
 
                                             {/* Review */}
@@ -211,7 +211,7 @@ export default function UserComments() {
 
                     {/* Footer / Pagination */}
                     <div className="w-full h-[60px] px-5 py-4 flex justify-between items-center border-t border-[#DFE1E7] bg-white">
-                         <div className="text-[#0D0D12] text-sm font-medium font-['PeydaFaNum']">
+                         <div className="text-[#0D0D12] text-sm font-medium font-num-medium">
                              صفحه {currentPage} از {totalPages}
                          </div>
                          <div className="flex items-center gap-2">
@@ -223,7 +223,7 @@ export default function UserComments() {
                                  <ChevronLeft size={16} className="text-[#0D0D12]" />
                              </button>
                              <div className="h-8 px-3 rounded-lg border border-[#DFE1E7] flex items-center justify-center bg-white">
-                                 <span className="text-[#0D0D12] text-xs font-medium font-['PeydaFaNum']">{currentPage}/{totalPages}</span>
+                                 <span className="text-[#0D0D12] text-xs font-medium font-num-medium">{currentPage}/{totalPages}</span>
                              </div>
                              <button 
                                 onClick={handleNextPage}
