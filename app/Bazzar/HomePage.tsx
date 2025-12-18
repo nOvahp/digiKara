@@ -257,14 +257,20 @@ export default function HomePage() {
                          I will apply the negative margin to the grid container wrapper.
                      */}
                      <div className="flex gap-4 overflow-x-auto pb-4 pt-2 pl-6 -ml-[8vw] w-[calc(100%+8vw)] scrollbar-hide pr-1">
-                          {[1, 2, 3, 4, 5].map(i => (
-                              <div key={i} className="flex flex-col gap-2 shrink-0 w-[100px]">
+                          {[
+                              { id: 1, name: "هنرستان دخترانه", img: "/honarestan1.png", label: "خلاقیت" },
+                              { id: 2, name: "هنرستان سوره", img: "/honarestan2.png", label: "نوآوری" },
+                              { id: 3, name: "هنرستان هنرهای زیبا", img: "/honarestan3.png", label: "استعداد" },
+                              { id: 4, name: "هنرستان کمال الملک", img: "/honarestan1.png", label: "مهارت" },
+                              { id: 5, name: "هنرستان موسیقی", img: "/honarestan2.png", label: "هنر" },
+                          ].map(school => (
+                              <div key={school.id} className="flex flex-col gap-2 shrink-0 w-[100px]">
                                    <div className="w-[100px] h-[100px] bg-gray-100 rounded-lg relative overflow-hidden">
-                                        <Image src="/images.jfif" alt="School" fill className="object-cover" />
+                                        <Image src={school.img} alt={school.name} fill className="object-cover" />
                                    </div>
                                    <div className="flex flex-col items-center w-full">
-                                        <span className="text-[#1F2029] text-xs font-['PeydaWeb'] font-semibold text-center">خلاقیت</span>
-                                        <span className="text-[#1F2029] text-[10px] font-['PeydaWeb'] font-light opacity-60 text-center">هنرستان دخترانه</span>
+                                        <span className="text-[#1F2029] text-xs font-['PeydaWeb'] font-semibold text-center">{school.label}</span>
+                                        <span className="text-[#1F2029] text-[10px] font-['PeydaWeb'] font-light opacity-60 text-center">{school.name}</span>
                                    </div>
                               </div>
                           ))}
