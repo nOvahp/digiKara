@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { useRouter } from "next/navigation"
 import { FilePlus, Store, UserCog } from "lucide-react"
 
 // NOTE: User provided custom geometric icons in the div soup. 
@@ -20,6 +21,7 @@ import { FilePlus, Store, UserCog } from "lucide-react"
 // I'll use Lucide icons with stroke width 1.5/2 to match.
 
 export function QuickAccess() {
+    const router = useRouter()
     return (
         <div className="w-full inline-flex flex-col justify-start items-start gap-2" dir="rtl">
 
@@ -34,7 +36,7 @@ export function QuickAccess() {
             <div className="self-stretch flex flex-col justify-center items-start gap-2">
 
                 {/* Add New Product */}
-                <div className="self-stretch py-1 pl-4 pr-1 bg-[#F7C61A] rounded-lg justify-start items-center gap-2 inline-flex cursor-pointer hover:opacity-90 transition-opacity">
+                <div onClick={() => router.push('/StudentDashboard/Sells?new=true')} className="self-stretch py-1 pl-4 pr-1 bg-[#F7C61A] rounded-lg justify-start items-center gap-2 inline-flex cursor-pointer hover:opacity-90 transition-opacity">
                     <div className="w-9 h-9 relative bg-white rounded-md overflow-hidden flex justify-center items-center">
                         <FilePlus className="w-5 h-5 text-[#0A0A0A]" strokeWidth={2} />
                     </div>
