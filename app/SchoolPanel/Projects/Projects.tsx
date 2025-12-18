@@ -17,6 +17,11 @@ import { Badge } from "@/components/ui/badge";
 import { products, Product } from "../Reports/product";
 import ProductPopUp from "../Reports/ProductPopUp";
 
+const toFarsiNumber = (n: number | string | undefined): string => {
+    if (n === undefined || n === null) return '';
+    return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
+}
+
 const Projects = () => {
     const router = useRouter();
     // State for pagination and popup
@@ -85,7 +90,7 @@ const Projects = () => {
                                 <div className="w-full flex flex-col justify-start items-start">
                                     <div className="w-full text-right flex flex-col justify-center">
                                         <div className="text-[#0F172A] text-base font-['PeydaWeb'] font-semibold leading-relaxed tracking-wide break-word">
-                                            دوخت لباس فرم - <span className="font-num-medium">10254</span>
+                                            دوخت لباس فرم - <span className="font-num-medium">{toFarsiNumber(10254)}</span>
                                         </div>
                                     </div>
                                     <div className="flex justify-start items-center gap-2.5">
@@ -96,7 +101,7 @@ const Projects = () => {
                                 </div>
                                 <div className="w-full flex justify-start items-center gap-2.5">
                                     <div className="flex justify-center items-center gap-1.5">
-                                        <div className="text-[#0F172A] text-sm font-num-bold  leading-snug tracking-wide break-word">6</div>
+                                        <div className="text-[#0F172A] text-sm font-num-bold  leading-snug tracking-wide break-word">{toFarsiNumber(6)}</div>
                                     </div>
                                     <div className="rounded-br-[10px] rounded-tl-[10px] rounded-tr-[10px] flex justify-end items-center gap-2.5">
                                         <div className="text-right text-[#0F172A] text-sm font-['PeydaWeb'] font-semibold leading-snug tracking-wide break-word">تعداد هنرستان های همکار</div>
@@ -105,7 +110,7 @@ const Projects = () => {
                             </div>
                         </div>
                         <div className="w-full  px-6 py-2 bg-[#F7C61A] rounded-xl flex justify-center items-center gap-2.5 cursor-pointer hover:bg-[#e5b818]">
-                            <div className="text-center text-[#393E46] text-base font-['peyda-Num'] font-extrabold leading-snug break-word">برو به صفحه همکاری</div>
+                            <div className="text-center text-[#393E46] text-base font-num-medium font-extrabold leading-snug break-word">برو به صفحه همکاری</div>
                         </div>
                     </div>
                 </div>
@@ -174,7 +179,7 @@ const Projects = () => {
                     </div>
                     
                     <div className="absolute left-[14.39px] top-[35.18px] w-[71px] py-[1px] px-2 bg-[#DDF3EF] rounded-[36px] flex justify-center items-center gap-0.5">
-                        <div className="text-[#28806F] text-[10px] font-['peyda-Num'] font-semibold leading-[15px] tracking-wide break-word">همکاری فعال</div>
+                        <div className="text-[#28806F] text-[10px] font-num-medium font-semibold leading-[15px] tracking-wide break-word">همکاری فعال</div>
                     </div>
                 </div>
             </div>
@@ -256,7 +261,7 @@ const Projects = () => {
                                 return (
                                     <div key={product.id} onClick={() => handleProductClick(product)} className="w-full h-16 border-b border-[#DFE1E7] flex justify-end items-center px-2 hover:bg-gray-50 transition-colors cursor-pointer group">
                                         <div className="w-20 h-16 px-3 flex justify-start items-center gap-2.5">
-                                            <span className="text-center text-[#0D0D12] text-sm font-num-medium font-semibold flex-1">{itemIndex}</span>
+                                            <span className="text-center text-[#0D0D12] text-sm font-num-medium font-semibold flex-1">{toFarsiNumber(itemIndex)}</span>
                                             <div className="w-4 h-4 bg-white rounded border border-[#DFE1E7] cursor-pointer" />
                                         </div>
                                         <div className="w-[272px] h-16 px-3 flex justify-start items-center gap-2.5">
@@ -265,14 +270,14 @@ const Projects = () => {
                                             </span>
                                         </div>
                                         <div className="w-[73px] h-16 px-3 flex justify-end items-center gap-2.5">
-                                            <span className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium font-semibold">{product.count}</span>
+                                            <span className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium font-semibold">{toFarsiNumber(product.count)}</span>
                                         </div>
                                         <div className="w-[127px] h-16 px-3 flex justify-end items-center gap-2.5">
-                                            <span className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium font-semibold">{product.deliveryTime}</span>
+                                            <span className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium font-semibold">{toFarsiNumber(product.deliveryTime)}</span>
                                         </div>
                                         <div className="w-[140px] h-16 px-3 flex justify-end items-center gap-2.5">
-                                            <span className="flex-1 text-center text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold">
-                                                {product.price} ریال
+                                            <span className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium font-semibold">
+                                                {toFarsiNumber(product.price)} <span className="font-['PeydaWeb']">ریال</span>
                                             </span>
                                         </div>
                                         <div className="w-[104px] h-16 px-3 flex justify-center items-center gap-2.5">
@@ -304,7 +309,7 @@ const Projects = () => {
                                 <ChevronRight className="w-5 h-5 text-[#0D0D12]" />
                             </div>
                             <div className="w-[55px] h-8 rounded-lg border border-[#DFE1E7] flex justify-center items-center">
-                                <span className="text-[#0D0D12] text-xs font-num-medium font-medium">{currentPage}/{totalPages}</span>
+                                <span className="text-[#0D0D12] text-xs font-num-medium font-medium">{toFarsiNumber(currentPage)}/{toFarsiNumber(totalPages)}</span>
                             </div>
                             <div 
                                 onClick={handlePrevPage}
@@ -313,7 +318,7 @@ const Projects = () => {
                                 <ChevronLeft className="w-5 h-5 text-[#0D0D12]" />
                             </div>
                         </div>
-                        <span className="text-center text-[#0D0D12] text-sm font-num-medium font-medium">صفحه {currentPage} از {totalPages}</span>
+                        <span className="text-center text-[#0D0D12] text-sm font-num-medium font-medium">صفحه {toFarsiNumber(currentPage)} از {toFarsiNumber(totalPages)}</span>
                     </div>
 
                 </div>

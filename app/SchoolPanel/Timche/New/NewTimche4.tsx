@@ -99,7 +99,7 @@ const NewTimche4 = () => {
             </div>
 
             {/* Step 4 Content: Criteria */}
-            <div className="w-full max-w-[440px] px-4 py-6 flex flex-col gap-6">
+            <div className="w-full max-w-[440px] px-0 py-6 flex flex-col gap-6">
                 
                 {/* Description */}
                 <p className="text-center text-[#0D0D12] text-base font-['PeydaWeb'] font-semibold leading-[21.6px]">

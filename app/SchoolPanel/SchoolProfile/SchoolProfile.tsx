@@ -18,6 +18,11 @@ import {
 } from "lucide-react";
 import { cn } from "../../../lib/utils";
 
+const toFarsiNumber = (n: number | string | undefined): string => {
+    if (n === undefined || n === null) return '';
+    return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
+}
+
 export default function SchoolProfile() {
     const [expandedSections, setExpandedSections] = useState({
         basic: true,
@@ -51,11 +56,11 @@ export default function SchoolProfile() {
                         />
                     </div>
                     <div className="flex flex-col items-center gap-1">
-                        <h1 className="text-[#222831] text-base font-['PeydaFaNum'] font-extrabold">
+                        <h1 className="text-[#222831] text-base font-num-medium font-extrabold">
                             هنرستان هنرهای زیبا
                         </h1>
-                        <div className="flex items-center gap-2 text-[#61656B] text-xs font-['PeydaFaNum'] font-extrabold">
-                            <span>شناسه: ۱۲۳۴۵۶</span>
+                        <div className="flex items-center gap-2 text-[#61656B] text-xs font-num-medium font-extrabold">
+                            <span>شناسه: {toFarsiNumber(123456)}</span>
                             <span className="w-1 h-1 rounded-full bg-[#61656B]"></span>
                             <span>ابهر، زنجان</span>
                         </div>
@@ -99,15 +104,15 @@ export default function SchoolProfile() {
                     {/* Staff */}
                     <div className="flex-1 bg-white border border-[#DFE1E7] rounded-xl p-4 shadow-sm flex flex-col items-center gap-2">
                          <span className="text-[#818898] text-sm font-['PeydaWeb'] font-semibold">کادر آموزشی</span>
-                         <span className="text-[#0D0D12] text-2xl font-['PeydaFaNum'] font-semibold">۳۲</span>
+                         <span className="text-[#0D0D12] text-2xl font-num-medium font-semibold">{toFarsiNumber(32)}</span>
                          <span className="text-[#818898] text-xs font-['PeydaWeb'] font-light">فعال در ترم جاری</span>
                     </div>
                     {/* Students */}
                     <div className="flex-1 bg-white border border-[#DFE1E7] rounded-xl p-4 shadow-sm flex flex-col items-center gap-2">
                          <span className="text-[#818898] text-sm font-['PeydaWeb'] font-semibold">کل دانش‌آموزان</span>
-                         <span className="text-[#0D0D12] text-2xl font-['PeydaFaNum'] font-semibold">۴۵۰</span>
+                         <span className="text-[#0D0D12] text-2xl font-num-medium font-semibold">{toFarsiNumber(450)}</span>
                          <div className="text-xs">
-                            <span className="text-[#818898] font-['PeydaFaNum'] mx-1">15+</span>
+                            <span className="text-[#818898] font-num-medium mx-1">{toFarsiNumber(15)}+</span>
                             <span className="text-[#818898] font-['PeydaWeb'] font-light">در ماه گذشته</span>
                          </div>
                     </div>
@@ -116,15 +121,15 @@ export default function SchoolProfile() {
                     {/* Orders */}
                     <div className="flex-1 bg-white border border-[#DFE1E7] rounded-xl p-4 shadow-sm flex flex-col items-center gap-2">
                          <span className="text-[#818898] text-sm font-['PeydaWeb'] font-semibold">سفارشات</span>
-                         <span className="text-[#0D0D12] text-2xl font-['PeydaFaNum'] font-semibold">۳۴۰</span>
+                         <span className="text-[#0D0D12] text-2xl font-num-medium font-semibold">{toFarsiNumber(340)}</span>
                          <span className="text-[#818898] text-xs font-['PeydaWeb'] font-light">در ماه گذشته</span>
                     </div>
                     {/* Active Timches */}
                     <div className="flex-1 bg-white border border-[#DFE1E7] rounded-xl p-4 shadow-sm flex flex-col items-center gap-2">
                          <span className="text-[#818898] text-sm font-['PeydaWeb'] font-semibold">تیمچه های فعال</span>
-                         <span className="text-[#0D0D12] text-2xl font-['PeydaFaNum'] font-semibold">۸</span>
+                         <span className="text-[#0D0D12] text-2xl font-num-medium font-semibold">{toFarsiNumber(8)}</span>
                          <div className="text-xs">
-                            <span className="text-[#818898] font-['PeydaFaNum'] mx-1">1+</span>
+                            <span className="text-[#818898] font-num-medium mx-1">{toFarsiNumber(1)}+</span>
                             <span className="text-[#818898] font-['PeydaWeb'] font-light">حمایت در ترم جاری</span>
                          </div>
                     </div>
@@ -184,7 +189,7 @@ export default function SchoolProfile() {
                                 </div>
                                 <div className="flex-1 flex flex-col items-end pr-3">
                                     <span className="text-[#0D0D12] text-xs font-['PeydaWeb'] font-black">تلفن</span>
-                                    <span className="text-[#818898] text-[10px] font-['PeydaWeb'] font-semibold mt-1">۰۲۱-۸۸۸۸۱۲۳۴</span>
+                                    <span className="text-[#818898] text-[10px] font-['PeydaWeb'] font-semibold mt-1">{toFarsiNumber("021-88881234")}</span>
                                 </div>
                                 <div className="border border-[#DFE1E7] bg-white rounded-lg p-2 shadow-sm">
                                     <Edit2 className="w-4 h-4 text-[#818898]" />
@@ -198,7 +203,7 @@ export default function SchoolProfile() {
                                 </div>
                                 <div className="flex-1 flex flex-col items-end pr-3">
                                     <span className="text-[#0D0D12] text-xs font-['PeydaWeb'] font-black">کد پستی</span>
-                                    <span className="text-[#818898] text-[10px] font-['PeydaWeb'] font-semibold mt-1">۱۹۹۱۶۴۵۸۹۳</span>
+                                    <span className="text-[#818898] text-[10px] font-['PeydaWeb'] font-semibold mt-1">{toFarsiNumber(1991645893)}</span>
                                 </div>
                                 <div className="border border-[#DFE1E7] bg-white rounded-lg p-2 shadow-sm">
                                     <Edit2 className="w-4 h-4 text-[#818898]" />
@@ -280,14 +285,14 @@ export default function SchoolProfile() {
                            <div key={student.id} className="flex items-center py-3 px-3 border-b border-[#DFE1E7] last:border-0 hover:bg-gray-50">
                                <div className="w-[80px] flex items-center justify-center gap-2">
                                      <div className="w-4 h-4 border border-[#DFE1E7] rounded bg-white"></div>
-                                     <span className="text-[#0D0D12] font-['PeydaFaNum'] font-semibold">{student.id}</span>
+                                     <span className="text-[#0D0D12] font-num-medium font-semibold">{toFarsiNumber(student.id)}</span>
                                </div>
                                <div className="flex-1 text-right pr-4 text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold">
                                    {student.name}
                                </div>
                                <div className="w-[78px] flex justify-center">
                                    <div className={cn(
-                                       "px-2 py-0.5 rounded-full text-xs font-['PeydaFaNum']",
+                                       "px-2 py-0.5 rounded-full text-xs font-num-medium",
                                        student.status === "active" ? "bg-[#ECF9F7] text-[#267666]" : "bg-[#FCE8EC] text-[#B21634]"
                                    )}>
                                        {student.status === "active" ? "فعال" : "غیرفعال"}
@@ -307,15 +312,15 @@ export default function SchoolProfile() {
                                     <ChevronDown className="w-4 h-4 rotate-90" />
                                 </button>
                                 {/* Current Page */}
-                                <div className="h-8 px-2 rounded-lg border border-[#DFE1E7] flex items-center justify-center text-[#0D0D12] text-xs font-['PeydaFaNum']">
-                                    1/15
+                                <div className="h-8 px-2 rounded-lg border border-[#DFE1E7] flex items-center justify-center text-[#0D0D12] text-xs font-num-medium">
+                                    {toFarsiNumber(1)}/{toFarsiNumber(15)}
                                 </div>
                                 {/* Prev */}
                                 <button className="w-8 h-8 rounded-lg border border-[#DFE1E7] flex items-center justify-center">
                                      <ChevronDown className="w-4 h-4 -rotate-90" />
                                 </button>
                             </div>
-                            <span className="text-[#0D0D12] text-sm font-['PeydaFaNum']">صفحه 1 از 15</span>
+                            <span className="text-[#0D0D12] text-sm font-num-medium">صفحه {toFarsiNumber(1)} از {toFarsiNumber(15)}</span>
                        </div>
                  </div>
             </div>

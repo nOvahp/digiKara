@@ -6,6 +6,11 @@ import { ChevronLeft, ChevronDown, Calendar, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 // If Switch doesn't exist, I'll build a simple one. The user design shows a switch.
 
+const toFarsiNumber = (n: number | string | undefined): string => {
+    if (n === undefined || n === null) return '';
+    return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
+}
+
 const NewProject1 = () => {
     const router = useRouter();
     const [projectType, setProjectType] = useState<"product" | "project">("product");
@@ -32,9 +37,9 @@ const NewProject1 = () => {
                      
                      {/* Step 1: Basic Info (Active) */}
                      <div className="flex items-center gap-2.5 flex-shrink-0">
-                         <div className="w-6 h-6 bg-[#FDD00A] rounded-full flex items-center justify-center">
-                             <span className="text-white text-sm font-bold font-['PeydaFaNum']">1</span>
-                         </div>
+                          <div className="w-6 h-6 bg-[#FDD00A] rounded-full flex items-center justify-center">
+                              <span className="text-white text-sm font-bold font-num-medium">{toFarsiNumber(1)}</span>
+                          </div>
                          <span className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb']">اطلاعات پایه</span>
                      </div>
                      
@@ -42,9 +47,9 @@ const NewProject1 = () => {
 
                      {/* Step 2: Resources */}
                      <div className="flex items-center gap-2.5 opacity-50 flex-shrink-0">
-                         <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center">
-                             <span className="text-white text-sm font-bold font-['PeydaFaNum']">2</span>
-                         </div>
+                          <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center">
+                              <span className="text-white text-sm font-bold font-num-medium">{toFarsiNumber(2)}</span>
+                          </div>
                          <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">منابع</span>
                      </div>
                      
@@ -52,9 +57,9 @@ const NewProject1 = () => {
 
                      {/* Step 3: Financial */}
                       <div className="flex items-center gap-2.5 opacity-50 flex-shrink-0">
-                         <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center">
-                             <span className="text-white text-sm font-bold font-['PeydaFaNum']">3</span>
-                         </div>
+                          <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center">
+                              <span className="text-white text-sm font-bold font-num-medium">{toFarsiNumber(3)}</span>
+                          </div>
                          <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">مالی</span>
                      </div>
 
@@ -62,9 +67,9 @@ const NewProject1 = () => {
 
                      {/* Step 4: Sharing */}
                       <div className="flex items-center gap-2.5 opacity-50 flex-shrink-0">
-                         <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center">
-                             <span className="text-white text-sm font-bold font-['PeydaFaNum']">4</span>
-                         </div>
+                          <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center">
+                              <span className="text-white text-sm font-bold font-num-medium">{toFarsiNumber(4)}</span>
+                          </div>
                          <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">تسهیم</span>
                      </div>
                 </div>

@@ -16,6 +16,11 @@ const initialStaff = [
 import AddSharePopup from "./AddSharePopup";
 // ... imports
 
+const toFarsiNumber = (n: number | string | undefined): string => {
+    if (n === undefined || n === null) return '';
+    return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
+}
+
 const NewProject4Content = () => {
     const router = useRouter();
     const [schoolShare, setSchoolShare] = useState(20);
@@ -82,7 +87,7 @@ const NewProject4Content = () => {
                      {/* Step 1: Basic Info (Inactive) */}
                      <div className="flex items-center gap-2.5 flex-shrink-0 opacity-50">
                          <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center">
-                             <span className="text-white text-sm font-bold font-['PeydaFaNum']">1</span>
+                             <span className="text-white text-sm font-bold font-num-medium">{toFarsiNumber(1)}</span>
                          </div>
                          <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">اطلاعات پایه</span>
                      </div>
@@ -92,7 +97,7 @@ const NewProject4Content = () => {
                      {/* Step 2: Resources (Inactive) */}
                      <div className="flex items-center gap-2.5 flex-shrink-0 opacity-50">
                          <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center">
-                             <span className="text-white text-sm font-bold font-['PeydaFaNum']">2</span>
+                             <span className="text-white text-sm font-bold font-num-medium">{toFarsiNumber(2)}</span>
                          </div>
                          <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">منابع</span>
                      </div>
@@ -102,7 +107,7 @@ const NewProject4Content = () => {
                      {/* Step 3: Financial (Inactive) */}
                       <div className="flex items-center gap-2.5 opacity-50 flex-shrink-0">
                          <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center">
-                             <span className="text-white text-sm font-bold font-['PeydaFaNum']">3</span>
+                             <span className="text-white text-sm font-bold font-num-medium">{toFarsiNumber(3)}</span>
                          </div>
                          <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">مالی</span>
                      </div>
@@ -112,14 +117,14 @@ const NewProject4Content = () => {
                      {/* Step 4: Sharing (Active) */}
                       <div className="flex items-center gap-2.5 flex-shrink-0">
                          <div className="w-6 h-6 bg-[#FDD00A] rounded-full flex items-center justify-center">
-                             <span className="text-white text-sm font-bold font-['PeydaFaNum']">4</span>
+                             <span className="text-white text-sm font-bold font-num-medium">{toFarsiNumber(4)}</span>
                          </div>
                          <span className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb']">تسهیم</span>
                      </div>
                 </div>
 
                 {/* Content */}
-                <div className="flex flex-col gap-6 px-4">
+                <div className="flex flex-col gap-6 px-0">
                     <div className="w-full text-right text-[#0D0D12] text-base font-semibold font-['PeydaWeb']">
                         جدول تسهیم درآمد
                     </div>
@@ -138,8 +143,8 @@ const NewProject4Content = () => {
                              >
                                  <Plus className="w-4 h-4" />
                              </button>
-                             <div className="w-10 text-center text-[#0D0D12] text-sm font-semibold font-['PeydaFaNum']">
-                                 {schoolShare}
+                             <div className="w-10 text-center text-[#0D0D12] text-sm font-semibold font-num-medium">
+                                 {toFarsiNumber(schoolShare)}
                              </div>
                              <button 
                                 onClick={() => handleSchoolShareChange(-5)}
@@ -175,8 +180,8 @@ const NewProject4Content = () => {
                                         >
                                             <Plus className="w-4 h-4" />
                                         </button>
-                                        <div className="w-8 h-full flex items-center justify-center border-x border-[#E5E5E5] text-[#0D0D12] text-sm font-semibold font-['PeydaFaNum'] bg-[#F6F8FA]">
-                                            {staff.share}
+                                        <div className="w-8 h-full flex items-center justify-center border-x border-[#E5E5E5] text-[#0D0D12] text-sm font-semibold font-num-medium bg-[#F6F8FA]">
+                                            {toFarsiNumber(staff.share)}
                                         </div>
                                         <button 
                                              onClick={() => handleStaffShareChange(staff.id, -5)}
@@ -193,8 +198,8 @@ const NewProject4Content = () => {
                                         <div className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb']">
                                             {staff.name}
                                         </div>
-                                        <div className="text-[#818898] text-[10px] font-semibold font-['PeydaFaNum']">
-                                            {staff.code}
+                                        <div className="text-[#818898] text-[10px] font-semibold font-num-medium">
+                                            {toFarsiNumber(staff.code)}
                                         </div>
                                     </div>
                                     <div className="w-10 h-10 relative">
@@ -227,7 +232,7 @@ const NewProject4Content = () => {
                 </div>
 
                 {/* Continue Button */}
-                <div className="w-full pb-5 px-4 flex justify-end items-center gap-3.5 mt-4">
+                <div className="w-full pb-5 px-0 flex justify-end items-center gap-3.5 mt-4">
                     <button 
                         // onClick={() => router.push('/SchoolPanel/Projects/NewProject/Step5?')} 
                         className="flex-1 h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-2.5 hover:bg-[#e5c109] transition-colors"

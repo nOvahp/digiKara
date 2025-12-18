@@ -21,6 +21,11 @@ import { getTimches, TimcheItem } from "./TimcheStorage";
 // Remove static timcheData array
 /* const timcheData = ... */
 
+const toFarsiNumber = (n: number | string | undefined): string => {
+    if (n === undefined || n === null) return '';
+    return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
+}
+
 const filterTabs = [
     { id: "all", label: "همه", active: true },
     { id: "active", label: "فعال", active: false },
@@ -78,7 +83,7 @@ const Timche = () => {
                         </div>
                         <div className="pt-1.5 pb-1.5 pl-3 flex justify-end items-center gap-2.5">
                             <div className="text-[rgba(115,115,115,0.25)] text-sm font-num-medium leading-5">
-                                ۱۲ نتیحه
+                                {toFarsiNumber(12)} نتیحه
                             </div>
                         </div>
                         
@@ -119,7 +124,7 @@ const Timche = () => {
                   <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide break-word">کل تیمچه‌ها</div>
                </div>
                <div className="self-stretch flex justify-start items-center gap-2">
-                  <div className="w-full text-center text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px] break-word">3</div>
+                  <div className="w-full text-center text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px] break-word">{toFarsiNumber(3)}</div>
                </div>
             </div>
             <div className="self-stretch flex justify-start items-center gap-1">
@@ -135,14 +140,14 @@ const Timche = () => {
                   <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide break-word">فروش کل (ریال)</div>
                </div>
                <div className="self-stretch flex justify-start items-center gap-2">
-                  <div className="w-full text-center text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px] break-word">۱,۱۲۰,۰۴۵,۰۰۰ </div>
+                  <div className="w-full text-center text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px] break-word">{toFarsiNumber("1,120,045,000")} </div>
                </div>
             </div>
             <div className="self-stretch flex justify-start items-center gap-1">
                <div className="flex-1 text-center text-[#818898] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">از ماه گذشته</div>
             </div>
             <div className="absolute left-1/2 -translate-x-1/2 -bottom-3 bg-[#DDF3EF] rounded-[36px] flex justify-center items-center px-2 py-[1px] gap-0.5">
-               <div className="text-[#28806F] text-[10px] font-num-medium font-semibold leading-[15px] tracking-wide break-word whitespace-nowrap">+3.6٪ </div>
+               <div className="text-[#28806F] text-[10px] font-num-medium font-semibold leading-[15px] tracking-wide break-word whitespace-nowrap">+{toFarsiNumber(3.6)}٪ </div>
             </div>
          </div>
       </div>
@@ -196,7 +201,7 @@ const Timche = () => {
                                             <div className="w-[100px] flex justify-start items-center gap-1.5">
                                                 <Users className="w-5 h-5 text-[#0A0A0A]" strokeWidth={1.25} />
                                                 <div className="text-right text-[#0F172A] text-xs font-num-medium leading-tight tracking-wide">
-                                                    {timche.boothCount}
+                                                    {toFarsiNumber(timche.boothCount)}
                                                 </div>
                                                 
                                             </div>
@@ -208,14 +213,14 @@ const Timche = () => {
                                             <div className="flex justify-start items-center gap-1.5">
                                                 <Star className="w-5 h-5 text-[#0A0A0A]" strokeWidth={1.25} />
                                                 <div className="text-right text-[#0F172A] text-xs font-num-medium leading-tight tracking-wide">
-                                                    {timche.performance}
+                                                    {toFarsiNumber(timche.performance)}
                                                 </div>
                                                 
                                             </div>
                                             <div className="w-[100px] flex justify-start items-center gap-1.5">
                                                  <Calendar className="w-5 h-5 text-[#0A0A0A]" strokeWidth={1.25} />
                                                 <div className="text-right text-[#0F172A] text-xs font-num-medium leading-tight tracking-wide">
-                                                    {timche.lastUpdate}
+                                                    {toFarsiNumber(timche.lastUpdate)}
                                                 </div>
                                                
                                             </div>
@@ -226,7 +231,7 @@ const Timche = () => {
                                         <div className="h-6 flex justify-end items-center gap-1.5">
                                                 <Wallet className="w-5 h-5 text-[#0A0A0A]" strokeWidth={1.25} />
                                                 <div className="text-right flex flex-col justify-center text-[#0F172A] text-xs font-['PeydaWeb'] font-semibold leading-tight tracking-wide">
-                                                    {timche.totalSales}
+                                                    {toFarsiNumber(timche.totalSales)}
                                                 </div>
                                             
                                         </div>

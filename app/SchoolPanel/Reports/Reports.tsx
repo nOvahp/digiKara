@@ -31,12 +31,17 @@ import {
   Cell
 } from 'recharts';
 
+const toFarsiNumber = (n: number | string | undefined): string => {
+    if (n === undefined || n === null) return '';
+    return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
+}
+
 const CustomXAxisTick = (props: any) => {
   const { x, y, payload } = props;
   return (
     <g transform={`translate(${x},${y})`}>
       <text x={0} y={0} dy={16} textAnchor="middle" fill="#6b7280" fontSize={10} fontFamily="PeydaWeb" fontWeight={500}>
-        {payload.value}
+        {toFarsiNumber(payload.value)}
       </text>
     </g>
   );
@@ -45,10 +50,10 @@ const CustomXAxisTick = (props: any) => {
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white/95 border-none shadow-md rounded-lg p-3 font-['PeydaFaNum'] text-right" style={{ direction: 'rtl' }}>
+      <div className="bg-white/95 border-none shadow-md rounded-lg p-3 font-num-medium text-right" style={{ direction: 'rtl' }}>
         <p className="text-[#0D0D12] text-sm font-semibold mb-1">{label}</p>
         <p className="text-[#666D80] text-xs">
-          {`فروش: ${payload[0].value.toLocaleString('fa-IR')}`}
+          {`فروش: ${toFarsiNumber(payload[0].value.toLocaleString('fa-IR'))}`}
         </p>
       </div>
     );
@@ -124,9 +129,9 @@ const ReportsPage = () => {
                          </div>
                          <div className="w-full flex justify-end items-center gap-2">
                             <div className="px-2 py-[1px] bg-[#DDF3EF] rounded-[36px] flex justify-center items-center gap-0.5">
-                                 <div className="text-[#28806F] text-xs font-['PeydaWeb'] font-semibold leading-[18px tracking-wide">+۱۲.۴٪</div>
+                                 <div className="text-[#28806F] text-xs font-['PeydaWeb'] font-semibold leading-[18px tracking-wide">+{toFarsiNumber(12.4)}٪</div>
                              </div>
-                             <div className="text-[#0D0D12] text-2xl font-['PeydaFaNum'] font-semibold leading-[31.2px]">۱,۱۲۰,۰۴۵,۰۰۰ <span className="text-sm">ریال</span></div>
+                             <div className="text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px]">{toFarsiNumber("1,120,045,000")} <span className="text-sm">ریال</span></div>
                              
                          </div>
                     </div>
@@ -145,14 +150,14 @@ const ReportsPage = () => {
                                     <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">در کشور</div>
                                 </div>
                            <div className="w-full flex justify-center items-center gap-2">
-                               <div className="text-[#0D0D12] text-2xl font-['PeydaFaNum'] font-semibold leading-[31.2px]">۲۳۴</div>
+                               <div className="text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px]">{toFarsiNumber(234)}</div>
                            </div>
                         </div>
                         <div className="w-full flex justify-center items-center gap-1">
                            <div className="text-[#818898] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide">از ماه گذشته</div>
                         </div>
                         <div className="absolute left-1/2 -translate-x-1/2 -bottom-3 bg-[#DDF3EF] rounded-[36px] flex justify-center items-center px-2 py-[1px] gap-0.5 z-10">
-                           <div className="text-[#28806F] text-[10px] font-['PeydaFaNum'] font-semibold leading-[15px] tracking-wide">+۳۵۱٪</div>
+                           <div className="text-[#28806F] text-[10px] font-num-medium font-semibold leading-[15px] tracking-wide">+{toFarsiNumber(351)}٪</div>
                         </div>
                      </div>
 
@@ -163,14 +168,14 @@ const ReportsPage = () => {
                                <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">مشتریان جدید</div>
                            </div>
                             <div className="w-full flex justify-center items-center gap-2">
-                               <div className="text-[#0D0D12] text-2xl font-['PeydaFaNum'] font-semibold leading-[31.2px]">۸۶۰</div>
+                               <div className="text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px]">{toFarsiNumber(860)}</div>
                            </div>
                         </div>
                         <div className="w-full flex justify-center items-center gap-1">
                            <div className="text-[#818898] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide">از ماه گذشته</div>
                         </div>
                         <div className="absolute left-1/2 -translate-x-1/2 -bottom-3 bg-[#DDF3EF] rounded-[36px] flex justify-center items-center px-2 py-[1px] gap-0.5 z-10">
-                           <div className="text-[#28806F] text-[10px] font-['PeydaFaNum'] font-semibold leading-[15px] tracking-wide">+۳.۶٪</div>
+                           <div className="text-[#28806F] text-[10px] font-num-medium font-semibold leading-[15px] tracking-wide">+{toFarsiNumber(3.6)}٪</div>
                         </div>
                      </div>
 
@@ -181,14 +186,14 @@ const ReportsPage = () => {
                                <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">حاشیه سود</div>
                            </div>
                            <div className="w-full flex justify-center items-center gap-2">
-                               <div className="text-[#0D0D12] text-2xl font-['PeydaFaNum'] font-semibold leading-[31.2px]">۲۴.۶٪</div>
+                               <div className="text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px]">{toFarsiNumber(24.6)}٪</div>
                            </div>
                         </div>
                         <div className="w-full flex justify-center items-center gap-1">
                            <div className="text-[#818898] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide">از ماه گذشته</div>
                         </div>
                         <div className="absolute left-1/2 -translate-x-1/2 -bottom-3 bg-[#DDF3EF] rounded-[36px] flex justify-center items-center px-2 py-[1px] gap-0.5 z-10">
-                           <div className="text-[#28806F] text-[10px] font-['PeydaFaNum'] font-semibold leading-[15px] tracking-wide">+۱۵.۱٪</div>
+                           <div className="text-[#28806F] text-[10px] font-num-medium font-semibold leading-[15px] tracking-wide">+{toFarsiNumber(15.1)}٪</div>
                         </div>
                      </div>
 
@@ -277,7 +282,7 @@ const ReportsPage = () => {
                      {/* Analysis Text */}
                      <div className="w-full px-4 pt-6 pb-2 text-right">
                          <span className="text-[#666D80] text-sm font-['PeydaWeb'] font-semibold leading-[21px]">تحلیل: </span>
-                         <span className="text-[#666D80] text-sm font-['PeydaWeb'] font-light leading-[21px]">پیش‌بینی می‌شود با بازگشایی مدارس، فروش نوشت‌افزار در شهریورماه ۲۰٪ افزایش یابد.</span>
+                         <span className="text-[#666D80] text-sm font-['PeydaWeb'] font-light leading-[21px]">پیش‌بینی می‌شود با بازگشایی مدارس، فروش نوشت‌افزار در شهریورماه {toFarsiNumber(20)}٪ افزایش یابد.</span>
                      </div>
                  </div>
             </div>
@@ -298,14 +303,14 @@ const ReportsPage = () => {
                                     <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">در کشور</div>
                                 </div>
                                 <div className="w-full flex justify-center items-center gap-2">
-                                    <div className="text-center text-[#0D0D12] text-2xl font-['PeydaFaNum'] font-semibold leading-[31.2px]">۳۴۰</div>
+                                    <div className="text-center text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px]">{toFarsiNumber(340)}</div>
                                 </div>
                              </div>
                              <div className="w-full flex justify-center items-center gap-1">
                                 <div className="flex-1 text-center text-[#818898] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide">از ماه گذشته</div>
                              </div>
                              <div className="absolute left-1/2 -translate-x-1/2 top-[105px] px-2 py-[1px] bg-[#DDF3EF] rounded-[36px] flex justify-center items-center gap-0.5 z-10">
-                                <div className="text-[#28806F] text-[10px] font-['PeydaFaNum'] font-semibold leading-[15px]">۴۲ پله ارتقاء</div>
+                                <div className="text-[#28806F] text-[10px] font-num-medium font-semibold leading-[15px]">{toFarsiNumber(42)} پله ارتقاء</div>
                              </div>
                         </div>
 
@@ -316,14 +321,14 @@ const ReportsPage = () => {
                                     <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">در منطقه</div>
                                 </div>
                                 <div className="w-full flex justify-center items-center gap-2">
-                                    <div className="text-center text-[#0D0D12] text-2xl font-['PeydaFaNum'] font-semibold leading-[31.2px]">۵</div>
+                                    <div className="text-center text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px]">{toFarsiNumber(5)}</div>
                                 </div>
                              </div>
                              <div className="w-full flex justify-center items-center gap-1">
                                 <div className="flex-1 text-center text-[#818898] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide">براساس عملکرد کلی</div>
                              </div>
                              <div className="absolute left-1/2 -translate-x-1/2 top-[105px] px-2 py-[1px] bg-[#DDF3EF] rounded-[36px] flex justify-center items-center gap-0.5 z-10">
-                                <div className="text-[#28806F] text-[10px] font-['PeydaFaNum'] font-semibold leading-[15px]">۲ پله ارتقاء</div>
+                                <div className="text-[#28806F] text-[10px] font-num-medium font-semibold leading-[15px]">{toFarsiNumber(2)} پله ارتقاء</div>
                              </div>
                         </div>
                     </div>
@@ -343,7 +348,7 @@ const ReportsPage = () => {
                             <div className="text-right text-[#0F172A] text-sm font-['Meem'] font-medium leading-[21.7px]">دوره آموزشی مناسب</div>
                         </div>
                         <div className="flex justify-start items-center w-full">
-                             <div className="flex-1 text-right text-[#888B90] text-[10px] font-['MeemFaNum'] font-medium leading-[15.5px]">دوره «عکاسی از محصول با موبایل» می‌تواند به فروش شما کمک کند.</div>
+                             <div className="flex-1 text-right text-[#888B90] text-[10px] font-num-medium font-medium leading-[15.5px]">دوره «عکاسی از محصول با موبایل» می‌تواند به فروش شما کمک کند.</div>
                         </div>
                     </div>
 
@@ -356,7 +361,7 @@ const ReportsPage = () => {
                              <div className="text-right text-[#0F172A] text-sm font-['Meem'] font-medium leading-[21.7px]">این محصول پرفروش است.</div>
                         </div>
                         <div className="flex justify-start items-center w-full">
-                             <div className="flex-1 text-right text-[#888B90] text-[10px] font-['MeemFaNum'] font-medium leading-[15.5px]">«کارهای دستی چوبی» در منطقه شما محبوبیت زیادی پیدا کرده است.</div>
+                             <div className="flex-1 text-right text-[#888B90] text-[10px] font-num-medium font-medium leading-[15.5px]">«کارهای دستی چوبی» در منطقه شما محبوبیت زیادی پیدا کرده است.</div>
                         </div>
                     </div>
                 </div>
@@ -365,7 +370,7 @@ const ReportsPage = () => {
             {/* Projects Section */}
             <div className="flex flex-col gap-4 w-full mt-4">
                 <div className="flex justify-between items-center w-full">
-                    <h2 className="text-[#222831] text-lg font-['PeydaFaNum'] font-extrabold leading-[25.2px] text-right">پروژه ها</h2>
+                    <h2 className="text-[#222831] text-lg font-num-medium font-extrabold leading-[25.2px] text-right">پروژه ها</h2>
                 </div>
 
                 {/* Toggle */}
@@ -439,7 +444,7 @@ const ReportsPage = () => {
                                     </div>
                                      <div className="w-20 h-16 px-3 flex justify-center items-center gap-2.5">
                                         <div className="w-4 h-4 bg-white rounded border border-[#DFE1E7] cursor-pointer" />
-                                        <span className="text-center text-[#0D0D12] text-sm font-['PeydaFaNum'] font-semibold flex-1">{itemIndex}</span>
+                                        <span className="text-center text-[#0D0D12] text-sm font-num-medium font-semibold flex-1">{toFarsiNumber(itemIndex)}</span>
                                     </div>
                                     <div className="w-[272px] h-16 px-3 flex justify-start items-center gap-2.5">
                                         <span className="text-right text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide truncate w-full">
@@ -447,19 +452,19 @@ const ReportsPage = () => {
                                         </span>
                                     </div>
                                     <div className="w-[73px] h-16 px-3 flex justify-center items-center gap-2.5">
-                                        <span className="flex-1 text-center text-[#0D0D12] text-sm font-['PeydaFaNum'] font-semibold">{product.count}</span>
+                                        <span className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium font-semibold">{toFarsiNumber(product.count)}</span>
                                     </div>
                                     <div className="w-[127px] h-16 px-3 flex justify-center items-center gap-2.5">
-                                        <span className="flex-1 text-center text-[#0D0D12] text-sm font-['PeydaFaNum'] font-semibold">{product.deliveryTime}</span>
+                                        <span className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium font-semibold">{toFarsiNumber(product.deliveryTime)}</span>
                                     </div>
                                     <div className="w-[140px] h-16 px-3 flex justify-center items-center gap-2.5">
-                                        <span className="flex-1 text-center text-[#0D0D12] text-sm font-['PeydaFaNum'] font-semibold">
-                                            {product.price} <span className="font-['PeydaWeb']">ریال</span>
+                                        <span className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium font-semibold">
+                                            {toFarsiNumber(product.price)} <span className="font-['PeydaWeb']">ریال</span>
                                         </span>
                                     </div>
                                     <div className="w-[104px] h-16 px-3 flex justify-center items-center gap-2.5">
                                         <div className="px-2 py-0.5 rounded-2xl flex justify-center items-center" style={{ backgroundColor: statusBg }}>
-                                            <span className="text-[12px] font-['PeydaFaNum']" style={{ color: statusColor }}>{product.statusLabel}</span>
+                                            <span className="text-[12px] font-num-medium" style={{ color: statusColor }}>{product.statusLabel}</span>
                                         </div>
                                     </div>
                                     <div className="w-[272px] h-16 px-3 flex justify-end items-center gap-2.5">
@@ -481,7 +486,7 @@ const ReportsPage = () => {
                                 <ChevronRight className="w-5 h-5 text-[#0D0D12]" />
                            </div>
                              <div className="w-[55px] h-8 rounded-lg border border-[#DFE1E7] flex justify-center items-center">
-                                <span className="text-[#0D0D12] text-xs font-['PeydaFaNum'] font-medium">{currentPage}/{totalPages}</span>
+                                <span className="text-[#0D0D12] text-xs font-num-medium font-medium">{toFarsiNumber(currentPage)}/{toFarsiNumber(totalPages)}</span>
                             </div>
                             <div onClick={handlePrevPage} className={`w-8 h-8 flex items-center justify-center bg-white rounded-lg border border-[#DFE1E7] cursor-pointer hover:bg-gray-50 transition-colors ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}`}>
                                 <div className="w-5 h-5 flex justify-center items-center">
@@ -491,7 +496,7 @@ const ReportsPage = () => {
                            </div>
                            
                         </div>
-                        <span className="text-center text-[#0D0D12] text-sm font-['PeydaFaNum'] font-medium">صفحه {currentPage} از {totalPages}</span>
+                        <span className="text-center text-[#0D0D12] text-sm font-num-medium font-medium">صفحه {toFarsiNumber(currentPage)} از {toFarsiNumber(totalPages)}</span>
                     </div>
                 </div>
             </div>

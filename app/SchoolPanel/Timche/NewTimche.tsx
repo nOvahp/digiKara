@@ -26,6 +26,11 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
+const toFarsiNumber = (n: number | string | undefined): string => {
+    if (n === undefined || n === null) return '';
+    return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
+}
+
 const formSchema = z.object({
     name: z.string().min(1, "لطفا نام تیمچه را وارد کنید"),
     category: z.enum(["project", "product"]),
@@ -107,7 +112,7 @@ const NewTimche = () => {
                                 "w-6 h-6 rounded-full flex items-center justify-center shadow-sm",
                                 s.id === 1 ? "bg-[#FDD00A]" : "bg-[#DFE1E7]"
                             )}>
-                                 <span className="text-white text-sm font-num-bold font-bold leading-[21px]">{s.id}</span>
+                                 <span className="text-white text-sm font-num-bold font-bold leading-[21px]">{toFarsiNumber(s.id)}</span>
                             </div>
                         </div>
                     ))}
@@ -187,7 +192,7 @@ const NewTimche = () => {
                             className="w-full min-h-[80px] text-right text-[#0D0D12] font-['PeydaWeb'] text-sm focus:outline-none resize-none"
                         />
                         <div className="text-left text-[#A4ACB9] text-xs font-num-light leading-[18px]">
-                            {description?.length || 0}/200
+                            {toFarsiNumber(description?.length || 0)}/{toFarsiNumber(200)}
                         </div>
                     </div>
                     {errors.description && <span className="text-red-500 text-xs font-['PeydaWeb']">{errors.description.message}</span>}

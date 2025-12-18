@@ -39,10 +39,10 @@ const DashBoardNavbar = () => {
         {/* Right: School Info & Profile */}
         <div className="flex justify-start items-center gap-3">
             <div className="flex flex-col justify-start items-end gap-1 inline-flex">
-                <div className="text-right text-[#222831] text-base font-['PeydaFaNum'] font-extrabold leading-snug break-word">
+                <div className="text-right text-[#222831] text-base font-num-medium font-extrabold leading-snug break-word">
                     هنرستان هنرهای زیبا 
                 </div>
-                <div className="text-right text-[#61656B] text-xs font-['PeydaFaNum'] font-extrabold break-word">
+                <div className="text-right text-[#61656B] text-xs font-num-medium font-extrabold break-word">
                     ابهر، زنجان
                 </div>
             </div>

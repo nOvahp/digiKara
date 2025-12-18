@@ -6,6 +6,11 @@ interface NotificationsProps {
     onClose: () => void;
 }
 
+const toFarsiNumber = (n: number | string | undefined): string => {
+    if (n === undefined || n === null) return '';
+    return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
+}
+
 const Notifications = ({ onClose }: NotificationsProps) => {
     const modalRef = useRef<HTMLDivElement>(null);
 
@@ -55,14 +60,14 @@ const Notifications = ({ onClose }: NotificationsProps) => {
                                 <div className="w-2 h-2 bg-[#DF1C41] rounded-full" />
                              </div>
                              <div className="self-stretch text-right text-[#666D80] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">
-                                شما یک سفارش جدید INV-۱۴۰۴-۵۶۷ از مینا حسینی به ارزش ۱۲,۴۵۰,۰۰۰ ریال دریافت کرده اید.
+                                شما یک سفارش جدید INV-{toFarsiNumber('1404')}-{toFarsiNumber('567')} از مینا حسینی به ارزش {toFarsiNumber('12,450,000')} ریال دریافت کرده اید.
                              </div>
                         </div>
                         <div className="self-stretch flex justify-between items-center mt-1">
                              <div className="h-5 px-2 bg-[#DCF6FC] rounded-[36px] flex justify-center items-center gap-2">
                                 <div className="text-center text-[#222831] text-xs font-['PeydaWeb'] font-semibold leading-[18px] tracking-wide min-w-[70px]">پیام مدیر مدرسه</div>
                              </div>
-                             <div className="text-[#666D80] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">۵ دقیقه پیش</div>
+                             <div className="text-[#666D80] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">{toFarsiNumber(5)} دقیقه پیش</div>
                         </div>
                     </div>
                 </div>
@@ -79,14 +84,14 @@ const Notifications = ({ onClose }: NotificationsProps) => {
                                 <div className="w-2 h-2 bg-[#DF1C41] rounded-full" />
                             </div>
                             <div className="self-stretch text-right text-[#666D80] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">
-                                گزارش عملکرد فروش شما برای آبان ۱۴۰۴ اکنون برای دانلود در دسترس است.
+                                گزارش عملکرد فروش شما برای آبان {toFarsiNumber(1404)} اکنون برای دانلود در دسترس است.
                             </div>
                         </div>
                         <div className="self-stretch flex justify-between items-center mt-1">
                             <div className="h-5 px-2 bg-[#FFF0CC] rounded-[36px] flex justify-center items-center gap-2">
                                 <div className="text-center text-[#222831] text-xs font-['PeydaWeb'] font-semibold leading-[18px] tracking-wide min-w-[60px]">پیام سامانه</div>
                             </div>
-                            <div className="text-[#666D80] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">۲۰ دقیقه پیش</div>
+                            <div className="text-[#666D80] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">{toFarsiNumber(20)} دقیقه پیش</div>
                         </div>
                     </div>
                 </div>
@@ -103,14 +108,14 @@ const Notifications = ({ onClose }: NotificationsProps) => {
                                 <div className="w-2 h-2 bg-[#DF1C41] rounded-full" />
                             </div>
                             <div className="self-stretch text-right text-[#666D80] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">
-                                موجودی <span className="font-semibold">"عسل چهل گیاه ارگانیک"</span> رو به اتمام است - فقط ۸ مورد در انبار باقی مانده است.
+                                موجودی <span className="font-semibold">"عسل چهل گیاه ارگانیک"</span> رو به اتمام است - فقط {toFarsiNumber(8)} مورد در انبار باقی مانده است.
                             </div>
                         </div>
                         <div className="self-stretch flex justify-between items-center mt-1">
                             <div className="h-5 px-2 bg-[#E0F0D4] rounded-[36px] flex justify-center items-center gap-2">
                                 <div className="text-center text-[#222831] text-xs font-['PeydaWeb'] font-semibold leading-[18px] tracking-wide min-w-[60px]">پیام راهبر</div>
                             </div>
-                            <div className="text-[#666D80] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">۱۰ دقیقه پیش</div>
+                            <div className="text-[#666D80] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">{toFarsiNumber(10)} دقیقه پیش</div>
                         </div>
                     </div>
                 </div>
@@ -126,14 +131,14 @@ const Notifications = ({ onClose }: NotificationsProps) => {
                                 <div className="text-[#0D0D12] text-sm font-['PeydaWeb'] font-light leading-[21px] tracking-wide break-word">پرداخت ناموفق</div>
                             </div>
                             <div className="self-stretch text-right text-[#666D80] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">
-                                پرداخت برای سفارش INV-۱۴۰۴-۲۳۴ ناموفق بود. لطفا روش پرداخت را بررسی کنید.
+                                پرداخت برای سفارش INV-{toFarsiNumber(1404)}-{toFarsiNumber(234)} ناموفق بود. لطفا روش پرداخت را بررسی کنید.
                             </div>
                         </div>
                         <div className="self-stretch flex justify-between items-center mt-1">
                             <div className="h-5 px-2 bg-[#CCDAEE] rounded-[36px] flex justify-center items-center gap-2">
                                 <div className="text-center text-[#222831] text-xs font-['PeydaWeb'] font-semibold leading-[18px] tracking-wide min-w-[70px]">پیام کاربران</div>
                             </div>
-                            <div className="text-[#666D80] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">۳۰ دقیقه پیش</div>
+                            <div className="text-[#666D80] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">{toFarsiNumber(30)} دقیقه پیش</div>
                         </div>
                     </div>
                 </div>
@@ -156,7 +161,7 @@ const Notifications = ({ onClose }: NotificationsProps) => {
                              <div className="h-5 px-2 bg-[#FEDBCC] rounded-[36px] flex justify-center items-center gap-2">
                                 <div className="text-center text-[#222831] text-xs font-['PeydaWeb'] font-semibold leading-[18px] tracking-wide min-w-[80px]">پیام از پشتیبانی</div>
                             </div>
-                            <div className="text-[#666D80] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">۱ ساعت پیش</div>
+                            <div className="text-[#666D80] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">{toFarsiNumber(1)} ساعت پیش</div>
                         </div>
                     </div>
                 </div>

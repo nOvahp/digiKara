@@ -5,6 +5,11 @@ import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+const toFarsiNumber = (n: number | string | undefined): string => {
+    if (n === undefined || n === null) return '';
+    return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
+}
+
 const NewProject2 = () => {
     const router = useRouter();
 
@@ -38,7 +43,7 @@ const NewProject2 = () => {
                      
                      <div className="flex items-center gap-2.5 flex-shrink-0 opacity-50">
                          <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center">
-                             <span className="text-white text-sm font-bold font-['PeydaFaNum']">1</span>
+                             <span className="text-white text-sm font-bold font-num-medium">{toFarsiNumber(1)}</span>
                          </div>
                          <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">اطلاعات پایه</span>
                      </div>
@@ -48,7 +53,7 @@ const NewProject2 = () => {
                      {/* Step 2: Resources (Active) */}
                      <div className="flex items-center gap-2.5 flex-shrink-0">
                          <div className="w-6 h-6 bg-[#FDD00A] rounded-full flex items-center justify-center">
-                             <span className="text-white text-sm font-bold font-['PeydaFaNum']">2</span>
+                             <span className="text-white text-sm font-bold font-num-medium">{toFarsiNumber(2)}</span>
                          </div>
                          <span className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb']">منابع</span>
                      </div>
@@ -58,7 +63,7 @@ const NewProject2 = () => {
                      {/* Step 3: Financial */}
                       <div className="flex items-center gap-2.5 opacity-50 flex-shrink-0">
                          <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center">
-                             <span className="text-white text-sm font-bold font-['PeydaFaNum']">3</span>
+                             <span className="text-white text-sm font-bold font-num-medium">{toFarsiNumber(3)}</span>
                          </div>
                          <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">مالی</span>
                      </div>
@@ -68,14 +73,14 @@ const NewProject2 = () => {
                      {/* Step 4: Sharing */}
                       <div className="flex items-center gap-2.5 opacity-50 flex-shrink-0">
                          <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center">
-                             <span className="text-white text-sm font-bold font-['PeydaFaNum']">4</span>
+                             <span className="text-white text-sm font-bold font-num-medium">{toFarsiNumber(4)}</span>
                          </div>
                          <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">تسهیم</span>
                      </div>
                 </div>
 
                 {/* Form Fields */}
-                <div className="flex flex-col gap-6 px-4">
+                <div className="flex flex-col gap-6 px-0">
                     
                     {/* Human Resources */}
                     <div className="flex flex-col gap-2">
@@ -138,7 +143,7 @@ const NewProject2 = () => {
                                 dir="rtl"
                             ></textarea>
                             <div className="w-full flex justify-end">
-                                <span className="text-[#A4ACB9] text-xs font-light font-['PeydaFaNum']">0/200</span>
+                                <span className="text-[#A4ACB9] text-xs font-light font-num-medium">{toFarsiNumber(0)}/{toFarsiNumber(200)}</span>
                             </div>
                         </div>
                     </div>
@@ -155,14 +160,14 @@ const NewProject2 = () => {
                                 dir="rtl"
                             ></textarea>
                             <div className="w-full flex justify-end">
-                                <span className="text-[#A4ACB9] text-xs font-light font-['PeydaFaNum']">0/200</span>
+                                <span className="text-[#A4ACB9] text-xs font-light font-num-medium">{toFarsiNumber(0)}/{toFarsiNumber(200)}</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 {/* Next Button */}
-                <div className="w-full pb-5 px-4 flex justify-end items-center gap-3.5 mt-4">
+                <div className="w-full pb-0 px-0 flex justify-end items-center gap-3.5 mt-4">
                     <button 
                         onClick={() => router.push('/SchoolPanel/Projects/NewProject/step3')}
                         className="flex-1 h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-2.5 hover:bg-[#e5c109] transition-colors"

@@ -110,7 +110,7 @@ const NewTimche3 = () => {
             </div>
 
             {/* Step 3 Content: Members */}
-            <div className="w-full max-w-[440px] px-4 py-6 flex flex-col gap-6">
+            <div className="w-full max-w-[440px] px-0 py-6 flex flex-col gap-6">
                 
                 {/* Add Member Button */}
                 <div onClick={handleAddClick} className="w-full h-[57px] rounded-xl border border-dashed border-[#DFE1E7] flex items-center justify-center gap-2.5 cursor-pointer hover:bg-gray-50">
@@ -259,7 +259,7 @@ const NewTimche3 = () => {
 
             {/* Selection Modal */}
             {isModalOpen && (
-                <div className="fixed inset-0 z-50 flex items-start pt-[5vh] justify-center bg-black/50 backdrop-blur-sm px-4">
+                <div className="fixed inset-0 z-50 flex items-start pt-[5vh] justify-center bg-black/50 backdrop-blur-sm px-0">
                     <div className="bg-white w-full max-w-[400px] rounded-2xl p-4 flex flex-col gap-4 max-h-[80vh]">
                         <div className="flex justify-between items-center border-b pb-2">
                              <h3 className="text-[#0D0D12] text-lg font-['PeydaWeb'] font-semibold">انتخاب کاربر</h3>

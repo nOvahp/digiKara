@@ -10,6 +10,11 @@ interface AddSharePopupProps {
     onAdd: (data: any) => void;
 }
 
+const toFarsiNumber = (n: number | string | undefined): string => {
+    if (n === undefined || n === null) return '';
+    return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
+}
+
 const AddSharePopup = ({ isOpen, onClose, onAdd }: AddSharePopupProps) => {
     const [userType, setUserType] = useState<"student" | "booth">("student");
     const [sharePercent, setSharePercent] = useState(20);
@@ -116,8 +121,8 @@ const AddSharePopup = ({ isOpen, onClose, onAdd }: AddSharePopupProps) => {
                                 >
                                     <Plus className="w-4 h-4" />
                                 </button>
-                                <div className="w-10 h-full flex items-center justify-center border-x border-[#E5E5E5] text-[#0D0D12] text-sm font-semibold font-['PeydaFaNum'] bg-[#F6F8FA]">
-                                    {sharePercent}
+                                <div className="w-10 h-full flex items-center justify-center border-x border-[#E5E5E5] text-[#0D0D12] text-sm font-semibold font-num-medium bg-[#F6F8FA]">
+                                    {toFarsiNumber(sharePercent)}
                                 </div>
                                 <button 
                                      onClick={() => setSharePercent(p => Math.max(0, p - 5))}

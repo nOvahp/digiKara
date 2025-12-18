@@ -28,6 +28,12 @@ const filterTabs = [
     { id: "archive", label: "بایگانی" }
 ];
 
+
+const toFarsiNumber = (n: number | string | undefined): string => {
+    if (n === undefined || n === null) return '';
+    return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
+}
+
 const ProjectManagment = () => {
     const router = useRouter();
     const [activeFilter, setActiveFilter] = useState("all");
@@ -93,7 +99,7 @@ const ProjectManagment = () => {
                                     </div>
                                     <div className="pt-1.5 pb-1.5 pl-3 flex justify-end items-center gap-2.5">
                                         <div className="text-[rgba(115,115,115,0.25)] text-sm font-num-medium leading-5">
-                                            ۱۲ نتیحه
+                                            {toFarsiNumber(12)} نتیحه
                                         </div>
                                     </div>
                                     
@@ -156,7 +162,7 @@ const ProjectManagment = () => {
                                      </div>
                                      <div className="w-[100px] flex items-center gap-1.5">
                                          <Clock className="w-4 h-4 text-[#666D80]" />
-                                         <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px] tracking-wide">14:30 امروز</span>
+                                         <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px] tracking-wide">{toFarsiNumber("14:30")} امروز</span>
                                      </div>
                                     
                                  </div>
@@ -165,7 +171,7 @@ const ProjectManagment = () => {
                                  <div className="w-full flex justify-between items-center">
                                      <div className="flex items-center gap-1.5">
                                          <Users className="w-4 h-4 text-[#666D80]" />
-                                         <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px]">4 هنرجو</span>
+                                         <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px]">{toFarsiNumber(4)} هنرجو</span>
                                      </div>
                                      <div className="w-[100px] flex items-center gap-1.5">
                                          <User className="w-4 h-4 text-[#666D80]" />
@@ -217,7 +223,7 @@ const ProjectManagment = () => {
                                      </div>
                                      <div className="w-[100px] flex items-center gap-1.5">
                                          <Clock className="w-4 h-4 text-[#666D80]" />
-                                         <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px] tracking-wide">16:00 امروز</span>
+                                         <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px] tracking-wide">{toFarsiNumber("16:00")} امروز</span>
                                      </div>
                                     
                                  </div>
@@ -389,7 +395,7 @@ const ProjectManagment = () => {
                                 return (
                                     <div key={product.id} onClick={() => handleProductClick(product)} className="w-full h-16 border-b border-[#DFE1E7] flex justify-end items-center px-2 hover:bg-gray-50 transition-colors cursor-pointer group">
                                         <div className="w-20 h-16 px-3 flex justify-start items-center gap-2.5">
-                                            <span className="text-center text-[#0D0D12] text-sm font-num-medium font-semibold flex-1">{itemIndex}</span>
+                                            <span className="text-center text-[#0D0D12] text-sm font-num-medium font-semibold flex-1">{toFarsiNumber(itemIndex)}</span>
                                             <div className="w-4 h-4 bg-white rounded border border-[#DFE1E7] cursor-pointer" />
                                         </div>
                                         <div className="w-[272px] h-16 px-3 flex justify-start items-center gap-2.5">
@@ -398,14 +404,14 @@ const ProjectManagment = () => {
                                             </span>
                                         </div>
                                         <div className="w-[73px] h-16 px-3 flex justify-end items-center gap-2.5">
-                                            <span className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium font-semibold">{product.count}</span>
+                                            <span className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium font-semibold">{toFarsiNumber(product.count)}</span>
                                         </div>
                                         <div className="w-[127px] h-16 px-3 flex justify-end items-center gap-2.5">
-                                            <span className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium font-semibold">{product.deliveryTime}</span>
+                                            <span className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium font-semibold">{toFarsiNumber(product.deliveryTime)}</span>
                                         </div>
                                         <div className="w-[140px] h-16 px-3 flex justify-end items-center gap-2.5">
                                             <span className="flex-1 text-center text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold">
-                                                {product.price} ریال
+                                                {toFarsiNumber(product.price)} ریال
                                             </span>
                                         </div>
                                         <div className="w-[104px] h-16 px-3 flex justify-center items-center gap-2.5">
@@ -437,7 +443,7 @@ const ProjectManagment = () => {
                                 <ChevronRight className="w-5 h-5 text-[#0D0D12]" />
                             </div>
                             <div className="w-[55px] h-8 rounded-lg border border-[#DFE1E7] flex justify-center items-center">
-                                <span className="text-[#0D0D12] text-xs font-num-medium font-medium">{currentPage}/{totalPages}</span>
+                                <span className="text-[#0D0D12] text-xs font-num-medium font-medium">{toFarsiNumber(currentPage)}/{toFarsiNumber(totalPages)}</span>
                             </div>
                             <div 
                                 onClick={handlePrevPage}
@@ -446,7 +452,7 @@ const ProjectManagment = () => {
                                 <ChevronLeft className="w-5 h-5 text-[#0D0D12]" />
                             </div>
                         </div>
-                        <span className="text-center text-[#0D0D12] text-sm font-num-medium font-medium">صفحه {currentPage} از {totalPages}</span>
+                        <span className="text-center text-[#0D0D12] text-sm font-num-medium font-medium">صفحه {toFarsiNumber(currentPage)} از {toFarsiNumber(totalPages)}</span>
                     </div>
 
                 </div>

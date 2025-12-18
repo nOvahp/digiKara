@@ -15,13 +15,22 @@ import {
   Lightbulb,
   CheckCircle2,
   List,
-  Download
+  Download,
+  GraduationCap,
+  Filter,
+  Search,
+  ArrowLeft
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { products, Product } from "./Reports/product";
 import ProductPopUp from "./Reports/ProductPopUp";
+
+const toFarsiNumber = (n: number | string | undefined): string => {
+    if (n === undefined || n === null) return '';
+    return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
+}
 
 const SchoolHomePage = () => {
   const [currentPage, setCurrentPage] = React.useState(1);
@@ -70,7 +79,7 @@ const SchoolHomePage = () => {
             <div className="flex items-center justify-end gap-2 w-full">
                
                 <Badge className="bg-[#DDF3EF] text-[#28806F] hover:bg-[#DDF3EF] rounded-full px-2 py-0.5 text-xs font-num-medium">
-                 +۱۲.۴٪
+                 {toFarsiNumber("+12.4%")}
                </Badge>
                <span className="text-[#0D0D12] text-2xl  font-num-medium">۱,۱۲۰,۰۴۵,۰۰۰ ریال</span>
             </div>
@@ -85,17 +94,20 @@ const SchoolHomePage = () => {
          <div className="flex-1 p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] -outline-offset-1 flex flex-col justify-start items-start gap-2.5 relative">
             <div className="self-stretch flex flex-col justify-start items-start gap-0.5">
                <div className="self-stretch flex justify-start items-center gap-2.5">
+                  <div className="w-8 h-8 bg-[#FFD369] rounded-lg shadow-inner flex items-center justify-center">
+                      <Store className="w-5 h-5 text-[#393E46]" strokeWidth={2} />
+                  </div>
                   <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide break-word">حجره های فعال</div>
                </div>
                <div className="self-stretch flex justify-start items-center gap-2">
-                  <div className="w-full text-center text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px] break-word">45</div>
+                  <div className="w-full text-center text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px] break-word">{toFarsiNumber(45)}</div>
                </div>
             </div>
             <div className="self-stretch flex justify-start items-center gap-1">
                <div className="flex-1 text-center text-[#818898] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">از ماه گذشته</div>
             </div>
             <div className="absolute left-1/2 -translate-x-1/2 -bottom-3 bg-[#DDF3EF] rounded-[36px] flex justify-center items-center px-2 py-[1px] gap-0.5">
-               <div className="text-[#28806F] text-[10px] font-num-medium font-semibold leading-[15px] tracking-wide break-word">+3.6٪</div>
+               <div className="text-[#28806F] text-[10px] font-num-medium font-semibold leading-[15px] tracking-wide break-word">{toFarsiNumber("+15.1%")}</div>
             </div>
          </div>
 
@@ -104,18 +116,21 @@ const SchoolHomePage = () => {
          <div className="flex-1 p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] -outline-offset-1 flex flex-col justify-start items-start gap-2.5 relative">
             <div className="self-stretch flex flex-col justify-start items-start gap-0.5">
                <div className="self-stretch flex justify-start items-center gap-2.5">
+                  <div className="w-8 h-8 bg-[#E3F2FD] rounded-lg shadow-inner flex items-center justify-center">
+                      <GraduationCap className="w-5 h-5 text-[#1976D2]" strokeWidth={2} />
+                  </div>
                   <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide break-word">هنرجویان فعال</div>
                </div>
                <div className="w-full text-center rtl:flex rtl:justify-center rtl:items-baseline rtl:gap-1">
-                  <span className="text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px]">105</span>
-                  <span className="text-[#818898] text-sm font-num-medium">/120</span>
+                  <span className="text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px]">{toFarsiNumber(105)}</span>
+                  <span className="text-[#818898] text-sm font-num-medium">/{toFarsiNumber(120)}</span>
                </div>
             </div>
             <div className="self-stretch flex justify-start items-center gap-1">
                <div className="flex-1 text-center text-[#818898] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">از ماه گذشته</div>
             </div>
             <div className="absolute left-1/2 -translate-x-1/2 -bottom-3 bg-[#DDF3EF] rounded-[36px] flex justify-center items-center px-2 py-[1px] gap-0.5">
-               <div className="text-[#28806F] text-[10px] font-num-medium font-semibold leading-[15px] tracking-wide break-word">+15.1٪</div>
+               <div className="text-[#28806F] text-[10px] font-num-medium font-semibold leading-[15px] tracking-wide break-word">{toFarsiNumber("+15.1%")}</div>
             </div>
          </div>
       </div>
@@ -127,17 +142,20 @@ const SchoolHomePage = () => {
          <div className="flex-1 p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] -outline-offset-1 flex flex-col justify-start items-start gap-2.5 relative">
             <div className="self-stretch flex flex-col justify-start items-start gap-0.5">
                <div className="self-stretch flex justify-start items-center gap-2.5">
+                  <div className="w-8 h-8 bg-[#E8F5E9] rounded-lg shadow-inner flex items-center justify-center">
+                      <ShoppingBag className="w-5 h-5 text-[#2E7D32]" strokeWidth={2} />
+                  </div>
                   <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide break-word">سفارشات</div>
                </div>
                <div className="self-stretch flex justify-start items-center gap-2">
-                  <div className="w-full text-center text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px] break-word">340</div>
+                  <div className="w-full text-center text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px] break-word">{toFarsiNumber(340)}</div>
                </div>
             </div>
             <div className="self-stretch flex justify-start items-center gap-1">
                <div className="flex-1 text-center text-[#818898] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">از ماه گذشته</div>
             </div>
             <div className="absolute left-1/2 -translate-x-1/2 -bottom-3 bg-[#DDF3EF] rounded-[36px] flex justify-center items-center px-2 py-[1px] gap-0.5">
-               <div className="text-[#28806F] text-[10px] font-num-medium font-semibold leading-[15px] tracking-wide break-word">+3.6٪</div>
+               <div className="text-[#28806F] text-[10px] font-num-medium font-semibold leading-[15px] tracking-wide break-word">{toFarsiNumber("+3.6%")}</div>
             </div>
          </div>
 
@@ -146,10 +164,13 @@ const SchoolHomePage = () => {
          <div className="flex-1 p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] -outline-offset-1 flex flex-col justify-start items-start gap-2.5 relative">
             <div className="self-stretch flex flex-col justify-start items-start gap-0.5">
                <div className="self-stretch flex justify-start items-center gap-2.5">
+                  <div className="w-8 h-8 bg-[#F3E5F5] rounded-lg shadow-inner flex items-center justify-center">
+                      <Users className="w-5 h-5 text-[#7B1FA2]" strokeWidth={2} />
+                  </div>
                   <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide break-word">تیمچه های فعال</div>
                </div>
                <div className="self-stretch flex justify-start items-center gap-2">
-                  <div className="w-full text-center text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px] break-word">8</div>
+                  <div className="w-full text-center text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px] break-word">{toFarsiNumber(8)}</div>
                </div>
             </div>
             <div className="self-stretch flex justify-start items-center gap-1">
@@ -165,25 +186,23 @@ const SchoolHomePage = () => {
       <div className="flex flex-col gap-4 w-full mt-2">
          <div className="flex justify-between items-center w-full">
             <h2 className="text-[#0D0D12] text-xl font-['PeydaWeb'] font-semibold">گزارش‌های اخیر</h2>
-            <span className="text-[#6C7278] text-xs font-['PeydaWeb'] font-semibold cursor-pointer">مشاهده همه</span>
+            <div className="flex items-center gap-1 cursor-pointer">
+                <span className="text-[#6C7278] text-xs font-['PeydaWeb'] font-semibold">مشاهده همه</span>
+                <ChevronLeft className="w-4 h-4 text-[#6C7278]" />
+            </div>
          </div>
          
          {/* Report Item 1 */}
          <div className="w-full h-[61px] py-2 pl-[14px] pr-4 rounded-xl border border-[#DCE4E8] flex justify-start items-center gap-3">
-            <div className="relative flex justify-start items-center gap-3">
-                 <div className="flex justify-start items-center gap-2.5">
-                     <div className="w-[46.13px] h-[46.13px] bg-[#F8CB2E] rounded-lg" />
-                 </div>
-                 <div className="w-6 h-6 left-[11.07px] top-[11.07px] absolute flex items-center justify-center">
-                     <FileText className="w-5 h-5 text-[#0D0D12]" strokeWidth={1.5} />
-                 </div>
-             </div>
+            <div className="w-[46px] h-[46px] bg-[#F8CB2E] rounded-lg flex items-center justify-center shadow-sm">
+                <FileText className="w-6 h-6 text-[#0D0D12]" strokeWidth={1.5} />
+            </div>
              
              <div className="flex-1 pl-4 flex flex-col justify-center items-end gap-1">
                  <div className="w-full text-right text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold break-word">گزارش جامع فروش تیرماه</div>
                  <div className="w-full flex  items-center">
                      <div className="flex justify-end items-center">
-                         <div className="text-center text-[#818898] text-[10px] font-['PeydaWeb'] font-semibold break-word">۱۴۰۴/۰۵/۰۱</div>
+                         <div className="text-center text-[#818898] text-[10px] font-['PeydaWeb'] font-semibold break-word">{toFarsiNumber("1404/05/01")}</div>
                      </div>
                  </div>
              </div>
@@ -198,19 +217,14 @@ const SchoolHomePage = () => {
 
          {/* Report Item 2 */}
          <div className="w-full h-[61px] py-2 pl-[14px] pr-4 bg-white rounded-xl border border-[#DCE4E8] flex justify-start items-center gap-3">
-             <div className="relative flex justify-start items-center gap-3">
-                 <div className="flex justify-start items-center gap-2.5">
-                     <div className="w-[46.13px] h-[46.13px] bg-[#F8CB2E] rounded-lg" />
-                 </div>
-                 <div className="w-6 h-6 left-[11.07px] top-[11.07px] absolute flex items-center justify-center">
-                     <FileText className="w-5 h-5 text-[#0D0D12]" strokeWidth={1.5} />
-                 </div>
+             <div className="w-[46px] h-[46px] bg-[#F8CB2E] rounded-lg flex items-center justify-center shadow-sm">
+                 <FileText className="w-6 h-6 text-[#0D0D12]" strokeWidth={1.5} />
              </div>
              <div className="flex-1 pl-4 flex flex-col justify-center items-end gap-1">
                  <div className="w-full text-right text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold break-word">ریز نمرات کارگاه‌ها</div>
                  <div className="w-full flex  items-center">
                      <div className="flex justify-end">
-                         <div className="text-center text-[#818898] text-[10px] font-['PeydaWeb'] font-semibold break-word">۱۴۰۴/۰۵/۰۱</div>
+                         <div className="text-center text-[#818898] text-[10px] font-['PeydaWeb'] font-semibold break-word">{toFarsiNumber("1404/05/01")}</div>
                      </div>
                  </div>
              </div>
@@ -229,7 +243,10 @@ const SchoolHomePage = () => {
       <div className="flex flex-col gap-4 w-full mt-2">
          <div className="flex justify-between items-center w-full">
             <h2 className="text-[#0D0D12] text-xl font-['PeydaWeb'] font-semibold">همکاری هنرستان ها</h2>
-            <span className="text-[#6C7278] text-xs font-['PeydaWeb'] font-semibold cursor-pointer">مشاهده همه</span>
+            <div className="flex items-center gap-1 cursor-pointer">
+                <span className="text-[#6C7278] text-xs font-['PeydaWeb'] font-semibold">مشاهده همه</span>
+                <ChevronLeft className="w-4 h-4 text-[#6C7278]" />
+            </div>
          </div>
          
          <div className="w-full p-3.5 rounded-xl border border-[#DCE4E8] flex flex-col justify-start items-center gap-3">
@@ -239,7 +256,7 @@ const SchoolHomePage = () => {
                      <div className="w-full flex flex-col justify-start items-start">
                          <div className="w-full text-right flex flex-col justify-center">
                             <div className="text-[#0F172A] text-base font-['PeydaWeb'] font-semibold leading-relaxed tracking-wide break-word">
-                                دوخت لباس فرم - <span className="font-num-medium">10254</span>
+                                دوخت لباس فرم - <span className="font-num-medium">{toFarsiNumber(10254)}</span>
                             </div>
                          </div>
                          <div className="flex justify-start items-center gap-2.5">
@@ -250,7 +267,7 @@ const SchoolHomePage = () => {
                      </div>
                      <div className="w-full flex justify-start items-center gap-2.5">
                          <div className="flex justify-center items-center gap-1.5">
-                             <div className="text-[#0F172A] text-sm font-num-bold  leading-snug tracking-wide break-word">6</div>
+                             <div className="text-[#0F172A] text-sm font-num-bold  leading-snug tracking-wide break-word">{toFarsiNumber(6)}</div>
                          </div>
                          <div className="rounded-br-[10px] rounded-tl-[10px] rounded-tr-[10px] flex justify-end items-center gap-2.5">
                              <div className="text-right text-[#0F172A] text-sm font-['PeydaWeb'] font-semibold leading-snug tracking-wide break-word">تعداد هنرستان های همکار</div>
@@ -260,6 +277,7 @@ const SchoolHomePage = () => {
              </div>
              <div className="w-full h-12 px-6 py-[13px] bg-[#F7C61A] rounded-xl flex justify-center items-center gap-2.5 cursor-pointer hover:bg-[#e5b818]">
                  <div className="text-center text-[#393E46] text-base font-['peyda-Num'] font-extrabold leading-snug break-word">برو به صفحه همکاری</div>
+                 <ArrowLeft className="w-5 h-5 text-[#393E46]" />
              </div>
          </div>
       </div>
@@ -268,18 +286,16 @@ const SchoolHomePage = () => {
       <div className="flex flex-col gap-4 w-full mt-2 relative">
          <div className="flex justify-between items-center w-full">
             <h2 className="text-[#0D0D12] text-base font-['PeydaWeb'] font-semibold">درخواست همکاری</h2>
-            <span className="text-[#6C7278] text-xs font-['PeydaWeb'] font-semibold cursor-pointer">مشاهده همه</span>
+            <div className="flex items-center gap-1 cursor-pointer">
+                <span className="text-[#6C7278] text-xs font-['PeydaWeb'] font-semibold">مشاهده همه</span>
+                <ChevronLeft className="w-4 h-4 text-[#6C7278]" />
+            </div>
          </div>
          
          {/* Request Item 1 */}
          <div className="w-full h-[61px] py-2 pl-[14px] pr-4 rounded-xl border border-[#DCE4E8] flex justify-start items-center gap-3">
-             <div className="relative flex justify-start items-center gap-3">
-                 <div className="flex justify-start items-center gap-2.5">
-                     <div className="w-[46.13px] h-[46.13px] bg-[#F8CB2E] rounded-lg" />
-                 </div>
-                 <div className="w-6 h-6 left-[11.07px] top-[11.07px] absolute flex items-center justify-center">
-                     <Briefcase className="w-5 h-5 text-[#0D0D12]" strokeWidth={1.5} />
-                 </div>
+             <div className="w-[46px] h-[46px] bg-[#F8CB2E] rounded-lg flex items-center justify-center shadow-sm">
+                 <Briefcase className="w-6 h-6 text-[#0D0D12]" strokeWidth={1.5} />
              </div>
              <div className="flex-1 pl-4 flex flex-col justify-center items-end gap-1">
                  <div className="w-full text-right text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold break-word">درخواست همکاری در دوخت</div>
@@ -301,13 +317,8 @@ const SchoolHomePage = () => {
 
          {/* Request Item 2 */}
          <div className="w-full h-[61px] py-2 pl-[14px] pr-4 rounded-xl border border-[#DCE4E8] flex justify-start items-center gap-3">
-             <div className="relative flex justify-start items-center gap-3">
-                 <div className="flex justify-start items-center gap-2.5">
-                     <div className="w-[46.13px] h-[46.13px] bg-[#F8CB2E] rounded-lg" />
-                 </div>
-                 <div className="w-6 h-6 left-[11.07px] top-[11.07px] absolute flex items-center justify-center">
-                     <Briefcase className="w-5 h-5 text-[#0D0D12]" strokeWidth={1.5} />
-                 </div>
+             <div className="w-[46px] h-[46px] bg-[#F8CB2E] rounded-lg flex items-center justify-center shadow-sm">
+                 <Briefcase className="w-6 h-6 text-[#0D0D12]" strokeWidth={1.5} />
              </div>
              <div className="flex-1 pl-4 flex flex-col justify-center items-end gap-1">
                  <div className="w-full text-right text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold break-word">درخواست همکاری در تولید محتوا</div>
@@ -371,18 +382,14 @@ const SchoolHomePage = () => {
              {/* Header */}
              <div className="w-full h-16 px-5 py-2 border-b border-[#DFE1E7] flex justify-between items-center bg-white">
                  <div className="text-[#0D0D12] text-16 font-['PeydaWeb'] font-semibold leading-24 tracking-wide">سفارش های فعال</div>
-                 <div className="flex justify-start items-center gap-2">
-                     <div className="w-8 h-8 px-4 py-2 bg-white rounded-lg outline outline-1 outline-[#DFE1E7] flex justify-center items-center gap-2 cursor-pointer">
-                         <div className="w-4 h-4 relative overflow-hidden">
-                             <div className="w-3 h-3 left-[2px] top-[2px] absolute border-[1.33px] border-[#818898] rounded-[1px]" />
-                         </div>
-                     </div>
-                     <div className="w-8 h-8 p-2 bg-white rounded-lg outline outline-1 outline-[#DFE1E7] flex justify-center items-center gap-2 cursor-pointer">
-                         <div className="w-4 h-4 relative overflow-hidden">
-                             <div className="w-3 h-3 left-[2px] top-[2px] absolute border-[1.33px] border-[#818898] rounded-[1px]" />
-                         </div>
-                     </div>
-                 </div>
+                  <div className="flex justify-start items-center gap-2">
+                      <div className="w-8 h-8 bg-white rounded-lg outline outline-1 outline-[#DFE1E7] flex justify-center items-center cursor-pointer hover:bg-gray-50">
+                          <Filter className="w-4 h-4 text-[#666D80]" />
+                      </div>
+                      <div className="w-8 h-8 bg-white rounded-lg outline outline-1 outline-[#DFE1E7] flex justify-center items-center cursor-pointer hover:bg-gray-50">
+                          <Search className="w-4 h-4 text-[#666D80]" />
+                      </div>
+                  </div>
              </div>
 
              {/* Table */}
@@ -425,7 +432,7 @@ const SchoolHomePage = () => {
                         return (
                          <div key={product.id} onClick={() => handleProductClick(product)} className="w-full h-16 border-b border-[#DFE1E7] flex justify-end items-center px-2 hover:bg-gray-50 transition-colors cursor-pointer group">
                             <div className="w-20 h-16 px-3 flex justify-start items-center gap-2.5">
-                                <span className="text-center text-[#0D0D12] text-sm font-num-medium font-semibold flex-1">{itemIndex}</span>
+                                <span className="text-center text-[#0D0D12] text-sm font-num-medium font-semibold flex-1">{toFarsiNumber(itemIndex)}</span>
                                 <div className="w-4 h-4 bg-white rounded border border-[#DFE1E7] cursor-pointer" />
                             </div>
                             <div className="w-[272px] h-16 px-3 flex justify-start items-center gap-2.5">
@@ -434,14 +441,14 @@ const SchoolHomePage = () => {
                                 </span>
                             </div>
                             <div className="w-[73px] h-16 px-3 flex justify-end items-center gap-2.5">
-                                <span className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium font-semibold">{product.count}</span>
+                                <span className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium font-semibold">{toFarsiNumber(product.count)}</span>
                             </div>
                             <div className="w-[127px] h-16 px-3 flex justify-end items-center gap-2.5">
-                                <span className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium font-semibold">{product.deliveryTime}</span>
+                                <span className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium font-semibold">{toFarsiNumber(product.deliveryTime)}</span>
                             </div>
                             <div className="w-[140px] h-16 px-3 flex justify-end items-center gap-2.5">
                                 <span className="flex-1 text-center text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold">
-                                    {product.price} ریال
+                                    {toFarsiNumber(product.price)} ریال
                                 </span>
                             </div>
                             <div className="w-[104px] h-16 px-3 flex justify-center items-center gap-2.5">
@@ -473,7 +480,7 @@ const SchoolHomePage = () => {
                           <ChevronRight className="w-5 h-5 text-[#0D0D12]" />
                      </div>
                      <div className="w-[55px] h-8 rounded-lg border border-[#DFE1E7] flex justify-center items-center">
-                         <span className="text-[#0D0D12] text-xs font-num-medium font-medium">{currentPage}/{totalPages}</span>
+                         <span className="text-[#0D0D12] text-xs font-num-medium font-medium">{toFarsiNumber(currentPage)}/{toFarsiNumber(totalPages)}</span>
                      </div>
                      <div 
                         onClick={handlePrevPage}
@@ -482,7 +489,7 @@ const SchoolHomePage = () => {
                           <ChevronLeft className="w-5 h-5 text-[#0D0D12]" />
                      </div>
                  </div>
-                 <span className="text-center text-[#0D0D12] text-sm font-num-medium font-medium">صفحه {currentPage} از {totalPages}</span>
+                  <span className="text-center text-[#0D0D12] text-sm font-num-medium font-medium">صفحه {toFarsiNumber(currentPage)} از {toFarsiNumber(totalPages)}</span>
              </div>
           </div>
       </div>
