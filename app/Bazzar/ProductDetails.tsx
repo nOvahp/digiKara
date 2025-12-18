@@ -299,7 +299,7 @@ export default function ProductDetails() {
                                     </div>
                                     <div className="w-full flex flex-col items-start gap-1">
                                         <h3 className="text-[#1F2029] text-xs font-['PeydaWeb'] font-light text-right">{simProduct.title}</h3>
-                                        <span className="text-[#1F2029] text-xs font-['PeydaWeb'] font-semibold">{simProduct.price}</span>
+                                        <span className="text-[#1F2029] text-xs font-num-medium">{simProduct.price}</span>
                                     </div>
                                 </Link>
                             ))}

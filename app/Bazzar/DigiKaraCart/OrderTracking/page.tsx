@@ -55,7 +55,7 @@ export default function OrderTrackingPage() {
                                 <div className="flex-1 flex flex-col items-start gap-1">
                                     <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] line-clamp-1 text-right">{item.name}</span>
                                     <span className="text-[#707F81] text-xs font-['PeydaFaNum'] text-right">{item.shopName || "فروشگاه"}</span>
-                                    <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-medium mt-1 text-right">
+                                    <span className="text-[#0C1415] text-sm font-num-medium mt-1 text-right">
                                         {(item.price * item.count).toLocaleString()} تومان
                                     </span>
                                 </div>
@@ -79,12 +79,12 @@ export default function OrderTrackingPage() {
 
                     <div className="flex justify-between items-center w-full">
                          <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-light">تاریخ تحویل مورد انتظار</span>
-                         <span className="text-[#080B11] text-sm font-['PeydaFaNum'] font-semibold">۱۲ شهریور ۱۴۰۴</span>
+                         <span className="text-[#080B11] text-sm font-num-medium font-semibold">۱۲ شهریور ۱۴۰۴</span>
                     </div>
 
                     <div className="flex justify-between items-center w-full">
                          <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-light">شناسه رهگیری</span>
-                         <span className="text-[#080B11] text-sm font-['PeydaFaNum'] font-semibold">987654321</span>
+                         <span className="text-[#080B11] text-sm font-num-medium font-semibold">987654321</span>
                     </div>
                 </div>
 
@@ -106,7 +106,7 @@ export default function OrderTrackingPage() {
                                 <ClipboardList className="w-6 h-6 text-[#3C5A5D]" strokeWidth={1.5} />
                                  <div className="flex flex-col gap-1 text-left">
                                     <span className="text-[#0C1415] text-sm font-['PeydaWeb'] font-semibold">سفارش ثبت شد</span>
-                                    <span className="text-[#707F81] text-xs font-['PeydaFaNum']">۱ مهر ۱۴۰۴، ۱۶:۲۵</span>
+                                    <span className="text-[#707F81] text-xs font-num-medium">۱ مهر ۱۴۰۴، ۱۶:۲۵</span>
                                 </div>
                             </div>
                             <div className="w-6 h-6 rounded-full bg-[#3C5A5D] flex items-center justify-center shrink-0 border border-[#3C5A5D]">
@@ -120,7 +120,7 @@ export default function OrderTrackingPage() {
                                 <Package className="w-6 h-6 text-[#3C5A5D]" strokeWidth={1.5} />
                                  <div className="flex flex-col gap-1 text-right">
                                     <span className="text-[#0C1415] text-sm font-['PeydaWeb'] font-semibold">در حال پردازش</span>
-                                    <span className="text-[#707F81] text-xs font-['PeydaFaNum']">۱ مهر ۱۴۰۴، ۱۵:۵۴</span>
+                                    <span className="text-[#707F81] text-xs font-num-medium">۱ مهر ۱۴۰۴، ۱۵:۵۴</span>
                                 </div>
                             </div>
                             <div className="w-6 h-6 rounded-full bg-[#3C5A5D] flex items-center justify-center shrink-0 border border-[#3C5A5D]">
@@ -135,7 +135,7 @@ export default function OrderTrackingPage() {
                                 <Truck className="w-6 h-6 text-[#3C5A5D]" strokeWidth={1.5} />
                                  <div className="flex flex-col gap-1 text-right">
                                     <span className="text-[#0C1415] text-sm font-['PeydaWeb'] font-semibold">ارسال شده</span>
-                                    <span className="text-[#707F81] text-xs font-['PeydaFaNum']">انتظار می رود ۱۱ شهریور ۱۴۰۴</span>
+                                    <span className="text-[#707F81] text-xs font-num-medium">انتظار می رود ۱۱ شهریور ۱۴۰۴</span>
                                 </div>
                             </div>
                              <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center shrink-0 border border-gray-200">
@@ -149,7 +149,7 @@ export default function OrderTrackingPage() {
                                 <CheckCircle2 className="w-6 h-6 text-[#3C5A5D]" strokeWidth={1.5} />
                                  <div className="flex flex-col gap-1 text-right">
                                     <span className="text-[#0C1415] text-sm font-['PeydaWeb'] font-semibold">تحویل داده شده</span>
-                                    <span className="text-[#707F81] text-xs font-['PeydaFaNum']">۱ مهر ۱۴۰۴</span>
+                                    <span className="text-[#707F81] text-xs font-num-medium">۱ مهر ۱۴۰۴</span>
                                 </div>
                             </div>
                              <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center shrink-0 border border-gray-200">

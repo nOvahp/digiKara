@@ -90,7 +90,7 @@ export default function SendTypePage() {
 
                                 {/* Left Side: Price & Radio */}
                                 <div className="flex items-center gap-3">
-                                    <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-semibold">
+                                    <span className="text-[#0C1415] text-sm font-num-medium font-semibold">
                                         {item.price}
                                     </span>
                                     <div className="shrink-0">

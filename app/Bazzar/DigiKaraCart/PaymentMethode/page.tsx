@@ -33,7 +33,7 @@ export default function PaymentMethodPage() {
                 <div className="w-full bg-white rounded-lg border border-[#DFE1E7] p-5 flex flex-col gap-5 mt-4">
                     <div className="flex justify-between items-center w-full">
                          <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-light">هزینه نهایی</span>
-                         <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-semibold">
+                         <span className="text-[#0C1415] text-sm font-num-medium ">
                              {finalPrice.toLocaleString()} ریال
                          </span>
                         

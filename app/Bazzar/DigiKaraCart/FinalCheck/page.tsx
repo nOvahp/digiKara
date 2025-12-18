@@ -42,7 +42,7 @@ export default function FinalCheckPage() {
                              <div className="flex flex-col gap-1 text-right">
                                  <span className="text-[#0C1415] text-sm font-['PeydaWeb'] font-semibold">خانه</span>
                                  <p className="text-[#707F81] text-xs font-['PeydaWeb'] font-light leading-5">
-                                     تهران، خیابان ولیعصر، کوچه گلها، پلاک <span className="font-['PeydaFaNum']">12</span>، واحد <span className="font-['PeydaFaNum']">5</span>
+                                     تهران، خیابان ولیعصر، کوچه گلها، پلاک <span className="font-num-medium">12</span>، واحد <span className="font-num-medium">5</span>
                                  </p>
                              </div>
                         </div>
@@ -72,7 +72,7 @@ export default function FinalCheckPage() {
                              <div className="flex flex-col gap-1 text-right">
                                  <span className="text-[#0C1415] text-sm font-['PeydaWeb'] font-semibold">اقتصادی</span>
                                  <span className="text-[#707F81] text-xs font-['PeydaWeb'] font-light">
-                                     تاریخ تحویل تخمینی <span className="font-['PeydaFaNum']">3</span> مهر <span className="font-['PeydaFaNum']">1404</span>
+                                     تاریخ تحویل تخمینی <span className="font-num-medium">3</span> مهر <span className="font-num-medium">1404</span>
                                  </span>
                              </div>
                         </div>
@@ -112,7 +112,7 @@ export default function FinalCheckPage() {
                                 <div className="flex-1 flex flex-col items-start gap-1">
                                     <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] line-clamp-1 text-right">{item.name}</span>
                                     <span className="text-[#707F81] text-xs font-['PeydaFaNum'] text-right">{item.shopName || "فروشگاه"}</span>
-                                    <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-medium mt-1 text-right">
+                                    <span className="text-[#0C1415] text-sm font-num-medium mt-1 text-right">
                                         {(item.price * item.count).toLocaleString()} تومان
                                     </span>
                                 </div>
