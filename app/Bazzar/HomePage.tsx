@@ -20,11 +20,11 @@ const SectionHeader = ({ title, subtitle, moreText = "مشاهده همه" }: { 
     </div>
 );
 
-const ProductCard = ({ id, title, price, rating, originalPrice, discount }: { id: number, title: string, price: string, rating: number, originalPrice?: string, discount?: string }) => (
+const ProductCard = ({ id, title, price, rating, originalPrice, discount, image }: { id: number, title: string, price: string, rating: number, originalPrice?: string, discount?: string, image?: string }) => (
     <Link href={`/Bazzar/ProductDetails?id=${id}`} className="flex flex-col items-start gap-2 w-[170px] shrink-0 cursor-pointer">
         <div className="relative w-[170px] h-[150px] bg-[#F6F6F6] rounded-lg overflow-hidden">
              <Image 
-                src="/ProductBazzar.png" 
+                src={image || "/ProductBazzar.png"} 
                 alt={title} 
                 fill 
                 className="object-cover"
@@ -179,7 +179,7 @@ export default function HomePage() {
                      {/* Horizontal Scroll Products */}
                      <div className="flex gap-4 overflow-x-auto pb-4 pt-2 pl-6 -ml-6 w-[calc(100%+24px)] scrollbar-hide pr-1">
                          {specialSaleProducts.map(product => (
-                             <ProductCard key={product.id} id={product.id} title={product.title} price={product.price} rating={product.rating} />
+                             <ProductCard key={product.id} id={product.id} title={product.title} price={product.price} rating={product.rating} image={product.image} />
                          ))}
                      </div>
                 </div>
@@ -189,7 +189,7 @@ export default function HomePage() {
                      <SectionHeader title="مجموعه جدید" subtitle="۵۰٪ تخفیف برای اولین معامله" />
                      <div className="flex gap-4 overflow-x-auto pb-4 pt-2 pl-6 -ml-6 w-[calc(100%+24px)] scrollbar-hide pr-1">
                          {newCollectionProducts.map(product => (
-                             <ProductCard key={product.id} id={product.id} title={product.title} price={product.price} rating={product.rating} />
+                             <ProductCard key={product.id} id={product.id} title={product.title} price={product.price} rating={product.rating} image={product.image} />
                          ))}
                      </div>
                 </div>
@@ -199,7 +199,7 @@ export default function HomePage() {
                      <SectionHeader title="پرفروش" moreText="دیدن همه" />
                      <div className="flex gap-4 overflow-x-auto pb-4 pt-2 pl-6 -ml-6 w-[calc(100%+24px)] scrollbar-hide pr-1">
                          {bestSellerProducts.map(product => (
-                             <ProductCard key={product.id} id={product.id} title={product.title} price={product.price} rating={product.rating} />
+                             <ProductCard key={product.id} id={product.id} title={product.title} price={product.price} rating={product.rating} image={product.image} />
                          ))}
                      </div>
                 </div>
@@ -209,7 +209,7 @@ export default function HomePage() {
                      <SectionHeader title="پیشنهادی برای شما" moreText="مشاهده همه" />
                      <div className="flex gap-4 overflow-x-auto pb-4 pt-2 pl-6 -ml-6 w-[calc(100%+24px)] scrollbar-hide pr-1">
                          {suggestedProducts.map(product => (
-                             <ProductCard key={product.id} id={product.id} title={product.title} price={product.price} rating={product.rating} />
+                             <ProductCard key={product.id} id={product.id} title={product.title} price={product.price} rating={product.rating} image={product.image} />
                          ))}
                      </div>
                 </div>
@@ -260,7 +260,7 @@ export default function HomePage() {
                           {[1, 2, 3, 4, 5].map(i => (
                               <div key={i} className="flex flex-col gap-2 shrink-0 w-[100px]">
                                    <div className="w-[100px] h-[100px] bg-gray-100 rounded-lg relative overflow-hidden">
-                                        <Image src="/ProductBazzar.png" alt="School" fill className="object-cover" />
+                                        <Image src="/images.jfif" alt="School" fill className="object-cover" />
                                    </div>
                                    <div className="flex flex-col items-center w-full">
                                         <span className="text-[#1F2029] text-xs font-['PeydaWeb'] font-semibold text-center">خلاقیت</span>

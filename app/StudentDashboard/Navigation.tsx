@@ -14,7 +14,7 @@ export function Navigation() {
   // Helper for Item Styles
   const getItemClasses = (active: boolean) => cn(
       "w-[20%] flex flex-col justify-center items-center gap-1 cursor-pointer transition-all duration-300",
-      active ? "-mt-6 pt-6 border-t-[4px] border-[#F7C61A]" : "pt-2 group hover:opacity-80"
+      active ? "-mt-4 pt-4 border-t-[4px] border-[#F7C61A]" : "pt-2 group hover:opacity-80"
   );
 
   const getTextClasses = (active: boolean) => cn(
