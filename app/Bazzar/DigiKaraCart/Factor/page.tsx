@@ -59,7 +59,7 @@ export default function FactorPage() {
                                 <div className="flex-1 flex flex-col items-start gap-1">
                                     <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] line-clamp-1 text-right">{item.name}</span>
                                     <span className="text-[#707F81] text-xs font-['PeydaFaNum'] text-right">{item.shopName || "فروشگاه"}</span>
-                                    <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-medium mt-1 text-right">
+                                    <span className="text-[#0C1415] text-sm font-num-medium mt-1 text-right">
                                         {(item.price * item.count).toLocaleString()} تومان
                                     </span>
                                 </div>
@@ -85,7 +85,7 @@ export default function FactorPage() {
                     
                     <div className="flex justify-between items-center w-full">
                          <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-semibold">تاریخ سفارش</span>
-                         <span className="text-[#080B11] text-sm font-['PeydaFaNum'] font-medium">۲۷ شهریور ۱۴۰۴ | ۱۰:۰۰</span>
+                         <span className="text-[#080B11] text-sm font-num-medium">۲۷ شهریور ۱۴۰۴ | ۱۰:۰۰</span>
                     </div>
 
                     <div className="flex justify-between items-center w-full">
@@ -99,19 +99,19 @@ export default function FactorPage() {
                     <div className="flex flex-col gap-4 w-full">
                         <div className="flex justify-between items-center w-full">
                              <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-semibold">مبلغ</span>
-                             <span className="text-[#080B11] text-sm font-['PeydaFaNum'] font-medium">{totalPrice.toLocaleString()} ریال</span>
+                             <span className="text-[#080B11] text-sm font-num-medium">{totalPrice.toLocaleString()} ریال</span>
                         </div>
                         <div className="flex justify-between items-center w-full">
                              <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-semibold">هزینه ارسال</span>
-                             <span className="text-[#080B11] text-sm font-['PeydaFaNum'] font-medium">{shippingCost.toLocaleString()} ریال</span>
+                             <span className="text-[#080B11] text-sm font-num-medium">{shippingCost.toLocaleString()} ریال</span>
                         </div>
                         <div className="flex justify-between items-center w-full">
                              <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-semibold">مالیات</span>
-                             <span className="text-[#080B11] text-sm font-['PeydaFaNum'] font-medium">{(shippingCost * 0.05).toLocaleString()} ریال</span> {/* Mock Tax */}
+                             <span className="text-[#080B11] text-sm font-num-medium">{(shippingCost * 0.05).toLocaleString()} ریال</span> {/* Mock Tax */}
                         </div>
                          <div className="flex justify-between items-center w-full">
                              <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-semibold">تخفیف</span>
-                             <span className="text-[#080B11] text-sm font-['PeydaFaNum'] font-medium">{discount.toLocaleString()} ریال</span>
+                             <span className="text-[#080B11] text-sm font-num-medium">{discount.toLocaleString()} ریال</span>
                         </div>
                     </div>
 
@@ -120,7 +120,7 @@ export default function FactorPage() {
                     {/* Total */}
                     <div className="flex justify-between items-center w-full">
                          <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-semibold">جمع کل</span>
-                         <span className="text-[#080B11] text-sm font-['PeydaFaNum'] font-medium">{finalPrice.toLocaleString()} ریال</span>
+                         <span className="text-[#080B11] text-sm  font-num-medium">{finalPrice.toLocaleString()} ریال</span>
                     </div>
 
                      <div className="w-full h-px bg-[rgba(0,0,0,0.10)] my-2"></div>
@@ -131,7 +131,7 @@ export default function FactorPage() {
                              <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-semibold">درگاه بانک سامان</span>
                              <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center text-[10px] text-blue-600 print:border print:border-blue-200">S</div>
                          </div>
-                         <span className="text-[#3C5A5D] text-sm font-['PeydaFaNum'] font-medium">12345678431  :شناسه پرداخت</span>
+                         <span className="text-[#3C5A5D] text-sm font-num-medium">12345678431  :شناسه پرداخت</span>
                      </div>
 
                 </div>

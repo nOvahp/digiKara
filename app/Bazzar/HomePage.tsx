@@ -36,13 +36,13 @@ const ProductCard = ({ id, title, price, rating, originalPrice, discount }: { id
             <div className="w-full flex justify-between items-center">
                  <h3 className="text-[#1F2029] text-sm font-['PeydaWeb'] font-light text-right overflow-hidden whitespace-nowrap text-ellipsis max-w-[100px]">{title}</h3>
                  <div className="flex items-center gap-1 opacity-90">
-                    <span className="text-[#797979] text-xs font-['PeydaWeb'] font-light pt-0.5">{rating}</span>
+                    <span className="text-[#797979] text-xs font-num-medium pt-0.5">{rating}</span>
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="#FDD00A" stroke="none" className="mb-0.5">
                         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                     </svg>
                  </div>
             </div>
-            <div className="text-[#1F2029] text-sm font-['PeydaWeb'] font-semibold text-left w-full">{price}</div>
+            <div className="text-[#1F2029] text-sm font-num-medium text-left w-full">{price}</div>
         </div>
     </Link>
 );
@@ -167,11 +167,11 @@ export default function HomePage() {
                           <div className="flex items-center gap-1">
                                <span className="text-[#707F81] text-xs font-['PeydaWeb'] font-light">بسته شدن در:</span>
                                <div className="flex items-center gap-1" dir="ltr">
-                                   <div className="w-6 h-6 border border-[#D7D8DA] rounded flex items-center justify-center text-[#21A2FF] text-xs font-bold">{timeLeft.h}</div>
+                                   <div className="w-6 h-6 border border-[#D7D8DA] rounded flex items-center justify-center text-[#21A2FF] text-xs font-num-medium">{timeLeft.h}</div>
                                    <span>:</span>
-                                   <div className="w-6 h-6 border border-[#D7D8DA] rounded flex items-center justify-center text-[#21A2FF] text-xs font-bold">{timeLeft.m}</div>
+                                   <div className="w-6 h-6 border border-[#D7D8DA] rounded flex items-center justify-center text-[#21A2FF] text-xs font-num-medium">{timeLeft.m}</div>
                                    <span>:</span>
-                                   <div className="w-6 h-6 border border-[#D7D8DA] rounded flex items-center justify-center text-[#21A2FF] text-xs font-bold">{timeLeft.s}</div>
+                                   <div className="w-6 h-6 border border-[#D7D8DA] rounded flex items-center justify-center text-[#21A2FF] text-xs font-num-medium">{timeLeft.s}</div>
                                </div>
                           </div>
                      </div>
@@ -231,13 +231,13 @@ export default function HomePage() {
                                          <div className="self-stretch justify-between items-center inline-flex">
                                              <div className="text-[#1F2029] text-sm font-['PeydaWeb'] font-light text-right overflow-hidden whitespace-nowrap text-ellipsis max-w-[100px]">{product.title}</div>
                                              <div className="justify-start items-center gap-1 flex opacity-90">
-                                                 <span className="text-[#797979] text-xs font-['PeydaWeb'] font-light pt-0.5">{product.rating}</span>
+                                                 <span className="text-[#797979] text-xs font-num-medium pt-0.5">{product.rating}</span>
                                                  <svg width="12" height="12" viewBox="0 0 24 24" fill="#FDD00A" stroke="none" className="mb-0.5">
                                                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                                                  </svg>
                                              </div>
                                          </div>
-                                         <div className="self-stretch text-left text-[#1F2029] text-sm font-['PeydaWeb'] font-semibold">{product.price}</div>
+                                         <div className="self-stretch text-left text-[#1F2029] text-sm font-num-medium">{product.price}</div>
                                      </div>
                                  </div>
                              </div>

@@ -94,7 +94,7 @@ export default function DigiKaraCart() {
                                     
                                     <div className="w-full flex justify-between items-center mt-1">
                                         {/* Counter */}
-                                        <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-medium">
+                                        <span className="text-[#0C1415] text-sm font-num-medium">
                                             {formatPrice(item.price)}
                                         </span>
                                         <div className="w-[70px] h-[27.10px] rounded-lg flex items-center justify-between">
@@ -114,7 +114,7 @@ export default function DigiKaraCart() {
                                                 </button>
                                             )}
                                             
-                                            <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-normal leading-5 tracking-wide">
+                                            <span className="text-[#0C1415] text-sm font-num-medium leading-5 tracking-wide">
                                                 {item.count}
                                             </span>
                                             
@@ -166,15 +166,15 @@ export default function DigiKaraCart() {
                     <div className="flex flex-col gap-3 w-full">
                         <div className="flex justify-between items-center w-full">
                             <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-light">جمع کل</span>
-                            <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-semibold">{formatPrice(totalPrice)}</span>
+                            <span className="text-[#0C1415] text-sm font-num-medium">{formatPrice(totalPrice)}</span>
                         </div>
                         <div className="flex justify-between items-center w-full">
                              <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-light">هزینه ارسال</span>
-                             <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-semibold">{formatPrice(shippingCost)}</span>
+                             <span className="text-[#0C1415] text-sm font-num-medium">{formatPrice(shippingCost)}</span>
                         </div>
                         <div className="flex justify-between items-center w-full">
                              <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-light">تخفیف</span>
-                             <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-semibold">{formatPrice(discount)}</span>
+                             <span className="text-[#0C1415] text-sm font-num-medium">{formatPrice(discount)}</span>
                         </div>
                     </div>
 
@@ -184,7 +184,7 @@ export default function DigiKaraCart() {
                     {/* Final Price */}
                      <div className="flex justify-between items-center w-full">
                         <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-light">هزینه نهایی</span>
-                        <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-semibold">{formatPrice(finalPrice)}</span>
+                        <span className="text-[#0C1415] text-sm font-num-medium">{formatPrice(finalPrice)}</span>
                     </div>
 
                     {/* Submit Button */}

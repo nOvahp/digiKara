@@ -116,7 +116,7 @@ export default function ProductDetails() {
                                 {product.specs && product.specs["جنس"] ? product.specs["جنس"] : "محصول باکیفیت"}
                             </span>
                             <div className="flex items-center gap-1">
-                                <span className="text-[#707F81] text-sm font-['PeydaFaNum']">{product.rating}</span>
+                                <span className="text-[#707F81] text-sm font-num-medium">{product.rating}</span>
                                 <Star className="w-4 h-4 text-[#FDD00A] fill-[#FDD00A]" />
                             </div>
                         </div>
@@ -199,13 +199,13 @@ export default function ProductDetails() {
                             
                              {/* Big Number */}
                              <div className="flex flex-col items-center gap-1">
-                                  <span className="text-4xl font-['PeydaFaNum'] font-black text-[#0C1415]">{product.rating}</span>
+                                  <span className="text-4xl font-num-medium font-black text-[#0C1415]">{product.rating}</span>
                                   <div className="flex gap-0.5">
                                       {[1,2,3,4,5].map((star) => (
                                           <Star key={star} className={`w-4 h-4 ${star <= Math.round(product.rating) ? 'text-[#FCAF23] fill-[#FCAF23]' : 'text-gray-300'}`} />
                                       ))}
                                   </div>
-                                  <span className="text-[#707F81] text-xs font-['PeydaFaNum']">({product.reviewsCount} نظر)</span>
+                                  <span className="text-[#707F81] text-xs font-num-medium">({product.reviewsCount} نظر)</span>
                              </div>
 
                              {/* Bars */}
@@ -217,7 +217,7 @@ export default function ProductDetails() {
                                       
                                       return (
                                           <div key={n} className="flex items-center gap-2">
-                                              <span className="text-xs font-['PeydaFaNum'] w-3 text-center">{n}</span>
+                                              <span className="text-xs font-num-medium w-3 text-center">{n}</span>
                                               <div className="h-1.5 flex-1 bg-gray-100 rounded-full overflow-hidden">
                                                   <div 
                                                     className="h-full bg-[#F7C309] rounded-full" 
@@ -251,7 +251,7 @@ export default function ProductDetails() {
 
                                                 {/* Date (Left Side in RTL) */}
                                                 <div className="flex flex-col items-start gap-3 w-[67px]">
-                                                    <div className="text-center text-[#707F81] text-xs font-['PeydaFaNum'] font-normal break-words">{review.date}</div>
+                                                    <div className="text-center text-[#707F81] text-xs font-num-medium font-normal break-words">{review.date}</div>
                                                 </div>
 
                                                 {/* Yellow Square Indicator */}
@@ -264,7 +264,7 @@ export default function ProductDetails() {
                                                     {review.comment}
                                                 </div>
                                                 <div className="flex items-center gap-1">
-                                                    <div className="text-[#707F81] text-sm font-['PeydaFaNum'] font-medium break-words">{review.rating}.0</div>
+                                                    <div className="text-[#707F81] text-sm font-num-medium font-medium break-words">{review.rating}.0</div>
                                                     <Star className="w-3 h-3 text-gray-400 fill-[#FCAF23] stroke-none" />
                                                 </div>
                                             </div>
@@ -314,7 +314,7 @@ export default function ProductDetails() {
                          {/* Price */}
                          <div className="flex flex-col items-end">
                              <span className="text-[#707F81] text-xs font-['PeydaFaNum']">هزینه نهایی</span>
-                             <span className="text-[#0C1415] text-base font-['PeydaFaNum'] font-medium">{product.price}</span>
+                             <span className="text-[#0C1415] text-base font-num-medium">{product.price}</span>
                          </div>
 
                          {/* Add to Cart Button */}

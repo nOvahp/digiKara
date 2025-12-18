@@ -46,7 +46,7 @@ function SearchContent() {
                     <h1 className="text-[#0C1415] text-lg font-['PeydaFaNum'] font-medium">
                         نتایج جستجو “{query}”
                     </h1>
-                    <span className="text-[#3C5A5D] text-sm font-['PeydaFaNum'] font-medium">
+                    <span className="text-[#3C5A5D] text-sm font-num-medium">
                         {filteredProducts.length} مورد یافت شد
                     </span>
                 </div>
@@ -75,7 +75,7 @@ function SearchContent() {
                                          {product.title}
                                      </h3>
                                      <div className="flex items-center gap-1 opacity-90">
-                                         <span className="text-[#797979] text-xs font-['PeydaWeb'] font-light pt-0.5">
+                                         <span className="text-[#797979] text-xs font-num-medium pt-0.5">
                                              {product.rating}
                                          </span>
                                          <SearchIcon size={0} className="hidden" /> 
@@ -84,7 +84,7 @@ function SearchContent() {
                                          </svg>
                                      </div>
                                  </div>
-                                 <div className="text-[#1F2029] text-sm font-['PeydaWeb'] font-semibold text-left w-full">
+                                 <div className="text-[#1F2029] text-sm font-num-medium text-left w-full">
                                      {product.price}
                                  </div>
                              </div>
