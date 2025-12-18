@@ -62,7 +62,7 @@ export function LoginView4({ onNext }: LoginViewProps) {
   return (
     <div className="w-full h-full   flex flex-col items-center " dir="rtl">
       
-      <LoginHeader imageSrc={headerImg} imageClassName="!object-cover" />
+      <LoginHeader imageSrc={headerImg} />
       {/* Header Content */}
       <div className="absolute top-0 left-0 right-0 mx-auto w-full max-w-[440px] px-10 pt-15 z-10 flex flex-col gap-8">
          <div className="w-full flex justify-between items-center">
