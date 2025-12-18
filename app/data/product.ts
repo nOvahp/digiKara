@@ -25,7 +25,7 @@ export const products: Product[] = [
     // =========================================================================
     
     // -- Special / Featured Items --
-    { id: 101, title: "میز غذاخوری", price: "500,000 تومان", rating: 5.0, image: "/ProductBazzar.png", category: "صنایع چوبی", isSpecialSale: true },
+    { id: 101, title: "میز غذاخوری", price: "500,000 تومان", rating: 5.0, image: "/mi.png", category: "صنایع چوبی", isSpecialSale: true },
     { id: 102, title: "صندلی ناهارخوری", price: "180,000 تومان", rating: 4.2, image: "/ProductBazzar.png", category: "صنایع چوبی", isSpecialSale: true },
     { id: 103, title: "کمد لباس MDF", price: "700,000 تومان", rating: 4.8, image: "/ProductBazzar.png", category: "صنایع چوبی", isSpecialSale: true,isPopular: true },
    
