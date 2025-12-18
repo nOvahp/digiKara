@@ -10,7 +10,7 @@ const Hero = () => {
     <section className="relative flex flex-col lg:flex-row items-center justify-between h-[650px] sm:h-[700px] md:h-[750px] lg:h-[450px] xl:h-[600px] overflow-hidden bg-white lg:pl-10 xl:pl-20 lg:pr-0 lg:py-0 mb-[10%]">
       <div className="absolute z-0 left-0 top-[290px] min-[375px]:top-[250px] sm:top-[300px] sm:left-[20px] md:top-[25%] md:left-[40] lg:left-0 lg:top-[-5%] xl:left-0 xl:top-[-3%] opacity-80">
         <Image
-          src="/man running with bags and purchases 1.png"
+          src="/man spins an object in virtual reality.png"
           alt="Excited Man"
           width={300}
           height={300}
@@ -34,7 +34,7 @@ const Hero = () => {
             پلتفرم نوجوان کارآفرین
           </h1>
           <h2 className="text-[#5E6B7E] text-[13px] sm:text-[14px] md:text-[15px] lg:text-[20px] xl:text-[24px] font-bold whitespace-normal lg:whitespace-nowrap">
-            پل ارتباطی میان آموزش فنی‌حرفه‌ای و بازار واقعی کار
+            پلی میان آموزش مهارت و بکارگیری در بازر واقعی کار
           </h2>
           <p
             className="text-[#222325] text-[12px] sm:text-[13px] md:text-[14px] lg:text-[16px] xl:text-[18px] font-normal font-num-regular leading-[36px] lg:leading-normal max-w-[650px] mt-4 text-justify"
@@ -76,7 +76,7 @@ const Hero = () => {
 
       <div className="absolute z-20 left-[60%] md:left-[60%] lg:left-[35%] xl:left-[36%] top-[71%] min-[375px]:top-[67%] sm:top-[73%] md:top-[65%] lg:top-[56%] xl:top-[60%] opacity-100 pointer-events-none">
         <Image
-          src="/man is excited about the launch of the project 1.png"
+          src="/teacher working on her laptop.png"
           alt="Runner"
           width={300}
           height={300}

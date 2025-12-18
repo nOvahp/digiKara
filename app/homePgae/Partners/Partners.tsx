@@ -17,7 +17,7 @@ const Partners = () => {
 
         <div className="order-3 w-full mt-8 lg:-mt-[8%] flex justify-center lg:justify-end z-20 pointer-events-none">
           <Image
-            src="/Partners.png"
+            src="/man is thinking about launching a proje1ct.png"
             alt="Partners Illustration"
             width={500}
             height={500}
@@ -25,7 +25,7 @@ const Partners = () => {
           />
         </div>
 
-        <div className="order-4 w-full -mt-25 lg:-mt-22 xl:ml-30 lg:ml-15 xl:-mt-34 flex justify-center lg:justify-start relative z-30">
+        <div className="order-4 w-full -mt-0 lg:-mt-22 xl:ml-30 lg:ml-15 xl:-mt-34 flex justify-center lg:justify-start relative z-30">
           <PartnerButton />
         </div>
       </div>

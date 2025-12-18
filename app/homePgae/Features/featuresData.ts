@@ -1,6 +1,6 @@
-import featureCard1 from "../../../public/featureCard1.png";
-import featureCard2 from "../../../public/featureCard2.png";
-import featureCard3 from "../../../public/featureCard3.png";
+import featureCard1 from "../../../public/man paid online at a store.png";
+import featureCard2 from "../../../public/man works behind the technological displays.png";
+import featureCard3 from "../../../public/man sends statistics from his phone.png";
 
 export interface FeatureItem {
   id: number;
@@ -12,9 +12,9 @@ export interface FeatureItem {
 export const featuresData: FeatureItem[] = [
   {
     id: 1,
-    title: "خدمات باکیفیت و به‌صرفه",
+    title: " آموزش مهارت های بازار کار",
     description:
-      "خریداران به محصولات و خدمات باکیفیت و مقرون‌به‌صرفه دسترسی پیدا می‌کنند.",
+      "مهارت های کاربردی، موثر و مورد نیاز بازار کار به هنرجویان آموزش داده می شود.",
     image: featureCard1,
   },
   {
@@ -34,7 +34,7 @@ export const featuresData: FeatureItem[] = [
     id: 4,
     title: "فروشگاه اختصاصی",
     description:
-      "هنرستان‌ها می‌توانند درآمدزایی کنند و فرآیندهای مالی و آموزشی خود را به‌صورت شفاف مدیریت نمایند.",
+      "هنرستان‌ها فرآیندهای مالی و آموزشی خود را به‌صورت شفاف مدیریت نمایند.",
     image: featureCard1,
   },
   {

@@ -1,5 +1,5 @@
 import Image, { StaticImageData } from "next/image"
-import headerImg from "../../public/logIn.png"
+import headerImg from "../../public/logInNew1.png"
 
 
 
@@ -22,7 +22,7 @@ export function LoginHeader({
       />
       {/* Overlay Image */}
       {overlayImageSrc && (
-        <div className="absolute bottom-[-12%] left-[-10%] h-[280px] w-[280px]">
+        <div className="absolute bottom-[-12%] left-[17%] h-[280px] w-[280px]">
           <Image
             src={overlayImageSrc}
             alt="Overlay Image"

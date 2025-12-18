@@ -23,7 +23,7 @@ const Challenges = () => {
         <div className="relative w-full flex justify-center items-center lg:hidden">
           <div className="relative w-[250px] h-[250px] md:w-[450px] md:h-[450px]">
             <Image
-              src="/challenges.png"
+              src="/Frame 2095585053.png"
               alt="Challenges Illustration"
               fill
               className="object-contain"

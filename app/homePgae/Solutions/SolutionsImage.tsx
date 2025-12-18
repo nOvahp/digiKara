@@ -9,7 +9,7 @@ const SolutionsImage = ({ className }: SolutionsImageProps) => {
   return (
     <div className={`relative ${className} w-full h-full`}>
       <Image
-        src="/solutions.png"
+        src="/man works behind holographic displays.png"
         alt="Solutions Graphic"
         fill
         className="object-contain"

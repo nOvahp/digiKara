@@ -16,13 +16,13 @@ const FeaturesCard = ({ title, description, image }: FeaturesCardProps) => {
     <Card className="w-[260px] sm:w-[300px] h-auto min-h-[280px] md:w-[420px] md:h-[355px] rounded-[24px] border-[#CACACA] shadow-none hover:shadow-[0px_20px_32px_rgba(0,0,0,0.25)] transition-all duration-300 overflow-hidden relative bg-white border-none">
       <div className="relative w-full h-full md:absolute md:inset-0 bg-white rounded-[24px] border border-[#CACACA]">
         <div className="flex flex-col h-full relative">
-          <CardHeader className="text-right pt-[34px] pr-[40px] pl-[40px] pb-0">
-            <CardTitle className="text-[#222325] text-[24px] md:text-[32px] font-black leading-[30px] md:leading-[38.4px]">
+          <CardHeader className="text-right pt-[30px] pr-[10px] pl-[10px] pb-0">
+            <CardTitle className="text-[#222325] text-[20px] md:text-[30px] font-black leading-[28px] md:leading-[38.4px]">
               {title}
             </CardTitle>
           </CardHeader>
 
-          <CardContent className="text-right pt-[16px] pr-[40px] pl-[40px] pb-0">
+          <CardContent className="text-right pt-[16px] pr-[10px] pl-[10px] pb-0">
             <p className="text-[#222325] text-[14px] md:text-[18px] font-normal leading-[22px] md:leading-[27px]">
               {description}
             </p>

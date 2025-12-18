@@ -11,7 +11,7 @@ const Blog = () => {
     <div className="relative w-full flex flex-col lg:block mb-[10%]">
       <div className="lg:hidden w-full relative mb-6 flex justify-center items-center left-[8%]">
         <Image
-          src="/blog.png"
+          src="/man bought a lot of gifts at the store.png"
           alt="Blog Illustration"
           width={1000}
           height={1000}
@@ -21,7 +21,7 @@ const Blog = () => {
 
       <div className="hidden lg:block absolute -left-[35%]  xl:-left-[15%]  -top-[18%] pointer-events-none z-20">
         <Image
-          src="/blog.png"
+          src="/man bought a lot of gifts at the store.png"
           alt="Blog Illustration"
           width={900}
           height={900}

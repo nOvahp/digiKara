@@ -22,7 +22,7 @@ const Metrics = () => {
 
         <div className="absolute right-0 top-[-113px] hidden lg:block lg:w-[250px] lg:h-[250px] xl:w-[333px] xl:h-[333px] overflow-visible z-20 pointer-events-none">
           <Image
-            src="/data.png"
+            src="/man rates his purchases.png"
             alt="Metrics Data Illustration"
             fill
             className="object-contain"
@@ -31,7 +31,7 @@ const Metrics = () => {
 
         <div className="absolute left-1/2 transform -translate-x-1/2 -top-[60px] sm:-top-[70px] md:-top-[75px] lg:hidden w-[150px] h-[150px] md:w-[200px] md:h-[200px] z-20">
           <Image
-            src="/data.png"
+            src="/man rates his purchases.png"
             alt="Metrics Data Illustration"
             fill
             className="object-contain"
