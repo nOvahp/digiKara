@@ -13,8 +13,8 @@ export default function OrderTrackingPage() {
         <div className="w-full min-h-screen bg-white flex flex-col items-center relative" dir="rtl">
             
             {/* Header */}
-            <div className="w-full max-w-[440px] flex justify-between items-center px-6 py-4 shrink-0">
-                 <div className="flex items-center justify-center w-full relative">
+            <div className="w-full max-w-[440px] flex justify-between items-center px-0 py-4 shrink-0">
+                 <div className="flex items-center justify-between w-full relative">
                      <span className="text-[#0C1415] text-base font-['PeydaWeb'] font-semibold">پیگیری سفارش</span>
                      <button 
                         onClick={() => router.back()}
@@ -26,7 +26,7 @@ export default function OrderTrackingPage() {
             </div>
 
             {/* Content List */}
-            <div className="w-full max-w-[440px] flex flex-col gap-0 px-6 pb-12 flex-1 overflow-y-auto no-scrollbar">
+            <div className="w-full max-w-[440px] flex flex-col gap-0 px-0 pb-12 flex-1 overflow-y-auto no-scrollbar">
                 
                 {/* Order List Header */}
                  <div className="flex justify-between items-center w-full mt-4 mb-4">
@@ -40,14 +40,7 @@ export default function OrderTrackingPage() {
                 <div className="flex flex-col gap-4 w-full">
                     {items.map((item, index) => (
                          <React.Fragment key={item.id}>
-                            <div className="flex gap-4 items-center justify-end w-full">
-                                <div className="flex-1 flex flex-col items-end gap-1">
-                                    <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] line-clamp-1 text-right">{item.name}</span>
-                                    <span className="text-[#707F81] text-xs font-['PeydaFaNum'] text-right">{item.shopName || "فروشگاه"}</span>
-                                    <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-medium mt-1 text-right">
-                                        {(item.price * item.count).toLocaleString()} تومان
-                                    </span>
-                                </div>
+                            <div className="flex gap-4 items-center justify-start w-full">
                                 <div className="w-[84px] h-[84px] bg-[#F6F6F6] rounded-lg shrink-0 overflow-hidden relative">
                                     <img 
                                         src={item.image} 
@@ -58,6 +51,13 @@ export default function OrderTrackingPage() {
                                     {index === 0 && (
                                          <div className="absolute -bottom-2 -left-2 w-full h-4 bg-black/80 blur-lg opacity-20 rotate-1"></div>
                                     )}
+                                </div>
+                                <div className="flex-1 flex flex-col items-start gap-1">
+                                    <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] line-clamp-1 text-right">{item.name}</span>
+                                    <span className="text-[#707F81] text-xs font-['PeydaFaNum'] text-right">{item.shopName || "فروشگاه"}</span>
+                                    <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-medium mt-1 text-right">
+                                        {(item.price * item.count).toLocaleString()} تومان
+                                    </span>
                                 </div>
                             </div>
                          </React.Fragment>
@@ -96,64 +96,64 @@ export default function OrderTrackingPage() {
                 
                     <div className="relative flex flex-col gap-8 pr-2">
                         {/* Vertical Line */}
-                        <div className="absolute top-[20px] bottom-[20px] right-[11px] w-[2px] bg-gray-100"></div>
-                        <div className="absolute top-[20px] h-[70px] right-[11px] w-[2px] bg-[#3C5A5D]"></div>
+                        <div className="absolute top-[20px] bottom-[20px] left-[11px] w-[2px] bg-gray-100"></div>
+                        <div className="absolute top-[20px] h-[70px] left-[11px] w-[2px] bg-[#3C5A5D]"></div>
 
 
                         {/* Step 1: Placed (Done) */}
-                        <div className="flex items-start gap-4 relative z-10">
-                            <div className="w-6 h-6 rounded-full bg-[#3C5A5D] flex items-center justify-center shrink-0 border border-[#3C5A5D]">
-                                <Check className="w-3.5 h-3.5 text-white" />
-                            </div>
-                            <div className="flex justify-between w-full items-start">
-                                 <div className="flex flex-col gap-1">
+                        <div className="flex items-start gap-4 relative z-10 ">
+                            <div className="flex justify-start gap-2 w-full items-start">
+                                <ClipboardList className="w-6 h-6 text-[#3C5A5D]" strokeWidth={1.5} />
+                                 <div className="flex flex-col gap-1 text-left">
                                     <span className="text-[#0C1415] text-sm font-['PeydaWeb'] font-semibold">سفارش ثبت شد</span>
                                     <span className="text-[#707F81] text-xs font-['PeydaFaNum']">۱ مهر ۱۴۰۴، ۱۶:۲۵</span>
                                 </div>
-                                <ClipboardList className="w-6 h-6 text-[#3C5A5D]" strokeWidth={1.5} />
+                            </div>
+                            <div className="w-6 h-6 rounded-full bg-[#3C5A5D] flex items-center justify-center shrink-0 border border-[#3C5A5D]">
+                                <Check className="w-3.5 h-3.5 text-white" />
                             </div>
                         </div>
 
                          {/* Step 2: Processing (Done/Current) */}
                          <div className="flex items-start gap-4 relative z-10">
-                            <div className="w-6 h-6 rounded-full bg-[#3C5A5D] flex items-center justify-center shrink-0 border border-[#3C5A5D]">
-                                <div className="w-2.5 h-2.5 bg-white rounded-sm"></div>
-                            </div>
-                            <div className="flex justify-between w-full items-start">
-                                 <div className="flex flex-col gap-1">
+                            <div className="flex justify-start gap-2 w-full items-start">
+                                <Package className="w-6 h-6 text-[#3C5A5D]" strokeWidth={1.5} />
+                                 <div className="flex flex-col gap-1 text-right">
                                     <span className="text-[#0C1415] text-sm font-['PeydaWeb'] font-semibold">در حال پردازش</span>
                                     <span className="text-[#707F81] text-xs font-['PeydaFaNum']">۱ مهر ۱۴۰۴، ۱۵:۵۴</span>
                                 </div>
-                                <Package className="w-6 h-6 text-[#3C5A5D]" strokeWidth={1.5} />
+                            </div>
+                            <div className="w-6 h-6 rounded-full bg-[#3C5A5D] flex items-center justify-center shrink-0 border border-[#3C5A5D]">
+                                <div className="w-2.5 h-2.5 bg-white rounded-sm"></div>
                             </div>
                         </div>
 
 
                         {/* Step 3: Shipped (Pending) */}
                         <div className="flex items-start gap-4 relative z-10">
-                             <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center shrink-0 border border-gray-200">
-                                <div className="w-2 h-2 rounded-full bg-gray-200"></div>
-                            </div>
-                            <div className="flex justify-between w-full items-start">
-                                 <div className="flex flex-col gap-1">
+                            <div className="flex justify-start gap-2 w-full items-start">
+                                <Truck className="w-6 h-6 text-[#3C5A5D]" strokeWidth={1.5} />
+                                 <div className="flex flex-col gap-1 text-right">
                                     <span className="text-[#0C1415] text-sm font-['PeydaWeb'] font-semibold">ارسال شده</span>
                                     <span className="text-[#707F81] text-xs font-['PeydaFaNum']">انتظار می رود ۱۱ شهریور ۱۴۰۴</span>
                                 </div>
-                                <Truck className="w-6 h-6 text-[#3C5A5D]" strokeWidth={1.5} />
+                            </div>
+                             <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center shrink-0 border border-gray-200">
+                                <div className="w-2 h-2 rounded-full bg-gray-200"></div>
                             </div>
                         </div>
 
                          {/* Step 4: Delivered (Pending) */}
                          <div className="flex items-start gap-4 relative z-10">
-                             <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center shrink-0 border border-gray-200">
-                                <div className="w-2 h-2 rounded-full bg-gray-200"></div>
-                            </div>
-                            <div className="flex justify-between w-full items-start">
-                                 <div className="flex flex-col gap-1">
+                            <div className="flex justify-start gap-2 w-full items-start">
+                                <CheckCircle2 className="w-6 h-6 text-[#3C5A5D]" strokeWidth={1.5} />
+                                 <div className="flex flex-col gap-1 text-right">
                                     <span className="text-[#0C1415] text-sm font-['PeydaWeb'] font-semibold">تحویل داده شده</span>
                                     <span className="text-[#707F81] text-xs font-['PeydaFaNum']">۱ مهر ۱۴۰۴</span>
                                 </div>
-                                <CheckCircle2 className="w-6 h-6 text-[#3C5A5D]" strokeWidth={1.5} />
+                            </div>
+                             <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center shrink-0 border border-gray-200">
+                                <div className="w-2 h-2 rounded-full bg-gray-200"></div>
                             </div>
                         </div>
 

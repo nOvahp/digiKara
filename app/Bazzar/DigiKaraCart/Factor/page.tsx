@@ -17,8 +17,8 @@ export default function FactorPage() {
         <div className="w-full min-h-screen bg-white flex flex-col items-center relative print:block print:h-auto print:overflow-visible" dir="rtl">
             
             {/* Header */}
-            <div className="w-full max-w-[440px] flex justify-between items-center px-6 py-4 shrink-0 print:w-full print:max-w-none">
-                 <div className="flex items-center justify-center w-full relative">
+            <div className="w-full max-w-[440px] flex justify-between items-center px-0 py-4 shrink-0 print:w-full print:max-w-none">
+                 <div className="flex items-center justify-between w-full relative">
                      <span className="text-[#0C1415] text-base font-['PeydaWeb'] font-semibold">رسید خرید</span>
                      <button 
                         onClick={() => router.back()}
@@ -30,7 +30,7 @@ export default function FactorPage() {
             </div>
 
             {/* Content List */}
-            <div className="w-full max-w-[440px] flex flex-col gap-0 px-6 pb-28 flex-1 overflow-y-auto no-scrollbar bg-white print:w-full print:max-w-none print:pb-0 print:overflow-visible print:h-auto">
+            <div className="w-full max-w-[440px] flex flex-col gap-0 px-0 pb-28 flex-1 overflow-y-auto no-scrollbar bg-white print:w-full print:max-w-none print:pb-0 print:overflow-visible print:h-auto">
                 
                 {/* Order List Header */}
                  <div className="flex justify-between items-center w-full mt-4 mb-4">
@@ -44,14 +44,7 @@ export default function FactorPage() {
                 <div className="flex flex-col gap-4 w-full">
                     {items.map((item, index) => (
                          <React.Fragment key={item.id}>
-                            <div className="flex gap-4 items-center justify-end w-full break-inside-avoid">
-                                <div className="flex-1 flex flex-col items-end gap-1">
-                                    <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] line-clamp-1 text-right">{item.name}</span>
-                                    <span className="text-[#707F81] text-xs font-['PeydaFaNum'] text-right">{item.shopName || "فروشگاه"}</span>
-                                    <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-medium mt-1 text-right">
-                                        {(item.price * item.count).toLocaleString()} تومان
-                                    </span>
-                                </div>
+                            <div className="flex gap-4 items-center justify-start w-full break-inside-avoid">
                                 <div className="w-[84px] h-[84px] bg-[#F6F6F6] rounded-lg shrink-0 overflow-hidden relative print:border print:border-gray-200">
                                     <img 
                                         src={item.image} 
@@ -62,6 +55,13 @@ export default function FactorPage() {
                                     {index === 0 && (
                                          <div className="absolute -bottom-2 -left-2 w-full h-4 bg-black/80 blur-lg opacity-20 rotate-1 print:hidden"></div>
                                     )}
+                                </div>
+                                <div className="flex-1 flex flex-col items-start gap-1">
+                                    <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] line-clamp-1 text-right">{item.name}</span>
+                                    <span className="text-[#707F81] text-xs font-['PeydaFaNum'] text-right">{item.shopName || "فروشگاه"}</span>
+                                    <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-medium mt-1 text-right">
+                                        {(item.price * item.count).toLocaleString()} تومان
+                                    </span>
                                 </div>
                             </div>
                             
@@ -140,7 +140,7 @@ export default function FactorPage() {
 
              {/* Bottom Bar - Download Button */}
              <div className="fixed bottom-0 left-0 right-0 z-40 w-full max-w-[440px] mx-auto p-6 bg-transparent print:hidden">
-                 <div className="w-full bg-white rounded-2xl shadow-[0px_0px_30px_rgba(0,0,0,0.10)] border border-[rgba(0,0,0,0.10)] p-3">
+                 <div className="w-full  rounded-2xl  p-3">
                     <button 
                         onClick={handleDownload}
                         className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-3 hover:bg-[#e5bc09] transition-colors shadow-sm"

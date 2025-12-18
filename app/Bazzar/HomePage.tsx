@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react"
 import Image from "next/image"
-import { Search, MapPin, ChevronLeft } from 'lucide-react'
+import { Search, MapPin, ChevronLeft, Gem, Palette, Utensils, Shirt, Armchair } from 'lucide-react'
 import Link from "next/link"
 
 import NavBar from "./NavBar"
@@ -47,16 +47,25 @@ const ProductCard = ({ id, title, price, rating, originalPrice, discount }: { id
     </Link>
 );
 
-const CategoryItem = ({ title, color = "#FDD00A" }: { title: string, color?: string }) => (
-     <div className="w-16 flex flex-col items-center gap-2 shrink-0">
-        <div className={`w-16 h-16 rounded-xl border border-[#D7D8DA] flex items-center justify-center relative overflow-hidden`}>
-             {/* Mock Shape */}
-             <div className="w-[30px] h-[30px] bg-[#FDD00A]/20 rounded-full" />
-             <div className={`absolute w-[24px] h-[24px] bg-[${color}] rounded-full`} />
+const CategoryItem = ({ title }: { title: string }) => {
+    const icons: Record<string, React.ElementType> = {
+        "طلا و جواهر": Gem,
+        "صنایع هنری": Palette,
+        "خوراکی": Utensils,
+        "پوشاک": Shirt,
+        "صنایع چوبی": Armchair,
+    };
+    const Icon = icons[title] || Palette; // Default icon if not found
+
+    return (
+        <div className="w-16 flex flex-col items-center gap-2 shrink-0 cursor-pointer group">
+            <div className={`w-16 h-16 rounded-2xl bg-[#FDD00A] flex items-center justify-center transition-colors group-hover:opacity-90`}>
+                <Icon className="w-8 h-8 text-[#393E46]" strokeWidth={1.5} />
+            </div>
+            <span className="text-[#1F2029] text-xs font-['PeydaWeb'] font-semibold text-center">{title}</span>
         </div>
-        <span className="text-[#1F2029] text-xs font-['PeydaWeb'] font-semibold text-center">{title}</span>
-    </div>
-);
+    );
+};
 
 export default function HomePage() {
     // Timer Mock

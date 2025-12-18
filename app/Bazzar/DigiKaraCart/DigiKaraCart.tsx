@@ -94,6 +94,9 @@ export default function DigiKaraCart() {
                                     
                                     <div className="w-full flex justify-between items-center mt-1">
                                         {/* Counter */}
+                                        <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-medium">
+                                            {formatPrice(item.price)}
+                                        </span>
                                         <div className="w-[70px] h-[27.10px] rounded-lg flex items-center justify-between">
                                             {item.count === 1 ? (
                                                 <button 
@@ -123,9 +126,7 @@ export default function DigiKaraCart() {
                                             </button>
                                         </div>
                                         
-                                        <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-medium">
-                                            {formatPrice(item.price)}
-                                        </span>
+                                        
                                     </div>
                                 </div>
 
@@ -164,16 +165,16 @@ export default function DigiKaraCart() {
                     {/* Price Breakdown */}
                     <div className="flex flex-col gap-3 w-full">
                         <div className="flex justify-between items-center w-full">
-                            <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-semibold">{formatPrice(totalPrice)}</span>
                             <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-light">جمع کل</span>
+                            <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-semibold">{formatPrice(totalPrice)}</span>
                         </div>
                         <div className="flex justify-between items-center w-full">
-                             <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-semibold">{formatPrice(shippingCost)}</span>
                              <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-light">هزینه ارسال</span>
+                             <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-semibold">{formatPrice(shippingCost)}</span>
                         </div>
                         <div className="flex justify-between items-center w-full">
-                             <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-semibold">{formatPrice(discount)}</span>
                              <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-light">تخفیف</span>
+                             <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-semibold">{formatPrice(discount)}</span>
                         </div>
                     </div>
 
@@ -182,8 +183,8 @@ export default function DigiKaraCart() {
 
                     {/* Final Price */}
                      <div className="flex justify-between items-center w-full">
-                        <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-semibold">{formatPrice(finalPrice)}</span>
                         <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-light">هزینه نهایی</span>
+                        <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-semibold">{formatPrice(finalPrice)}</span>
                     </div>
 
                     {/* Submit Button */}
@@ -191,10 +192,10 @@ export default function DigiKaraCart() {
                         onClick={() => router.push('/Bazzar/DigiKaraCart/FinalCheck')}
                         className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-2 hover:bg-[#e5bc09] transition-colors"
                     >
+                        <ShoppingBag className="w-5 h-5 text-[#1A1C1E]" />
                         <span className="text-[#1A1C1E] text-lg font-['PeydaWeb'] font-semibold">
                             تکمیل فرایند خرید
                         </span>
-                        <ShoppingBag className="w-5 h-5 text-[#1A1C1E]" />
                     </button>
                 </div>
              </div>

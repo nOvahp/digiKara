@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Wallet, CreditCard, ChevronDown, ChevronUp, Circle, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, Wallet, CreditCard, ChevronDown, ChevronUp, Circle, CheckCircle2, Landmark } from "lucide-react";
 import { useCart } from "@/app/Bazzar/CartContext";
 
 export default function PaymentMethodPage() {
@@ -15,8 +15,8 @@ export default function PaymentMethodPage() {
         <div className="w-full min-h-screen bg-white flex flex-col items-center relative" dir="rtl">
             
             {/* Header */}
-            <div className="w-full max-w-[440px] flex justify-between items-center px-6 py-4 shrink-0">
-                 <div className="flex items-center justify-center w-full relative">
+            <div className="w-full max-w-[440px] flex justify-between items-center px-0 py-4 shrink-0">
+                 <div className="flex items-center justify-between w-full relative">
                      <span className="text-[#0C1415] text-base font-['PeydaWeb'] font-semibold">روش های پرداخت</span>
                      <button 
                         onClick={() => router.back()}
@@ -27,15 +27,16 @@ export default function PaymentMethodPage() {
                  </div>
             </div>
 
-            <div className="w-full max-w-[440px] flex flex-col gap-6 px-6 pb-24 flex-1 overflow-y-auto no-scrollbar">
+            <div className="w-full max-w-[440px] flex flex-col gap-6 px-0 pb-24 flex-1 overflow-y-auto no-scrollbar">
                 
                 {/* Cost Summary */}
                 <div className="w-full bg-white rounded-lg border border-[#DFE1E7] p-5 flex flex-col gap-5 mt-4">
                     <div className="flex justify-between items-center w-full">
+                         <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-light">هزینه نهایی</span>
                          <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-semibold">
                              {finalPrice.toLocaleString()} ریال
                          </span>
-                         <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-light">هزینه نهایی</span>
+                        
                     </div>
                 </div>
 
@@ -53,21 +54,21 @@ export default function PaymentMethodPage() {
                     >
                          <div className="flex justify-between items-center">
                             <div className="flex items-center gap-3">
-                                <div className="shrink-0">
-                                    {paymentMethod === "spot" ? (
-                                        <div className="relative">
-                                            <Circle className="w-6 h-6 text-[#0C1415]" strokeWidth={1.5} />
-                                            <div className="absolute inset-0 flex items-center justify-center">
-                                                <div className="w-3 h-3 bg-[#0C1415] rounded-full" />
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <Circle className="w-6 h-6 text-[#D1D1D6]" strokeWidth={1.5} />
-                                    )}
-                                </div>
+                                <Wallet className="w-6 h-6 text-[#0C1415]" strokeWidth={1.5} />
                                 <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-semibold">پرداخت در محل</span>
                             </div>
-                            <Wallet className="w-6 h-6 text-[#0C1415]" strokeWidth={1.5} />
+                            <div className="shrink-0">
+                                {paymentMethod === "spot" ? (
+                                    <div className="relative">
+                                        <Circle className="w-6 h-6 text-[#0C1415]" strokeWidth={1.5} />
+                                        <div className="absolute inset-0 flex items-center justify-center">
+                                            <div className="w-3 h-3 bg-[#0C1415] rounded-full" />
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <Circle className="w-6 h-6 text-[#D1D1D6]" strokeWidth={1.5} />
+                                )}
+                            </div>
                          </div>
                     </div>
 
@@ -82,21 +83,21 @@ export default function PaymentMethodPage() {
                     >
                          <div className="flex justify-between items-center">
                             <div className="flex items-center gap-3">
-                                <div className="shrink-0">
-                                    {paymentMethod === "online" ? (
-                                        <div className="relative">
-                                            <Circle className="w-6 h-6 text-[#0C1415]" strokeWidth={1.5} />
-                                            <div className="absolute inset-0 flex items-center justify-center">
-                                                <div className="w-3 h-3 bg-[#0C1415] rounded-full" />
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <Circle className="w-6 h-6 text-[#D1D1D6]" strokeWidth={1.5} />
-                                    )}
-                                </div>
+                                <CreditCard className="w-6 h-6 text-[#0C1415]" strokeWidth={1.5} />
                                 <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-semibold">پرداخت آنلاین (کارت اعتباری)</span>
                             </div>
-                            <CreditCard className="w-6 h-6 text-[#0C1415]" strokeWidth={1.5} />
+                            <div className="shrink-0">
+                                {paymentMethod === "online" ? (
+                                    <div className="relative">
+                                        <Circle className="w-6 h-6 text-[#0C1415]" strokeWidth={1.5} />
+                                        <div className="absolute inset-0 flex items-center justify-center">
+                                            <div className="w-3 h-3 bg-[#0C1415] rounded-full" />
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <Circle className="w-6 h-6 text-[#D1D1D6]" strokeWidth={1.5} />
+                                )}
+                            </div>
                          </div>
                     </div>
 
@@ -115,6 +116,12 @@ export default function PaymentMethodPage() {
                                 className="w-full flex justify-between items-center py-4 cursor-pointer border-b border-[#E5E7EB] last:border-0"
                              >
                                  <div className="flex items-center gap-3">
+                                     <div className="w-8 h-8 bg-blue-50 rounded-full flex items-center justify-center">
+                                         <Landmark className="w-4 h-4 text-blue-600" />
+                                     </div>
+                                     <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-semibold">درگاه بانک سامان</span>
+                                 </div>
+                                 <div className="shrink-0">
                                      {selectedBank === "saman" ? (
                                         <div className="relative">
                                             <Circle className="w-6 h-6 text-[#0C1415]" strokeWidth={1.5} />
@@ -125,9 +132,7 @@ export default function PaymentMethodPage() {
                                      ) : (
                                          <Circle className="w-6 h-6 text-[#D1D1D6]" strokeWidth={1.5} />
                                      )}
-                                     <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-semibold">درگاه بانک سامان</span>
                                  </div>
-                                 <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center text-[10px] text-blue-600">S</div> {/* Placeholder icon */}
                              </div>
 
                              {/* Mellat */}
@@ -136,6 +141,12 @@ export default function PaymentMethodPage() {
                                 className="w-full flex justify-between items-center py-4 cursor-pointer border-b border-[#E5E7EB] last:border-0"
                              >
                                  <div className="flex items-center gap-3">
+                                     <div className="w-8 h-8 bg-red-50 rounded-full flex items-center justify-center">
+                                         <Landmark className="w-4 h-4 text-red-600" />
+                                     </div>
+                                     <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-semibold">درگاه بانک ملت</span>
+                                 </div>
+                                 <div className="shrink-0">
                                      {selectedBank === "mellat" ? (
                                         <div className="relative">
                                             <Circle className="w-6 h-6 text-[#0C1415]" strokeWidth={1.5} />
@@ -146,9 +157,7 @@ export default function PaymentMethodPage() {
                                      ) : (
                                          <Circle className="w-6 h-6 text-[#D1D1D6]" strokeWidth={1.5} />
                                      )}
-                                     <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-semibold">درگاه بانک ملت</span>
                                  </div>
-                                 <div className="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center text-[10px] text-red-600">M</div> {/* Placeholder icon */}
                              </div>
 
                              {/* Pasargad */}
@@ -157,6 +166,12 @@ export default function PaymentMethodPage() {
                                 className="w-full flex justify-between items-center py-4 cursor-pointer"
                              >
                                  <div className="flex items-center gap-3">
+                                     <div className="w-8 h-8 bg-yellow-50 rounded-full flex items-center justify-center">
+                                         <Landmark className="w-4 h-4 text-yellow-600" />
+                                     </div>
+                                     <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-semibold">درگاه بانک پاسارگاد</span>
+                                 </div>
+                                 <div className="shrink-0">
                                      {selectedBank === "pasargad" ? (
                                         <div className="relative">
                                             <Circle className="w-6 h-6 text-[#0C1415]" strokeWidth={1.5} />
@@ -167,9 +182,7 @@ export default function PaymentMethodPage() {
                                      ) : (
                                          <Circle className="w-6 h-6 text-[#D1D1D6]" strokeWidth={1.5} />
                                      )}
-                                     <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-semibold">درگاه بانک پاسارگاد</span>
                                  </div>
-                                 <div className="w-6 h-6 bg-yellow-100 rounded-full flex items-center justify-center text-[10px] text-yellow-600">P</div> {/* Placeholder icon */}
                              </div>
 
                          </div>
@@ -181,7 +194,7 @@ export default function PaymentMethodPage() {
 
             {/* Bottom Bar */}
              <div className="fixed bottom-0 left-0 right-0 z-40 w-full max-w-[440px] mx-auto p-6 bg-transparent">
-                 <div className="w-full bg-white rounded-2xl shadow-[0px_0px_30px_rgba(0,0,0,0.10)] border border-[rgba(0,0,0,0.10)] p-3">
+                 <div className="w-full  rounded-2xl  p-3">
                     <button 
                         onClick={() => router.push('/Bazzar/DigiKaraCart/Transition')}
                         className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-3 hover:bg-[#e5bc09] transition-colors shadow-sm"

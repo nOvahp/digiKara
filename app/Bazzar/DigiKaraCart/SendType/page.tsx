@@ -53,8 +53,8 @@ export default function SendTypePage() {
         <div className="w-full min-h-screen bg-white flex flex-col items-center relative" dir="rtl">
             
             {/* Header */}
-            <div className="w-full max-w-[440px] flex justify-between items-center px-6 py-4 shrink-0">
-                 <div className="flex items-center justify-center w-full relative">
+            <div className="w-full max-w-[440px] flex justify-between items-center px-0 py-4 shrink-0">
+                 <div className="flex items-center justify-between w-full relative">
                      <span className="text-[#0C1415] text-base font-['PeydaWeb'] font-semibold">نوع ارسال</span>
                      <button 
                         onClick={() => router.back()}
@@ -66,7 +66,7 @@ export default function SendTypePage() {
             </div>
 
             {/* List Container */}
-            <div className="w-full max-w-[440px] flex flex-col gap-0 px-6 pb-24 flex-1 overflow-y-auto no-scrollbar">
+            <div className="w-full max-w-[440px] flex flex-col gap-0 px-0 pb-24 flex-1 overflow-y-auto no-scrollbar">
                 
                 <div className="w-full flex flex-col gap-6 py-6">
                     {options.map((item, index) => (
@@ -75,8 +75,24 @@ export default function SendTypePage() {
                                 onClick={() => setSelectedId(item.id)}
                                 className="w-full flex items-center justify-between cursor-pointer group"
                             >
+                                {/* Right Side: Icon & Info */}
+                                <div className="flex-1 flex items-center justify-start gap-3">
+                                    <div className="mt-1 shrink-0">
+                                         {item.icon}
+                                    </div>
+                                    <div className="flex flex-col items-start gap-1 text-right">
+                                        <span className="text-[#0C1415] text-sm font-['PeydaWeb'] font-semibold">
+                                            {item.type}
+                                        </span>
+                                        {renderEstimate(item.estimate)}
+                                    </div>
+                                </div>
+
                                 {/* Left Side: Price & Radio */}
                                 <div className="flex items-center gap-3">
+                                    <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-semibold">
+                                        {item.price}
+                                    </span>
                                     <div className="shrink-0">
                                         {selectedId === item.id ? (
                                             <div className="relative">
@@ -88,22 +104,6 @@ export default function SendTypePage() {
                                         ) : (
                                             <Circle className="w-6 h-6 text-[#0C1415] opacity-20 group-hover:opacity-100 transition-opacity" strokeWidth={1.5} />
                                         )}
-                                    </div>
-                                    <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-semibold">
-                                        {item.price}
-                                    </span>
-                                </div>
-
-                                {/* Right Side: Icon & Info */}
-                                <div className="flex-1 flex justify-end gap-3">
-                                    <div className="flex flex-col items-end gap-1 text-right">
-                                        <span className="text-[#0C1415] text-sm font-['PeydaWeb'] font-semibold">
-                                            {item.type}
-                                        </span>
-                                        {renderEstimate(item.estimate)}
-                                    </div>
-                                    <div className="mt-1 shrink-0">
-                                         {item.icon}
                                     </div>
                                 </div>
                             </div>
@@ -120,7 +120,7 @@ export default function SendTypePage() {
 
             {/* Bottom Bar */}
              <div className="fixed bottom-0 left-0 right-0 z-40 w-full max-w-[440px] mx-auto p-6 bg-transparent">
-                 <div className="w-full bg-white rounded-2xl shadow-[0px_0px_30px_rgba(0,0,0,0.10)] border border-[rgba(0,0,0,0.10)] p-3">
+                 <div className="w-full rounded-2xl  p-3">
                     <button 
                         onClick={() => router.back()} // Go back to confirm selection
                         className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-3 hover:bg-[#e5bc09] transition-colors shadow-sm"
