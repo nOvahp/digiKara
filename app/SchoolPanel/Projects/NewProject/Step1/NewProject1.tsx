@@ -4,177 +4,318 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronDown, Calendar, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
-// If Switch doesn't exist, I'll build a simple one. The user design shows a switch.
+import { z } from "zod";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+
+import { useNewProject } from "../NewProjectContext";
 
 const toFarsiNumber = (n: number | string | undefined): string => {
     if (n === undefined || n === null) return '';
     return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
 }
 
+// Validation Schema
+const step1Schema = z.object({
+    title: z.string().min(1, "عنوان پروژه الزامی است"),
+    projectType: z.enum(["product", "project"]),
+    timche: z.string().min(1, "انتخاب تیمچه/کارگاه الزامی است"),
+    mentor: z.string().min(1, "انتخاب هنرآموز مسئول الزامی است"),
+    schedule: z.string().min(1, "زمان‌بندی تقریبی الزامی است"),
+    needsSupport: z.boolean(),
+    supportType: z.string().optional(),
+}).refine((data) => {
+    if (data.needsSupport && !data.supportType) return false;
+    return true;
+}, {
+    message: "انتخاب نوع حمایت الزامی است",
+    path: ["supportType"],
+});
+
+type Step1FormValues = z.infer<typeof step1Schema>;
+
 const NewProject1 = () => {
     const router = useRouter();
-    const [projectType, setProjectType] = useState<"product" | "project">("product");
+    const { updateProjectData, projectData } = useNewProject();
+
+    const {
+        register,
+        handleSubmit,
+        control,
+        setValue,
+        watch,
+        formState: { errors },
+    } = useForm<Step1FormValues>({
+        resolver: zodResolver(step1Schema),
+        defaultValues: {
+            title: projectData.title || "",
+            projectType: projectData.projectType || "product",
+            timche: projectData.timche || "",
+            mentor: projectData.mentor || "",
+            schedule: projectData.schedule || "",
+            needsSupport: projectData.needsSupport || false,
+            supportType: projectData.supportType || "",
+        },
+    });
+
+    const needsSupport = watch("needsSupport");
+    const selectedProjectType = watch("projectType");
+
+    const onSubmit = (data: Step1FormValues) => {
+        updateProjectData(data);
+        console.log("Step 1 Data:", data);
+        router.push('/SchoolPanel/Projects/NewProject/step2');
+    };
 
     return (
-        <div className="w-full min-h-screen  pb-24" dir="rtl">
+        <form onSubmit={handleSubmit(onSubmit)} className="w-full min-h-screen pb-24" dir="rtl">
             {/* Header */}
             <div className="w-full h-16 px-0 flex justify-between items-center bg-white border-b border-[#DFE1E7]">
-               
-               <div className="text-[#0D0D12] text-xl font-['PeydaWeb'] font-semibold leading-[27px]">
-                   افزودن پروژه
-               </div>
-               <div 
-                   onClick={() => router.back()}
-                   className="w-10 h-10 bg-white rounded-full border border-[rgba(8,11,17,0.10)] flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors"
+
+                <div className="text-[#0D0D12] text-xl font-['PeydaWeb'] font-semibold leading-[27px]">
+                    افزودن پروژه
+                </div>
+                <div
+                    onClick={() => router.back()}
+                    className="w-10 h-10 bg-white rounded-full border border-[rgba(8,11,17,0.10)] flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors"
                 >
                     <ChevronLeft className="w-5 h-5 text-[#0D0D12]" strokeWidth={1.5} />
-               </div>
+                </div>
             </div>
 
             <div className="w-full max-w-md mx-auto p-0 flex flex-col gap-6">
                 {/* Stepper */}
                 <div className="w-full py-5 flex items-center gap-4 overflow-x-auto border-b border-[#DFE1E7] no-scrollbar">
-                     
-                     {/* Step 1: Basic Info (Active) */}
-                     <div className="flex items-center gap-2.5 flex-shrink-0">
-                          <div className="w-6 h-6 bg-[#FDD00A] rounded-full flex items-center justify-center">
-                              <span className="text-white text-sm font-bold font-num-medium">{toFarsiNumber(1)}</span>
-                          </div>
-                         <span className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb']">اطلاعات پایه</span>
-                     </div>
-                     
-                     <div className="w-8 h-[1px] bg-[#DFE1E7] flex-shrink-0"></div>
 
-                     {/* Step 2: Resources */}
-                     <div className="flex items-center gap-2.5 opacity-50 flex-shrink-0">
-                          <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center">
-                              <span className="text-white text-sm font-bold font-num-medium">{toFarsiNumber(2)}</span>
-                          </div>
-                         <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">منابع</span>
-                     </div>
-                     
-                     <div className="w-8 h-[1px] bg-[#DFE1E7] flex-shrink-0"></div>
+                    {/* Step 1: Basic Info (Active) */}
+                    <div className="flex items-center gap-2.5 flex-shrink-0">
+                        <div className="w-6 h-6 bg-[#FDD00A] rounded-full flex items-center justify-center">
+                            <span className="text-white text-sm font-bold font-num-medium">{toFarsiNumber(1)}</span>
+                        </div>
+                        <span className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb']">اطلاعات پایه</span>
+                    </div>
 
-                     {/* Step 3: Financial */}
-                      <div className="flex items-center gap-2.5 opacity-50 flex-shrink-0">
-                          <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center">
-                              <span className="text-white text-sm font-bold font-num-medium">{toFarsiNumber(3)}</span>
-                          </div>
-                         <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">مالی</span>
-                     </div>
+                    <div className="w-8 h-[1px] bg-[#DFE1E7] flex-shrink-0"></div>
 
-                     <div className="w-8 h-[1px] bg-[#DFE1E7] flex-shrink-0"></div>
+                    {/* Step 2: Resources */}
+                    <div className="flex items-center gap-2.5 opacity-50 flex-shrink-0">
+                        <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center">
+                            <span className="text-white text-sm font-bold font-num-medium">{toFarsiNumber(2)}</span>
+                        </div>
+                        <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">منابع</span>
+                    </div>
 
-                     {/* Step 4: Sharing */}
-                      <div className="flex items-center gap-2.5 opacity-50 flex-shrink-0">
-                          <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center">
-                              <span className="text-white text-sm font-bold font-num-medium">{toFarsiNumber(4)}</span>
-                          </div>
-                         <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">تسهیم</span>
-                     </div>
+                    <div className="w-8 h-[1px] bg-[#DFE1E7] flex-shrink-0"></div>
+
+                    {/* Step 3: Financial */}
+                    <div className="flex items-center gap-2.5 opacity-50 flex-shrink-0">
+                        <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center">
+                            <span className="text-white text-sm font-bold font-num-medium">{toFarsiNumber(3)}</span>
+                        </div>
+                        <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">مالی</span>
+                    </div>
+
+                    <div className="w-8 h-[1px] bg-[#DFE1E7] flex-shrink-0"></div>
+
+                    {/* Step 4: Sharing */}
+                    <div className="flex items-center gap-2.5 opacity-50 flex-shrink-0">
+                        <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center">
+                            <span className="text-white text-sm font-bold font-num-medium">{toFarsiNumber(4)}</span>
+                        </div>
+                        <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">تسهیم</span>
+                    </div>
                 </div>
 
                 {/* Form Fields */}
                 <div className="flex flex-col gap-6">
-                    
+
                     {/* Project Title */}
                     <div className="flex flex-col gap-2">
                         <label className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">عنوان پروژه</label>
-                        <input 
-                            type="text" 
-                            className="w-full h-[52px] bg-white rounded-xl border border-[#DFE1E7] px-3 text-[#0D0D12] text-right focus:outline-none focus:border-[#FDD00A]" 
+                        <input
+                            {...register("title")}
+                            type="text"
+                            className={cn(
+                                "w-full h-[52px] bg-white rounded-xl border px-3 text-[#0D0D12] text-right focus:outline-none focus:border-[#FDD00A]",
+                                errors.title ? "border-red-500" : "border-[#DFE1E7]"
+                            )}
                         />
+                        {errors.title && <span className="text-xs text-red-500">{errors.title.message}</span>}
                     </div>
 
                     {/* Project Type */}
                     <div className="flex items-center justify-between">
-                         <label className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">نوع پروژه</label>
-                         
-                         <div className="flex bg-white rounded-lg border border-[#E5E5E5] p-[1px] shadow-sm">
-                             <div 
-                                onClick={() => setProjectType("product")}
+                        <label className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">نوع پروژه</label>
+
+                        <div className="flex bg-white rounded-lg border border-[#E5E5E5] p-[1px] shadow-sm">
+                            <div
+                                onClick={() => setValue("projectType", "project")}
                                 className={cn(
-                                    "px-3 py-1.5 flex items-center gap-2 rounded-md cursor-pointer transition-all",
-                                    projectType === "product" ? "bg-[#FDD00A]" : "bg-transparent"
+                                    "flex-1 h-10 rounded-lg flex items-center justify-center gap-2 cursor-pointer transition-all",
+                                    selectedProjectType === "project" ? "bg-[#FDD00A] shadow-sm" : "bg-transparent hover:bg-gray-50"
                                 )}
-                             >
-                                 <span className={cn("text-sm font-semibold font-['PeydaWeb']", projectType === "product" ? "text-black" : "text-[#666D80]")}>محصول محور</span>
-                                 {/* Icon for Product (Box) */}
-                                 <div className="w-4 h-4 border border-current rounded-sm"></div> 
-                             </div>
-                             
-                             <div 
-                                onClick={() => setProjectType("project")}
+                            >
+                                <span className={cn(
+                                    "text-sm font-semibold font-['PeydaWeb'] transition-colors",
+                                    selectedProjectType === "project" ? "text-[#0D0D12]" : "text-[#666D80]"
+                                )}>پروژه</span>
+                            </div>
+
+                            <div className="w-[1px] h-5 bg-[#DFE1E7]"></div>
+
+                            {/* Product Option */}
+                            <div
+                                onClick={() => setValue("projectType", "product")}
                                 className={cn(
-                                    "px-3 py-1.5 flex items-center gap-2 rounded-md cursor-pointer transition-all",
-                                    projectType === "project" ? "bg-[#FDD00A]" : "bg-transparent"
+                                    "flex-1 h-10 rounded-lg flex items-center justify-center gap-2 cursor-pointer transition-all",
+                                    selectedProjectType === "product" ? "bg-[#FDD00A] shadow-sm" : "bg-transparent hover:bg-gray-50"
                                 )}
-                             >
-                                 <span className={cn("text-sm font-semibold font-['PeydaWeb']", projectType === "project" ? "text-black" : "text-[#666D80]")}>پروژه محور</span>
-                                 {/* Icon for Project (Grid) */}
-                                  <div className="w-4 h-4 border border-current rounded-sm"></div>
-                             </div>
-                         </div>
+                            >
+                                <span className={cn(
+                                    "text-sm font-semibold font-['PeydaWeb'] transition-colors",
+                                    selectedProjectType === "product" ? "text-[#0D0D12]" : "text-[#666D80]"
+                                )}>محصول</span>
+                            </div>
+                        </div>
                     </div>
 
                     {/* Timche/Workshop */}
                     <div className="flex flex-col gap-2">
                         <label className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">تیمچه/کارگاه مرتبط</label>
-                        <div className="relative w-full h-[52px] bg-white rounded-xl border border-[#DFE1E7] flex items-center px-3 cursor-pointer">
-                            <span className="flex-1"></span>
-                            <ChevronDown className="w-5 h-5 text-[#666D80]" />
-                        </div>
+                        <Controller
+                            control={control}
+                            name="timche"
+                            render={({ field }) => (
+                                <Select onValueChange={field.onChange} defaultValue={field.value} dir="rtl">
+                                    <SelectTrigger className={cn("w-full h-[52px] bg-white rounded-xl border border-[#DFE1E7] shadow-none focus:ring-0 focus:border-[#FDD00A] text-right", errors.timche && "border-red-500")}>
+                                        <SelectValue placeholder="انتخاب کنید" />
+                                    </SelectTrigger>
+                                    <SelectContent dir="rtl">
+                                        <SelectItem value="تیمچه هوش مصنوعی">تیمچه هوش مصنوعی</SelectItem>
+                                        <SelectItem value="تیمچه رباتیک">تیمچه رباتیک</SelectItem>
+                                        <SelectItem value="تیمچه برنامه نویسی">تیمچه برنامه نویسی</SelectItem>
+                                        <SelectItem value="تیمچه هنر">تیمچه هنر</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            )}
+                        />
+                        {errors.timche && <span className="text-xs text-red-500">{errors.timche.message}</span>}
                     </div>
 
                     {/* Responsible Mentor */}
                     <div className="flex flex-col gap-2">
                         <label className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">هنرآموز مسئول</label>
-                        <div className="relative w-full h-[52px] bg-white rounded-xl border border-[#DFE1E7] flex items-center px-3 cursor-pointer">
-                            <span className="flex-1"></span>
-                            <ChevronDown className="w-5 h-5 text-[#666D80]" />
-                        </div>
+                        <Controller
+                            control={control}
+                            name="mentor"
+                            render={({ field }) => (
+                                <Select onValueChange={field.onChange} defaultValue={field.value} dir="rtl">
+                                    <SelectTrigger className={cn("w-full h-[52px] bg-white rounded-xl border border-[#DFE1E7] shadow-none focus:ring-0 focus:border-[#FDD00A] text-right", errors.mentor && "border-red-500")}>
+                                        <SelectValue placeholder="انتخاب کنید" />
+                                    </SelectTrigger>
+                                    <SelectContent dir="rtl">
+                                        <SelectItem value="مهندس رضایی">مهندس رضایی</SelectItem>
+                                        <SelectItem value="دکتر حسینی">دکتر حسینی</SelectItem>
+                                        <SelectItem value="خانم محمدی">خانم محمدی</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            )}
+                        />
+                        {errors.mentor && <span className="text-xs text-red-500">{errors.mentor.message}</span>}
                     </div>
 
                     {/* Schedule */}
                     <div className="flex flex-col gap-2">
                         <label className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">زمان بندی تقریبی</label>
-                        <div className="relative w-full h-[52px] bg-white rounded-xl border border-[#DFE1E7] flex items-center px-3 cursor-pointer">
-                            <span className="flex-1"></span>
-                            <Calendar className="w-5 h-5 text-[#666D80]" />
-                        </div>
+                        <Controller
+                            control={control}
+                            name="schedule"
+                            render={({ field }) => (
+                                <Select onValueChange={field.onChange} defaultValue={field.value} dir="rtl">
+                                    <SelectTrigger className={cn("w-full h-[52px] bg-white rounded-xl border border-[#DFE1E7] shadow-none focus:ring-0 focus:border-[#FDD00A] text-right", errors.schedule && "border-red-500")}>
+                                        <div className="flex items-center gap-2">
+                                            <Calendar className="w-4 h-4 text-[#666D80]" />
+                                            <SelectValue placeholder="انتخاب کنید" />
+                                        </div>
+                                    </SelectTrigger>
+                                    <SelectContent dir="rtl">
+                                        <SelectItem value="۳ ماهه">۳ ماهه</SelectItem>
+                                        <SelectItem value="۶ ماهه">۶ ماهه</SelectItem>
+                                        <SelectItem value="۹ ماهه">۹ ماهه</SelectItem>
+                                        <SelectItem value="۱ ساله">۱ ساله</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            )}
+                        />
+                        {errors.schedule && <span className="text-xs text-red-500">{errors.schedule.message}</span>}
                     </div>
 
                     {/* Support Toggle */}
                     <div className="flex items-center justify-between">
                         <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">این پروژه نیاز به حمایت دارد.</span>
-                        {/* Custom Switch or default */}
-                         <div className="w-12 h-6 bg-[#605F5F] rounded-full relative cursor-pointer">
-                             <div className="w-5 h-5 bg-white rounded-full absolute top-0.5 left-0.5 transition-all"></div>
-                         </div>
-                    </div>
-                    
-                    {/* Desired Supports */}
-                    <div className="flex flex-col gap-2">
-                        <label className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">حمایت های مدنظر</label>
-                        <div className="relative w-full h-[52px] bg-white rounded-xl border border-[#DFE1E7] flex items-center px-3 cursor-pointer">
-                            <span className="flex-1 text-right text-xs font-light text-[#666D80]">حمایت مالی، تجهیزات، ...</span>
-                            <ChevronDown className="w-5 h-5 text-[#666D80]" />
+                        <div
+                            className={cn(
+                                "w-12 h-6 rounded-full relative cursor-pointer transition-colors",
+                                needsSupport ? "bg-[#FDD00A]" : "bg-[#605F5F]"
+                            )}
+                            onClick={() => {
+                                const newVal = !needsSupport;
+                                setValue("needsSupport", newVal);
+                                if (!newVal) setValue("supportType", "");
+                            }}
+                        >
+                            <div className={cn(
+                                "w-5 h-5 bg-white rounded-full absolute top-0.5 transition-all text-[#605F5F]",
+                                needsSupport ? "left-[26px]" : "left-0.5"
+                            )}></div>
                         </div>
                     </div>
+
+                    {/* Desired Supports (Conditional) */}
+                    {needsSupport && (
+                        <div className="flex flex-col gap-2">
+                            <label className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">حمایت های مدنظر</label>
+                            <Controller
+                                control={control}
+                                name="supportType"
+                                render={({ field }) => (
+                                    <Select onValueChange={field.onChange} defaultValue={field.value} dir="rtl">
+                                        <SelectTrigger className={cn("w-full h-[52px] bg-white rounded-xl border border-[#DFE1E7] shadow-none focus:ring-0 focus:border-[#FDD00A] text-right", errors.supportType && "border-red-500")}>
+                                            <SelectValue placeholder="انتخاب کنید" />
+                                        </SelectTrigger>
+                                        <SelectContent dir="rtl">
+                                            <SelectItem value="حمایت مالی">حمایت مالی</SelectItem>
+                                            <SelectItem value="تجهیزات فنی">تجهیزات فنی</SelectItem>
+                                            <SelectItem value="فضای کار اختصاصی">فضای کار اختصاصی</SelectItem>
+                                            <SelectItem value="منتورینگ تخصصی">منتورینگ تخصصی</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                )}
+                            />
+                            {errors.supportType && <span className="text-xs text-red-500">{errors.supportType.message}</span>}
+                        </div>
+                    )}
 
                 </div>
 
                 {/* Next Button */}
                 <div className="w-full pb-5 flex justify-end items-center gap-3.5 mt-4">
-                    <button 
-                        onClick={() => router.push('/SchoolPanel/Projects/NewProject/step2')}
+                    <button
+                        type="submit"
                         className="flex-1 h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-2.5 hover:bg-[#e5c109] transition-colors"
                     >
-                         <span className="text-center text-[#1A1C1E] text-lg font-semibold font-['PeydaWeb']">ادامه</span>
+                        <span className="text-center text-[#1A1C1E] text-lg font-semibold font-['PeydaWeb']">ادامه</span>
                     </button>
                 </div>
             </div>
-        </div>
+        </form>
     );
 };
 
