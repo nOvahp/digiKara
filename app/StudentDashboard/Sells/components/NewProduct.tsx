@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { CategoryTagsForm } from './shared/CategoryTagsForm';
-import { X } from 'lucide-react';
+import { X, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import axios from 'axios';
 
@@ -8,7 +8,7 @@ interface NewProductProps {
     onClose: () => void;
     onNext: () => void;
     onStepClick: (step: string) => void;
-    formData: any; 
+    formData: any;
     updateFormData: (data: any) => void;
 }
 
@@ -21,7 +21,7 @@ export function NewProduct({ onClose, onNext, onStepClick, formData, updateFormD
             if (!formData.description) throw new Error("لطفا توضیحات محصول را وارد کنید");
             if (formData.images.length === 0) throw new Error("لطفا حداقل یک تصویر برای محصول انتخاب کنید");
             if (!formData.category) throw new Error("لطفا دسته بندی را انتخاب کنید");
-            
+
             onNext();
         } catch (error) {
             if (axios.isAxiosError(error)) {
@@ -47,14 +47,14 @@ export function NewProduct({ onClose, onNext, onStepClick, formData, updateFormD
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             {/* Backdrop */}
-            <div 
-                className="absolute inset-0 bg-[#0D0D12] opacity-40 backdrop-blur-[1px]" 
+            <div
+                className="absolute inset-0 bg-[#0D0D12] opacity-40 backdrop-blur-[1px]"
                 onClick={onClose}
             />
 
             {/* Modal Content - Dimensions from design: 375px width, 837px height (capped at view height) */}
             <div className="relative w-[375px] max-h-[90vh] bg-white rounded-2xl shadow-xl flex flex-col overflow-hidden">
-                
+
                 {/* Header */}
                 <div className="w-full px-5 py-5 border-b border-[#DFE1E7] flex justify-between items-center bg-white z-10">
                     <div className="w-10 h-10 relative overflow-hidden rounded-full border border-[#DFE1E7] flex items-center justify-center cursor-pointer hover:bg-gray-50" onClick={onClose}>
@@ -62,8 +62,14 @@ export function NewProduct({ onClose, onNext, onStepClick, formData, updateFormD
                             <X className="w-5 h-5 text-[#0D0D12]" />
                         </div>
                     </div>
-                    <div className="text-[#0D0D12] text-lg font-semibold font-['PeydaWeb'] leading-relaxed tracking-wide">
-                        افزودن محصول جدید
+                    <div className="flex items-center gap-2">
+                        <div className="text-[#0D0D12] text-lg font-semibold font-['PeydaWeb'] leading-relaxed tracking-wide">
+                            افزودن محصول جدید
+                        </div>
+                        <div className="px-2 py-0.5 bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] rounded-full flex items-center gap-1 shadow-sm">
+                            <Sparkles className="w-3 h-3 text-white" />
+                            <span className="text-[10px] font-bold text-white font-['PeydaWeb'] tracking-wider">AI</span>
+                        </div>
                     </div>
                 </div>
 
@@ -79,14 +85,14 @@ export function NewProduct({ onClose, onNext, onStepClick, formData, updateFormD
 
                     {/* Form Fields */}
                     <div className="w-full px-5 py-5 flex flex-col gap-4">
-                        
+
                         {/* Product Name */}
                         <div className="w-full flex flex-col gap-2">
                             <Label text="نام محصول" />
                             <div className="w-full h-[52px] bg-white rounded-xl border border-[#DFE1E7] px-3 flex items-center">
-                                <input 
-                                    type="text" 
-                                    className="w-full h-full bg-transparent border-none outline-none text-[#0D0D12] text-right font-['PeydaWeb'] placeholder-[#A4ACB9]" 
+                                <input
+                                    type="text"
+                                    className="w-full h-full bg-transparent border-none outline-none text-[#0D0D12] text-right font-['PeydaWeb'] placeholder-[#A4ACB9]"
                                     dir="rtl"
                                     value={formData.name}
                                     onChange={(e) => updateFormData({ name: e.target.value })}
@@ -97,50 +103,56 @@ export function NewProduct({ onClose, onNext, onStepClick, formData, updateFormD
 
                         {/* Description */}
                         <div className="w-full h-[180px] flex flex-col gap-2">
-                             <Label text="توضیحات" />
-                             <div className="w-full flex-1 bg-white rounded-xl border border-[#DFE1E7] px-3 py-2.5 flex flex-col justify-between">
-                                 <textarea 
-                                    className="w-full flex-1 bg-transparent border-none outline-none resize-none text-[#0D0D12] text-sm font-['PeydaWeb'] text-right placeholder-[#A4ACB9]" 
+                            <div className="w-full flex justify-between items-center">
+                                <button className="flex items-center gap-1 px-2 py-0.5 bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] rounded-full hover:opacity-90 transition-opacity group shadow-[0px_2px_4px_rgba(59,130,246,0.2)]">
+                                    <Sparkles className="w-3 h-3 text-white" />
+                                    <span className="text-white text-[9px] font-bold font-['PeydaWeb']">تولید با هوش مصنوعی</span>
+                                </button>
+                                <Label text="توضیحات" />
+                            </div>
+                            <div className="w-full flex-1 bg-white rounded-xl border border-[#DFE1E7] px-3 py-2.5 flex flex-col justify-between">
+                                <textarea
+                                    className="w-full flex-1 bg-transparent border-none outline-none resize-none text-[#0D0D12] text-sm font-['PeydaWeb'] text-right placeholder-[#A4ACB9]"
                                     dir="rtl"
                                     value={formData.description}
                                     onChange={(e) => updateFormData({ description: e.target.value })}
                                     placeholder="توضیحات محصول را بنویسید..."
-                                 />
-                                 <div className="w-full text-left text-[#A4ACB9] text-xs font-light font-num-medium leading-[18px] tracking-wide">
-                                     {formData.description.length}/200
-                                 </div>
-                             </div>
+                                />
+                                <div className="w-full text-left text-[#A4ACB9] text-xs font-light font-num-medium leading-[18px] tracking-wide">
+                                    {formData.description.length}/200
+                                </div>
+                            </div>
                         </div>
 
                         {/* Product Images - Drag & Drop & Preview */}
                         <div className="w-full flex flex-col gap-2">
                             <Label text="تصاویر محصول" />
-                            
+
                             {formData.images.length > 0 ? (
                                 <div className="w-full h-[180px] flex gap-2 overflow-x-auto pb-2">
-                                     <div 
+                                    <div
                                         className="min-w-[120px] h-full bg-[#FFDC85]/20 rounded-xl border border-[#FFD369] flex flex-col justify-center items-center cursor-pointer border-dashed flex-shrink-0 hover:bg-[#FFDC85]/30 transition-colors"
                                         onClick={() => fileInputRef.current?.click()}
-                                     >
+                                    >
                                         <div className="w-8 h-8 rounded-full bg-[#FFD369] flex items-center justify-center mb-2">
                                             <span className="text-[#0D0D12] text-xl font-bold">+</span>
                                         </div>
                                         <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">افزودن</span>
-                                     </div>
-                                     {formData.images.map((img: string, index: number) => (
-                                         <div key={index} className="relative min-w-[180px] h-full rounded-xl border border-[#DFE1E7] overflow-hidden flex-shrink-0 group">
-                                             <img src={img} alt={`Product ${index}`} className="w-full h-full object-cover" />
-                                             <div 
+                                    </div>
+                                    {formData.images.map((img: string, index: number) => (
+                                        <div key={index} className="relative min-w-[180px] h-full rounded-xl border border-[#DFE1E7] overflow-hidden flex-shrink-0 group">
+                                            <img src={img} alt={`Product ${index}`} className="w-full h-full object-cover" />
+                                            <div
                                                 className="absolute top-2 right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
                                                 onClick={() => removeImage(index)}
-                                             >
-                                                 <X className="w-4 h-4 text-white" />
-                                             </div>
-                                         </div>
-                                     ))}
+                                            >
+                                                <X className="w-4 h-4 text-white" />
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             ) : (
-                                <div 
+                                <div
                                     className="w-full h-[180px] flex-1 bg-[#FFDC85]/20 rounded-xl border border-[#FFD369] px-3 flex justify-center items-center cursor-pointer border-dashed hover:bg-[#FFDC85]/30 transition-colors"
                                     onClick={() => fileInputRef.current?.click()}
                                 >
@@ -151,18 +163,18 @@ export function NewProduct({ onClose, onNext, onStepClick, formData, updateFormD
                                 </div>
                             )}
 
-                            <input 
-                                type="file" 
-                                ref={fileInputRef} 
-                                className="hidden" 
-                                multiple 
+                            <input
+                                type="file"
+                                ref={fileInputRef}
+                                className="hidden"
+                                multiple
                                 accept="image/*"
                                 onChange={handleImageUpload}
                             />
                         </div>
 
                         {/* Category and Tags - Replaced with Shared Component */}
-                        <CategoryTagsForm 
+                        <CategoryTagsForm
                             values={{
                                 category: formData.category,
                                 tags: formData.tags,
@@ -171,26 +183,26 @@ export function NewProduct({ onClose, onNext, onStepClick, formData, updateFormD
                             onChange={(updates) => updateFormData(updates)}
                         />
 
-                         {/* Product ID */}
-                         <div className="w-full flex flex-col gap-2">
-                             <Label text="شناسه محصول" />
-                             <div className="w-full h-[52px] bg-white rounded-xl border border-[#DFE1E7] px-3 flex items-center">
-                                 <div className="flex-1 text-left text-[#818898] text-base font-normal font-num-medium leading-normal tracking-wide" dir="ltr">
-                                     {formData.id}
-                                 </div>
-                             </div>
-                         </div>
+                        {/* Product ID */}
+                        <div className="w-full flex flex-col gap-2">
+                            <Label text="شناسه محصول" />
+                            <div className="w-full h-[52px] bg-white rounded-xl border border-[#DFE1E7] px-3 flex items-center">
+                                <div className="flex-1 text-left text-[#818898] text-base font-normal font-num-medium leading-normal tracking-wide" dir="ltr">
+                                    {formData.id}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 {/* Footer */}
                 <div className="w-full px-5 py-5 border-t border-[#DFE1E7] bg-white flex justify-end items-center gap-3.5 z-10 mt-auto">
-                     <button 
+                    <button
                         onClick={handleNext}
                         className="flex-1 h-10 px-4 py-2 bg-gradient-to-t from-[rgba(255,255,255,0)] to-[rgba(255,255,255,0.15)] bg-[#FFDA7F] shadow-[0px_1px_2px_rgba(13,13,18,0.06)] rounded-lg border border-[#FFDA7F] flex justify-center items-center gap-2 hover:opacity-90 transition-opacity"
-                     >
-                         <span className="text-center text-[#393E46] text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">ادامه</span>
-                     </button>
+                    >
+                        <span className="text-center text-[#393E46] text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">ادامه</span>
+                    </button>
                 </div>
 
             </div>

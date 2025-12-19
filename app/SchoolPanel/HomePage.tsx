@@ -215,28 +215,7 @@ const SchoolHomePage = () => {
              </div>
          </div>
 
-         {/* Report Item 2 */}
-         <div className="w-full h-[61px] py-2 pl-[14px] pr-4 bg-white rounded-xl border border-[#DCE4E8] flex justify-start items-center gap-3">
-             <div className="w-[46px] h-[46px] bg-[#F8CB2E] rounded-lg flex items-center justify-center shadow-sm">
-                 <FileText className="w-6 h-6 text-[#0D0D12]" strokeWidth={1.5} />
-             </div>
-             <div className="flex-1 pl-4 flex flex-col justify-center items-end gap-1">
-                 <div className="w-full text-right text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold break-word">ریز نمرات کارگاه‌ها</div>
-                 <div className="w-full flex  items-center">
-                     <div className="flex justify-end">
-                         <div className="text-center text-[#818898] text-[10px] font-['PeydaWeb'] font-semibold break-word">{toFarsiNumber("1404/05/01")}</div>
-                     </div>
-                 </div>
-             </div>
-             <div className="flex justify-start items-center gap-2">
-                 <div className="w-8 h-8 px-4 py-2 bg-white shadow-[0px_1px_2px_rgba(13,13,18,0.06)] rounded-lg border border-[#DFE1E7] flex justify-center items-center gap-2">
-                     <div className="w-4 h-4 relative flex items-center justify-center">
-                         <Download className="w-4 h-4 text-[#818898]" strokeWidth={1.5} />
-                     </div>
-                 </div>
-             </div>
-             
-         </div>
+         
       </div>
 
       {/* Cooperation Section */}

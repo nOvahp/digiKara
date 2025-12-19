@@ -4,26 +4,27 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useNewTimche } from "./New/NewTimcheContext";
-import { 
+import {
     ChevronRight,
     User,
     Box,
     LayoutGrid,
     Check,
-    ChevronLeft
+    ChevronLeft,
+    Sparkles
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { z } from "zod";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
 } from "@/components/ui/select"
 
 const toFarsiNumber = (n: number | string | undefined): string => {
@@ -43,18 +44,18 @@ type FormValues = z.infer<typeof formSchema>;
 const NewTimche = () => {
     const router = useRouter();
     const { saveStep1, step1Data } = useNewTimche();
-    
+
     // Hardcoded step 1 for this page
     const step = 1;
 
-    const { 
-        register, 
-        handleSubmit, 
-        setValue, 
+    const {
+        register,
+        handleSubmit,
+        setValue,
         watch,
         control,
         trigger,
-        formState: { errors } 
+        formState: { errors }
     } = useForm<FormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: step1Data || {
@@ -86,14 +87,20 @@ const NewTimche = () => {
 
     return (
         <div className="w-full min-h-screen flex flex-col items-center pb-10" dir="rtl">
-            
+
             {/* Header */}
             <div className="w-full max-w-[440px] pt-4 flex flex-col gap-5">
                 <div className="w-full px-4 flex justify-between items-center">
-                    <h1 className="text-center text-[#0D0D12] text-xl font-['PeydaWeb'] font-semibold leading-[27px]">
-                        افزودن تیمچه
-                    </h1>
-                     <div onClick={() => router.back()} className="w-10 h-10 bg-white rounded-full border border-[rgba(8,11,17,0.10)] flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors">
+                    <div className="flex items-center gap-2 justify-center">
+                        <h1 className="text-center text-[#0D0D12] text-xl font-['PeydaWeb'] font-semibold leading-[27px]">
+                            افزودن تیمچه
+                        </h1>
+                        <div className="px-2 py-0.5 bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] rounded-full flex items-center gap-1 shadow-sm">
+                            <Sparkles className="w-3 h-3 text-white" />
+                            <span className="text-[10px] font-bold text-white font-['PeydaWeb'] tracking-wider">AI</span>
+                        </div>
+                    </div>
+                    <div onClick={() => router.back()} className="w-10 h-10 bg-white rounded-full border border-[rgba(8,11,17,0.10)] flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors">
                         <ChevronLeft className="w-5 h-5 text-[#0D0D12]" strokeWidth={1.5} />
                     </div>
                 </div>
@@ -112,7 +119,7 @@ const NewTimche = () => {
                                 "w-6 h-6 rounded-full flex items-center justify-center shadow-sm",
                                 s.id === 1 ? "bg-[#FDD00A]" : "bg-[#DFE1E7]"
                             )}>
-                                 <span className="text-white text-sm font-num-bold font-bold leading-[21px]">{toFarsiNumber(s.id)}</span>
+                                <span className="text-white text-sm font-num-bold font-bold leading-[21px]">{toFarsiNumber(s.id)}</span>
                             </div>
                         </div>
                     ))}
@@ -121,13 +128,13 @@ const NewTimche = () => {
 
             {/* Form Content */}
             <div className="w-full max-w-[440px] px-0 py-6 flex flex-col gap-6">
-                
+
                 {/* Timche Name */}
                 <div className="w-full flex flex-col gap-2">
                     <label className="text-right text-[#666D80] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">
                         نام تیمچه
                     </label>
-                    <input 
+                    <input
                         type="text"
                         {...register("name")}
                         className={cn(
@@ -144,23 +151,23 @@ const NewTimche = () => {
                         دسته‌بندی فعالیت
                     </label>
                     <div className="w-full h-12 p-1 bg-white rounded-xl border border-[#E5E5E5] shadow-sm flex items-center">
-                        <div 
-                             onClick={() => setValue("category", "product")}
-                             className={cn(
+                        <div
+                            onClick={() => setValue("category", "product")}
+                            className={cn(
                                 "flex-1 h-full rounded-lg flex items-center justify-center gap-2 cursor-pointer transition-all",
                                 category === "product" ? "bg-[#FDD00A]/10 border border-[#FDD00A]" : "text-[#666D80]"
                             )}
                         >
-                             <span className={cn(
+                            <span className={cn(
                                 "text-sm font-['PeydaWeb'] font-semibold leading-[21px]",
                                 category === "product" ? "text-[#0D0D12]" : "text-[#666D80]"
                             )}>
                                 محصول محور
                             </span>
-                             <Box className={cn("w-5 h-5", category === "product" ? "text-[#0D0D12]" : "text-[#666D80]")} />
+                            <Box className={cn("w-5 h-5", category === "product" ? "text-[#0D0D12]" : "text-[#666D80]")} />
                         </div>
                         <div className="w-[1px] h-6 bg-[#E5E5E5] mx-1" />
-                        <div 
+                        <div
                             onClick={() => setValue("category", "project")}
                             className={cn(
                                 "flex-1 h-full rounded-lg flex items-center justify-center gap-2 cursor-pointer transition-all",
@@ -180,14 +187,20 @@ const NewTimche = () => {
 
                 {/* Description */}
                 <div className="w-full flex flex-col gap-2">
-                    <label className="text-right text-[#666D80] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">
-                        توضیحات
-                    </label>
+                    <div className="w-full flex justify-between items-center">
+                        <label className="text-right text-[#666D80] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">
+                            توضیحات
+                        </label>
+                        <button className="flex items-center gap-1 px-2 py-0.5 bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] rounded-full hover:opacity-90 transition-opacity group shadow-[0px_2px_4px_rgba(59,130,246,0.2)]">
+                            <Sparkles className="w-3 h-3 text-white" />
+                            <span className="text-white text-[9px] font-bold font-['PeydaWeb']">تولید با هوش مصنوعی</span>
+                        </button>
+                    </div>
                     <div className={cn(
                         "w-full px-3 py-2.5 bg-white rounded-xl border flex flex-col gap-2",
                         errors.description ? "border-red-500" : "border-[#DFE1E7] focus-within:border-[#FDD00A]"
                     )}>
-                        <textarea 
+                        <textarea
                             {...register("description")}
                             className="w-full min-h-[80px] text-right text-[#0D0D12] font-['PeydaWeb'] text-sm focus:outline-none resize-none"
                         />
@@ -214,12 +227,12 @@ const NewTimche = () => {
                                         errors.manager ? "border-red-500 focus:border-red-500" : "border-[#DFE1E7] focus:border-[#FDD00A]"
                                     )}>
                                         <div className="flex items-center gap-2 font-medium">
-                                             <User className="w-5 h-5 text-[#666D80]" />
-                                             <SelectValue placeholder="انتخاب کنید" />
+                                            <User className="w-5 h-5 text-[#666D80]" />
+                                            <SelectValue placeholder="انتخاب کنید" />
                                         </div>
                                     </SelectTrigger>
-                                    <SelectContent 
-                                        className="text-right font-medium" 
+                                    <SelectContent
+                                        className="text-right font-medium"
                                         dir="rtl"
                                         style={{ width: "var(--radix-select-trigger-width)" }}
                                     >
@@ -240,7 +253,7 @@ const NewTimche = () => {
 
             {/* Footer / Continue Button */}
             <div className="fixed bottom-0 w-full max-w-[440px] p-4 bg-white/80 backdrop-blur-sm border-t border-[#F0F0F0] mb-25">
-                <button 
+                <button
                     onClick={onContinue}
                     type="button"
                     className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center cursor-pointer hover:bg-[#e5c109] transition-colors shadow-sm border-none outline-none"

@@ -41,8 +41,8 @@ export const products: Product[] = [
     // Subcategories: Shirt, Pants, Shoes, Suit, Bag, Hat, Socks, Underwear
     // =========================================================================
     { id: 2001, title: "پیراهن مردانه نخی", price: "350,000 تومان", rating: 4.3, image: "/13.jpg", category: "پوشاک", isSpecialSale: true,isBestSeller: true },
-    { id: 2002, title: "پیراهن چهارخانه فلانل", price: "420,000 تومان", rating: 4.5, image: "/9.jpg", category: "پوشاک", isNewCollection: true },
-    { id: 2003, title: "شلوار جین راسته", price: "650,000 تومان", rating: 4.4, image: "/11.jpg", category: "پوشاک", isBestSeller: true ,isPopular: true},
+    { id: 2002, title: "پیراهن چهارخانه فلانل", price: "420,000 تومان", rating: 4.5, image: "/9.jpg", category: "پوشاک", isNewCollection: true,  isPopular: true },
+    
    
 
     // =========================================================================
@@ -64,7 +64,7 @@ export const products: Product[] = [
     // Category: طلا و جواهر (Jewelry)
     // Subcategories: Necklace, Pendant, Earring, Bracelet, Ring, Watch
     // =========================================================================
-    { id: 5001, title: "گردنبند طلا طرح قلب", price: "12,000,000 تومان", rating: 4.9, image: "/2.jpg", category: "طلا و جواهر", isBestSeller: true },
+    { id: 5001, title: "گردنبند طلا طرح قلب", price: "12,000,000 تومان", rating: 4.9, image: "/2.jpg", category: "طلا و جواهر", isBestSeller: true, isPopular: true },
     { id: 5002, title: "آویز طلا انار", price: "4,500,000 تومان", rating: 4.7, image: "/3.jpg", category: "طلا و جواهر", isSpecialSale: true ,isPopular: true},
     { id: 5003, title: "گوشواره مروارید", price: "3,200,000 تومان", rating: 4.6, image: "/1 (2).png", category: "طلا و جواهر", isSuggested: true },
    

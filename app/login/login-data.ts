@@ -23,4 +23,11 @@ export const loginContent3 = {
   overlayImage: "/man repairs broken robot.png"
 }
 
+export const loginContent35 = {
+  title: "با تولید یک محصول خوب، اون رو به کسی که نیاز داره عرضه می‌کنی",
+  description: "محصولی طراحی می‌کنی که مسئله واقعی را حل می‌کنه و به‌صورت مستقیم به دست مصرف‌کننده می‌رسه",
+  headerImage: headerImg3,
+  overlayImage: "/man controls a robot in an assembly.png"
+}
+
 

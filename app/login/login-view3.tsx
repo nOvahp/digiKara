@@ -21,7 +21,7 @@ export function LoginView3({ onNext }: LoginViewProps) {
           <div className="flex flex-1 flex-col items-center justify-start    bg-background rounded-t-3xl z-10">
             <LoginDescription onNext={onNext} title={loginContent3.title}
                       description={loginContent3.description}
-                      buttonText="شروع کنید"
+                      buttonText="بعدی"
             />
            
           </div>

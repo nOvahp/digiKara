@@ -4,6 +4,7 @@ import * as React from "react"
 import { LoginView } from "./login-view"
 import { LoginView2 } from "./login-view2"
 import { LoginView3 } from "./login-view3"
+import { LoginView35 } from "./login-view3.5"
 import { LoginView4 } from "./logIn-view4"
 import { Login } from "./logIn"
 
@@ -21,7 +22,11 @@ export default function LoginPage() {
   }
 
   if (step === 3) {
-    return <LoginView3 onNext={() => setStep(4)} />
+    return <LoginView3 onNext={() => setStep(3.5)} />
+  }
+
+  if (step === 3.5) {
+    return <LoginView35 onNext={() => setStep(4)} />
   }
 
   if (step === 4) {
@@ -31,7 +36,7 @@ export default function LoginPage() {
   if (step === 5) {
     return <LogInForm onNext={() => setStep(6)} />
   }
-  
+
   if (step === 6) {
     return <LoginView4 />
   }
