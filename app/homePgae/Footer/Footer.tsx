@@ -9,16 +9,17 @@ const Footer = () => {
     >
       <div className="w-full flex flex-col lg:flex-row justify-between items-center lg:items-start gap-8 lg:gap-0">
         <div className="flex justify-end items-center gap-4">
-          <div className="text-center text-white text-[30px] lg:text-[36.8px] font-medium leading-[55.2px] ">
-            دیجی کارا
-          </div>
           <div className="relative w-[50px] h-[50px] lg:w-[69px] lg:h-[69px]">
             <img
-              src="/Logo.svg"
+              src="/Logo11.svg"
               alt="DigiKara Logo"
               className="w-full h-full object-contain"
             />
           </div>
+          <div className="text-center text-white text-[30px] lg:text-[36.8px] font-medium leading-[55.2px] ">
+            دیجی کارا
+          </div>
+          
         </div>
 
         <div className="flex flex-col lg:flex-row justify-start items-center lg:items-start gap-6 lg:gap-12 w-full lg:w-auto">
@@ -49,22 +50,22 @@ const Footer = () => {
           <div className="flex justify-start items-start gap-4">
             <div className="w-[80px] h-[80px] relative overflow-hidden flex justify-center items-center">
               <img
-                src="/footer1.png"
-                alt="Trust Seal 1"
-                className="w-full h-full object-contain opacity-70 hover:opacity-100 transition-opacity"
-              />
-            </div>
-            <div className="w-[100px] h-[100px] relative overflow-hidden flex justify-center items-center">
-              <img
-                src="/footer2.png"
-                alt="Trust Seal 2"
+                src="/Logo11.svg"
+                alt="License 1"
                 className="w-full h-full object-contain opacity-70 hover:opacity-100 transition-opacity"
               />
             </div>
             <div className="w-[80px] h-[80px] relative overflow-hidden flex justify-center items-center">
               <img
-                src="/Logo.svg"
-                alt="Trust Seal 3"
+                src="/Logo2.png"
+                alt="License 2"
+                className="w-full h-full object-contain opacity-70 hover:opacity-100 transition-opacity"
+              />
+            </div>
+            <div className="w-[80px] h-[80px] relative overflow-hidden flex justify-center items-center">
+              <img
+                src="/Logo3.png"
+                alt="License 3"
                 className="w-full h-full object-contain opacity-70 hover:opacity-100 transition-opacity"
               />
             </div>

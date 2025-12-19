@@ -151,14 +151,14 @@ const NewProject1 = () => {
                     </div>
 
                     {/* Project Type */}
-                    <div className="flex items-center justify-between">
-                        <label className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">نوع پروژه</label>
+                    <div className="flex flex-col gap-2">
+                        <label className="text-[#666D80] text-sm font-semibold font-['PeydaWeb'] text-right">نوع پروژه</label>
 
-                        <div className="flex bg-white rounded-lg border border-[#E5E5E5] p-[1px] shadow-sm">
+                        <div className="w-full h-[52px] flex bg-white rounded-xl border border-[#E5E5E5] p-1 shadow-sm items-center">
                             <div
                                 onClick={() => setValue("projectType", "project")}
                                 className={cn(
-                                    "flex-1 h-10 rounded-lg flex items-center justify-center gap-2 cursor-pointer transition-all",
+                                    "flex-1 h-full rounded-lg flex items-center justify-center gap-2 cursor-pointer transition-all",
                                     selectedProjectType === "project" ? "bg-[#FDD00A] shadow-sm" : "bg-transparent hover:bg-gray-50"
                                 )}
                             >
@@ -168,13 +168,13 @@ const NewProject1 = () => {
                                 )}>پروژه</span>
                             </div>
 
-                            <div className="w-[1px] h-5 bg-[#DFE1E7]"></div>
+                            <div className="w-[1px] h-5 bg-[#DFE1E7] mx-1"></div>
 
                             {/* Product Option */}
                             <div
                                 onClick={() => setValue("projectType", "product")}
                                 className={cn(
-                                    "flex-1 h-10 rounded-lg flex items-center justify-center gap-2 cursor-pointer transition-all",
+                                    "flex-1 h-full rounded-lg flex items-center justify-center gap-2 cursor-pointer transition-all",
                                     selectedProjectType === "product" ? "bg-[#FDD00A] shadow-sm" : "bg-transparent hover:bg-gray-50"
                                 )}
                             >
