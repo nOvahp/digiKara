@@ -16,7 +16,7 @@ const Challenges = () => {
       <div className="w-full lg:w-[643px] flex flex-col justify-start items-start  lg:gap-[56px]">
         <div className="w-full flex flex-col justify-start items-start gap-[32px]">
           <div className="w-full text-center lg:text-right text-[#222325] text-[24px] lg:text-[48px] font-black leading-[36px] lg:leading-[60px] ">
-            چالش‌های آموزش فنی‌حرفه‌ای
+            چالش‌ها
           </div>
         </div>
 
@@ -54,7 +54,7 @@ const Challenges = () => {
       <div className="relative hidden lg:flex justify-start items-center gap-[10px]">
         <div className="relative w-[350px] h-[350px] lg:w-[450px] lg:h-[450px] xl:w-[550px] xl:h-[550px] overflow-hidden mt-[-70px]">
           <Image
-            src="/challenges.png"
+            src="/Frame 2095585053.png"
             alt="Challenges Illustration"
             fill
             className="object-contain"
