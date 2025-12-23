@@ -7,6 +7,8 @@ import ChamferedButton from "@/app/components/ChamferedButton";
 
 import { challengesData } from "./challengesData";
 
+import Link from "next/link";
+
 const Challenges = () => {
   return (
     <div
@@ -42,11 +44,14 @@ const Challenges = () => {
             مطالعه بیشتر
           </div>
           <ChamferedButton cutSide="right" className="p-[2px]!">
-            <div className="px-[16px] py-[8px] lg:px-[24px] lg:py-[10px] flex justify-center items-center gap-8">
+            <Link
+              href="/login"
+              className="px-[16px] py-[8px] lg:px-[24px] lg:py-[10px] flex justify-center items-center gap-8"
+            >
               <span className="text-[#222325] text-[12px] lg:text-[14px] font-extrabold uppercase z-10">
                 ورود به پلتفــــــــــرم
               </span>
-            </div>
+            </Link>
           </ChamferedButton>
         </div>
       </div>
