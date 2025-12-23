@@ -25,7 +25,7 @@ const Blog = () => {
           alt="Blog Illustration"
           width={600}
           height={600}
-          className="object-contain  w-[600px] h-[600px]"
+          className="object-contain  w-[600px] h-[600px]" 
         />
       </div>
 
