@@ -50,8 +50,8 @@ const Footer = () => {
           <div className="flex justify-start items-start gap-4">
             <div className="w-[80px] h-[80px] relative overflow-hidden flex justify-center items-center">
               <img
-                src="/Logo11.svg"
-                alt="License 1"
+                src="/Logo3.png"
+                alt="License 3"
                 className="w-full h-full object-contain opacity-70 hover:opacity-100 transition-opacity"
               />
             </div>
@@ -62,10 +62,11 @@ const Footer = () => {
                 className="w-full h-full object-contain opacity-70 hover:opacity-100 transition-opacity"
               />
             </div>
-            <div className="w-[80px] h-[80px] relative overflow-hidden flex justify-center items-center">
+            
+            <div className="w-[70px] h-[70px] relative overflow-hidden flex justify-center items-center">
               <img
-                src="/Logo3.png"
-                alt="License 3"
+                src="/Logo11.svg"
+                alt="License 1"
                 className="w-full h-full object-contain opacity-70 hover:opacity-100 transition-opacity"
               />
             </div>

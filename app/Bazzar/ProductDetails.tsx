@@ -120,9 +120,19 @@ export default function ProductDetails() {
                                 <Star className="w-4 h-4 text-[#FDD00A] fill-[#FDD00A]" />
                             </div>
                         </div>
-                        <h1 className="text-[#0C1415] text-lg font-['PeydaWeb'] font-bold leading-relaxed">
-                            {product.title}
-                        </h1>
+                        <div className="flex items-center gap-2 flex-wrap">
+                            
+                            <h1 className="text-[#0C1415] text-lg font-['PeydaWeb'] font-bold leading-relaxed">
+                                {product.title}
+                            </h1>
+                            {product.id % 3 === 0 && (
+                                <div style={{
+                                    background: 'linear-gradient(0deg, rgba(100, 179, 39, 0.20) 0%, rgba(100, 179, 39, 0.20) 100%), white'
+                                }} className="px-2 py-0.5 rounded-2xl flex items-center justify-center">
+                                    <span className="text-[#64B327] text-[10px] font-medium leading-[18px]">قدرت گرفته از شغل بابام</span>
+                                </div>
+                            )}
+                        </div>
                     </div>
 
                     {/* Description */}

@@ -59,6 +59,14 @@ export function DashboardNavBar() {
                   >
                       طراح سطح 2 گرافیک - مدرسه  البرز
                   </div>
+                  {/* Powered By Tag */}
+                  <div className="w-full flex justify-end mt-1">
+                       <div style={{
+                            background: 'linear-gradient(0deg, rgba(100, 179, 39, 0.20) 0%, rgba(100, 179, 39, 0.20) 100%), white'
+                        }} className="px-2 py-0.5 rounded-2xl flex items-center justify-center">
+                            <span className="text-[#64B327] text-[10px] font-medium leading-[18px]">قدرت گرفته از شغل بابام</span>
+                        </div>
+                  </div>
               </div>
 
               {/* Avatar */}
