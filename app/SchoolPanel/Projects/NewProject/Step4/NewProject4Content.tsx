@@ -10,9 +10,9 @@ import { toast } from "sonner"; // Assuming sonner is available for toasts
 
 // Mock Initial Data
 const initialStaff = [
-    { id: 1, name: "فرید سلیمی", code: "0012345678", share: 40, avatar: "/Avatar.png", type: "student" },
-    { id: 2, name: "سهند حسینی", code: "0012345678", share: 15, avatar: "/Avatar.png", type: "student" },
-    { id: 3, name: "سعید محمدی", code: "0012345678", share: 15, avatar: "/Avatar.png", type: "student" },
+    { id: 1, name: "فرید سلیمی", code: "0012345678", share: 40, avatar: "/Farid.png", type: "student" },
+    { id: 2, name: "سهند حسینی", code: "0012345678", share: 15, avatar: "/Sahand.png", type: "student" },
+    { id: 3, name: "سعید محمدی", code: "0012345678", share: 15, avatar: "/Saeed.png", type: "student" },
 ];
 
 import { useNewProject } from "../NewProjectContext";
@@ -212,14 +212,30 @@ const NewProject4Content = () => {
                         {/* List of Staff */}
                         {staffShares.map((staff) => (
                             <div key={staff.id} className="w-full p-2.5 bg-white rounded-xl border border-[#DCE4E8] flex justify-between items-center">
+                                {/* Right: Info (Avatar + Name) */}
+                                <div className="flex items-center gap-3 text-right">
+                                    <div className="w-10 h-10 relative">
+                                        <Image
+                                            src={staff.avatar}
+                                            alt={staff.name}
+                                            width={40}
+                                            height={40}
+                                            className="rounded-full object-cover"
+                                        />
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <div className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb']">
+                                            {staff.name}
+                                        </div>
+                                        <div className="text-[#818898] text-[10px] font-semibold font-num-medium">
+                                            {toFarsiNumber(staff.code)}
+                                        </div>
+                                    </div>
+                                    
+                                </div>
                                 {/* Left: Actions (Counter + Delete) */}
                                 <div className="flex items-center gap-3">
-                                    <button
-                                        onClick={() => handleDeleteStaff(staff.id)}
-                                        className="w-9 h-9 flex items-center justify-center rounded-lg border border-[#E5E5E5] text-[#FF3B30] hover:bg-red-50"
-                                    >
-                                        <Trash2 className="w-5 h-5" />
-                                    </button>
+                                    
 
                                     <div className="h-9 flex items-center border border-[#E5E5E5] rounded-lg">
                                         <button
@@ -238,27 +254,12 @@ const NewProject4Content = () => {
                                             <Minus className="w-4 h-4" />
                                         </button>
                                     </div>
-                                </div>
-
-                                {/* Right: Info (Avatar + Name) */}
-                                <div className="flex items-center gap-3 text-right">
-                                    <div className="flex flex-col">
-                                        <div className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb']">
-                                            {staff.name}
-                                        </div>
-                                        <div className="text-[#818898] text-[10px] font-semibold font-num-medium">
-                                            {toFarsiNumber(staff.code)}
-                                        </div>
-                                    </div>
-                                    <div className="w-10 h-10 relative">
-                                        <Image
-                                            src={staff.avatar}
-                                            alt={staff.name}
-                                            width={40}
-                                            height={40}
-                                            className="rounded-full object-cover"
-                                        />
-                                    </div>
+                                    <button
+                                        onClick={() => handleDeleteStaff(staff.id)}
+                                        className="w-9 h-9 flex items-center justify-center rounded-lg border border-[#E5E5E5] text-[#FF3B30] hover:bg-red-50"
+                                    >
+                                        <Trash2 className="w-5 h-5" />
+                                    </button>
                                 </div>
                             </div>
                         ))}
