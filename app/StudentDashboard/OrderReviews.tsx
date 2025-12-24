@@ -30,7 +30,7 @@ const orders: Order[] = [
     productName: "عسل آویشن ارگانیک",
     weight: "500 گرم",
     count: 1,
-    deliveryTime: "1 روز تا تحویل",
+    deliveryTime: "1 روز تا تحویل" ,
     price: "۴,۵۰۰,۰۰۰ ریال",
     status: "delivered",
     statusLabel: "تحویل به مدرسه",
@@ -519,9 +519,9 @@ export function OrderReviews() {
                          </div>
 
                          {/* Product Name */}
-                         <div className="w-[272px] h-16 px-3 flex items-center justify-end gap-1 border-b border-[#DFE1E7]">
+                          <div className="w-[272px] h-16 px-3 flex items-center justify-end gap-1 border-b border-[#DFE1E7]">
                               <span className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb'] tracking-wide"> {order.productName} | </span>
-                              <span className="text-[#0D0D12] text-sm font-semibold font-num-medium tracking-wide"> {toFarsiNumber(order.weight)} </span>
+                              <span className="text-[#0D0D12] text-sm font-semibold font-num-medium tracking-wide"dir="rtl"> {toFarsiNumber(order.weight)} </span>
                          </div>
 
                          {/* Index & Checkbox */}

@@ -41,7 +41,7 @@ export function PopUpProduct({ order, onClose }: PopUpProductProps) {
                 <span className="text-[#0D0D12] text-base font-semibold font-['PeydaWeb'] leading-relaxed tracking-wide">
                     {order.productName} | 
                 </span>
-                <span className="text-[#0D0D12] text-base font-semibold font-num-medium leading-relaxed tracking-wide mx-1">
+                <span className="text-[#0D0D12] text-base  font-num-medium leading-relaxed tracking-wide mx-1">
                     {order.weight.replace(/[^0-9]/g, '')}
                 </span>
                 <span className="text-[#0D0D12] text-base font-semibold font-['PeydaWeb'] leading-relaxed tracking-wide">
@@ -65,7 +65,7 @@ export function PopUpProduct({ order, onClose }: PopUpProductProps) {
                     
                     {/* Count */}
                     <div className="self-stretch h-[52px] px-3 py-2 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] flex justify-between items-center gap-2">
-                        <div className="flex-1 text-[#818898] text-base font-normal font-num-medium leading-relaxed tracking-wide text-left">
+                        <div className="flex-1 text-[#818898] text-base font-normal font-num-medium leading-relaxed tracking-wide text-left" dir="rtl">
                             {order.count} عدد
                         </div>
                         <div className="flex justify-end items-center gap-2 w-[70px]">
@@ -77,7 +77,7 @@ export function PopUpProduct({ order, onClose }: PopUpProductProps) {
 
                     {/* Delivery Time */}
                     <div className="self-stretch h-[52px] px-3 py-2 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] flex justify-between items-center gap-2">
-                        <div className="flex-1 text-[#818898] text-base font-normal font-num-medium leading-relaxed tracking-wide text-left">
+                        <div className="flex-1 text-[#818898] text-base font-normal font-num-medium leading-relaxed tracking-wide text-left" dir="rtl">
                             {order.deliveryTime}
                         </div>
                         <div className="flex justify-end items-center gap-2 w-[79px]">
@@ -89,7 +89,7 @@ export function PopUpProduct({ order, onClose }: PopUpProductProps) {
 
                     {/* Income */}
                     <div className="self-stretch h-[52px] px-3 py-2 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] flex justify-between items-center gap-2">
-                        <div className="flex-1 text-[#818898] text-base font-normal font-num-medium leading-relaxed tracking-wide text-left">
+                        <div className="flex-1 text-[#818898] text-base font-normal font-num-medium leading-relaxed tracking-wide text-left" dir="rtl">
                             {order.price}
                         </div>
                         <div className="flex justify-end items-center gap-2 w-[120px]">

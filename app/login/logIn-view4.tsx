@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { User, GraduationCap, School, Building2 } from "lucide-react";
+// import { User, GraduationCap, School, Building2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import headerImg from "../../public/OtpHeader.png";
 import Image from "next/image";
@@ -20,25 +20,25 @@ export function LoginView4({ onNext }: LoginViewProps) {
       id: "student",
       title: "هنرجو",
       subtitle: "هنرستانی های سراسر ایران",
-      icon: <User className="w-8 h-8 text-[#393E46]" strokeWidth={1.5} />,
+      icon: <Image src="/loginAvatar1.png" alt="student" width={52} height={52} className="w-full h-full object-cover" />,
     },
     {
       id: "customer",
       title: "مشتری",
       subtitle: "ورود به بازارچه و خرید محصولات",
-      icon: <GraduationCap className="w-8 h-8 text-[#393E46]" strokeWidth={1.5} />,
+      icon: <Image src="/loginAvatar2.png" alt="customer" width={52} height={52} className="w-full h-full object-cover" />,
     },
     {
       id: "manager",
       title: "مدیر مدرسه",
       subtitle: "مدیران هنرستان ها و کاربران ارشد",
-      icon: <School className="w-8 h-8 text-[#393E46]" strokeWidth={1.5} />,
+      icon: <Image src="/loginAvatar3.png" alt="manager" width={52} height={52} className="w-full h-full object-cover" />,
     },
     {
       id: "supervisor",
       title: "نهاد ناظر",
       subtitle: "نهاد های نظارتی و حمایتی",
-      icon: <Building2 className="w-8 h-8 text-[#393E46]" strokeWidth={1.5} />,
+      icon: <Image src="/loginAvatar4.png" alt="supervisor" width={52} height={52} className="w-full h-full object-cover" />,
     },
   ];
 
@@ -108,7 +108,7 @@ export function LoginView4({ onNext }: LoginViewProps) {
                             <span className="text-[#393E46] text-base font-['PeydaWeb'] font-black">{type.title}</span>
                             <span className="text-[#393E46] text-sm font-['PeydaWeb'] font-semibold">{type.subtitle}</span>
                         </div>
-                        <div className="w-[52px] h-[52px] rounded-full border border-black/10 bg-white flex items-center justify-center shrink-0">
+                        <div className="w-[52px] h-[52px] rounded-full border border-black/10 bg-white flex items-center justify-center shrink-0 overflow-hidden">
                             {type.icon}
                         </div>
                     </div>

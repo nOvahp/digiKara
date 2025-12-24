@@ -29,7 +29,7 @@ export function LoginDescription({
         <Button variant="ghost" onClick={onSkip} className="text-[#4A4A4A] bg-[#F3F6FC] px-16 py-8 text-lg font-bold ">
            رد شدن
         </Button>
-         <Button variant="destructive" onClick={onNext} className=" px-16 bg-[#393E46] hover:bg-zinc-800 text-lg font-bold py-8">
+         <Button variant="destructive" onClick={onNext} className=" px-16 bg-[#FDD00A] hover:bg-zinc-800 text-lg text-black font-bold py-8">
            {buttonText || "بعدی"}
         </Button>
       </div>

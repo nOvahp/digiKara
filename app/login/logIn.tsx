@@ -19,20 +19,12 @@ export function Login({ onNext }: { onNext?: () => void }) {
           ورود با شماره تماس
         </Button>
 
-        <div className="flex items-center w-full gap-2">
-          <div className="h-[1px] bg-gray-200 flex-1"></div>
-          <span className="text-gray-400 text-sm">یا</span>
-          <div className="h-[1px] bg-gray-200 flex-1"></div>
-        </div>
+        
 
         <Button onClick={onNext} variant="outline" className="w-full border-2 border-[#DCE4E8] text-[#393E46] font-bold py-6 text-lg rounded-xl hover:bg-gray-50">
           ورود با حساب دانش آموزی
         </Button>
-        <div className="flex items-center w-full gap-2">
-          <div className="h-[1px] bg-gray-200 flex-1"></div>
-          <span className="text-gray-400 text-sm">یا</span>
-          <div className="h-[1px] bg-gray-200 flex-1"></div>
-        </div>
+        
 
         <Button onClick={onNext}  className="w-full bg-[#F3F6FC] border-2 border-[#DCE4E8] text-[#393E46] font-bold py-6 text-lg rounded-xl hover:bg-gray-50 mb-4">
           ورود با حساب شاد
