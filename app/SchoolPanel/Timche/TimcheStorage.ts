@@ -15,38 +15,38 @@ const DEFAULT_TIMCHES: TimcheItem[] = [
         id: 1,
         title: "تیمچه صنایع دستی",
         boothCount: "12",
-        manager: "مهندس رضایی",
+        manager: "لیلی رضایی",
         lastUpdate: "3 روز قبل",
         performance: "عالی",
         totalSales: "۵۰,۰۰۰,۰۰۰ ریال",
         status: "active",
-        image: "/Timche.png"
+        image: "/sanayedasti.png"
     },
     {
         id: 2,
         title: "محصولات کشاورزی",
         boothCount: "14",
-        manager: "مهندس کریمی",
+        manager: "مهتاب کریمی",
         lastUpdate: "امروز",
         performance: "عالی",
         totalSales: "۱۲۰,۰۰۰,۰۰۰ ریال",
         status: "active",
-        image: "/Timche2.png"
+        image: "/apple.png"
     },
     {
         id: 3,
         title: "تیمچه رباتیک و الکترونیک",
         boothCount: "۵ حجره",
-        manager: "خانم محمدی",
+        manager: "زهرا محمدی",
         lastUpdate: "ثبت نشده",
         performance: "برآورد نشده",
         totalSales: "هنوز فروشی ثبت نشده است",
         status: "pending",
-        image: "/Timche3.png"
+        image: "/robotic.png"
     }
 ];
 
-const STORAGE_KEY = "timche_list_data";
+const STORAGE_KEY = "timche_list_data_v2";
 
 // ... existing code ...
 

@@ -9,7 +9,7 @@ interface ValuesCardProps {
 }
 
 const ValuesCard = ({
-  title = "ثبت‌نام هنرستان",
+  title = "ثبت‌نام مدارس",
   description = "مدیر مدرسه اطلاعات پایه را وارد و پروفایل مدرسه را ایجاد می‌کند",
   number = "01",
 }: ValuesCardProps) => {

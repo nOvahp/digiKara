@@ -42,7 +42,7 @@ const Footer = () => {
 
       <div className="w-full flex flex-col lg:flex-row justify-between items-center lg:items-center gap-8 lg:gap-0">
         <div className="lg:w-[468px] w-full text-center lg:text-right text-[#7B7B7B] text-base lg:text-lg  font-medium leading-[27.9px] ">
-          ما در کنار شما هستیم تا با هم، آینده ای روشن تر و پربارتر برای هنرستان
+          ما در کنار شما هستیم تا با هم، آینده ای روشن تر و پربارتر برای مدارس
           ها و دانش آموزان این مرز و بوم رقم بزنیم.
         </div>
 

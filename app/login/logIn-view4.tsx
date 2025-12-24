@@ -19,7 +19,7 @@ export function LoginView4({ onNext }: LoginViewProps) {
     {
       id: "student",
       title: "دانش آموز",
-      subtitle: "هنرستانی های سراسر ایران",
+      subtitle: "مدارسی های سراسر ایران",
       icon: <Image src="/loginAvatar1.png" alt="student" width={52} height={52} className="w-full h-full object-cover" />,
     },
     {

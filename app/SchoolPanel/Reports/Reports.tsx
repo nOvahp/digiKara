@@ -342,7 +342,7 @@ const ReportsPage = () => {
             <div className="w-full flex justify-between items-center mt-4">
                  <div className="w-full flex flex-col justify-start items-start gap-1">
                     <div className="w-full flex justify-start items-center px-2">
-                        <div className="text-center text-[#0D0D12] text-xl font-['PeydaWeb'] font-semibold leading-[27px]">رتبه هنرستان</div>
+                        <div className="text-center text-[#0D0D12] text-xl font-['PeydaWeb'] font-semibold leading-[27px]">رتبه مدارس</div>
                      </div>
                     <div className="w-full flex justify-start items-start gap-3">
                         {/* Rank Card 1: In Country */}

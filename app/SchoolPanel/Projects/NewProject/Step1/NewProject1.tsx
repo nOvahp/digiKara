@@ -165,7 +165,7 @@ const NewProject1 = () => {
                                 <span className={cn(
                                     "text-sm font-semibold font-['PeydaWeb'] transition-colors",
                                     selectedProjectType === "project" ? "text-[#0D0D12]" : "text-[#666D80]"
-                                )}>پروژه</span>
+                                )}> پروژه محور </span>
                             </div>
 
                             <div className="w-[1px] h-5 bg-[#DFE1E7] mx-1"></div>
@@ -181,7 +181,7 @@ const NewProject1 = () => {
                                 <span className={cn(
                                     "text-sm font-semibold font-['PeydaWeb'] transition-colors",
                                     selectedProjectType === "product" ? "text-[#0D0D12]" : "text-[#666D80]"
-                                )}>محصول</span>
+                                )}>محصول محور </span>
                             </div>
                         </div>
                     </div>
@@ -221,9 +221,9 @@ const NewProject1 = () => {
                                         <SelectValue placeholder="انتخاب کنید" />
                                     </SelectTrigger>
                                     <SelectContent dir="rtl">
-                                        <SelectItem value="مهندس رضایی">مهندس رضایی</SelectItem>
-                                        <SelectItem value="دکتر حسینی">دکتر حسینی</SelectItem>
-                                        <SelectItem value="خانم محمدی">خانم محمدی</SelectItem>
+                                        <SelectItem value="علی رضایی">علی رضایی</SelectItem>
+                                        <SelectItem value="بهروز حسینی">بهروز حسینی</SelectItem>
+                                        <SelectItem value="زهرا محمدی">زهرا محمدی</SelectItem>
                                     </SelectContent>
                                 </Select>
                             )}

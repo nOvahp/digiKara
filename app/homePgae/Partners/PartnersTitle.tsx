@@ -12,7 +12,7 @@ const PartnersTitle = () => {
         شرکا و حامیان دیجی‌کارا
       </div>
       <div className="self-stretch text-center lg:text-right text-[#808080] text-[16px] lg:text-[20px] font-black">
-        سازمان‌ها و شرکت‌هایی که در توسعه اکوسیستم هنرستان‌ها نقش دارند
+        سازمان‌ها و شرکت‌هایی که در توسعه اکوسیستم مدارس‌ها نقش دارند
       </div>
     </div>
   );

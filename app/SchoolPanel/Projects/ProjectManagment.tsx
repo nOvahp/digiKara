@@ -126,7 +126,7 @@ const ProjectManagment = () => {
             {/* Hero / Header */}
             <div className="w-full max-w-[1200px] px-4 flex justify-between items-center">
                 <h1 className="text-center text-[#0D0D12] text-xl font-['PeydaWeb'] font-semibold leading-[27px]">
-                    مدیریت پروژه ها
+                    مدیریت حجره ها
                 </h1>
                 <div onClick={() => router.back()} className="w-10 h-10 bg-white rounded-full border border-[rgba(8,11,17,0.10)] flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors">
                     <ChevronLeft className="w-5 h-5 text-[#0D0D12]" strokeWidth={1.5} />
@@ -136,7 +136,7 @@ const ProjectManagment = () => {
             {/* Add Timche Button */}
             <div onClick={() => router.push('/SchoolPanel/Projects/NewProject/Step1')} className="w-full px-6 py-2 bg-[#FDD00A] rounded-xl flex justify-center items-center gap-2.5 cursor-pointer hover:bg-[#e5c109] transition-colors">
                 <div className="text-center text-[#1A1C1E] text-[17.58px] font-['PeydaWeb'] font-semibold leading-[24.61px]">
-                    افزودن پروژه جدید
+                    افزودن حجره جدید
                 </div>
                 <Plus className="w-6 h-6 text-[#0A0A0A]" strokeWidth={1.5} />
             </div>
@@ -231,7 +231,7 @@ const ProjectManagment = () => {
                                     </div>
                                     <div className="w-[100px] flex items-center gap-1.5">
                                         <User className="w-4 h-4 text-[#666D80]" />
-                                        <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px] tracking-wide">مهندس رضایی</span>
+                                        <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px] tracking-wide">اکبر رضایی</span>
                                     </div>
 
                                 </div>
@@ -292,7 +292,7 @@ const ProjectManagment = () => {
                                     </div>
                                     <div className="w-[100px] flex items-center gap-1.5">
                                         <User className="w-4 h-4 text-[#666D80]" />
-                                        <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px] tracking-wide">مهندس فلاحی</span>
+                                        <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px] tracking-wide">علی فلاحی</span>
                                     </div>
 
                                 </div>
@@ -353,7 +353,7 @@ const ProjectManagment = () => {
                                     </div>
                                     <div className="w-[100px] flex items-center gap-1.5">
                                         <User className="w-4 h-4 text-[#666D80]" />
-                                        <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px] tracking-wide">آقای حسینی</span>
+                                        <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px] tracking-wide">حسین حسینی</span>
                                     </div>
 
                                 </div>

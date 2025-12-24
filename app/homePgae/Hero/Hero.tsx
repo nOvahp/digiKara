@@ -40,7 +40,7 @@ const Hero = () => {
             className="text-[#222325] text-[12px] sm:text-[13px] md:text-[14px] lg:text-[16px] xl:text-[18px] font-normal font-num-regular leading-[36px] lg:leading-normal max-w-[650px] mt-4 text-justify"
             dir="rtl"
           >
-            دیجی‌کارا سامانه‌ای است که به هنرستان‌های فنی‌حرفه‌ای و کاردانش کمک
+            دیجی‌کارا سامانه‌ای است که به مدارس‌های فنی‌حرفه‌ای و کاردانش کمک
             می‌کند تا محصولات و خدمات تولیدی خود را به‌صورت آنلاین عرضه کنند،
             درآمدزایی کنند و دانش آموزان را با مهارت‌های واقعی به دنیای کار وصل
             نمایند.
@@ -68,7 +68,7 @@ const Hero = () => {
             cutSide="right"
           >
             <span className="text-[#222325] text-[10px] sm:text-[11px] lg:text-[13px] xl:text-sm font-extrabold uppercase">
-              ثبت‌نام رایگان هنرستان
+              ثبت‌نام رایگان مدارس
             </span>
           </ChamferedButton>
         </div>

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react"
 import Image from "next/image"
-import { Search, MapPin, ChevronLeft, Gem, Palette, Utensils, Shirt, Armchair } from 'lucide-react'
+import { Search, MapPin, ChevronLeft, Gem, Palette, Hammer, Shirt, Armchair } from 'lucide-react'
 import Link from "next/link"
 
 import NavBar from "./NavBar"
@@ -59,7 +59,7 @@ const CategoryItem = ({ title }: { title: string }) => {
     const icons: Record<string, React.ElementType> = {
         "طلا و جواهر": Gem,
         "صنایع هنری": Palette,
-        "خوراکی": Utensils,
+        "صنایع دستی": Hammer,
         "پوشاک": Shirt,
         "صنایع چوبی": Armchair,
     };
@@ -162,7 +162,7 @@ export default function HomePage() {
                          {/* 5 Categories */}
                          <CategoryItem title="طلا و جواهر" />
                          <CategoryItem title="صنایع هنری" />
-                         <CategoryItem title="خوراکی" />
+                         <CategoryItem title="صنایع دستی" />
                          <CategoryItem title="پوشاک" />
                          <CategoryItem title="صنایع چوبی" />
                     </div>

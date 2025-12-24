@@ -75,7 +75,7 @@ const NewTimche2 = () => {
                         {/* Manager */}
                         <div className="flex items-center gap-1.5">
                              <User className="w-4 h-4 text-[#0F172A]" />
-                             <span className="text-[#0F172A] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px]">مهندس رضایی</span>
+                             <span className="text-[#0F172A] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px]">علی رضایی</span>
                         </div>
                         
                         {/* Timche */}
@@ -93,7 +93,7 @@ const NewTimche2 = () => {
 
                 {/* Add Project Button */}
                 <div className="w-full h-[57px] rounded-xl border border-dashed border-[#DFE1E7] flex items-center justify-center gap-2.5 cursor-pointer hover:bg-gray-50">
-                    <span className="text-[#1A1C1E] text-lg font-['PeydaWeb'] font-semibold">افزودن پروژه</span>
+                    <span className="text-[#1A1C1E] text-lg font-['PeydaWeb'] font-semibold">افزودن تیمچه</span>
                     <div className="w-6 h-6 border-2 border-[#1A1C1E] rounded-full flex items-center justify-center">
                         <span className="text-lg leading-none mb-0.5">+</span>
                     </div>

@@ -72,7 +72,7 @@ export default function WalletPage() {
 
                  <div className="w-full flex justify-end items-center gap-2 relative z-10">
                      <div className="text-right flex flex-col justify-center text-white text-sm font-['PeydaWeb'] font-semibold leading-[21.7px]">
-                        کیف پول هنرستان هنرهای زیبا
+                        کیف پول مدارس هنرهای زیبا
                      </div>
                  </div>
 

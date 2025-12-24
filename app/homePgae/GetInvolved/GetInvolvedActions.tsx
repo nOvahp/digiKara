@@ -27,7 +27,7 @@ const GetInvolvedActions = () => {
       >
         <div className="flex items-center gap-2 px-6 py-2">
           <span className="text-[#222325] xl:text-lg lg:text-[14px] text-[12px] font-extrabold uppercase">
-            ثبت‌نام رایگان هنرستان
+            ثبت‌نام رایگان مدارس
           </span>
         </div>
       </ChamferedButton>

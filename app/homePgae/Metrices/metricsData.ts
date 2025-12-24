@@ -12,7 +12,7 @@ export const metricsData = [
   {
     id: 3,
     value: "+۲۵۰,۰۰۰",
-    label: "فروش کالا و خدمات هنرستانی",
+    label: "فروش کالا و خدمات مدارسی",
   },
   {
     id: 4,

@@ -116,7 +116,7 @@ const Projects = () => {
                     </div>
                     <div onClick={() => router.push('/SchoolPanel/Projects/ProjectManagment')} className="w-full py-2.5 px-6 rounded-xl outline outline-1 outline-[#DFE1E7] -outline-offset-1 flex justify-center items-center gap-2 cursor-pointer hover:bg-gray-50 transition-colors">
                         <div className="text-center text-[#1A1C1E] text-lg font-['PeydaWeb'] font-semibold leading-6">
-                            مدیریت پروژه ها
+                            مدیریت حجره ها
                         </div>
                     </div>
                 </div>
@@ -128,7 +128,7 @@ const Projects = () => {
                 {/* Cooperation Section */}
                 <div className="flex flex-col gap-4 w-full mt-2">
                     <div className="flex justify-between items-center w-full">
-                        <h2 className="text-[#0D0D12] text-xl font-['PeydaWeb'] font-semibold">همکاری مدارس</h2>
+                        <h2 className="text-[#0D0D12] text-xl font-['PeydaWeb'] font-semibold">مشارکت فعال با تیمچه های دیگر</h2>
                         <span className="text-[#6C7278] text-xs font-['PeydaWeb'] font-semibold cursor-pointer">مشاهده همه</span>
                     </div>
                     

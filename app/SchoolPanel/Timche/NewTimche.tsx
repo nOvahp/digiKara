@@ -178,7 +178,7 @@ const NewTimche = () => {
                                 "text-sm font-['PeydaWeb'] font-semibold leading-[21px]",
                                 category === "project" ? "text-[#0D0D12]" : "text-[#666D80]"
                             )}>
-                                پروژه محور
+                                خدمت محور
                             </span>
                             <LayoutGrid className={cn("w-5 h-5", category === "project" ? "text-[#0D0D12]" : "text-[#666D80]")} />
                         </div>
@@ -237,10 +237,10 @@ const NewTimche = () => {
                                         style={{ width: "var(--radix-select-trigger-width)" }}
                                     >
                                         <SelectGroup>
-                                            <SelectItem value="مهندس رضایی">مهندس رضایی</SelectItem>
-                                            <SelectItem value="مهندس کریمی">مهندس کریمی</SelectItem>
-                                            <SelectItem value="خانم محمدی">خانم محمدی</SelectItem>
-                                            <SelectItem value="دکتر حسینی">دکتر حسینی</SelectItem>
+                                            <SelectItem value="علی رضایی">علی رضایی</SelectItem>
+                                            <SelectItem value="علی کریمی">علی کریمی</SelectItem>
+                                            <SelectItem value="زهرا محمدی">زهرا محمدی</SelectItem>
+                                            <SelectItem value="بهروز حسینی">بهروز حسینی</SelectItem>
                                         </SelectGroup>
                                     </SelectContent>
                                 </Select>
