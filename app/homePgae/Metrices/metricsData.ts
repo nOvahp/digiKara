@@ -7,7 +7,7 @@ export const metricsData = [
   {
     id: 2,
     value: "+۵,۰۰۰",
-    label: "هنرستان در مسیر پیوستن",
+    label: "مدرسه در مسیر پیوستن",
   },
   {
     id: 3,
@@ -17,6 +17,6 @@ export const metricsData = [
   {
     id: 4,
     value: "+۵۰٬۰۰۰",
-    label: "هنرجو در رشته‌های مختلف",
+    label: "دانش آموز در رشته‌های مختلف",
   },
 ];

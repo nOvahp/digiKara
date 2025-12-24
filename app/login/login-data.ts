@@ -1,6 +1,7 @@
 import headerImg from "../../public/logInNew1.png"
-import headerImg2 from "../../public/logInNew1.png"
-import headerImg3 from "../../public/logInNew1.png"
+import headerImg2 from "../../public/Graph2.png"
+import headerImg3 from "../../public/Graph3.png"
+import headerImg4 from "../../public/Graph4.png"
 
 export const loginContent = {
   title: "با آموزش‌های کاربردی و موثر  حسابی حرفه ای و کاربلد می‌شی",
@@ -26,7 +27,7 @@ export const loginContent3 = {
 export const loginContent35 = {
   title: "با تولید یک محصول خوب، اون رو به کسی که نیاز داره عرضه می‌کنی",
   description: "محصولی طراحی می‌کنی که مسئله واقعی را حل می‌کنه و به‌صورت مستقیم به دست مصرف‌کننده می‌رسه",
-  headerImage: headerImg3,
+  headerImage: headerImg4,
   overlayImage: "/man controls a robot in an assembly.png"
 }
 

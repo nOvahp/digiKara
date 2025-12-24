@@ -18,7 +18,7 @@ export function LoginView4({ onNext }: LoginViewProps) {
   const accountTypes = [
     {
       id: "student",
-      title: "هنرجو",
+      title: "دانش آموز",
       subtitle: "هنرستانی های سراسر ایران",
       icon: <Image src="/loginAvatar1.png" alt="student" width={52} height={52} className="w-full h-full object-cover" />,
     },
@@ -30,8 +30,8 @@ export function LoginView4({ onNext }: LoginViewProps) {
     },
     {
       id: "manager",
-      title: "مدیر مدرسه",
-      subtitle: "مدیران هنرستان ها و کاربران ارشد",
+      title: "مدیر مدرسه ",
+      subtitle: "مدیران مدارس و کاربران ارشد",
       icon: <Image src="/loginAvatar3.png" alt="manager" width={52} height={52} className="w-full h-full object-cover" />,
     },
     {

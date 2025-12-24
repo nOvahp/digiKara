@@ -31,6 +31,14 @@ const ProductCard = ({ id, title, price, rating, originalPrice, discount, image 
             />
              {/* Shadow Effect from design */}
              <div className="absolute w-[64px] h-[5px] left-[53px] top-[121px] rotate-1 bg-black/80 blur-[11px]" />
+             {/* Random Tag */}
+             {id % 3 === 0 && (
+                <div style={{
+                    background: 'linear-gradient(0deg, rgba(100, 179, 39, 0.20) 0%, rgba(100, 179, 39, 0.20) 100%), white'
+                }} className="absolute left-[3.5px] bottom-[6px] h-5 px-2 py-0.5 rounded-2xl flex items-center justify-center z-10">
+                    <span className="text-[#64B327] text-xs font-medium leading-[18px]">شغل بابام</span>
+                </div>
+             )}
         </div>
         <div className="w-full flex flex-col items-start gap-1">
             <div className="w-full flex justify-between items-center">
@@ -225,6 +233,13 @@ export default function HomePage() {
                                          <Image src={product.image} alt={product.title} fill className="object-cover" />
                                      </div>
                                      <div className="w-[37%] h-[3%] left-[31%] top-[80%] absolute origin-top-left rotate-1 bg-black/80 blur-[11px]" />
+                                     {product.id % 3 === 0 && (
+                                        <div style={{
+                                            background: 'linear-gradient(0deg, rgba(100, 179, 39, 0.20) 0%, rgba(100, 179, 39, 0.20) 100%), white'
+                                        }} className="absolute left-[3.5px] bottom-[6px] h-5 px-2 py-0.5 rounded-2xl flex items-center justify-center z-10">
+                                            <span className="text-[#64B327] text-xs font-['PeydaFaNum'] leading-[18px]">شغل بابام</span>
+                                        </div>
+                                     )}
                                  </Link>
                                  <div className="self-stretch flex-col justify-start items-start gap-2.5 flex">
                                      <div className="self-stretch flex-col justify-start items-start gap-[7px] flex">
@@ -258,11 +273,11 @@ export default function HomePage() {
                      */}
                      <div className="flex gap-4 overflow-x-auto pb-4 pt-2 pl-6 -ml-[8vw] w-[calc(100%+8vw)] scrollbar-hide pr-1">
                           {[
-                              { id: 1, name: "هنرستان دخترانه", img: "/honarestan1.png", label: "خلاقیت" },
-                              { id: 2, name: "هنرستان سوره", img: "/honarestan2.png", label: "نوآوری" },
-                              { id: 3, name: "هنرستان هنرهای زیبا", img: "/honarestan3.png", label: "استعداد" },
-                              { id: 4, name: "هنرستان کمال الملک", img: "/honarestan1.png", label: "مهارت" },
-                              { id: 5, name: "هنرستان موسیقی", img: "/honarestan2.png", label: "هنر" },
+                              { id: 1, name: "مدرسه دخترانه", img: "/honarestan1.png", label: "خلاقیت" },
+                              { id: 2, name: "مدرسه سوره", img: "/honarestan2.png", label: "نوآوری" },
+                              { id: 3, name: "مدرسه هنرهای زیبا", img: "/honarestan3.png", label: "استعداد" },
+                              { id: 4, name: "مدرسه کمال الملک", img: "/honarestan1.png", label: "مهارت" },
+                              { id: 5, name: "مدرسه موسیقی", img: "/honarestan2.png", label: "هنر" },
                           ].map(school => (
                               <div key={school.id} className="flex flex-col gap-2 shrink-0 w-[100px]">
                                    <div className="w-[100px] h-[100px] bg-gray-100 rounded-lg relative overflow-hidden">

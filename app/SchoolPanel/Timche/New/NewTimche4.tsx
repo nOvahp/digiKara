@@ -103,7 +103,7 @@ const NewTimche4 = () => {
                 
                 {/* Description */}
                 <p className="text-center text-[#0D0D12] text-base font-['PeydaWeb'] font-semibold leading-[21.6px]">
-                    شرایط عضویت خودکار هنرجویان جدید را تعیین کنید.
+                    شرایط عضویت خودکار دانش آموزان جدید را تعیین کنید.
                 </p>
 
                 {/* Form Fields */}

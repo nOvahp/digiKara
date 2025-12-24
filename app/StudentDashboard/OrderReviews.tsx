@@ -269,7 +269,7 @@ const orders: Order[] = [
     deliveryTime: "1 روز تا تحویل" ,
     price: "۴,۵۰۰,۰۰۰ ریال",
     status: "delivered",
-    statusLabel: "تحویل به مدرسه",
+    statusLabel: "تحویل به مدرسه ",
     note: "یادداشت ندارد",
     hasDescription: true,
   },
@@ -477,7 +477,7 @@ const orders: Order[] = [
        deliveryTime: "6 روز تا تحویل",
        price: "۹۰۰,۰۰۰ ریال",
        status: "delivered",
-       statusLabel: "تحویل به مدرسه",
+       statusLabel: "تحویل به مدرسه ",
        note: "توضیحات ندارد",
        hasDescription: true
    },
@@ -525,7 +525,7 @@ const orders: Order[] = [
        deliveryTime: "4 روز تا تحویل",
        price: "۱,۲۰۰,۰۰۰ ریال",
        status: "delivered",
-       statusLabel: "تحویل به مدرسه",
+       statusLabel: "تحویل به مدرسه ",
        note: "توضیحات ندارد",
        hasDescription: true
    },
@@ -570,8 +570,8 @@ const orders: Order[] = [
 
 
 const getStatusStyles = (statusLabel: string) => {
-  if (statusLabel.includes("تحویل به مدرسه") || statusLabel.includes("ارسال شده") || statusLabel === "تکمیل شده") {
-     if (statusLabel === "تحویل به مدرسه" || (statusLabel === "ارسال شده" && !statusLabel.includes("red")) || statusLabel === "تکمیل شده") return "bg-[#ECF9F7] text-[#267666]"
+  if (statusLabel.includes("تحویل به مدرسه ") || statusLabel.includes("ارسال شده") || statusLabel === "تکمیل شده") {
+     if (statusLabel === "تحویل به مدرسه " || (statusLabel === "ارسال شده" && !statusLabel.includes("red")) || statusLabel === "تکمیل شده") return "bg-[#ECF9F7] text-[#267666]"
   }
   
   if (statusLabel === "ارسال نشده" || statusLabel === "در انتظار ارسال" || statusLabel === "در انتظار تایید" || statusLabel === "لغو شده") {
@@ -671,7 +671,7 @@ export function OrderReviews() {
   const getFilterOptions = () => {
       if (activeTab === 'active_orders') {
           return [
-              { label: "تحویل به مدرسه", value: "تحویل به مدرسه" },
+              { label: "تحویل به مدرسه ", value: "تحویل به مدرسه " },
               { label: "ارسال نشده", value: "ارسال نشده" },
               { label: "ارسال شده", value: "ارسال شده" },
               { label: "در انتظار ارسال", value: "در انتظار ارسال" },

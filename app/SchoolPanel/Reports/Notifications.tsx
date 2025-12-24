@@ -65,7 +65,7 @@ const Notifications = ({ onClose }: NotificationsProps) => {
                         </div>
                         <div className="self-stretch flex justify-between items-center mt-1">
                              <div className="h-5 px-2 bg-[#DCF6FC] rounded-[36px] flex justify-center items-center gap-2">
-                                <div className="text-center text-[#222831] text-xs font-['PeydaWeb'] font-semibold leading-[18px] tracking-wide min-w-[70px]">پیام مدیر مدرسه</div>
+                                <div className="text-center text-[#222831] text-xs font-['PeydaWeb'] font-semibold leading-[18px] tracking-wide min-w-[70px]">پیام مدیر مدرسه </div>
                              </div>
                              <div className="text-[#666D80] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">{toFarsiNumber(5)} دقیقه پیش</div>
                         </div>

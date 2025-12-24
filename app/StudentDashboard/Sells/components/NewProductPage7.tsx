@@ -64,7 +64,7 @@ export function NewProductPage7({ onClose, onReset, onStepClick }: NewProductPag
                             با موفقیت افزوده شد
                         </div>
                         <div className="text-center text-black text-xs font-light font-['PeydaWeb'] w-[293px]">
-                            محصول پس از تائید مدرسه به انتشار عمومی درخواهد آمد.
+                            محصول پس از تائید مدرسه  به انتشار عمومی درخواهد آمد.
                         </div>
                     </div>
 

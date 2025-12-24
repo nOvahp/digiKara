@@ -45,8 +45,8 @@ export const NewTimcheProvider = ({ children }: { children: ReactNode }) => {
     const [step3Data, setStep3Data] = useState<Step3Data | null>({
         members: [
              { id: 1, name: "علی رضایی", role: "مسئول تیمچه", type: "manager", color: "bg-[#FF5252]" },
-             { id: 2, name: "امیرحسین محمدی", role: "هنرجو", type: "student", color: "bg-[#448AFF]" },
-             { id: 3, name: "بهروز حسینی", role: "هنرجو", type: "student", color: "bg-[#69F0AE]" },
+             { id: 2, name: "امیرحسین محمدی", role: "دانش آموز", type: "student", color: "bg-[#448AFF]" },
+             { id: 3, name: "بهروز حسینی", role: "دانش آموز", type: "student", color: "bg-[#69F0AE]" },
         ]
     });
     const [step4Data, setStep4Data] = useState<Step4Data | null>(null);

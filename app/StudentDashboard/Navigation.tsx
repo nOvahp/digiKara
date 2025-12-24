@@ -35,7 +35,7 @@ export function Navigation() {
                 {/* School Project */}
                 <div className={getItemClasses(false)}>
                     <FolderKanban className={cn("w-6 h-6", getIconColor(false))} strokeWidth={1.5} />
-                    <div className={getTextClasses(false)}>پروژه مدرسه</div>
+                    <div className={getTextClasses(false)}>پروژه مدرسه </div>
                 </div>
 
                 {/* Report */}

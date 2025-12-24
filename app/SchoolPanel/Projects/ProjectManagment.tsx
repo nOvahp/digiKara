@@ -51,12 +51,61 @@ const ProjectManagment = () => {
         }
     }, []);
 
+    // Filter & Scroll Logic
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
+    const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+    const filterRef = React.useRef<HTMLDivElement>(null);
+    const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+
+    // Close filter when clicking outside
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
+                setIsFilterOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+    // Default scroll to right
+    useEffect(() => {
+        if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollLeft = scrollContainerRef.current.scrollWidth;
+        }
+    }, [allProducts]);
+
+    const handleFilterChange = (value: string) => {
+        setSelectedFilters(prev => {
+            if (prev.includes(value)) {
+                return prev.filter(f => f !== value);
+            } else {
+                return [...prev, value];
+            }
+        });
+        setCurrentPage(1);
+    };
+
+    const getFilterOptions = () => [
+        { label: "ارسال شده", value: "ارسال شده" },
+        { label: "ارسال نشده", value: "ارسال نشده" },
+        { label: "تحویل به مدرسه ", value: "تحویل به مدرسه " },
+        { label: "لغو شده", value: "لغو شده" }, 
+    ];
+
+    const filteredProductsList = allProducts.filter(product => {
+        if (selectedFilters.length === 0) return true;
+        return selectedFilters.includes(product.statusLabel);
+    });
+
     const itemsPerPage = 10;
-    const totalPages = Math.ceil(allProducts.length / itemsPerPage);
+    const totalPages = Math.ceil(filteredProductsList.length / itemsPerPage);
 
     const indexOfLastProduct = currentPage * itemsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
-    const currentProducts = allProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+    const currentProducts = filteredProductsList.slice(indexOfFirstProduct, indexOfLastProduct);
 
     const handleProductClick = (product: Product) => {
         setSelectedProduct(product);
@@ -114,7 +163,7 @@ const ProjectManagment = () => {
 
 
                     </div>
-                    <div className="w-9 self-stretch px-0 py-2 bg-white rounded-lg border border-[#DFE1E7] flex justify-center items-center gap-2">
+                    <div className="w-9 self-stretch px-0 py- bg-white rounded-lg border border-[#DFE1E7] flex justify-center items-center gap-2">
                         <Filter className="w-4 h-4 text-[#818898]" strokeWidth={1.33} />
                     </div>
                 </div>
@@ -178,7 +227,7 @@ const ProjectManagment = () => {
                                 <div className="w-full flex justify-between items-center">
                                     <div className="flex items-center gap-1.5">
                                         <Users className="w-4 h-4 text-[#666D80]" />
-                                        <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px]">{toFarsiNumber(4)} هنرجو</span>
+                                        <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px]">{toFarsiNumber(4)} دانش آموز</span>
                                     </div>
                                     <div className="w-[100px] flex items-center gap-1.5">
                                         <User className="w-4 h-4 text-[#666D80]" />
@@ -239,7 +288,7 @@ const ProjectManagment = () => {
                                 <div className="w-full flex justify-between items-center">
                                     <div className="flex items-center gap-1.5">
                                         <Users className="w-4 h-4 text-[#666D80]" />
-                                        <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px]">5 هنرجو</span>
+                                        <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px]">5 دانش آموز</span>
                                     </div>
                                     <div className="w-[100px] flex items-center gap-1.5">
                                         <User className="w-4 h-4 text-[#666D80]" />
@@ -300,7 +349,7 @@ const ProjectManagment = () => {
                                 <div className="w-full flex justify-between items-center">
                                     <div className="flex items-center gap-1.5">
                                         <Users className="w-4 h-4 text-[#666D80]" />
-                                        <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px]">5 هنرجو</span>
+                                        <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px]">5 دانش آموز</span>
                                     </div>
                                     <div className="w-[100px] flex items-center gap-1.5">
                                         <User className="w-4 h-4 text-[#666D80]" />
@@ -342,29 +391,74 @@ const ProjectManagment = () => {
                     </div>
                     <div className="flex-1 h-[29px] px-3 py-1 bg-[#F7C61A] shadow-sm rounded-md outline outline-1 outline-[#D7D8DA] -outline-offset-1 flex justify-center items-center gap-2.5 cursor-pointer text-[#0A0A0A]">
                         <div className="text-center text-[#0A0A0A] text-sm font-['PeydaWeb'] font-semibold leading-5 break-words">
-                            پروژه های مدرسه
+                            پروژه های مدرسه 
                         </div>
                     </div>
                 </div>
 
                 {/* Table Container */}
-                <div className="w-full bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] flex flex-col justify-start items-end overflow-hidden">
+                <div className="w-full bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] flex flex-col justify-start items-end">
 
                     {/* Header */}
                     <div className="w-full h-16 px-5 py-2 border-b border-[#DFE1E7] flex justify-between items-center bg-white">
                         <div className="text-[#0D0D12] text-16 font-['PeydaWeb'] font-semibold leading-24 tracking-wide">لیست پروژه ها</div>
                         <div className="flex justify-start items-center gap-2">
-                            <div className="w-8 h-8 px-4 py-2 bg-white rounded-lg outline outline-1 outline-[#DFE1E7] flex justify-center items-center gap-2 cursor-pointer">
-                                <Filter className="w-4 h-4 text-[#818898]" />
+                            <div className="flex items-center gap-2" ref={filterRef}>
+                                <div className="relative">
+                                     <div 
+                                         className={`w-8 h-8 rounded-lg outline outline-1 outline-[#DFE1E7] flex justify-center items-center gap-2 cursor-pointer transition-colors ${isFilterOpen ? 'bg-gray-100 ring-2 ring-blue-100' : 'bg-white hover:bg-gray-50'}`}
+                                         onClick={() => setIsFilterOpen(!isFilterOpen)}
+                                     >
+                                        <Filter className={`w-4 h-4 ${selectedFilters.length > 0 ? 'text-[#F7C61A]' : 'text-[#818898]'}`} />
+                                    </div>
+                                    
+                                    {/* Filter Dropdown */}
+                                    {isFilterOpen && (
+                                        <div className="absolute top-9 left-0 z-50 w-48 bg-white rounded-xl shadow-[0px_4px_24px_rgba(0,0,0,0.08)] border border-[#EFF0F2] p-2 flex flex-col gap-1 anim-fade-in" dir="rtl">
+                                            <div className="text-[#666D80] text-xs font-medium px-2 py-1 mb-1 border-b border-gray-100 text-right">
+                                                فیلتر بر اساس وضعیت
+                                            </div>
+                                            {getFilterOptions().map((option) => (
+                                                <div 
+                                                    key={option.value}
+                                                    className="flex items-center gap-2 px-2 py-1.5 hover:bg-gray-50 rounded-lg cursor-pointer"
+                                                    onClick={() => handleFilterChange(option.value)}
+                                                >
+                                                    <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${selectedFilters.includes(option.value) ? 'bg-[#F7C61A] border-[#F7C61A]' : 'border-[#DFE1E7] bg-white'}`}>
+                                                        {selectedFilters.includes(option.value) && (
+                                                            <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                                            </svg>
+                                                        )}
+                                                    </div>
+                                                    <span className={`text-sm ${selectedFilters.includes(option.value) ? 'text-[#0D0D12] font-semibold' : 'text-[#666D80] font-medium'}`}>
+                                                        {option.label}
+                                                    </span>
+                                                </div>
+                                            ))}
+                                            {selectedFilters.length > 0 && (
+                                                <div 
+                                                    className="text-center text-[#B21634] text-xs font-medium py-1.5 mt-1 border-t border-gray-100 cursor-pointer hover:bg-red-50 rounded-b-lg"
+                                                    onClick={() => setSelectedFilters([])}
+                                                >
+                                                    حذف فیلترها
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
                             </div>
-                            <div className="w-8 h-8 p-2 bg-white rounded-lg outline outline-1 outline-[#DFE1E7] flex justify-center items-center gap-2 cursor-pointer">
+                            <div className="w-8 h-8 p-2 bg-white rounded-lg outline outline-1 outline-[#DFE1E7] flex justify-center items-center gap-2 cursor-pointer hover:bg-gray-50">
                                 <Search className="w-4 h-4 text-[#818898]" />
                             </div>
                         </div>
                     </div>
 
                     {/* Table */}
-                    <div className="w-full overflow-x-auto no-scrollbar">
+                    <div 
+                        ref={scrollContainerRef}
+                        className="w-full overflow-x-auto no-scrollbar"
+                    >
                         <div className="min-w-[1000px] flex flex-col">
 
                             {/* Table Header */}
@@ -396,8 +490,8 @@ const ProjectManagment = () => {
                             {/* Table Body - Rows */}
                             {currentProducts.map((product, idx) => {
                                 const itemIndex = indexOfFirstProduct + idx + 1;
-                                const statusBg = product.statusLabel === "ارسال شده" || product.statusLabel === "تحویل به مدرسه" ? "#ECF9F7" : "#FCE8EC";
-                                const statusColor = product.statusLabel === "ارسال شده" || product.statusLabel === "تحویل به مدرسه" ? "#267666" : "#B21634";
+                                const statusBg = product.statusLabel === "ارسال شده" || product.statusLabel === "تحویل به مدرسه " ? "#ECF9F7" : "#FCE8EC";
+                                const statusColor = product.statusLabel === "ارسال شده" || product.statusLabel === "تحویل به مدرسه " ? "#267666" : "#B21634";
 
                                 return (
                                     <div key={product.id} onClick={() => handleProductClick(product)} className="w-full h-16 border-b border-[#DFE1E7] flex justify-end items-center px-2 hover:bg-gray-50 transition-colors cursor-pointer group">

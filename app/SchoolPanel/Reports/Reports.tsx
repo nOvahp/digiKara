@@ -66,12 +66,61 @@ const ReportsPage = () => {
     const [selectedProduct, setSelectedProduct] = React.useState<Product | null>(null);
     const [currentPage, setCurrentPage] = React.useState(1);
     const itemsPerPage = 10;
-    const totalPages = Math.ceil(products.length / itemsPerPage);
+    // Filter & Scroll Logic
+    const [isFilterOpen, setIsFilterOpen] = React.useState(false);
+    const [selectedFilters, setSelectedFilters] = React.useState<string[]>([]);
+    const filterRef = React.useRef<HTMLDivElement>(null);
+    const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+
+    // Close filter when clicking outside
+    React.useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
+                setIsFilterOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+    // Default scroll to right
+    React.useEffect(() => {
+        if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollLeft = scrollContainerRef.current.scrollWidth;
+        }
+    }, [products]);
+
+    const handleFilterChange = (value: string) => {
+        setSelectedFilters(prev => {
+            if (prev.includes(value)) {
+                return prev.filter(f => f !== value);
+            } else {
+                return [...prev, value];
+            }
+        });
+        setCurrentPage(1);
+    };
+
+    const getFilterOptions = () => [
+        { label: "ارسال شده", value: "ارسال شده" },
+        { label: "تحویل به مدرسه ", value: "تحویل به مدرسه " },
+        { label: "لغو شده", value: "لغو شده" }, // Assuming 'لغو شده' is a possible status based on color logic
+       
+    ];
+
+    const filteredProductsList = products.filter(product => {
+        if (selectedFilters.length === 0) return true;
+        return selectedFilters.includes(product.statusLabel);
+    });
+
+    const totalPages = Math.ceil(filteredProductsList.length / itemsPerPage);
     
     // Get current products
     const indexOfLastProduct = currentPage * itemsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
-    const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+    const currentProducts = filteredProductsList.slice(indexOfFirstProduct, indexOfLastProduct);
 
     const handleProductClick = (product: Product) => {
         setSelectedProduct(product);
@@ -217,7 +266,7 @@ const ReportsPage = () => {
                      <div className="flex gap-2">
                         <div className="w-full h-9 p-[3px] rounded-lg border border-[#D7D8DA] flex gap-0">
                              <div className="flex-1 flex justify-center items-center rounded-md cursor-pointer hover:bg-gray-50">
-                                 <span className="text-[#0A0A0A] text-sm font-['PeydaWeb'] font-semibold">تعداد هنرجویان</span>
+                                 <span className="text-[#0A0A0A] text-sm font-['PeydaWeb'] font-semibold">تعداد دانش آموزان</span>
                              </div>
                              <div className="flex-1 flex justify-center items-center rounded-md bg-[#F7C61A] shadow-sm border border-[#D7D8DA]">
                                  <span className="text-[#0A0A0A] text-sm font-['PeydaWeb'] font-semibold">میزان فروش</span>
@@ -379,7 +428,7 @@ const ReportsPage = () => {
                         <div className="text-[#0A0A0A] text-sm font-['PeydaWeb'] font-semibold leading-5 text-center">پروژه های دانش آموزان</div>
                     </div>
                     <div className="flex-1 h-[29px] px-3 py-1 bg-[#F7C61A] shadow-[0px_1px_3px_rgba(0,0,0,0.10)] rounded-md outline outline-1 outline-[#D7D8DA] -outline-offset-1 flex justify-center items-center gap-2.5 cursor-pointer">
-                        <div className="text-[#0A0A0A] text-sm font-['PeydaWeb'] font-semibold leading-5 text-center">پروژه های مدرسه</div>
+                        <div className="text-[#0A0A0A] text-sm font-['PeydaWeb'] font-semibold leading-5 text-center">پروژه های مدرسه </div>
                     </div>
                 </div>
 
@@ -390,9 +439,51 @@ const ReportsPage = () => {
                     <div className="w-full h-16 px-5 py-2 border-b border-[#DFE1E7] flex justify-between items-center bg-white">
                         <div className="text-[#0D0D12] text-16 font-['PeydaWeb'] font-semibold leading-24 tracking-wide text-right">سفارش های فعال</div>
                          <div className="flex items-center gap-2">
-                             <div className="w-8 h-8 flex items-center justify-center bg-white border border-[#DFE1E7] rounded-lg shadow-sm">
-                                <Filter className="w-4 h-4 text-[#818898]" />
-                            </div>
+                          <div className="flex items-center gap-2" ref={filterRef}>
+                             <div className="relative">
+                                 <div 
+                                     className={`w-8 h-8 flex items-center justify-center bg-white border border-[#DFE1E7] rounded-lg shadow-sm cursor-pointer transition-colors ${isFilterOpen ? 'bg-gray-100 ring-2 ring-blue-100' : 'hover:bg-gray-50'}`}
+                                     onClick={() => setIsFilterOpen(!isFilterOpen)}
+                                 >
+                                    <Filter className={`w-4 h-4 ${selectedFilters.length > 0 ? 'text-[#F7C61A]' : 'text-[#818898]'}`} />
+                                </div>
+
+                                {/* Filter Dropdown */}
+                                {isFilterOpen && (
+                                    <div className="absolute top-9 left-0 z-50 w-48 bg-white rounded-xl shadow-[0px_4px_24px_rgba(0,0,0,0.08)] border border-[#EFF0F2] p-2 flex flex-col gap-1 anim-fade-in" dir="rtl">
+                                        <div className="text-[#666D80] text-xs font-medium px-2 py-1 mb-1 border-b border-gray-100 text-right">
+                                            فیلتر بر اساس وضعیت
+                                        </div>
+                                        {getFilterOptions().map((option) => (
+                                            <div 
+                                                key={option.value}
+                                                className="flex items-center gap-2 px-2 py-1.5 hover:bg-gray-50 rounded-lg cursor-pointer"
+                                                onClick={() => handleFilterChange(option.value)}
+                                            >
+                                                <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${selectedFilters.includes(option.value) ? 'bg-[#F7C61A] border-[#F7C61A]' : 'border-[#DFE1E7] bg-white'}`}>
+                                                    {selectedFilters.includes(option.value) && (
+                                                        <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                                        </svg>
+                                                    )}
+                                                </div>
+                                                <span className={`text-sm ${selectedFilters.includes(option.value) ? 'text-[#0D0D12] font-semibold' : 'text-[#666D80] font-medium'}`}>
+                                                    {option.label}
+                                                </span>
+                                            </div>
+                                        ))}
+                                        {selectedFilters.length > 0 && (
+                                            <div 
+                                                className="text-center text-[#B21634] text-xs font-medium py-1.5 mt-1 border-t border-gray-100 cursor-pointer hover:bg-red-50 rounded-b-lg"
+                                                onClick={() => setSelectedFilters([])}
+                                            >
+                                                حذف فیلترها
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                             </div>
+                             </div>
                             <div className="w-8 h-8 flex items-center justify-center bg-white border border-[#DFE1E7] rounded-lg shadow-sm">
                                 <Search className="w-4 h-4 text-[#818898]" />
                             </div>
@@ -401,7 +492,10 @@ const ReportsPage = () => {
                     </div>
 
                     {/* Table */}
-                    <div className="w-full overflow-x-auto no-scrollbar">
+                    <div 
+                        ref={scrollContainerRef}
+                        className="w-full overflow-x-auto no-scrollbar"
+                    >
                         <div className="min-w-[1000px] flex flex-col">
                             
                             {/* Table Header */}
@@ -434,8 +528,8 @@ const ReportsPage = () => {
                             {currentProducts.map((product, idx) => {
                                 const itemIndex = indexOfFirstProduct + idx + 1;
                                 const isEven = itemIndex % 2 === 0;
-                                const statusBg = product.statusLabel === "ارسال شده" || product.statusLabel === "تحویل به مدرسه" ? "#ECF9F7" : "#FCE8EC";
-                                const statusColor = product.statusLabel === "ارسال شده" || product.statusLabel === "تحویل به مدرسه" ? "#267666" : "#B21634";
+                                const statusBg = product.statusLabel === "ارسال شده" || product.statusLabel === "تحویل به مدرسه " ? "#ECF9F7" : "#FCE8EC";
+                                const statusColor = product.statusLabel === "ارسال شده" || product.statusLabel === "تحویل به مدرسه " ? "#267666" : "#B21634";
                                 
                                 return (
                                 <div key={product.id} onClick={() => handleProductClick(product)} className="w-full h-16 border-b border-[#DFE1E7] flex justify-start items-center px-2 hover:bg-gray-50 transition-colors cursor-pointer group">

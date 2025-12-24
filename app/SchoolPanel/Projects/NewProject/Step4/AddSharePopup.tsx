@@ -150,7 +150,7 @@ const AddSharePopup = ({ isOpen, onClose, onAdd }: AddSharePopupProps) => {
                                     userType === "student" ? "bg-[#FDD00A] text-[#0D0D12]" : "bg-transparent text-[#666D80]"
                                 )}
                             >
-                                <span className="text-sm font-semibold font-['PeydaWeb']">هنرجو</span>
+                                <span className="text-sm font-semibold font-['PeydaWeb']">دانش آموز</span>
                                 <User className="w-4 h-4" />
                             </div>
                         </div>

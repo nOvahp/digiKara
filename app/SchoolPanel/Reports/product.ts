@@ -14,7 +14,7 @@ export interface Product {
 
 const generateProducts = (): Product[] => {
     const products: Product[] = [];
-    const statuses = ["ارسال نشده", "تحویل به مدرسه", "ارسال شده", "در حال پردازش", "لغو شده"];
+    const statuses = ["ارسال نشده", "تحویل به مدرسه ", "ارسال شده", "در حال پردازش", "لغو شده"];
     
     // Expanded list of names to avoid repetition every page (10 items)
     // Using 13 items (prime-ish relative to 10) to create rotation
@@ -38,7 +38,7 @@ const generateProducts = (): Product[] => {
         "آرش یوسفی, محمد کریمی",
         "زهرا حسینی, مریم اکبری",
         "علی رضایی, امیر محمدی",
-        "تیم گرافیک مدرسه",
+        "تیم گرافیک مدرسه ",
         "گروه هنری آفتاب",
         "سارا نوری, مینا کاظمی",
         "رضا عزیزی, حسین داوودی"

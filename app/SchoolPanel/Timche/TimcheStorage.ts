@@ -59,13 +59,13 @@ export interface User {
 }
 
 export const MOCK_USERS: User[] = [
-    { id: 101, name: "رضا محمدی", role: "هنرجو", type: "student", color: "bg-[#FF5252]" },
-    { id: 102, name: "زهرا کریمی", role: "هنرجو", type: "student", color: "bg-[#448AFF]" },
-    { id: 103, name: "محمد حسینی", role: "هنرجو", type: "student", color: "bg-[#69F0AE]" },
-    { id: 104, name: "فاطمه رحیمی", role: "هنرجو", type: "student", color: "bg-[#E040FB]" },
-    { id: 105, name: "علی اکبری", role: "هنرجو", type: "student", color: "bg-[#FFAB40]" },
-    { id: 106, name: "مریم صادقی", role: "هنرجو", type: "student", color: "bg-[#536DFE]" },
-    { id: 107, name: "حسین باقری", role: "هنرجو", type: "student", color: "bg-[#00BFA5]" },
+    { id: 101, name: "رضا محمدی", role: "دانش آموز", type: "student", color: "bg-[#FF5252]" },
+    { id: 102, name: "زهرا کریمی", role: "دانش آموز", type: "student", color: "bg-[#448AFF]" },
+    { id: 103, name: "محمد حسینی", role: "دانش آموز", type: "student", color: "bg-[#69F0AE]" },
+    { id: 104, name: "فاطمه رحیمی", role: "دانش آموز", type: "student", color: "bg-[#E040FB]" },
+    { id: 105, name: "علی اکبری", role: "دانش آموز", type: "student", color: "bg-[#FFAB40]" },
+    { id: 106, name: "مریم صادقی", role: "دانش آموز", type: "student", color: "bg-[#536DFE]" },
+    { id: 107, name: "حسین باقری", role: "دانش آموز", type: "student", color: "bg-[#00BFA5]" },
     { id: 108, name: "Nima Ahmadi", role: "Manager", type: "manager", color: "bg-[#FF5252]" },
 ];
 

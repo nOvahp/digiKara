@@ -44,7 +44,7 @@ const NewTimche5 = () => {
                         با موفقیت افزوده شد
                     </h2>
                     <p className="w-[293px] text-center text-[#0D0D12] text-xs font-['PeydaWeb'] font-light leading-[18px]">
-                        محصول پس از تائید مدرسه به انتشار عمومی درخواهد آمد.
+                        محصول پس از تائید مدرسه  به انتشار عمومی درخواهد آمد.
                     </p>
                 </div>
 

@@ -35,7 +35,7 @@ export function Navigation() {
                         {/* School Profile */}
                         <Link href="/SchoolPanel/SchoolProfile" className={getItemClasses(isActive('/SchoolPanel/SchoolProfile'))}>
                             <School className={cn("w-6 h-6", getIconColor(isActive('/SchoolPanel/SchoolProfile')))} strokeWidth={1.5} />
-                            <div className={getTextClasses(isActive('/SchoolPanel/SchoolProfile'))}>پروفایل مدرسه</div>
+                            <div className={getTextClasses(isActive('/SchoolPanel/SchoolProfile'))}>پروفایل مدرسه </div>
                         </Link>
 
                         {/* Report */}

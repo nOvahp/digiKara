@@ -180,7 +180,7 @@ const NewProject4Content = () => {
                     {/* School Share */}
                     <div className="w-full h-[60px] p-3.5 bg-white rounded-xl border border-[#DCE4E8] flex justify-between items-center">
                         <div className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">
-                            سهم مدرسه
+                            سهم مدرسه 
                         </div>
 
                         {/* Counter */}

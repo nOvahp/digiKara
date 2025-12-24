@@ -2,12 +2,14 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Bell, Wallet } from "lucide-react";
 import profileImg from "../../public/SchoolAvatar.png";
 import Notifications from "./Reports/Notifications";
 
 const DashBoardNavbar = () => {
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+    const router = useRouter();
 
   return (
     <div className="w-full flex flex-col justify-start items-center inline-flex bg-white pb-3 pt-0" dir="ltr">
@@ -31,7 +33,10 @@ const DashBoardNavbar = () => {
              )}
               
               {/* Wallet Icon */}
-              <div className="w-[33px] h-[33px] flex justify-center items-center cursor-pointer hover:bg-gray-50 rounded-full transition-colors">
+              <div 
+                  onClick={() => router.push('/SchoolPanel/Wallet')} // Navigate to Wallet Page
+                  className="w-[33px] h-[33px] flex justify-center items-center cursor-pointer hover:bg-gray-50 rounded-full transition-colors"
+              >
                   <Wallet className="w-6 h-6 text-[#393E46]" />
               </div>
         </div>
@@ -40,7 +45,7 @@ const DashBoardNavbar = () => {
         <div className="flex justify-start items-center gap-3">
             <div className="flex flex-col justify-start items-end gap-1 inline-flex">
                 <div className="text-right text-[#222831] text-base font-num-medium font-extrabold leading-snug break-word">
-                    هنرستان هنرهای زیبا 
+                    مدرسه هنرهای زیبا 
                 </div>
                 <div className="text-right text-[#61656B] text-xs font-num-medium font-extrabold break-word">
                     ابهر، زنجان

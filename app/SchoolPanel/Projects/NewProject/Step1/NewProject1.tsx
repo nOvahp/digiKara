@@ -27,7 +27,7 @@ const step1Schema = z.object({
     title: z.string().min(1, "عنوان پروژه الزامی است"),
     projectType: z.enum(["product", "project"]),
     timche: z.string().min(1, "انتخاب تیمچه/کارگاه الزامی است"),
-    mentor: z.string().min(1, "انتخاب هنرآموز مسئول الزامی است"),
+    mentor: z.string().min(1, "انتخاب معلم مسئول الزامی است"),
     schedule: z.string().min(1, "زمان‌بندی تقریبی الزامی است"),
     needsSupport: z.boolean(),
     supportType: z.string().optional(),
@@ -211,7 +211,7 @@ const NewProject1 = () => {
 
                     {/* Responsible Mentor */}
                     <div className="flex flex-col gap-2">
-                        <label className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">هنرآموز مسئول</label>
+                        <label className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">معلم مسئول</label>
                         <Controller
                             control={control}
                             name="mentor"

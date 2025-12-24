@@ -10,7 +10,7 @@ interface ValuesCardProps {
 
 const ValuesCard = ({
   title = "ثبت‌نام هنرستان",
-  description = "مدیر هنرستان اطلاعات پایه را وارد و پروفایل هنرستان را ایجاد می‌کند",
+  description = "مدیر مدرسه اطلاعات پایه را وارد و پروفایل مدرسه را ایجاد می‌کند",
   number = "01",
 }: ValuesCardProps) => {
   return (

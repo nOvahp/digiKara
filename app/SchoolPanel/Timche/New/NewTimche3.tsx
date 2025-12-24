@@ -32,8 +32,8 @@ const NewTimche3 = () => {
 
     const [members, setMembers] = useState(step3Data?.members || [
         { id: 1, name: "علی رضایی", role: "مسئول تیمچه", type: "manager" as const, color: "bg-[#0A33FF]" },
-        { id: 2, name: "امیرحسین محمدی", role: "هنرجو", type: "student" as const, color: "bg-[#F8CB2E]" },
-        { id: 3, name: "بهروز حسینی", role: "هنرجو", type: "student" as const, color: "bg-[#F8CB2E]" },
+        { id: 2, name: "امیرحسین محمدی", role: "دانش آموز", type: "student" as const, color: "bg-[#F8CB2E]" },
+        { id: 3, name: "بهروز حسینی", role: "دانش آموز", type: "student" as const, color: "bg-[#F8CB2E]" },
     ]);
     
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -207,7 +207,7 @@ const NewTimche3 = () => {
                          {/* Student Row */}
                          <div className="w-full h-16 flex">
                              <div className="w-[97px] flex items-center justify-start px-3 text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold border-l-[1px] border-[#DFE1E7] border-opacity-50">
-                                 هنرجو
+                                 دانش آموز
                              </div>
                              <div onClick={() => togglePermission('student', 'order')} className="flex-1 flex items-center justify-center border-l-[1px] border-[#DFE1E7] border-opacity-50 cursor-pointer">
                                 {matrix.student.order ? (

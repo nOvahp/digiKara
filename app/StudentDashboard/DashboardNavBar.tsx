@@ -55,9 +55,9 @@ export function DashboardNavBar() {
                   {/* Role/School */}
                   <div 
                       className="w-full text-right text-[#61656B] text-xs font-num-medium font-medium truncate cursor-default"
-                      title="طراح سطح 2 گرافیک - مدرسه البرز"
+                      title="طراح سطح 2 گرافیک - مدرسه  البرز"
                   >
-                      طراح سطح 2 گرافیک - مدرسه البرز
+                      طراح سطح 2 گرافیک - مدرسه  البرز
                   </div>
               </div>
 

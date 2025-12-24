@@ -33,10 +33,10 @@ export function Login({ onNext }: { onNext?: () => void }) {
 
 
         <div className="flex items-center gap-4 mb-2">
-
-          <Image src={AmuzeshLogo} alt="Amuzesh Logo" width={80} height={80} />
+<Image src={Logo} alt="Logo" width={60} height={60} />
+          
           <Image src={Asset1} alt="Amuzesh Logo" width={60} height={60} />
-          <Image src={Logo} alt="Logo" width={60} height={60} />
+          <Image src={AmuzeshLogo} alt="Amuzesh Logo" width={90} height={90} />
         </div>
 
         <div className="flex items-center gap-1 mb-0">
