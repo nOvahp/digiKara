@@ -7,8 +7,11 @@ import profileImg from "../../public/DashboardProfile.png"
 
 import { PopUpStudent } from "./PopUpStudent"
 
+import Notifications from './Notifications'; // Import the component
+
 export function DashboardNavBar() {
   const [showStudentPopup, setShowStudentPopup] = React.useState(false)
+  const [showNotifications, setShowNotifications] = React.useState(false)
 
   return (
     <>
@@ -17,7 +20,10 @@ export function DashboardNavBar() {
           {/* Left Side - Icons */}
           <div className="flex justify-start items-center gap-1">
               {/* Notification Icon (Bell) */}
-              <div className=" bg-transparent rounded-xl flex justify-center items-center cursor-pointer hover:bg-gray-50 transition-colors">
+              <div 
+                className=" bg-transparent rounded-xl flex justify-center items-center cursor-pointer hover:bg-gray-50 transition-colors"
+                onClick={() => setShowNotifications(true)}
+              >
                   <Bell className="w-6 h-6 text-[#393E46]" />
               </div>
               
@@ -75,6 +81,9 @@ export function DashboardNavBar() {
       </div>
       {showStudentPopup && (
          <PopUpStudent onClose={() => setShowStudentPopup(false)} />
+      )}
+      {showNotifications && (
+         <Notifications onClose={() => setShowNotifications(false)} />
       )}
     </>
   )

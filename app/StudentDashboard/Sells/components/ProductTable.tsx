@@ -67,7 +67,7 @@ function ProductTableRow({ product, index, isChecked, onToggle }: ProductTableRo
 
             {/* Revenue */}
             <div className="w-[140px] h-16 px-3 border-b border-[#DFE1E7] flex justify-end items-center gap-2.5">
-                <div className="flex-1 text-center text-[#0D0D12] text-sm font-semibold font-num-medium leading-[21px] tracking-wide">
+                <div className="flex-1 text-center text-[#0D0D12] text-sm font-semibold font-num-medium leading-[21px] tracking-wide"dir="rtl">
                     {toFarsiNumber(product.revenue)}
                 </div>
             </div>
