@@ -40,18 +40,8 @@ export const products: Product[] = [
     // Category: پوشاک (Clothing)
     // Subcategories: Shirt, Pants, Shoes, Suit, Bag, Hat, Socks, Underwear
     // =========================================================================
-    { id: 2001, title: "پیراهن مردانه نخی", price: "350,000 تومان", rating: 4.3, image: "/13.jpg", category: "پوشاک", isSpecialSale: true,isBestSeller: true },
-    { id: 2002, title: "پیراهن چهارخانه فلانل", price: "420,000 تومان", rating: 4.5, image: "/9.jpg", category: "پوشاک", isNewCollection: true,  isPopular: true },
-    { id: 2003, title: "شلوار جین راسته", price: "650,000 تومان", rating: 4.4, image: "/11.jpg", category: "پوشاک" },
-    { id: 2004, title: "شلوار کتان کرم", price: "580,000 تومان", rating: 4.2, image: "/11.jpg", category: "پوشاک" },
     { id: 2005, title: " کفش چرم", price: "350,000 تومان", rating: 4.3, image: "/img_52445245242.jpg", category: "پوشاک", isSpecialSale: true,isBestSeller: true },
-    { id: 2006, title: "کتونی اسپرت پیاده‌روی", price: "950,000 تومان", rating: 4.6, image: "/ProductDetails.png", category: "پوشاک" },
-    { id: 2007, title: "کت و شلوار مجلسی", price: "3,500,000 تومان", rating: 4.9, image: "/13.jpg", category: "پوشاک" },
-    { id: 2008, title: "کیف دوشی چرم", price: "850,000 تومان", rating: 4.7, image: "/ProductDetails.png", category: "پوشاک" },
-    { id: 2009, title: "کوله پشتی دانشجویی", price: "450,000 تومان", rating: 4.5, image: "/ProductDetails.png", category: "پوشاک" },
     { id: 2010, title: "کلاه بافتنی زمستانه", price: "420,000 تومان", rating: 4.5, image: "/knitted-hat-gray-g199.jpg", category: "پوشاک", isNewCollection: true,  isPopular: true },
-    { id: 2011, title: "کلاه کپ", price: "150,000 تومان", rating: 4.4, image: "/ProductDetails.png", category: "پوشاک" },
-    { id: 2012, title: "جوراب نانو", price: "90,000 تومان", rating: 4.6, image: "/ProductDetails.png", category: "پوشاک" },
     
    
 
