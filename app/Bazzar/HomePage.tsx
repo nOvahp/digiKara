@@ -143,10 +143,7 @@ export default function HomePage() {
                          </div>
                      </div>
 
-                     {/* Extra Decoration Image */}
-                     <div className="absolute right-0 bottom-0 w-[250px] h-[250px] pointer-events-none">
-                          <Image src="/BazzarHeader1.png" alt="Decoration" fill className="object-contain object-bottom-right" />
-                     </div>
+                     
                 </div>
 
                 {/* Categories */}
