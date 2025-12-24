@@ -64,9 +64,9 @@ export const products: Product[] = [
     // Category: طلا و جواهر (Jewelry)
     // Subcategories: Necklace, Pendant, Earring, Bracelet, Ring, Watch
     // =========================================================================
-    { id: 5001, title: "گردنبند نقره", price: "12,000,000 تومان", rating: 4.9, image: "/7e649474-50f6-42f0-b8b4-9532bae40909.jfif", category: "طلا و جواهر", isBestSeller: true, isPopular: true },
-    { id: 5002, title: "انگشتر نقره", price: "4,500,000 تومان", rating: 4.7, image: "/9d7f7c48-dabc-4e0c-859a-f50eab97f54a.jfif", category: "طلا و جواهر", isSpecialSale: true ,isPopular: true},
-    { id: 5003, title: "انگشتر نقره فیروزه", price: "3,200,000 تومان", rating: 4.6, image: "/d460c433-9182-4bf2-8fa0-fe1aa38e7b64.jfif", category: "طلا و جواهر", isSuggested: true },
+    { id: 5001, title: "گردنبند نقره", price: "12,000,000 تومان", rating: 4.9, image: "/4d8684722be1311ccadcc2ba6a89cb70b6556d98_1648467883.jpg", category: "طلا و جواهر", isBestSeller: true, isPopular: true },
+    { id: 5002, title: "انگشتر نقره", price: "4,500,000 تومان", rating: 4.7, image: "/9d7f7c48-dabc-4e0c-859a-f50eab97f54a.png", category: "طلا و جواهر", isSpecialSale: true ,isPopular: true},
+    { id: 5003, title: "انگشتر نقره فیروزه", price: "3,200,000 تومان", rating: 4.6, image: "/9d7f7c48-dabc-4e0c-859a-f50eab97f54a.png", category: "طلا و جواهر", isSuggested: true },
    
 ];
 
