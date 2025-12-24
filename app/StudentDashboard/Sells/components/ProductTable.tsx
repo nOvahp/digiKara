@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight, Filter, Search, MoreHorizontal } from "lucide-react";
 import { useRouter } from 'next/navigation';
@@ -118,11 +118,72 @@ export function ProductTable({ products }: ProductTableProps) {
     const [checkedIds, setCheckedIds] = useState<(number | string)[]>([]);
     const itemsPerPage = 8; 
 
-    // Calculate total pages
-    const totalPages = Math.ceil(products.length / itemsPerPage);
+    const toggleId = (id: number | string) => {
+        setCheckedIds(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
+    };
+
+    // Filter Logic
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
+    const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+    const filterRef = useRef<HTMLDivElement>(null);
+
+    // Close filter when clicking outside
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
+                setIsFilterOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [filterRef]);
+
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+    // Default scroll to right
+    useEffect(() => {
+        if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollLeft = scrollContainerRef.current.scrollWidth;
+        }
+    }, [products]); // Re-run if products change (e.g. initial load)
+
+    const handleFilterChange = (value: string) => {
+        setSelectedFilters(prev => {
+            if (prev.includes(value)) {
+                return prev.filter(f => f !== value);
+            } else {
+                return [...prev, value];
+            }
+        });
+        setCurrentPage(1);
+    };
+
+    const getFilterOptions = () => [
+        { label: "موجود", value: "available" },
+        { label: "ناموجود", value: "out_of_stock" },
+        { label: "موجودی کم", value: "low_stock" },
+    ];
+
+    const filteredProducts = products.filter(product => {
+        if (selectedFilters.length === 0) return true;
+        
+        // Check availability logic
+        const count = typeof product.inventoryCount === 'string' ? parseInt(product.inventoryCount) : product.inventoryCount;
+        
+        if (selectedFilters.includes("available") && count > 10) return true;
+        if (selectedFilters.includes("low_stock") && count > 0 && count <= 10) return true;
+        if (selectedFilters.includes("out_of_stock") && count === 0) return true;
+        
+        return false;
+    });
+
+    // Calculate total pages based on filtered products
+    const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
     // Slice for current page
-    const currentProducts = products.slice(
+    const currentProducts = filteredProducts.slice(
         (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
     );
@@ -139,19 +200,53 @@ export function ProductTable({ products }: ProductTableProps) {
         }
     };
 
-    const toggleId = (id: number | string) => {
-        setCheckedIds(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
-    };
-
     return (
-        <div className="w-full bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl border border-[#DFE1E7] overflow-hidden flex flex-col justify-start items-end inline-flex mb-8">
+        <div className="w-full bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl border border-[#DFE1E7] flex flex-col justify-start items-end inline-flex mb-8">
             
             {/* Header */}
             <div className="w-full h-16 px-5 py-2 border-b border-[#DFE1E7] flex justify-between items-center bg-white">
-                <div className="flex justify-start items-center gap-2">
-                    <div className="w-8 h-8 px-0 py-0 bg-white rounded-lg border border-[#DFE1E7] flex justify-center items-center gap-2 cursor-pointer hover:bg-gray-50">
-                        <Filter className="w-4 h-4 text-[#818898]" />
+                <div className="flex justify-start items-center gap-2 relative" ref={filterRef}>
+                    <div 
+                        className={`w-8 h-8 px-0 py-0 bg-white rounded-lg border border-[#DFE1E7] flex justify-center items-center gap-2 cursor-pointer transition-colors ${isFilterOpen ? 'bg-gray-100 ring-2 ring-blue-100' : 'hover:bg-gray-50'}`}
+                        onClick={() => setIsFilterOpen(!isFilterOpen)}
+                    >
+                        <Filter className={`w-4 h-4 ${selectedFilters.length > 0 ? 'text-[#F7C61A]' : 'text-[#818898]'}`} />
                     </div>
+
+                    {/* Filter Dropdown */}
+                    {isFilterOpen && (
+                        <div className="absolute top-9 left-0 z-50 w-48 bg-white rounded-xl shadow-[0px_4px_24px_rgba(0,0,0,0.08)] border border-[#EFF0F2] p-2 flex flex-col gap-1 anim-fade-in" dir="rtl">
+                            <div className="text-[#666D80] text-xs font-medium px-2 py-1 mb-1 border-b border-gray-100 text-right">
+                                فیلتر بر اساس موجودی
+                            </div>
+                            {getFilterOptions().map((option) => (
+                                <div 
+                                    key={option.value}
+                                    className="flex items-center gap-2 px-2 py-1.5 hover:bg-gray-50 rounded-lg cursor-pointer"
+                                    onClick={() => handleFilterChange(option.value)}
+                                >
+                                    <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${selectedFilters.includes(option.value) ? 'bg-[#F7C61A] border-[#F7C61A]' : 'border-[#DFE1E7] bg-white'}`}>
+                                        {selectedFilters.includes(option.value) && (
+                                            <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                            </svg>
+                                        )}
+                                    </div>
+                                    <span className={`text-sm ${selectedFilters.includes(option.value) ? 'text-[#0D0D12] font-semibold' : 'text-[#666D80] font-medium'}`}>
+                                        {option.label}
+                                    </span>
+                                </div>
+                            ))}
+                            {selectedFilters.length > 0 && (
+                                <div 
+                                    className="text-center text-[#B21634] text-xs font-medium py-1.5 mt-1 border-t border-gray-100 cursor-pointer hover:bg-red-50 rounded-b-lg"
+                                    onClick={() => setSelectedFilters([])}
+                                >
+                                    حذف فیلترها
+                                </div>
+                            )}
+                        </div>
+                    )}
                     <div className="w-8 h-8 p-2 bg-white rounded-lg border border-[#DFE1E7] flex justify-center items-center gap-2 cursor-pointer hover:bg-gray-50">
                         <Search className="w-4 h-4 text-[#818898]" />
                     </div>
@@ -162,7 +257,10 @@ export function ProductTable({ products }: ProductTableProps) {
             </div>
 
             {/* Scrollable Container */}
-            <div className="w-full overflow-x-auto flex flex-col">
+            <div 
+                ref={scrollContainerRef}
+                className="w-full overflow-x-auto flex flex-col"
+            >
                 {/* Table Column Headers */}
                 <div className="flex min-w-max px-[9px] bg-[#F6F8FA] border-b border-[#DFE1E7] justify-end items-center">
                     {/* 1. Empty for Icon */}
