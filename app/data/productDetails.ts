@@ -244,7 +244,7 @@ export const productDetails: Record<number, ProductDetail> = {
     5001: {
         id: 5001, title: "گردنبند نقره", rating: 4.9, price: "12,000,000 تومان",
         description: "گردنبند نقره 925 عیار با طرح قلب ظریف و نگین های اتمی درخشان.",
-        images: ["/4d8684722be1311ccadcc2ba6a89cb70b6556d98_1648467883.jpg"],
+        images: ["/1111.jpg"],
         colors: [{ name: "نقره ای", hex: "#C0C0C0", id: "silver" }],
         sizes: ["40cm", "45cm"],
         specs: { "عیار": "925", "وزن": "4 گرم" },
@@ -253,8 +253,8 @@ export const productDetails: Record<number, ProductDetail> = {
         ratingDistribution: defaultDistribution,
         reviewsCount: 20
     },
-    5002: { id: 5002, title: "انگشتر نقره", rating: 4.7, category: "طلا و جواهر", price: "4,500,000 تومان", description: "انگشتر نقره 925 عیار زنانه با طراحی مدرن.", images: ["/9d7f7c48-dabc-4e0c-859a-f50eab97f54a.jfif"], colors: [{ name: "نقره ای", hex: "#C0C0C0", id: "silver" }], sizes: ["52", "54"], specs: { "عیار": "925" }, reviews: [], ratingDistribution: defaultDistribution, reviewsCount: 8 },
-    5003: { id: 5003, title: "انگشتر نقره فیروزه", rating: 4.6, category: "طلا و جواهر", price: "3,200,000 تومان", description: "انگشتر نقره با سنگ فیروزه نیشابور اصل.", images: ["/9d7f7c48-dabc-4e0c-859a-f50eab97f54a.png"], colors: [{ name: "نقره ای", hex: "#C0C0C0", id: "silver" }], sizes: ["58", "60"], specs: { "عیار": "925", "سنگ": "فیروزه" }, reviews: [], ratingDistribution: defaultDistribution, reviewsCount: 6 },
+    5002: { id: 5002, title: "انگشتر نقره", rating: 4.7, category: "طلا و جواهر", price: "4,500,000 تومان", description: "انگشتر نقره 925 عیار زنانه با طراحی مدرن.", images: ["/11111.png"], colors: [{ name: "نقره ای", hex: "#C0C0C0", id: "silver" }], sizes: ["52", "54"], specs: { "عیار": "925" }, reviews: [], ratingDistribution: defaultDistribution, reviewsCount: 8 },
+    5003: { id: 5003, title: "انگشتر نقره فیروزه", rating: 4.6, category: "طلا و جواهر", price: "3,200,000 تومان", description: "انگشتر نقره با سنگ فیروزه نیشابور اصل.", images: ["/111111.png"], colors: [{ name: "نقره ای", hex: "#C0C0C0", id: "silver" }], sizes: ["58", "60"], specs: { "عیار": "925", "سنگ": "فیروزه" }, reviews: [], ratingDistribution: defaultDistribution, reviewsCount: 6 },
     5004: { id: 5004, title: "دستبند چرم و طلا", rating: 4.8, category: "طلا و جواهر", price: "2,800,000 تومان", description: "دستبند اسپرت چرم طبیعی با پلاک طلا.", images: ["/2.jpg"], colors: [], sizes: [], specs: {}, reviews: [], ratingDistribution: defaultDistribution, reviewsCount: 12 },
     5005: { id: 5005, title: "انگشتر نقره عقیق", rating: 4.5, category: "طلا و جواهر", price: "1,200,000 تومان", description: "انگشتر نقره مردانه با سنگ عقیق یمنی.", images: ["/2.jpg"], colors: [], sizes: [], specs: {}, reviews: [], ratingDistribution: defaultDistribution, reviewsCount: 9 },
     5006: { id: 5006, title: "حلقه نامزدی برلیان", rating: 5.0, category: "طلا و جواهر", price: "45,000,000 تومان", description: "رینگ ازدواج طلا سفید با نگین برلیان اصل.", images: ["/2.jpg"], colors: [], sizes: ["52", "54", "56"], specs: {}, reviews: [], ratingDistribution: defaultDistribution, reviewsCount: 45 },
