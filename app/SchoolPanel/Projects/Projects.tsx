@@ -32,6 +32,7 @@ const Projects = () => {
     // Filter & Scroll Logic
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+    const [activeTab, setActiveTab] = useState<'student' | 'school'>('student');
     const filterRef = React.useRef<HTMLDivElement>(null);
     const scrollContainerRef = React.useRef<HTMLDivElement>(null);
 
@@ -74,6 +75,12 @@ const Projects = () => {
     ];
 
     const filteredProductsList = products.filter(product => {
+        // First filter by tab (simulate different data)
+        const isStudentProject = product.id % 2 !== 0;
+        if (activeTab === 'student' && !isStudentProject) return false;
+        if (activeTab === 'school' && isStudentProject) return false;
+
+        // Then filter by status dropdown
         if (selectedFilters.length === 0) return true;
         return selectedFilters.includes(product.statusLabel);
     });
@@ -243,14 +250,20 @@ const Projects = () => {
                 
                 {/* Tabs for Table */}
                 <div className="self-stretch h-9 p-[3px] bg-[#F6F6F6] rounded-lg outline outline-1 outline-[#D7D8DA] -outline-offset-1 flex justify-center items-center">
-                    <div className="flex-1 h-[29px] px-3 py-1 rounded-md flex justify-center items-center gap-2.5 cursor-pointer text-[#0A0A0A] hover:bg-white/50">
-                         <div className="text-sm font-['PeydaWeb'] font-semibold leading-5">
-                            پروژه های دانش آموزان
+                    <div 
+                        onClick={() => setActiveTab('student')}
+                        className={`flex-1 h-[29px] px-3 py-1 rounded-md flex justify-center items-center gap-2.5 cursor-pointer transition-all ${activeTab === 'student' ? 'bg-[#F7C61A] shadow-sm outline outline-1 outline-[#D7D8DA] -outline-offset-1' : 'hover:bg-white/50'}`}
+                    >
+                         <div className="text-[#0A0A0A] text-sm font-['PeydaWeb'] font-semibold leading-5">
+                          حجره ها
                         </div>
                     </div>
-                    <div className="flex-1 h-[29px] px-3 py-1 bg-[#F7C61A] shadow-sm rounded-md outline outline-1 outline-[#D7D8DA] -outline-offset-1 flex justify-center items-center gap-2.5 cursor-pointer text-[#0A0A0A]">
-                        <div className="text-sm font-['PeydaWeb'] font-semibold leading-5">
-                            پروژه های مدرسه 
+                    <div 
+                        onClick={() => setActiveTab('school')}
+                        className={`flex-1 h-[29px] px-3 py-1 rounded-md flex justify-center items-center gap-2.5 cursor-pointer transition-all ${activeTab === 'school' ? 'bg-[#F7C61A] shadow-sm outline outline-1 outline-[#D7D8DA] -outline-offset-1' : 'hover:bg-white/50'}`}
+                    >
+                        <div className="text-[#0A0A0A] text-sm font-['PeydaWeb'] font-semibold leading-5">
+                            تیمچه ها
                         </div>
                     </div>
                 </div>

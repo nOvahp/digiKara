@@ -93,7 +93,7 @@ const NewTimche2 = () => {
 
                 {/* Add Project Button */}
                 <div className="w-full h-[57px] rounded-xl border border-dashed border-[#DFE1E7] flex items-center justify-center gap-2.5 cursor-pointer hover:bg-gray-50">
-                    <span className="text-[#1A1C1E] text-lg font-['PeydaWeb'] font-semibold">افزودن تیمچه</span>
+                    <span className="text-[#1A1C1E] text-lg font-['PeydaWeb'] font-semibold">افزودن پروژه</span>
                     <div className="w-6 h-6 border-2 border-[#1A1C1E] rounded-full flex items-center justify-center">
                         <span className="text-lg leading-none mb-0.5">+</span>
                     </div>

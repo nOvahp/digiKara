@@ -40,6 +40,7 @@ const SchoolHomePage = () => {
   // Filter & Scroll Logic
   const [isFilterOpen, setIsFilterOpen] = React.useState(false);
   const [selectedFilters, setSelectedFilters] = React.useState<string[]>([]);
+  const [activeTab, setActiveTab] = React.useState<'hojreh' | 'timche'>('hojreh');
   const filterRef = React.useRef<HTMLDivElement>(null);
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
 
@@ -82,6 +83,12 @@ const SchoolHomePage = () => {
   ];
 
   const filteredProductsList = products.filter(product => {
+      // Filter by tab
+      const isHojrehProject = product.id % 2 !== 0;
+      if (activeTab === 'hojreh' && !isHojrehProject) return false;
+      if (activeTab === 'timche' && isHojrehProject) return false;
+
+      // Filter by status dropdown
       if (selectedFilters.length === 0) return true;
       return selectedFilters.includes(product.statusLabel);
   });
@@ -270,7 +277,7 @@ const SchoolHomePage = () => {
       {/* Cooperation Section */}
       <div className="flex flex-col gap-4 w-full mt-2">
          <div className="flex justify-between items-center w-full">
-            <h2 className="text-[#0D0D12] text-xl font-['PeydaWeb'] font-semibold">همکاری مدارس</h2>
+            <h2 className="text-[#0D0D12] text-l font-['PeydaWeb'] font-semibold">مشارکت های فعال با تیمچه های دیگر</h2>
             <div className="flex items-center gap-1 cursor-pointer">
                 <span className="text-[#6C7278] text-xs font-['PeydaWeb'] font-semibold">مشاهده همه</span>
                 <ChevronLeft className="w-4 h-4 text-[#6C7278]" />
@@ -376,8 +383,8 @@ const SchoolHomePage = () => {
          <h2 className="text-[#0D0D12] text-xl font-['PeydaWeb'] font-semibold text-start">پیشنهادات هوشمند</h2>
          <div className="flex gap-2 overflow-x-auto pb-4 no-scrollbar -mx-4 px-4">
              {[
-                 { title: "دوره آموزشی مناسب", desc: "دوره «عکاسی از محصول با موبایل» می‌تواند به فروش شما کمک کند." },
-                 { title: "این محصول پرفروش است", desc: "«کارهای دستی چوبی» در منطقه شما محبوبیت زیادی پیدا کرده است." }
+                 { title: "دوره آموزشی مدیریت مالی", desc: "با مشاهده این دوره کوتاه ۵ دقیقه‌ای، یاد بگیرید چگونه گزارش‌های مالی فصلی مدرسه را بهینه‌تر تحلیل کنید.." },
+                 { title: "این سرویس در منطقه شما محبوب است.", desc: "«مدارس منطقه شما « تغذیه ارگانیک» را اضافه کرده‌اند. این خدمت با استقبال خوب  روبرو شده است." }
              ].map((item, idx) => (
                  <Card key={idx} className="min-w-[250px] p-3 bg-white rounded-lg shadow-sm border border-gray-100 flex flex-col gap-2">
                      <Lightbulb className="w-6 h-6 text-[#FDD00A]" />
@@ -395,12 +402,19 @@ const SchoolHomePage = () => {
          </div>
 
          {/* Toggle */}
+         {/* Toggle */}
          <div className="w-full h-[36px] p-[3px] bg-[#F6F6F6] rounded-lg outline outline-1 outline-[#D7D8DA] flex justify-center items-center">
-             <div className="flex-1 h-[29px] px-3 py-1 bg-transparent rounded-md flex justify-center items-center gap-2.5 cursor-pointer">
-                 <div className="text-[#0A0A0A] text-sm font-['PeydaWeb'] font-semibold leading-5 text-center">پروژه های دانش آموزان</div>
+             <div 
+                onClick={() => setActiveTab('hojreh')}
+                className={`flex-1 h-[29px] px-3 py-1 rounded-md flex justify-center items-center gap-2.5 cursor-pointer transition-all ${activeTab === 'hojreh' ? 'bg-[#F7C61A] shadow-[0px_1px_3px_rgba(0,0,0,0.10)] outline outline-1 outline-[#D7D8DA] text-[#0A0A0A]' : 'bg-transparent text-[#0A0A0A] hover:bg-white/50'}`}
+             >
+                 <div className="text-sm font-['PeydaWeb'] font-semibold leading-5 text-center">حجره ها</div>
              </div>
-             <div className="flex-1 h-[29px] px-3 py-1 bg-[#F7C61A] shadow-[0px_1px_3px_rgba(0,0,0,0.10)] rounded-md outline outline-1 outline-[#D7D8DA] flex justify-center items-center gap-2.5 cursor-pointer">
-                 <div className="text-[#0A0A0A] text-sm font-['PeydaWeb'] font-semibold leading-5 text-center">پروژه های مدرسه </div>
+             <div 
+                onClick={() => setActiveTab('timche')}
+                className={`flex-1 h-[29px] px-3 py-1 rounded-md flex justify-center items-center gap-2.5 cursor-pointer transition-all ${activeTab === 'timche' ? 'bg-[#F7C61A] shadow-[0px_1px_3px_rgba(0,0,0,0.10)] outline outline-1 outline-[#D7D8DA] text-[#0A0A0A]' : 'bg-transparent text-[#0A0A0A] hover:bg-white/50'}`}
+             >
+                 <div className="text-sm font-['PeydaWeb'] font-semibold leading-5 text-center">تیمچه ها</div>
              </div>
          </div>
 

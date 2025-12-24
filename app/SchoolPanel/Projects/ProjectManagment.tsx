@@ -37,6 +37,7 @@ const toFarsiNumber = (n: number | string | undefined): string => {
 const ProjectManagment = () => {
     const router = useRouter();
     const [activeFilter, setActiveFilter] = useState("all");
+    const [activeTab, setActiveTab] = useState<'hojreh' | 'timche'>('hojreh');
     // State for pagination
     const [currentPage, setCurrentPage] = useState(1);
     const [isProductPopUpOpen, setIsProductPopUpOpen] = useState(false);
@@ -96,6 +97,16 @@ const ProjectManagment = () => {
     ];
 
     const filteredProductsList = allProducts.filter(product => {
+        // First filter by tab (simulate different data)
+        // Hojreh (like student) -> Odd IDs
+        // Timche (like school) -> Even IDs
+        const isHojrehProject = product.id % 2 !== 0;
+        if (activeTab === 'hojreh' && !isHojrehProject) return false;
+        if (activeTab === 'timche' && isHojrehProject) return false;
+
+        // Then filter by top tabs (activeFilter) - although logic wasn't fully defined for these in original code, keeping placeholder
+        // If "all" is selected, we don't filter further by this specifically unless mapped to status
+
         if (selectedFilters.length === 0) return true;
         return selectedFilters.includes(product.statusLabel);
     });
@@ -212,9 +223,9 @@ const ProjectManagment = () => {
                             <div className="w-full flex flex-col gap-1">
                                 {/* Row 1 */}
                                 <div className="w-full flex justify-between items-center">
-                                    <div className="flex items-center gap-1.5">
-                                        <Store className="w-4 h-4 text-[#666D80]" />
-                                        <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px]">تیمچه نجاری</span>
+                                    <div className="w-[100px] flex items-center gap-1.5">
+                                        <User className="w-4 h-4 text-[#666D80]" />
+                                        <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px] tracking-wide">اکبر رضایی</span>
                                     </div>
                                     <div className="w-[100px] flex items-center gap-1.5">
                                         <Clock className="w-4 h-4 text-[#666D80]" />
@@ -225,14 +236,8 @@ const ProjectManagment = () => {
 
                                 {/* Row 2 */}
                                 <div className="w-full flex justify-between items-center">
-                                    <div className="flex items-center gap-1.5">
-                                        <Users className="w-4 h-4 text-[#666D80]" />
-                                        <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px]">{toFarsiNumber(4)} دانش آموز</span>
-                                    </div>
-                                    <div className="w-[100px] flex items-center gap-1.5">
-                                        <User className="w-4 h-4 text-[#666D80]" />
-                                        <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px] tracking-wide">اکبر رضایی</span>
-                                    </div>
+                                    
+                                    
 
                                 </div>
                             </div>
@@ -273,9 +278,9 @@ const ProjectManagment = () => {
                             <div className="w-full flex flex-col gap-1">
                                 {/* Row 1 */}
                                 <div className="w-full flex justify-between items-center">
-                                    <div className="flex items-center gap-1.5">
-                                        <Store className="w-4 h-4 text-[#666D80]" />
-                                        <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px]">تیمچه گرافیک</span>
+                                    <div className="w-[100px] flex items-center gap-1.5">
+                                        <User className="w-4 h-4 text-[#666D80]" />
+                                        <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px] tracking-wide">علی فلاحی</span>
                                     </div>
                                     <div className="w-[100px] flex items-center gap-1.5">
                                         <Clock className="w-4 h-4 text-[#666D80]" />
@@ -286,14 +291,8 @@ const ProjectManagment = () => {
 
                                 {/* Row 2 */}
                                 <div className="w-full flex justify-between items-center">
-                                    <div className="flex items-center gap-1.5">
-                                        <Users className="w-4 h-4 text-[#666D80]" />
-                                        <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px]">5 دانش آموز</span>
-                                    </div>
-                                    <div className="w-[100px] flex items-center gap-1.5">
-                                        <User className="w-4 h-4 text-[#666D80]" />
-                                        <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px] tracking-wide">علی فلاحی</span>
-                                    </div>
+                                    
+                                    
 
                                 </div>
                             </div>
@@ -334,9 +333,9 @@ const ProjectManagment = () => {
                             <div className="w-full flex flex-col gap-1">
                                 {/* Row 1 */}
                                 <div className="w-full flex justify-between items-center">
-                                    <div className="flex items-center gap-1.5">
-                                        <Store className="w-4 h-4 text-[#666D80]" />
-                                        <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px]">تیمچه هنری</span>
+                                    <div className="w-[100px] flex items-center gap-1.5">
+                                        <User className="w-4 h-4 text-[#666D80]" />
+                                        <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px] tracking-wide">حسین حسینی</span>
                                     </div>
                                     <div className="w-[100px] flex items-center gap-1.5">
                                         <Clock className="w-4 h-4 text-[#666D80]" />
@@ -347,14 +346,8 @@ const ProjectManagment = () => {
 
                                 {/* Row 2 */}
                                 <div className="w-full flex justify-between items-center">
-                                    <div className="flex items-center gap-1.5">
-                                        <Users className="w-4 h-4 text-[#666D80]" />
-                                        <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px]">5 دانش آموز</span>
-                                    </div>
-                                    <div className="w-[100px] flex items-center gap-1.5">
-                                        <User className="w-4 h-4 text-[#666D80]" />
-                                        <span className="text-[#666D80] text-xs font-['PeydaFaNum'] font-semibold leading-[20.4px] tracking-wide">حسین حسینی</span>
-                                    </div>
+                                    
+                                    
 
                                 </div>
                             </div>
@@ -384,14 +377,20 @@ const ProjectManagment = () => {
 
                 {/* Tabs for Table */}
                 <div className="w-full h-9 p-[3px] bg-[#F6F6F6] rounded-lg outline outline-1 outline-[#D7D8DA] -outline-offset-1 flex justify-center items-center">
-                    <div className="flex-1 h-[29px] px-3 py-1 rounded-md flex justify-center items-center gap-2.5 cursor-pointer text-[#0A0A0A] hover:bg-white/50">
-                        <div className="text-center text-[#0A0A0A] text-sm font-['PeydaWeb'] font-semibold leading-5 break-words">
-                            پروژه های دانش آموزان
+                    <div 
+                        onClick={() => setActiveTab('hojreh')}
+                        className={`flex-1 h-[29px] px-3 py-1 rounded-md flex justify-center items-center gap-2.5 cursor-pointer transition-all ${activeTab === 'hojreh' ? 'bg-[#F7C61A] shadow-sm outline outline-1 outline-[#D7D8DA] -outline-offset-1 text-[#0A0A0A]' : 'text-[#0A0A0A] hover:bg-white/50'}`}
+                    >
+                        <div className="text-center text-sm font-['PeydaWeb'] font-semibold leading-5 break-words">
+                            حجره ها 
                         </div>
                     </div>
-                    <div className="flex-1 h-[29px] px-3 py-1 bg-[#F7C61A] shadow-sm rounded-md outline outline-1 outline-[#D7D8DA] -outline-offset-1 flex justify-center items-center gap-2.5 cursor-pointer text-[#0A0A0A]">
-                        <div className="text-center text-[#0A0A0A] text-sm font-['PeydaWeb'] font-semibold leading-5 break-words">
-                            پروژه های مدرسه 
+                    <div 
+                        onClick={() => setActiveTab('timche')}
+                        className={`flex-1 h-[29px] px-3 py-1 rounded-md flex justify-center items-center gap-2.5 cursor-pointer transition-all ${activeTab === 'timche' ? 'bg-[#F7C61A] shadow-sm outline outline-1 outline-[#D7D8DA] -outline-offset-1 text-[#0A0A0A]' : 'text-[#0A0A0A] hover:bg-white/50'}`}
+                    >
+                        <div className="text-center text-sm font-['PeydaWeb'] font-semibold leading-5 break-words">
+                           تیمچه ها
                         </div>
                     </div>
                 </div>

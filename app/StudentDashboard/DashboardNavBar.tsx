@@ -15,7 +15,7 @@ export function DashboardNavBar() {
 
   return (
     <>
-      <div className="w-full flex justify-between items-center h-auto mb-8">
+      <div className="w-full flex justify-between items-center h-auto mb-8 sticky top-0 z-50 bg-white py-2">
           
           {/* Left Side - Icons */}
           <div className="flex justify-start items-center gap-1">
