@@ -53,6 +53,18 @@ export const productDetails: Record<number, ProductDetail> = {
         ratingDistribution: { 5: 80, 4: 10, 3: 5, 2: 2, 1: 3 },
         reviewsCount: 45
     },
+    1011: {
+        id: 1011, title: "میز غذاخوری", rating: 5.0, price: "500,000 تومان",
+        description: "میز غذاخوری چوبی با طراحی مدرن و کیفیت ساخت بالا. مناسب برای آشپزخانه های کوچک و بزرگ.",
+        images: ["/12.png"],
+        colors: [{ name: "قهوه ای تیره", hex: "#3E2723", id: "dark_brown" }, { name: "فندقی", hex: "#795548", id: "hazel" }],
+        sizes: ["4 نفره", "6 نفره"],
+        specs: { "جنس صفحه": "MDF درجه یک", "جنس پایه": "چوب روس" },
+        category: "صنایع چوبی",
+        reviews: generateMockReviews(6, 5),
+        ratingDistribution: defaultDistribution,
+        reviewsCount: 15
+    },
     102: {
         id: 102, title: "صندلی ناهارخوری", rating: 4.2, price: "180,000 تومان",
         description: "صندلی ناهارخوری راحت و شیک، ساخته شده از چوب راش گرجستان با روکش پارچه ای قابل شستشو.",
@@ -134,7 +146,7 @@ export const productDetails: Record<number, ProductDetail> = {
     1008: { id: 1008, title: "تخت خواب دو نفره کینگ", rating: 4.9, category: "صنایع چوبی", price: "6,000,000 تومان", description: "تخت خواب سایز کینگ با لمسه دوزی مخمل در قسمت تاج.", images: ["/10.png"], colors: [], sizes: [], specs: {}, reviews: [], ratingDistribution: defaultDistribution, reviewsCount: 35 },
     1009: { id: 1009, title: "تخت خواب یک نفره اسپرت", rating: 4.5, category: "صنایع چوبی", price: "3,200,000 تومان", description: "تخت خواب اسپرت مناسب اتاق نوجوان.", images: ["/10.png"], colors: [], sizes: [], specs: {}, reviews: [], ratingDistribution: defaultDistribution, reviewsCount: 18 },
     1010: { id: 1010, title: "کتابخانه دیواری", rating: 4.3, category: "صنایع چوبی", price: "850,000 تومان", description: "کتابخانه دیواری مدرن و سبک.", images: ["/12.png"], colors: [], sizes: [], specs: {}, reviews: [], ratingDistribution: defaultDistribution, reviewsCount: 9 },
-    1011: { id: 1011, title: "قفسه کتاب ایستاده", rating: 4.6, category: "صنایع چوبی", price: "1,100,000 تومان", description: "قفسه کتاب ایستاده فلز و چوب.", images: ["/12.png"], colors: [], sizes: [], specs: {}, reviews: [], ratingDistribution: defaultDistribution, reviewsCount: 14 },
+
     1012: { id: 1012, title: "صندلی اداری طبی", rating: 4.8, category: "صنایع چوبی", price: "2,500,000 تومان", description: "صندلی اداری با رعایت اصول ارگونومی برای جلوگیری از کمردرد.", images: ["/12.png"], colors: [], sizes: [], specs: {}, reviews: [], ratingDistribution: defaultDistribution, reviewsCount: 28 },
     1013: { id: 1013, title: "میز مدیریت", rating: 4.7, category: "صنایع چوبی", price: "5,500,000 تومان", description: "میز مدیریت با پنل چرمی و طراحی لاکچری.", images: ["/12.png"], colors: [], sizes: [], specs: {}, reviews: [], ratingDistribution: defaultDistribution, reviewsCount: 22 },
     1014: { id: 1014, title: "صندلی گهواره‌ای", rating: 4.9, category: "صنایع چوبی", price: "2,200,000 تومان", description: "صندلی راکینگ چیر چوبی، آرامش بخش.", images: ["/12.png"], colors: [], sizes: [], specs: {}, reviews: [], ratingDistribution: defaultDistribution, reviewsCount: 30 },

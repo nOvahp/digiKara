@@ -46,7 +46,7 @@ export default function Category() {
     const categories: CategoryType[] = [
         { id: 5, title: "صنایع چوبی", icon: Armchair, active: true },
         { id: 4, title: "پوشاک", icon: Shirt },
-        { id: 3, title: "خوراکی", icon: Utensils },
+        
         { id: 2, title: "صنایع هنری", icon: Palette },
         { id: 1, title: "طلا و جواهر", icon: Gem },
     ];
