@@ -1,9 +1,11 @@
 export type TransactionType = 'deposit' | 'withdrawal';
+export type TransactionCategory = 'school' | 'student' | 'teacher';
 
 export interface Transaction {
     id: string;
     amount: string;
     type: TransactionType;
+    category: TransactionCategory;
     storeName?: string;
     description: string;
     sharePercent?: string;
@@ -18,7 +20,8 @@ export const transactionsData: Transaction[] = [
         id: "1",
         amount: "43,000,000",
         type: "deposit",
-        storeName: "حجره چرم آژاکس",
+        category: "student",
+        storeName: "حجره چرم مصباح",
         description: "واریز به کیف پول مدرسه",
         sharePercent: "20",
         code: "NK40Y001",
@@ -28,6 +31,7 @@ export const transactionsData: Transaction[] = [
         id: "2",
         amount: "58,000,000",
         type: "deposit",
+        category: "student",
         storeName: "حجره چرم دانش",
         description: "واریز به کیف پول مدرسه",
         sharePercent: "15",
@@ -38,6 +42,7 @@ export const transactionsData: Transaction[] = [
         id: "3",
         amount: "700,000,000",
         type: "withdrawal",
+        category: "school",
         description: "برداشت از کیف پول مدرسه",
         status: "تکمیل شده",
         date: "1402/10/05"
@@ -46,6 +51,7 @@ export const transactionsData: Transaction[] = [
         id: "4",
         amount: "67,000,000",
         type: "deposit",
+        category: "teacher",
         storeName: "تیمچه لقمان",
         description: "واریز به حساب مدرسه",
         sharePercent: "20",
@@ -56,6 +62,7 @@ export const transactionsData: Transaction[] = [
         id: "5",
         amount: "32,500,000",
         type: "deposit",
+        category: "student",
         storeName: "گالری هنری وحدت",
         description: "واریز به کیف پول مدرسه",
         sharePercent: "10",
@@ -66,6 +73,7 @@ export const transactionsData: Transaction[] = [
         id: "6",
         amount: "150,000,000",
         type: "withdrawal",
+        category: "school",
         description: "برداشت از کیف پول مدرسه",
         status: "تکمیل شده",
         date: "1402/10/02"
@@ -74,6 +82,7 @@ export const transactionsData: Transaction[] = [
         id: "7",
         amount: "85,000,000",
         type: "deposit",
+        category: "teacher",
         storeName: "کارگاه سفالگری",
         description: "واریز به حساب مدرسه",
         sharePercent: "25",
@@ -84,6 +93,7 @@ export const transactionsData: Transaction[] = [
         id: "8",
         amount: "45,000,000",
         type: "deposit",
+        category: "student",
         storeName: "فروشگاه لوازم هنری",
         description: "واریز به کیف پول مدرسه",
         sharePercent: "18",
@@ -94,6 +104,7 @@ export const transactionsData: Transaction[] = [
         id: "9",
         amount: "92,000,000",
         type: "deposit",
+        category: "teacher",
         storeName: "تیمچه فرش",
         description: "واریز به کیف پول مدرسه",
         sharePercent: "30",
@@ -104,6 +115,7 @@ export const transactionsData: Transaction[] = [
         id: "10",
         amount: "210,000,000",
         type: "withdrawal",
+        category: "school",
         description: "برداشت از کیف پول مدرسه",
         status: "تکمیل شده",
         date: "1402/09/28"
@@ -112,6 +124,7 @@ export const transactionsData: Transaction[] = [
         id: "11",
         amount: "28,000,000",
         type: "deposit",
+        category: "student",
         storeName: "نگارخانه شهر",
         description: "واریز به حساب مدرسه",
         sharePercent: "12",
@@ -122,6 +135,7 @@ export const transactionsData: Transaction[] = [
         id: "12",
         amount: "12,000,000",
         type: "deposit",
+        category: "student",
         storeName: "کتابفروشی هنر",
         description: "واریز به کیف پول مدرسه",
         sharePercent: "8",
@@ -132,6 +146,7 @@ export const transactionsData: Transaction[] = [
         id: "13",
         amount: "500,000,000",
         type: "withdrawal",
+        category: "school",
         description: "برداشت از کیف پول مدرسه",
         status: "تکمیل شده",
         date: "1402/09/15"
@@ -140,6 +155,7 @@ export const transactionsData: Transaction[] = [
         id: "14",
         amount: "76,000,000",
         type: "deposit",
+        category: "teacher",
         storeName: "کارگاه فلزکاری",
         description: "واریز به کیف پول مدرسه",
         sharePercent: "22",
@@ -150,6 +166,7 @@ export const transactionsData: Transaction[] = [
         id: "15",
         amount: "63,000,000",
         type: "deposit",
+        category: "student",
         storeName: "گالری نقاشی",
         description: "واریز به حساب مدرسه",
         sharePercent: "15",
@@ -160,6 +177,7 @@ export const transactionsData: Transaction[] = [
         id: "16",
         amount: "115,000,000",
         type: "deposit",
+        category: "teacher",
         storeName: "تیمچه صنایع دستی",
         description: "واریز به کیف پول مدرسه",
         sharePercent: "28",
@@ -170,6 +188,7 @@ export const transactionsData: Transaction[] = [
         id: "17",
         amount: "1,200,000,000",
         type: "withdrawal",
+        category: "school",
         description: "برداشت از کیف پول مدرسه",
         status: "تکمیل شده",
         date: "1402/09/01"
@@ -178,6 +197,7 @@ export const transactionsData: Transaction[] = [
         id: "18",
         amount: "35,000,000",
         type: "deposit",
+        category: "student",
         storeName: "فروشگاه ابزار",
         description: "واریز به کیف پول مدرسه",
         sharePercent: "10",
@@ -188,6 +208,7 @@ export const transactionsData: Transaction[] = [
         id: "19",
         amount: "98,000,000",
         type: "deposit",
+        category: "teacher",
         storeName: "کارگاه چاپ",
         description: "واریز به حساب مدرسه",
         sharePercent: "20",
@@ -198,6 +219,7 @@ export const transactionsData: Transaction[] = [
         id: "20",
         amount: "55,000,000",
         type: "deposit",
+        category: "student",
         storeName: "خانه عکاسی",
         description: "واریز به کیف پول مدرسه",
         sharePercent: "14",

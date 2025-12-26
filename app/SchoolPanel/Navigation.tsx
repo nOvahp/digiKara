@@ -57,7 +57,12 @@ export function Navigation() {
                         </Link>
 
                         {/* Education */}
-                        <Link href="/SchoolPanel/Education" className={getItemClasses(isActive('/SchoolPanel/Education'))}>
+                        <Link
+                            href="https://digikara.c60.darkube.app/auth/login"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={getItemClasses(isActive('/SchoolPanel/Education'))}
+                        >
                             <BookOpen className={cn("w-6 h-6", getIconColor(isActive('/SchoolPanel/Education')))} strokeWidth={1.5} />
                             <div className={getTextClasses(isActive('/SchoolPanel/Education'))}>آموزش</div>
                         </Link>
