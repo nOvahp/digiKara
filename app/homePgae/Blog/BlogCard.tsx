@@ -33,10 +33,10 @@ const BlogCard = ({
 
       <div className="relative z-0 flex h-full flex-col justify-start p-4 md:p-5 lg:p-6 lg:py-[24px] lg:px-[62px] ml-[130px] md:ml-[230px] lg:ml-[160px]">
         <div className="flex flex-col gap-2 md:gap-3 lg:gap-4 w-fit ml-auto">
-          <h3 className="text-right text-[16px] md:text-[20px] lg:text-[24px] font-black leading-[20px] md:leading-[26px] lg:leading-[28.8px] text-[#222325]">
+          <h3 className="text-right text-[16px] md:text-[20px] lg:text-[24px] 2xl:text-[32px] font-black leading-[20px] md:leading-[26px] lg:leading-[28.8px] 2xl:leading-[40px] text-[#222325]">
             {title}
           </h3>
-          <p className="text-right text-[12px] md:text-[14px] lg:text-[16px] font-medium leading-[18px] md:leading-[22px] lg:leading-[24px] text-[#5E6B7E]">
+          <p className="text-right text-[12px] md:text-[14px] lg:text-[16px] 2xl:text-[20px] font-medium leading-[18px] md:leading-[22px] lg:leading-[24px] 2xl:leading-[30px] text-[#5E6B7E]">
             {description}
           </p>
         </div>
@@ -45,7 +45,7 @@ const BlogCard = ({
           <div className="bg-transparent rounded-full p-1">
             <ChevronLeft className="w-4 h-4 md:w-5 md:h-5 text-[#5E6B7E]" />
           </div>
-          <div className="flex items-center gap-1 text-[#5E6B7E] text-[14px] md:text-[16px] lg:text-[18px] font-medium leading-[20px] md:leading-[24px] lg:leading-[27px]">
+          <div className="flex items-center gap-1 text-[#5E6B7E] text-[14px] md:text-[16px] lg:text-[18px] 2xl:text-[22px] font-medium leading-[20px] md:leading-[24px] lg:leading-[27px] 2xl:leading-[32px]">
             <span>محصول</span>
             <span>{count}</span>
           </div>

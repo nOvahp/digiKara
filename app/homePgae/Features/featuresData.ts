@@ -2,14 +2,16 @@ import featureCard1 from "../../../public/man paid online at a store.png";
 import featureCard2 from "../../../public/man works behind the technological displays.png";
 import featureCard3 from "../../../public/man sends statistics from his phone.png";
 
-export interface FeatureItem {
+import { StaticImageData } from "next/image";
+
+export interface Feature {
   id: number;
   title: string;
   description: string;
-  image: any;
+  image: string | StaticImageData;
 }
 
-export const featuresData: FeatureItem[] = [
+export const featuresData: Feature[] = [
   {
     id: 1,
     title: " آموزش مهارت های بازار کار",

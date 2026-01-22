@@ -15,10 +15,10 @@ const SolutionItem = ({ title, desc }: SolutionItemProps) => {
 
       {/* Content */}
       <div className="flex-1 text-right">
-        <span className="text-[#222325] text-[14px] lg:text-[16px]  font-semibold leading-[24px] tracking-wide wrap-break-word">
+        <span className="text-[#222325] text-[14px] lg:text-[16px] 2xl:text-[20px] font-semibold leading-[24px] 2xl:leading-[32px] tracking-wide wrap-break-word">
           {title}{" "}
         </span>
-        <span className="text-[#222325] text-[14px] lg:text-[16px] font-['num-regular'] font-normal leading-[24px] tracking-wide wrap-break-word">
+        <span className="text-[#222325] text-[14px] lg:text-[16px] 2xl:text-[20px] font-['num-regular'] font-normal leading-[24px] 2xl:leading-[32px] tracking-wide wrap-break-word">
           {desc}
         </span>
       </div>

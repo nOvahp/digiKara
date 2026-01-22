@@ -13,11 +13,11 @@ const Faq = () => {
   };
 
   return (
-    <div className="w-full h-full py-20 px-5 md:px-20 flex flex-col justify-start items-center gap-20">
-      <div className="text-right text-[#222325] text-4xl md:text-6xl  font-black leading-[72px] ">
+    <div className="w-full h-full py-20 px-5 md:px-20 2xl:px-40 flex flex-col justify-start items-center gap-20 2xl:gap-28">
+      <div className="text-right text-[#222325] text-4xl md:text-6xl 2xl:text-7xl font-black leading-[72px] ">
         سوالات متداول
       </div>
-      <div className="w-full max-w-5xl flex flex-col justify-start items-start gap-10">
+      <div className="w-full max-w-5xl 2xl:max-w-7xl flex flex-col justify-start items-start gap-10">
         {faqData.map((item, index) => (
           <React.Fragment key={index}>
             <FaqCard

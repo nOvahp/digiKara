@@ -13,10 +13,10 @@ const ChallengeItem = ({ title, desc }: ChallengeItemProps) => {
         <div className="absolute left-[13px] top-[13px] w-[6px] h-[6px] bg-[#808080] rounded-full" />
       </div>
       <div className="flex-1 text-right">
-        <span className="text-black text-[14px] lg:text-[16px] font-semibold leading-[24px] tracking-wide wrap-break-word">
+        <span className="text-black text-[14px] lg:text-[16px] 2xl:text-[20px] font-semibold leading-[24px] 2xl:leading-[32px] tracking-wide wrap-break-word">
           {title}{" "}
         </span>
-        <span className="text-black text-[14px] lg:text-[16px] font-['num-regular'] font-normal leading-[24px] tracking-wide wrap-break-word">
+        <span className="text-black text-[14px] lg:text-[16px] 2xl:text-[20px] font-['num-regular'] font-normal leading-[24px] 2xl:leading-[32px] tracking-wide wrap-break-word">
           {desc}
         </span>
       </div>

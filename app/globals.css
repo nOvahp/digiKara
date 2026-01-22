@@ -259,13 +259,27 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+html {
+  background-color: #ffffff;
+  width: 100%;
+}
+
 body {
   padding-left: 3%;
   padding-right: 3%;
   padding-top: 3%;
   padding-bottom: 0%;
-  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: var(--background);
 }
+
 
 body.full-width {
   padding: 0 !important;

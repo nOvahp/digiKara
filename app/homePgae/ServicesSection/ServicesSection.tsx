@@ -12,7 +12,7 @@ const ServicesSection = () => {
       className="w-full relative flex justify-center items-center py-10 px-4 mb-[8%]"
       dir="rtl"
     >
-      <div className="flex flex-col lg:block w-full max-w-[1440px]">
+      <div className="flex flex-col lg:block w-full max-w-[1440px] 2xl:max-w-none">
         <ServicesTitle />
 
         <ServicesGrid />

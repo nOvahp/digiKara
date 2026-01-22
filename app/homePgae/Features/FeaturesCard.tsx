@@ -1,14 +1,14 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { ChevronLeft } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface FeaturesCardProps {
   title: string;
   description: string;
-  image: any;
+  image: string | StaticImageData;
 }
 
 const FeaturesCard = ({ title, description, image }: FeaturesCardProps) => {
@@ -17,20 +17,20 @@ const FeaturesCard = ({ title, description, image }: FeaturesCardProps) => {
       <div className="relative w-full h-full md:absolute md:inset-0 bg-white rounded-[24px] border border-[#CACACA]">
         <div className="flex flex-col h-full relative">
           <CardHeader className="text-right pt-[30px] pr-[10px] pl-[10px] pb-0">
-            <CardTitle className="text-[#222325] text-[20px] md:text-[30px] font-black leading-[28px] md:leading-[38.4px]">
+            <CardTitle className="text-[#222325] text-[20px] md:text-[30px] 2xl:text-[40px] font-black leading-[28px] md:leading-[38.4px] 2xl:leading-[50px]">
               {title}
             </CardTitle>
           </CardHeader>
 
           <CardContent className="text-right pt-[16px] pr-[10px] pl-[10px] pb-0">
-            <p className="text-[#222325] text-[14px] md:text-[18px] font-normal leading-[22px] md:leading-[27px]">
+            <p className="text-[#222325] text-[14px] md:text-[18px] 2xl:text-[24px] font-normal leading-[22px] md:leading-[27px] 2xl:leading-[36px]">
               {description}
             </p>
           </CardContent>
 
           <div className="mt-[20px] sm:mt-auto  flex flex-col items-end md:flex-row md:items-end md:justify-end w-full pl-[40px] pb-[40px] pr-[40px] ">
             <div className="relative flex items-center gap-2 cursor-pointer z-10 transition-transform hover:scale-105 mb-2 md:mb-2">
-              <span className="text-[#222325] text-[14px] md:text-[18px] font-medium leading-[22px] md:leading-[27px]">
+              <span className="text-[#222325] text-[14px] md:text-[18px] 2xl:text-[22px] font-medium leading-[22px] md:leading-[27px]">
                 بیشتر بدانید
               </span>
               <div className="bg-[#222325] rounded-full p-1">

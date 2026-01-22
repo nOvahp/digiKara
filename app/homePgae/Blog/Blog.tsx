@@ -19,13 +19,13 @@ const Blog = () => {
         />
       </div>
 
-      <div className="hidden lg:block absolute -left-[35%]  xl:-left-[15%]  -top-[0%] pointer-events-none z-20">
+      <div className="hidden lg:block absolute -left-[35%]  xl:-left-[15%] 2xl:-left-[5%] top-[0%] pointer-events-none z-20">
         <Image
           src="/man bought a lot of gifts at the store.png"
           alt="Blog Illustration"
           width={600}
           height={600}
-          className="object-contain  w-[600px] h-[600px]" 
+          className="object-contain  w-[600px] h-[600px] 2xl:w-[800px] 2xl:h-[800px]" 
         />
       </div>
 
