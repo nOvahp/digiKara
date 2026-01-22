@@ -3,7 +3,7 @@
 import * as React from "react"
 import { LoadingScreen } from "./loading-screen"
 import { LoginHeader } from "./login-header"
-import { LoginForm } from "./login-form"
+// import { LoginForm } from "./login-form"
 import { LoginDescription } from "./login-description"
 import { loginContent, loginContent2 } from "./login-data"
 

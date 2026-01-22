@@ -22,7 +22,7 @@ export function LoginTopNav({ onBackClick }: LoginTopNavProps) {
 
         {/* Title */}
         <div className="flex justify-end items-center gap-[7.56px]">
-            <div className="text-center text-[#393E46] text-[18.14px] font-['MeemFaNum'] font-extrabold leading-[27.21px] break-words">
+            <div className="text-center text-[#393E46] text-[18.14px]  font-extrabold leading-[27.21px] wrap-break-word">
               دیجی کارا
             </div>
         </div>

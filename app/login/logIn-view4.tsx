@@ -67,15 +67,15 @@ export function LoginView4({ onNext }: LoginViewProps) {
       {/* Header Content */}
       <div className="absolute top-0 left-0 right-0 mx-auto w-full max-w-[440px] px-10 pt-15 z-10 flex flex-col gap-8">
          <div className="w-full flex justify-end items-center">
-            <span className="text-[#393E46] text-lg font-['PeydaWeb'] font-black">دیجی کارا</span>
+            <span className="text-[#393E46] text-lg font-black">دیجی کارا</span>
          </div>
          
          {/* Title Section */}
          <div className="flex flex-col gap-4 text-right">
-            <h1 className="text-[#393E46] text-4xl font-['PeydaWeb'] font-black leading-tight">
+            <h1 className="text-[#393E46] text-4xl font-black leading-tight">
                 نوع حساب کاربری
             </h1>
-            <p className="text-[#393E46] text-sm font-['PeydaWeb'] font-semibold">
+            <p className="text-[#393E46] text-sm font-semibold">
                 نوع حساب کاربری خود را انتخاب کنید.
             </p>
          </div>
@@ -105,8 +105,8 @@ export function LoginView4({ onNext }: LoginViewProps) {
                     {/* Right: Icon & Text */}
                     <div className="flex items-center gap-4">
                         <div className="flex flex-col gap-1 text-right">
-                            <span className="text-[#393E46] text-base font-['PeydaWeb'] font-black">{type.title}</span>
-                            <span className="text-[#393E46] text-sm font-['PeydaWeb'] font-semibold">{type.subtitle}</span>
+                            <span className="text-[#393E46] text-base font-black">{type.title}</span>
+                            <span className="text-[#393E46] text-sm font-semibold">{type.subtitle}</span>
                         </div>
                         <div className="w-[52px] h-[52px] rounded-full border border-black/10 bg-white flex items-center justify-center shrink-0 overflow-hidden">
                             {type.icon}
@@ -125,7 +125,7 @@ export function LoginView4({ onNext }: LoginViewProps) {
       <div className="fixed bottom-0 left-0 right-0 w-full max-w-[440px] mx-auto p-6 bg-transparent z-50">
            <button 
                 onClick={handleSelect}
-                className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-2 hover:bg-[#e5bc09] transition-colors text-[#1A1C1E] text-lg font-['PeydaWeb'] font-semibold shadow-sm"
+                className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-2 hover:bg-[#e5bc09] transition-colors text-[#1A1C1E] text-lg font-semibold shadow-sm"
             >
                 انتخاب
             </button>

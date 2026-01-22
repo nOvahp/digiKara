@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { LoadingScreen } from "./loading-screen"
+// import { LoadingScreen } from "./loading-screen"
 import { LoginHeader } from "./login-header"
 import { LoginDescription } from "./login-description"
 import { loginContent2 } from "./login-data"

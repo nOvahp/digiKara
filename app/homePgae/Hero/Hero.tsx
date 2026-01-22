@@ -4,11 +4,12 @@ import React from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import ChamferedButton from "@/app/components/ChamferedButton";
+import { Input } from "@/components/ui/input";
 
 const Hero = () => {
   return (
     <section className="relative flex flex-col lg:flex-row items-center justify-between h-[650px] sm:h-[700px] md:h-[750px] lg:h-[450px] xl:h-[600px] overflow-hidden bg-white lg:pl-10 xl:pl-20 lg:pr-0 lg:py-0 mb-[10%]">
-      <div className="absolute z-0 left-0 top-[290px] min-[375px]:top-[250px] sm:top-[300px] sm:left-[20px] md:top-[25%] md:left-[40] lg:left-0 lg:top-[-5%] xl:left-0 xl:top-[-3%] opacity-80">
+      <div className="absolute z-0 left-0 top-[270px] min-[375px]:top-[230px] sm:top-[300px] sm:left-[20px] md:top-[25%] md:left-[40] lg:left-0 lg:top-[-5%] xl:left-0 xl:top-[-3%] opacity-80">
         <Image
           src="/man spins an object in virtual reality.png"
           alt="Excited Man"
@@ -37,7 +38,7 @@ const Hero = () => {
             پلی میان آموزش مهارت و بکارگیری در بازر واقعی کار
           </h2>
           <p
-            className="text-[#222325] text-[12px] sm:text-[13px] md:text-[14px] lg:text-[16px] xl:text-[18px] font-normal font-num-regular leading-[36px] lg:leading-normal max-w-[650px] mt-4 text-justify"
+            className="text-[#222325] text-[12px] sm:text-[13px] md:text-[14px] lg:text-[16px] xl:text-[18px] font-normal leading-5 lg:leading-normal max-w-[650px] mt-4 text-justify"
             dir="rtl"
           >
             دیجی‌کارا سامانه‌ای است که به مدارس‌های فنی‌حرفه‌ای و کاردانش کمک
@@ -45,6 +46,12 @@ const Hero = () => {
             درآمدزایی کنند و دانش آموزان را با مهارت‌های واقعی به دنیای کار وصل
             نمایند.
           </p>
+          <Input
+          className="justify-end"
+          placeholder="جست و جو"
+          >
+
+          </Input>
         </div>
 
         <div className="relative z-20 order-3 flex flex-row gap-4 top-[-10px] sm:top-[-90px] md:top-[-30px] lg:top-0 lg:mt-10">
