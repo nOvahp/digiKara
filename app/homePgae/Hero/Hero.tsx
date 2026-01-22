@@ -2,14 +2,22 @@
 
 import React from "react";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { Search, MapPin } from "lucide-react";
 import ChamferedButton from "@/app/components/ChamferedButton";
-import { Input } from "@/components/ui/input";
 
 const Hero = () => {
+  const router = useRouter();
+
+  // Navigate to dedicated search page
+  const handleInputClick = () => {
+     router.push('/search-start');
+  };
+
   return (
-    <section className="relative flex flex-col lg:flex-row items-center justify-between h-[650px] sm:h-[700px] md:h-[750px] lg:h-[450px] xl:h-[600px] overflow-hidden bg-white lg:pl-10 xl:pl-20 lg:pr-0 lg:py-0 mb-[10%]">
-      <div className="absolute z-0 left-0 top-[270px] min-[375px]:top-[230px] sm:top-[300px] sm:left-[20px] md:top-[25%] md:left-[40] lg:left-0 lg:top-[-5%] xl:left-0 xl:top-[-3%] opacity-80">
+
+    <section className="relative flex flex-col lg:flex-row items-center justify-between h-[750px] sm:h-[800px] md:h-[950px] lg:h-[550px] xl:h-[650px] overflow-hidden bg-white lg:pl-10 xl:pl-20 lg:pr-0 lg:py-0 mb-[5%]">
+      <div className="absolute z-0 left-0 top-[370px] min-[375px]:top-[330px] sm:top-[300px] sm:left-[20px] md:top-[37%] md:left-[40] lg:left-0 lg:top-[-5%] xl:left-0 xl:top-[-3%] opacity-80">
         <Image
           src="/man spins an object in virtual reality.png"
           alt="Excited Man"
@@ -29,9 +37,9 @@ const Hero = () => {
         />
       </div>
 
-      <div className="contents lg:flex lg:flex-col lg:items-end lg:text-right lg:z-20 lg:w-[400px] xl:w-[500px] lg:mt-0 lg:ml-auto lg:px-0 lg:gap-4 xl:gap-6">
+      <div className="contents lg:flex lg:flex-col lg:items-end lg:text-right lg:z-20 lg:w-[400px] xl:w-[500px] lg:mt-[10%] lg:ml-auto lg:px-0 lg:gap-4 xl:gap-6 mt-10">
         <div className="order-1 flex flex-col items-center lg:items-end z-20 mt-10 lg:mt-0 px-4 lg:px-0 gap-2 text-center lg:text-right">
-          <h1 className="text-[#222325] text-[22px] sm:text-[24px] md:text-[25px] lg:text-[36px] xl:text-[45px] font-[900] font-extrablack leading-[38.4px] lg:leading-normal whitespace-normal lg:whitespace-nowrap mb-4 lg:mb-6 xl:mb-8">
+          <h1 className="text-[#222325] text-[22px] sm:text-[24px] md:text-[25px] lg:text-[30px] xl:text-[45px] font-[900] font-extrablack leading-[38.4px] lg:leading-normal whitespace-normal lg:whitespace-nowrap mb-4 lg:mb-6 xl:mb-8">
             پلتفرم نوجوان کارآفرین
           </h1>
           <h2 className="text-[#5E6B7E] text-[13px] sm:text-[14px] md:text-[15px] lg:text-[20px] xl:text-[24px] font-bold whitespace-normal lg:whitespace-nowrap">
@@ -46,15 +54,41 @@ const Hero = () => {
             درآمدزایی کنند و دانش آموزان را با مهارت‌های واقعی به دنیای کار وصل
             نمایند.
           </p>
-          <Input
-          className="justify-end"
-          placeholder="جست و جو"
-          >
-
-          </Input>
+          <div className="w-full max-w-[450px] mt-4 mb-0 z-30 flex flex-col gap-2">
+            <span className="text-[#222325] text-sm sm:text-base font-bold text-right w-full px-1">
+             محصول مورد نظرت رو پیدا کن
+            </span>
+            <div 
+               className="relative w-full h-12 sm:h-14 bg-white rounded-xl shadow-xl flex items-center p-1 border-2 border-[#E9B443]/20 hover:border-[#E9B443] transition-all cursor-pointer"
+               onClick={handleInputClick}
+            >
+               <div className="absolute -inset-1  rounded-2xl blur opacity-30 animate-pulse -z-10"></div>
+               
+               {/* Location (Visual only) */}
+               <div className="flex items-center gap-1.5 px-3 text-gray-600 transition-colors shrink-0">
+                  <span className="text-xs sm:text-sm font-bold">تهران</span>
+                  <MapPin size={16} className="text-gray-500" />
+               </div>
+               
+               {/* Divider */}
+               <div className="w-[1px] h-6 bg-gray-200 mx-1"></div>
+               
+               {/* ReadOnly Input */}
+               <div className="flex-1 h-full flex items-center justify-end px-2">
+                   <span className="text-gray-400 text-[12px] sm:text-sm">جستجو در محصولات...</span>
+               </div>
+               
+               {/* Search Button (Icon) */}
+               <button
+                  className="w-10 h-10 sm:w-11 sm:h-11 bg-[#E9B443] text-white rounded-lg flex items-center justify-center transition-colors shrink-0"
+               >
+                 <Search size={20} className="stroke-[2.5px]" />
+               </button>
+            </div>
+          </div>
         </div>
 
-        <div className="relative z-20 order-3 flex flex-row gap-4 top-[-10px] sm:top-[-90px] md:top-[-30px] lg:top-0 lg:mt-10">
+        <div className="relative z-20 order-3 flex flex-row gap-4 top-[-30px] sm:top-[-90px] md:top-[-30px] lg:top-0 lg:mt-10 lg:mb-1">
           <ChamferedButton
             className="w-[90px] h-[43px] sm:w-[110px] lg:w-[130px] xl:w-[148px]"
             backgroundColor="#FFE9B9"
@@ -81,7 +115,7 @@ const Hero = () => {
         </div>
       </div>
 
-      <div className="absolute z-20 left-[60%] md:left-[60%] lg:left-[35%] xl:left-[36%] top-[71%] min-[375px]:top-[67%] sm:top-[73%] md:top-[65%] lg:top-[56%] xl:top-[60%] opacity-100 pointer-events-none">
+      <div className="absolute z-20 left-[60%] md:left-[60%] lg:left-[35%] xl:left-[36%] top-[71%] min-[375px]:top-[67%] sm:top-[73%] md:top-[70%] lg:top-[56%] xl:top-[60%] opacity-100 pointer-events-none">
         <Image
           src="/teacher working on her laptop.png"
           alt="Runner"
@@ -91,7 +125,9 @@ const Hero = () => {
         />
       </div>
     </section>
+
   );
 };
+
 
 export default Hero;
