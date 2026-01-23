@@ -2,7 +2,8 @@ import BASE_URL from './apiClient';
 import { mockAuthService } from './mockAuthService';
 
 // Toggle this to switch between mock and real backend
-const USE_MOCK_BACKEND = process.env.NEXT_PUBLIC_USE_MOCK_BACKEND === 'true';
+// Toggle this to switch between mock and real backend
+const USE_MOCK_BACKEND = process.env.NEXT_PUBLIC_USE_MOCK_BACKEND !== 'false';
 
 interface OtpResponse {
   message: string;
