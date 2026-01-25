@@ -1,5 +1,7 @@
 // Mock auth service for testing without backend
 
+import { id } from "zod/v4/locales";
+
 export const testOtp = '12345';
 
 interface UserData {
@@ -12,8 +14,8 @@ interface UserData {
 }
 
 export const mockAuthService = {
-  // Simulate OTP request
-  requestOtp: async (phone: string): Promise<{ success: boolean; message?: string }> => {
+ 
+  requestOtp: async (phone: string): Promise<{ success: boolean; message?: string; data?: any[]; code?: number; status?: string }> => {
     return new Promise((resolve) => {
       setTimeout(() => {
         
@@ -21,8 +23,11 @@ export const mockAuthService = {
         localStorage.setItem('mockOtp', testOtp);
         
         const response = {
-          success: true, 
-          message: `OTP sent successfully to ${phone}`
+          success: true,
+          status: "success",
+          message: "کد تایید ارسال شد",
+          data: [],
+          code: 200
         };
         
         console.group('🔐 Mock OTP Request');
@@ -41,7 +46,7 @@ export const mockAuthService = {
     });
   },
 
-  // Simulate OTP verification
+  
   verifyOtp: async (phone: string, code: string): Promise<{ success: boolean; token?: string; user?: UserData; message?: string }> => {
     return new Promise((resolve) => {
       setTimeout(() => {
@@ -100,7 +105,7 @@ export const mockAuthService = {
     });
   },
 
-  // Mock login (legacy)
+ 
   login: async (phoneNumber: string, password: string): Promise<{ success: boolean; token?: string; user?: UserData; message?: string }> => {
     return new Promise((resolve) => {
       setTimeout(() => {

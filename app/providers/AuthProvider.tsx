@@ -1,15 +1,17 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { authService } from "../services/authService";
+import { authService, getToken, saveToken, removeToken } from "../services/authService";
 
 interface UserData {
+  id?: number;
   name: string;
   phone: string;
   school: string;
   city: string;
   field: string;
   grade: string;
+  national_code?: string | null;
 }
 
 type AuthContextType = {
@@ -39,6 +41,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<UserData | null>(null);
   const [token, setToken] = useState<string | null>(null);
 
+  useEffect(() => {
+    const storedToken = getToken();
+    if (storedToken) {
+      setToken(storedToken);
+      setIsAuthenticated(true);
+    }
+    setIsLoading(false);
+  }, []);
+
   const requestOtp = async (
     phoneNumber: string,
   ): Promise<{ success: boolean; message?: string }> => {
@@ -59,13 +70,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const result = await authService.verifyOtp(phoneNumber, code);
 
       if (result.success) {
+        // Transform API user data to expected format
+        const transformedUser: UserData | null = result.user ? {
+          id: result.user.id,
+          name: `${result.user.firstname} ${result.user.lastname}`,
+          phone: result.user.phone,
+          school: result.user.school || '',
+          city: '', // Not provided in API
+          field: result.user.field || '',
+          grade: '', // Not provided in API
+          national_code: result.user.national_code,
+        } : null;
+
         setToken(result.token || null);
-        setUser(result.user || null);
+        setUser(transformedUser);
         setIsAuthenticated(true);
 
-        // Store token in localStorage
         if (result.token) {
-          localStorage.setItem("authToken", result.token);
+          saveToken(result.token);
         }
 
         return { success: true };
@@ -90,8 +112,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (result.success) {
         setToken(result.token || null);
-        setUser(result.user || null);
         setIsAuthenticated(true);
+        if (result.token) {
+          saveToken(result.token);
+        }
         return { success: true };
       } else {
         return { success: false, message: result.message || "Login failed" };
@@ -107,7 +131,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setIsAuthenticated(false);
       setUser(null);
       setToken(null);
-      localStorage.removeItem("authToken");
+      removeToken();
     } catch (error) {
       console.error("Error signing out:", error);
     }

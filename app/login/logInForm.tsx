@@ -10,9 +10,8 @@ import { LoginHeaderText } from "./login-header-text";
 import { LoginFormContent } from "./login-form-content";
 import { SmsNotification } from "./sms-notification";
 import { useAuth } from "@/app/providers/AuthProvider";
-import { mockAuthService, testOtp } from "../services/mockAuthService";
 
-type LoginStage = "PHONE_ENTRY" | "OTP_ENTRY";
+type LoginStage = "PHONE_ENTRY" | "WAITING" | "OTP_ENTRY";
 
 const RESEND_DELAY = 120; // 2 minutes
 
@@ -24,7 +23,6 @@ export function LogInForm({ onNext }: { onNext?: () => void }) {
   const [otp, setOtp] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [sentOtp, setSentOtp] = useState(testOtp);
 
   // Timer & Notification Logic
   const [timeLeft, setTimeLeft] = useState(0);
@@ -41,10 +39,14 @@ export function LogInForm({ onNext }: { onNext?: () => void }) {
   }, [timeLeft]);
 
   const startOtpProcess = () => {
-    setStage("OTP_ENTRY");
+    setStage("WAITING");
     setTimeLeft(RESEND_DELAY);
     setShowNotification(true);
     setTimeout(() => setShowNotification(false), 8000); // Hide after 5 sec
+    // After waiting, go to OTP entry
+    setTimeout(() => {
+      setStage("OTP_ENTRY");
+    }, 2000); // Wait 2 seconds to simulate waiting for SMS
   };
 
   const handlePhoneSubmit = async (e: React.FormEvent) => {
@@ -108,7 +110,7 @@ export function LogInForm({ onNext }: { onNext?: () => void }) {
   };
 
   const handleBack = () => {
-    if (stage === "OTP_ENTRY") {
+    if (stage === "OTP_ENTRY" || stage === "WAITING") {
       setStage("PHONE_ENTRY");
       setError("");
       setOtp("");
@@ -127,7 +129,6 @@ export function LogInForm({ onNext }: { onNext?: () => void }) {
   return (
     <div className="flex h-full w-full flex-col relative">
       <SmsNotification
-        code={sentOtp}
         visible={showNotification}
         onDismiss={() => setShowNotification(false)}
       />
