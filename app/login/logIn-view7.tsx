@@ -241,7 +241,7 @@ export function LoginView7({ onNext }: LoginViewProps) {
                 ))}
               </div>
 
-              {/* Sales Fields */}
+             
               {formState.salesExperience === "داشته ام" && (
                 <div className="mt-4 pt-4 border-t border-[#DCE4E8]">
                   <p className="text-[#393E46] text-sm font-bold mb-3">
