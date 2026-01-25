@@ -5,12 +5,11 @@ import { MessageSquare } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface SmsNotificationProps {
-  code: string;
   visible: boolean;
   onDismiss?: () => void;
 }
 
-export function SmsNotification({ code, visible, onDismiss }: SmsNotificationProps) {
+export function SmsNotification({ visible, onDismiss }: SmsNotificationProps) {
   if (!visible) return null
 
   return (
@@ -33,7 +32,7 @@ export function SmsNotification({ code, visible, onDismiss }: SmsNotificationPro
             <span className="text-xs text-gray-500">now</span>
          </div>
          <p className="text-sm text-gray-600 mt-1">
-            <span className="font-medium text-gray-900">DigiKara:</span> Your verification code is {code}
+            <span className="font-medium text-gray-900">DigiKara:</span> کد تایید به شماره موبایل شما ارسال شد
          </p>
       </div>
     </div>

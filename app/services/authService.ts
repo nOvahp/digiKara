@@ -1,34 +1,58 @@
 import BASE_URL from './apiClient';
 import { mockAuthService } from './mockAuthService';
 
-// Toggle this to switch between mock and real backend
-// Toggle this to switch between mock and real backend
-const USE_MOCK_BACKEND = process.env.NEXT_PUBLIC_USE_MOCK_BACKEND !== 'false';
+const TOKEN_KEY = 'auth_token';
+const USE_MOCK_BACKEND = process.env.NEXT_PUBLIC_USE_MOCK_BACKEND === 'true';
+
+export const saveToken = (token: string) => {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(TOKEN_KEY, token);
+  }
+};
+
+export const getToken = (): string | null => {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem(TOKEN_KEY);
+  }
+  return null;
+};
+
+export const removeToken = () => {
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem(TOKEN_KEY);
+  }
+};
 
 interface OtpResponse {
+  status: string;
   message: string;
-  statusCode: number;
+  data: any[];
+  code: number;
 }
 
 interface UserData {
-  name: string;
+  id: number;
+  firstname: string;
+  lastname: string;
+  national_code: string | null;
+  meta: any | null;
   phone: string;
-  school: string;
-  city: string;
-  field: string;
-  grade: string;
+  school: string | null;
+  field: string | null;
 }
 
 interface OtpCheckResponse {
-  data: UserData & {
+  status: string;
+  message: string;
+  data: {
+    user: UserData;
     token: string;
   };
-  message: string;
-  statusCode: number;
+  code: number;
 }
 
 export const authService = {
-  // Request OTP code
+ 
   requestOtp: async (phone: string): Promise<{ success: boolean; message?: string }> => {
     if (USE_MOCK_BACKEND) {
       return mockAuthService.requestOtp(phone);
@@ -45,9 +69,17 @@ export const authService = {
         }),
       });
 
+      const contentType = response.headers.get('content-type');
+      if (!contentType?.includes('application/json')) {
+        const text = await response.text();
+        console.error('Invalid response type:', contentType);
+        console.error('Response:', text.substring(0, 500));
+        return { success: false, message: 'Server returned invalid response. Check console for details.' };
+      }
+
       const data: OtpResponse = await response.json();
 
-      if (response.ok && data.statusCode === 200) {
+      if (response.ok && data.code === 200 && data.status === "success") {
         console.log('OTP requested successfully:', data.message);
         return { 
           success: true, 
@@ -66,10 +98,10 @@ export const authService = {
     }
   },
 
-  // Verify OTP code
+  
   verifyOtp: async (phone: string, code: string): Promise<{ success: boolean; token?: string; user?: UserData; message?: string }> => {
     if (USE_MOCK_BACKEND) {
-      return mockAuthService.verifyOtp(phone, code);
+      return mockAuthService.verifyOtp(phone, code) as any;
     }
     
     try {
@@ -84,21 +116,22 @@ export const authService = {
         }),
       });
 
+      const contentType = response.headers.get('content-type');
+      if (!contentType?.includes('application/json')) {
+        console.error('Invalid response type:', contentType);
+        return { success: false, message: 'Server returned invalid response' };
+      }
+
       const data: OtpCheckResponse = await response.json();
 
-      if (response.ok && data.statusCode === 200) {
+      if (response.ok && data.code === 200 && data.status === "success") {
         console.log('OTP verified successfully');
+        const token = data.data.token;
+        saveToken(token);
         return { 
           success: true, 
-          token: data.data.token, 
-          user: {
-            name: data.data.name,
-            phone: data.data.phone,
-            school: data.data.school,
-            city: data.data.city,
-            field: data.data.field,
-            grade: data.data.grade,
-          }
+          token: token, 
+          user: data.data.user
         };
       } else {
         return { 
@@ -112,7 +145,7 @@ export const authService = {
     }
   },
 
-  // Legacy login method (kept for backward compatibility)
+  
   login: async (phoneNumber: string, password: string): Promise<{ success: boolean; token?: string; user?: UserData; message?: string }> => {
     try {
       const response = await fetch(`${BASE_URL}/auth/login`, {
@@ -126,11 +159,18 @@ export const authService = {
         }),
       });
 
+      const contentType = response.headers.get('content-type');
+      if (!contentType?.includes('application/json')) {
+        console.error('Invalid response type:', contentType);
+        return { success: false, message: 'Server returned invalid response' };
+      }
+
       const data = await response.json();
 
       if (response.ok) {
         const token = data.access_token;
-        console.log(token)
+        console.log(token);
+        saveToken(token);
         return { 
           success: true, 
           token: token, 
