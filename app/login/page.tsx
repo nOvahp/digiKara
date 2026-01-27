@@ -12,6 +12,7 @@ import { LoginView6 } from "./logIn-view6";
 import { LoginView7 } from "./logIn-view7";
 import { LoginView8 } from "./logIn-view8";
 import { LoginViewNationalID } from "./login-view-nationalID";
+import { LoginViewReport } from "./login-view-report";
 
 import { LogInForm } from "./logInForm";
 
@@ -47,7 +48,11 @@ export default function LoginPage() {
   }
 
   if (step === 6) {
-    return <LoginView5 onNext={() => setStep(7)} />;
+    return <LoginView5 onNext={() => setStep(7)} onReport={() => setStep(6.5)} />;
+  }
+
+  if (step === 6.5) {
+    return <LoginViewReport onNext={() => setStep(7)} />;
   }
 
   if (step === 7) {

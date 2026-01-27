@@ -75,7 +75,7 @@ export function LoginView5({ onNext, onReport }: LoginViewProps) {
       </div>
 
       {/* Main Content */}
-      <div className="w-full max-w-[440px] mx-auto px-0 mt-12 z-10 flex flex-col gap-6 flex-1 pb-24">
+      <div className="w-full max-w-[440px] mx-auto px-6 mt-12 z-10 flex flex-col gap-6 flex-1 overflow-y-auto pb-56">
         {/* User Info Card */}
         <div className="bg-white rounded-2xl border border-[#DCE4E8] p-6 shadow-sm">
           <div className="flex flex-col gap-4">
@@ -102,6 +102,18 @@ export function LoginView5({ onNext, onReport }: LoginViewProps) {
                 </p>
               <div className="flex items-center gap-2">
                 <p className="text-[#6C7278] text-sm font-medium">شماره تماس</p>
+                
+              </div>
+            </div>
+            <div className="border-t border-[#DCE4E8]"></div>
+
+            {/* national_code */}
+            <div className="flex items-center justify-between">
+              <p className="text-[#393E46] text-base font-semibold">
+                  {user.national_code}
+                </p>
+              <div className="flex items-center gap-2">
+                <p className="text-[#6C7278] text-sm font-medium">شماره ملی</p>
                 
               </div>
             </div>
@@ -149,6 +161,26 @@ export function LoginView5({ onNext, onReport }: LoginViewProps) {
               </p>
               <p className="text-[#6C7278] text-sm font-medium">پایه</p>
             </div>
+            <div className="border-t border-[#DCE4E8]"></div>
+
+            {/* province */}
+            <div className="flex items-center justify-between">
+              
+              <p className="text-[#393E46] text-base font-semibold">
+                {user.province}
+              </p>
+              <p className="text-[#6C7278] text-sm font-medium">استان</p>
+            </div>
+            <div className="border-t border-[#DCE4E8]"></div>
+
+            {/* district */}
+            <div className="flex items-center justify-between">
+              
+              <p className="text-[#393E46] text-base font-semibold">
+                {user.district}
+              </p>
+              <p className="text-[#6C7278] text-sm font-medium">منطقه</p>
+            </div>
           </div>
         </div>
 
@@ -192,7 +224,7 @@ export function LoginView5({ onNext, onReport }: LoginViewProps) {
       </div>
 
       {/* Fixed Bottom Buttons */}
-      <div className="fixed bottom-0 left-0 right-0 w-full max-w-[440px] mx-auto p-6 bg-transparent z-50 flex flex-col gap-3">
+      <div className="fixed bottom-0 left-0 right-0 w-full max-w-[440px] mx-auto p-6 bg-transparent   z-50 flex flex-col gap-3">
         <button
           onClick={handleContinue}
           className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-2 hover:bg-[#e5bc09] transition-colors text-[#1A1C1E] text-lg font-semibold shadow-sm"

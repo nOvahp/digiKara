@@ -4,16 +4,20 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { authService, getToken, saveToken, removeToken } from "../services/authService";
 
 interface UserData {
-  id?: number;
+  id: number;
   name: string;
+  firstname: string;
+  lastname: string;
+  national_code: string | null;
+  meta: any | null;
   phone: string;
-  school: string;
-  city: string;
-  field: string;
-  grade: string;
-  national_code?: string | null;
+  school: string | null;
+  field: string | null;
+  province: string | null;
+  city: string | null;
+  district: string | null;
+  grade: string | null;
 }
-
 type AuthContextType = {
   isAuthenticated: boolean;
   isLoading: boolean;
@@ -74,12 +78,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const transformedUser: UserData | null = result.user ? {
           id: result.user.id,
           name: `${result.user.firstname} ${result.user.lastname}`,
+          firstname: result.user.firstname,
+          lastname: result.user.lastname,
+          national_code: result.user.national_code,
+          meta: result.user.meta,
           phone: result.user.phone,
           school: result.user.school || '',
-          city: '', // Not provided in API
+          city: result.user.city || '', 
           field: result.user.field || '',
-          grade: '', // Not provided in API
-          national_code: result.user.national_code,
+          grade: result.user.grade || '',
+          district: result.user.district || '',
+          province: result.user.province || '',
         } : null;
 
         setToken(result.token || null);

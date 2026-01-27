@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { LoginHeader } from "./login-header";
 import headerImg from "../../public/OtpHeader.png";
-import { LoginTopNav } from "./login-top-nav";
+
 import { LoginHeaderText } from "./login-header-text";
 import { LoginFormContent } from "./login-form-content";
 import { SmsNotification } from "./sms-notification";
@@ -133,7 +133,7 @@ export function LogInForm({ onNext }: { onNext?: () => void }) {
         onDismiss={() => setShowNotification(false)}
       />
 
-      <LoginTopNav onBackClick={handleBack} />
+     
 
       <LoginHeaderText stage={stage} phoneNumber={phoneNumber} />
 

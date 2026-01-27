@@ -39,6 +39,10 @@ interface UserData {
   phone: string;
   school: string | null;
   field: string | null;
+  province: string | null;
+  city: string | null;
+  district: string | null;
+  grade: string | null;
 }
 
 interface OtpCheckResponse {
