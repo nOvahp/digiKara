@@ -1,20 +1,21 @@
 "use client";
 
 import React from "react";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import headerImg from "../../public/OtpHeader.png";
 // import Image from "next/image";
 import { LoginHeader } from "./login-header";
 import { useAuth } from "@/app/providers/AuthProvider";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, AlertCircle } from "lucide-react";
 // import {Copy } from "lucide-react";
 
 interface LoginViewProps {
   onNext?: () => void;
+  onReport?: () => void;
 }
 
-export function LoginView5({ onNext }: LoginViewProps) {
-  // const router = useRouter();
+export function LoginView5({ onNext, onReport }: LoginViewProps) {
+  const router = useRouter();
   const { user, token, isAuthenticated } = useAuth();
   // const [copied, setCopied] = React.useState<string | null>(null);
 
@@ -27,6 +28,12 @@ export function LoginView5({ onNext }: LoginViewProps) {
   const handleContinue = () => {
     if (onNext) {
       onNext();
+    }
+  };
+
+  const handleReport = () => {
+    if (onReport) {
+      onReport();
     }
   };
 
@@ -184,13 +191,21 @@ export function LoginView5({ onNext }: LoginViewProps) {
         </div>
       </div>
 
-      {/* Fixed Bottom Button */}
-      <div className="fixed bottom-0 left-0 right-0 w-full max-w-[440px] mx-auto p-6 bg-transparent z-50">
+      {/* Fixed Bottom Buttons */}
+      <div className="fixed bottom-0 left-0 right-0 w-full max-w-[440px] mx-auto p-6 bg-transparent z-50 flex flex-col gap-3">
         <button
           onClick={handleContinue}
           className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-2 hover:bg-[#e5bc09] transition-colors text-[#1A1C1E] text-lg font-semibold shadow-sm"
         >
           ادامه
+        </button>
+        
+        <button
+          onClick={handleReport}
+          className="w-full h-[57px] bg-white border-2 border-[#FDD00A] rounded-xl flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors text-[#FDD00A] text-lg font-semibold shadow-sm"
+        >
+          <AlertCircle className="w-5 h-5" />
+          گزارش مشکل
         </button>
       </div>
     </div>
