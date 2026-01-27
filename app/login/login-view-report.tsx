@@ -14,6 +14,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 interface LoginViewProps {
   onNext?: () => void;
+  onLoginAgain?: () => void;
 }
 
 interface ReportIssue {
@@ -22,7 +23,7 @@ interface ReportIssue {
   checked: boolean;
 }
 
-export function LoginViewReport({ onNext }: LoginViewProps) {
+export function LoginViewReport({ onNext, onLoginAgain }: LoginViewProps) {
   const router = useRouter();
   const { user } = useAuth();
   const [selectedIssues, setSelectedIssues] = useState<string[]>([]);
@@ -31,6 +32,8 @@ export function LoginViewReport({ onNext }: LoginViewProps) {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
+  const [checkboxError, setCheckboxError] = useState("");
+  const [descriptionError, setDescriptionError] = useState("");
 
   const issues: ReportIssue[] = [
     { field: "name", label: "نام", checked: false },
@@ -51,11 +54,13 @@ export function LoginViewReport({ onNext }: LoginViewProps) {
 
   // Controlled change handler that accepts the checked state from Radix
   const handleIssueChange = (fieldName: string, checked: boolean | "indeterminate") => {
-    setSelectedIssues((prev) =>
-      checked === true
-        ? [...new Set([...prev, fieldName])]
-        : prev.filter((item) => item !== fieldName)
-    );
+    const newSelected = checked === true
+      ? [...new Set([...selectedIssues, fieldName])]
+      : selectedIssues.filter((item) => item !== fieldName);
+    setSelectedIssues(newSelected);
+    if (newSelected.length > 0) {
+      setCheckboxError("");
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -65,31 +70,29 @@ export function LoginViewReport({ onNext }: LoginViewProps) {
 
     // Validation
     if (selectedIssues.length === 0) {
-      setError("لطفا حداقل یک مورد را انتخاب کنید");
+      setCheckboxError("لطفا حداقل یک مورد را انتخاب کنید");
       return;
     }
 
     if (!description.trim()) {
-      setError("لطفا توضیحات مفصل بدهید");
+      setDescriptionError("لطفا توضیحات مفصل بدهید");
       return;
     }
 
     if (description.trim().length < 10) {
-      setError("توضیحات باید حداقل 10 کاراکتر باشد");
+      setDescriptionError("توضیحات باید حداقل 10 کاراکتر باشد");
+      return;
+    }
+
+    if (description.trim().length > 500) {
+      setDescriptionError("توضیحات نمی‌تواند بیشتر از 500 کاراکتر باشد");
       return;
     }
 
     setIsLoading(true);
 
     try {
-      // TODO: Connect to backend API when ready
-      // const result = await submitReport({
-      //   userId: user?.id,
-      //   phone: user?.phone,
-      //   reportedFields: selectedIssues,
-      //   description: description,
-      //   timestamp: new Date().toISOString(),
-      // });
+      
 
       console.log("📋 Report submitted:", {
         userId: user?.id,
@@ -102,7 +105,6 @@ export function LoginViewReport({ onNext }: LoginViewProps) {
       setSuccessMessage("گزارش شما با موفقیت ثبت شد. تیم پشتیبانی به زودی با شما تماس می‌گیرند.");
       setShowSuccess(true);
       
-      // Reset form
       setSelectedIssues([]);
       setDescription("");
     } catch (err) {
@@ -117,7 +119,11 @@ export function LoginViewReport({ onNext }: LoginViewProps) {
   };
 
   const handleLoginAgain = () => {
-    router.push("/login");
+    if (onLoginAgain) {
+      onLoginAgain();
+    } else {
+      router.push("/login");
+    }
   };
 
   const handleGoHome = () => {
@@ -128,7 +134,7 @@ export function LoginViewReport({ onNext }: LoginViewProps) {
     <div className="flex h-full w-full flex-col">
       <LoginHeader imageSrc={headerImg} />
 
-      {/* Header Content */}
+     
       <div className="absolute top-0 left-0 right-0 mx-auto w-full max-w-[440px] px-10 pt-15 z-10 flex flex-col gap-8">
         <div className="flex flex-col gap-2 text-right">
           <h1 className="text-2xl font-bold text-[#393E46]">
@@ -143,10 +149,10 @@ export function LoginViewReport({ onNext }: LoginViewProps) {
         </div>
       </div>
 
-      {/* Form Content */}
+      
       <div dir="rtl" className="flex flex-1 flex-col items-center justify-start bg-background rounded-t-3xl z-10 p-6 -mt-10 pt-8 gap-6 animate-in slide-in-from-bottom-10 fade-in duration-500 pb-56">
         {showSuccess ? (
-          /* Success Page */
+         
           <div className="w-full flex flex-col items-center justify-center gap-8 py-12">
             <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
               <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -164,10 +170,10 @@ export function LoginViewReport({ onNext }: LoginViewProps) {
               </p>
             </div>
           </div>
-        ) : (
-          /* Report Form */
-          <form id="report-form" onSubmit={handleSubmit} className="w-full space-y-6 overflow-y-auto max-h-[60vh]">
-          {/* Issues Selection */}
+        ) : ( 
+          
+          <form id="report-form" onSubmit={handleSubmit} className="w-full space-y-6 ">
+       
           <div className="space-y-3">
             <Label className="text-[#393E46] font-semibold text-base">
               کدام اطلاعات نادرست است؟
@@ -199,9 +205,15 @@ export function LoginViewReport({ onNext }: LoginViewProps) {
                 </label>
               ))}
             </div>
+            {checkboxError && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-3 flex gap-3">
+                <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
+                <p className="text-red-700 text-sm text-right">{checkboxError}</p>
+              </div>
+            )}
           </div>
 
-          {/* Description */}
+      
           <div className="space-y-2">
             <Label htmlFor="description" className="text-[#393E46] font-semibold text-base">
               توضیحات تفصیلی
@@ -210,17 +222,27 @@ export function LoginViewReport({ onNext }: LoginViewProps) {
               id="description"
               placeholder="لطفا توضیح دهید چه اطلاعاتی نادرست است و چه اطلاعات درست است..."
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              onChange={(e) => {
+                setDescription(e.target.value);
+                if (descriptionError) setDescriptionError("");
+              }}
               disabled={isLoading}
               className="resize-none rounded-xl border-gray-200 bg-gray-50 focus:bg-white transition-all min-h-[120px]"
               style={{ direction: "rtl", textAlign: "right" }}
+              maxLength={500}
             />
             <p className="text-[#6C7278] text-xs">
               {description.length} / 500 کاراکتر
             </p>
+            {descriptionError && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-3 flex gap-3">
+                <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
+                <p className="text-red-700 text-sm text-right">{descriptionError}</p>
+              </div>
+            )}
           </div>
 
-          {/* Error Message */}
+         
           {error && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex gap-3">
               <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
@@ -228,7 +250,7 @@ export function LoginViewReport({ onNext }: LoginViewProps) {
             </div>
           )}
 
-          {/* Success Message */}
+          
           {successMessage && (
             <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex gap-3">
               <div className="text-green-700 text-sm text-right">{successMessage}</div>
@@ -255,7 +277,7 @@ export function LoginViewReport({ onNext }: LoginViewProps) {
         )}
       </div>
 
-      {/* Fixed Bottom Buttons */}
+     
       <div className="fixed bottom-0 left-0 right-0 w-full max-w-[440px] mx-auto p-6 bg-transparent z-50 flex flex-col gap-3">
         {showSuccess ? (
           <>

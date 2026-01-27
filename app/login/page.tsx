@@ -52,7 +52,7 @@ export default function LoginPage() {
   }
 
   if (step === 6.5) {
-    return <LoginViewReport onNext={() => setStep(7)} />;
+    return <LoginViewReport onNext={() => setStep(7)} onLoginAgain={() => setStep(5)} />;
   }
 
   if (step === 7) {
