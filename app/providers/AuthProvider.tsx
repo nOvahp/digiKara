@@ -12,6 +12,8 @@ type AuthContextType = {
   requestOtp: (phoneNumber: string) => Promise<{ success: boolean; message?: string }>;
   verifyOtp: (phoneNumber: string, code: string) => Promise<{ success: boolean; message?: string }>;
   signIn: (phoneNumber: string, password: string) => Promise<{ success: boolean; message?: string }>;
+  reportIssue: (data: any) => Promise<{ success: boolean; message?: string }>;
+  saveStudentData: (data: { meta: any; training_course: boolean }) => Promise<{ success: boolean; message?: string }>;
   signOut: () => Promise<void>;
 };
 
@@ -65,6 +67,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return { success: result.success, message: result.message };
   };
 
+  const reportIssue = async (data: any) => {
+    return await authService.reportIssue(data);
+  };
+
+  const saveStudentData = async (data: { meta: any; training_course: boolean }) => {
+    return await authService.saveStudentData(data);
+  };
+
   const signOut = async () => {
     setIsAuthenticated(false);
     setUser(null);
@@ -80,6 +90,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     requestOtp,
     verifyOtp,
     signIn,
+    reportIssue,
+    saveStudentData,
     signOut,
   };
 
