@@ -18,114 +18,66 @@ export function LoginView8({ onNext }: LoginViewProps) {
   };
 
   return (
-    <div className="flex h-full w-full flex-col">
+    <div className="flex h-full w-full flex-col bg-[#F8FAFC]">
       <LoginHeader imageSrc={headerImg} />
 
-      
-      <div className="absolute top-0 left-0 right-0 mx-auto w-full max-w-[440px] px-10 pt-15 z-10 flex flex-col gap-8">
-        <div className="w-full flex justify-end items-center">
-          <span className="text-[#393E46] text-lg font-black">دیجی کارا</span>
-        </div>
-
-        
-        <div className="flex flex-col gap-4 text-right">
-          <h1 className="text-[#393E46] text-4xl font-black leading-tight">
-            عالی!
-          </h1>
-          <p className="text-[#393E46] text-sm font-semibold">
-            اطلاعات تجربیات شما ثبت شد
-          </p>
-        </div>
+      {/* Header Text */}
+      <div className="absolute top-[100px] left-0 right-0 px-8 z-10 text-right">
+        <h1 className="text-3xl font-black text-[#393E46] mb-2">عالی!</h1>
+        <p className="text-[#393E46] text-sm font-bold opacity-80 leading-relaxed">
+            اطلاعات و تجربیات شما با موفقیت ثبت شد
+        </p>
       </div>
 
-      
-      <div className="w-full max-w-[440px] mx-auto px-6 mt-12 z-10 flex flex-col gap-6 items-center justify-center flex-1 pb-24">
-       
-        <div className="flex flex-col items-center gap-6">
-          
-          <div className="relative w-32 h-32 rounded-full bg-linear-to-br from-green-400 to-green-600 flex items-center justify-center shadow-lg animate-bounce">
-            <svg
-              className="w-20 h-20 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-          </div>
-
-        
-          <div className="bg-green-50 rounded-2xl border-2 border-green-200 p-6 text-center w-full">
-            <p className="text-green-700 text-lg font-bold mb-2">
-              ✓ ثبت اطلاعات موفق
-            </p>
-            <p className="text-green-600 text-sm font-medium">
-              تجربیات و مهارت های شما با موفقیت ثبت شد. اکنون می توانید ادامه
-              دهید.
-            </p>
-          </div>
-
-          
-          <div className="bg-[#F3F6FC] rounded-2xl border border-[#DCE4E8] p-6 w-full">
-            <p className="text-[#6C7278] text-xs font-medium mb-4 text-center">
-              خلاصه اطلاعات ثبت شده
-            </p>
-            <div className="flex flex-col gap-0">
-              <div className="flex items-center justify-between py-3 border-b border-[#DCE4E8]">
-                <span className="text-[#393E46] font-bold text-sm">
-                  شامل است
-                </span>
-                <span className="text-[#6C7278] text-xs font-medium">
-                  تجربه تولید
-                </span>
-              </div>
-              <div className="flex items-center justify-between py-3 border-b border-[#DCE4E8]">
-                <span className="text-[#393E46] font-bold text-sm">
-                  شامل است
-                </span>
-                <span className="text-[#6C7278] text-xs font-medium">
-                  تجربه فروش
-                </span>
-              </div>
-              <div className="flex items-center justify-between py-3">
-                <span className="text-[#393E46] font-bold text-sm">
-                  تکمیل شده
-                </span>
-                <span className="text-[#6C7278] text-xs font-medium">
-                  دوره آموزشی
-                </span>
-              </div>
+      {/* Main Content */}
+      <div className="flex flex-col flex-1 px-6 w-full max-w-[440px] mx-auto -mt-20 z-20 pb-28">
+         <div className="bg-white rounded-[2.5rem] shadow-xl shadow-black/5 p-6 sm:p-8 animate-in slide-in-from-bottom-5 fade-in duration-500 text-center relative pt-8">
+            
+            <div className="w-24 h-24 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                 <svg
+                    className="w-12 h-12 text-green-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    >
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                    />
+                </svg>
             </div>
-          </div>
 
-         
-          {/* <div className="flex items-center justify-center gap-6">
-            <PartyPopper
-              className="w-8 h-8 text-orange-500 "
-              style={{ animationDelay: "0s" }}
-            />
-            <Sparkles
-              className="w-8 h-8 text-yellow-500 "
-              style={{ animationDelay: "0.2s" }}
-            />
-            <PartyPopper
-              className="w-8 h-8 text-orange-500 "
-              style={{ animationDelay: "0.4s" }}
-            />
-          </div> */}
-        </div>
+            <p className="text-[#393E46] text-base font-bold leading-relaxed mb-8">
+                از همکاری شما سپاسگزاریم
+            </p>
+
+            <div className="bg-[#F9FAFB] rounded-2xl p-4 text-right">
+                <p className="text-[#393E46] font-bold text-sm mb-3">خلاصه وضعیت</p>
+                <div className="space-y-2">
+                    <div className="flex justify-between items-center text-xs">
+                        <span className="text-green-600 font-bold bg-green-50 px-2 py-1 rounded-md">ثبت شده</span>
+                         <span className="text-[#6C7278]">اطلاعات هویتی</span>
+                    </div>
+                     <div className="flex justify-between items-center text-xs">
+                        <span className="text-green-600 font-bold bg-green-50 px-2 py-1 rounded-md">ثبت شده</span>
+                         <span className="text-[#6C7278]">علاقه مندی ها</span>
+                    </div>
+                     <div className="flex justify-between items-center text-xs">
+                        <span className="text-green-600 font-bold bg-green-50 px-2 py-1 rounded-md">ثبت شده</span>
+                         <span className="text-[#6C7278]">سوابق تجربی</span>
+                    </div>
+                </div>
+            </div>
+
+         </div>
       </div>
-
       
       <div className="fixed bottom-0 left-0 right-0 w-full max-w-[440px] mx-auto p-6 bg-transparent z-50">
         <button
           onClick={handleContinue}
-          className="w-full h-[57px] bg-[#FDD00A] hover:bg-[#e5bc09] rounded-xl flex items-center justify-center gap-2 transition-colors text-lg font-semibold shadow-sm text-[#1A1C1E] cursor-pointer"
+           className="w-full h-[57px] bg-[#FDD00A] rounded-2xl flex items-center justify-center gap-2 hover:bg-[#e5bc09] transition-all text-[#1A1C1E] text-lg font-bold shadow-lg shadow-[#FDD00A]/20"
         >
           ادامه
         </button>

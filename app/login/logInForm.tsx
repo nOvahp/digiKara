@@ -111,95 +111,127 @@ export function LogInForm({ onNext }: { onNext?: () => void }) {
   };
 
   return (
-    <div className="flex h-full w-full flex-col relative bg-background">
+    <div className="flex min-h-full w-full flex-col bg-[#F8FAFC]">
       <LoginHeader imageSrc={headerImg} />
 
-      <div className="flex flex-col flex-1 px-8 py-6 w-full max-w-md mx-auto">
+      {/* Header Text - Floating on top of the yellow header */}
+      <div className="absolute top-[100px] left-0 right-0 px-8 z-10 text-right">
+         <h2 className="text-3xl font-black text-[#393E46] mb-2">
+            {stage === "PHONE_ENTRY" ? "ورود | ثبت نام" : "کد تایید"}
+         </h2>
+         <p className="text-[#393E46] text-sm font-bold opacity-80 leading-relaxed">
+            {stage === "PHONE_ENTRY" 
+              ? "برای استفاده از امکانات، وارد شوید" 
+              : `کد ارسال شده به ${phoneForm.getValues("phoneNumber")} را وارد کنید`
+            }
+         </p>
+      </div>
+
+      <div className="flex flex-col flex-1 px-6 w-full max-w-[440px] mx-auto -mt-20 z-20 pb-10">
         
-        {stage === "PHONE_ENTRY" ? (
-          <form onSubmit={phoneForm.handleSubmit(onSubmitPhone)} className="flex flex-col gap-6">
-            <div className="text-right space-y-2">
-              <h2 className="text-xl font-bold text-[#393E46]">شماره موبایل خود را وارد کنید</h2>
-              <p className="text-sm text-gray-500">برای ورود یا ثبت نام، شماره موبایل خود را وارد نمایید</p>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="phone" className="text-right block">شماره موبایل</Label>
-              <Input 
-                {...phoneForm.register("phoneNumber")}
-                id="phone"
-                type="tel" 
-                placeholder="09123456789"
-                className={`text-left text-lg py-6 rounded-xl ${phoneForm.formState.errors.phoneNumber ? "border-red-500" : ""}`}
-                autoFocus
-              />
-              {phoneForm.formState.errors.phoneNumber && (
-                <p className="text-red-500 text-sm text-right">{phoneForm.formState.errors.phoneNumber.message}</p>
-              )}
-            </div>
-
-            {serverError && <p className="text-red-500 text-sm text-center">{serverError}</p>}
-
-            <Button 
-                type="submit" 
-                className="w-full bg-[#393E46] hover:bg-zinc-800 text-white font-bold py-6 text-lg rounded-xl mt-4"
-                disabled={isLoading}
-            >
-              {isLoading ? <Loader2 className="animate-spin" /> : "دریافت کد تایید"}
-            </Button>
-          </form>
-        ) : (
-          <form onSubmit={otpForm.handleSubmit(onSubmitOtp)} className="flex flex-col gap-6 animate-in fade-in slide-in-from-right-4 duration-300">
-             <div className="text-right space-y-2">
-              <h2 className="text-xl font-bold text-[#393E46]">کد تایید را وارد کنید</h2>
-              <div className="flex items-center justify-end gap-2">
-                 <button 
-                  type="button" 
-                  onClick={handleEditPhone}
-                  className="text-blue-500 text-sm font-medium hover:underline"
-                >
-                  ویرایش
-                </button>
-                <p className="text-sm text-gray-500">کد ارسال شده به {phoneForm.getValues("phoneNumber")}</p>
-              </div>
-            </div>
-
-            <div className="flex justify-center dir-ltr">
-                {/* OTP Input - Fallback if Shadcn component is not perfect, but assuming generic Input for now if component is complex */}
-                <Input 
-                  {...otpForm.register("otp")}
-                  maxLength={6}
-                  className="text-center text-3xl tracking-[1em] py-6 rounded-xl font-mono"
-                  placeholder="____"
-                  autoComplete="one-time-code"
-                />
-            </div>
-             {otpForm.formState.errors.otp && (
-                <p className="text-red-500 text-sm text-center">{otpForm.formState.errors.otp.message}</p>
-              )}
-
-            {serverError && <p className="text-red-500 text-sm text-center">{serverError}</p>}
-
-
-             <div className="flex items-center justify-between text-sm">
-                {timeLeft > 0 ? (
-                    <span className="text-gray-500">{formatTime(timeLeft)} تا ارسال مجدد</span>
-                ) : (
-                    <button type="button" onClick={handleResend} className="text-blue-500 font-medium hover:underline">
-                        ارسال مجدد کد
-                    </button>
+        {/* Main Card Container */}
+        <div className="bg-white rounded-[2.5rem] shadow-xl shadow-black/5 p-6 sm:p-8 animate-in slide-in-from-bottom-5 fade-in duration-500 relative">
+          
+          {stage === "PHONE_ENTRY" ? (
+            <form onSubmit={phoneForm.handleSubmit(onSubmitPhone)} className="flex flex-col gap-6 pt-2">
+              
+              <div className="space-y-4">
+                <Label htmlFor="phone" className="text-right block text-[#393E46] font-bold">شماره موبایل</Label>
+                <div className="relative">
+                    <Input 
+                        {...phoneForm.register("phoneNumber")}
+                        id="phone"
+                        type="tel" 
+                        inputMode="numeric"
+                        placeholder="09123456789"
+                        className={`text-left text-xl py-7 rounded-2xl bg-[#F3F6FC] border-none focus-visible:ring-1 focus-visible:ring-[#FDD00A]/50 placeholder:text-gray-400 font-semibold tracking-wide ${phoneForm.formState.errors.phoneNumber ? "ring-1 ring-red-500 bg-red-50" : ""}`}
+                        autoFocus
+                    />
+                </div>
+                {phoneForm.formState.errors.phoneNumber && (
+                  <p className="text-red-500 text-xs font-medium text-right mt-1">{phoneForm.formState.errors.phoneNumber.message}</p>
                 )}
-            </div>
+              </div>
 
-             <Button 
-                type="submit" 
-                className="w-full bg-[#393E46] hover:bg-zinc-800 text-white font-bold py-6 text-lg rounded-xl mt-4"
-                disabled={isLoading}
-            >
-               {isLoading ? <Loader2 className="animate-spin" /> : "تایید و ورود"}
-            </Button>
-          </form>
-        )}
+              {serverError && (
+                 <div className="bg-red-50 text-red-600 text-xs font-bold p-3 rounded-xl text-center border border-red-100">
+                    {serverError}
+                 </div>
+              )}
+
+              <Button 
+                  type="submit" 
+                  className="w-full bg-[#FDD00A] hover:bg-[#e5bc09] text-[#1A1C1E] font-extrabold py-8 text-xl rounded-2xl mt-4 shadow-lg shadow-[#FDD00A]/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                  disabled={isLoading}
+              >
+                {isLoading ? <Loader2 className="animate-spin w-6 h-6 text-[#1A1C1E]" /> : "دریافت کد تایید"}
+              </Button>
+
+              <div className="text-center">
+                  <p className="text-[#9CA3AF] text-xs mt-2">
+                    ورود شما به معنای پذیرش <span className="text-[#393E46] underline cursor-pointer">قوانین و مقررات</span> است
+                  </p>
+              </div>
+
+            </form>
+          ) : (
+            <form onSubmit={otpForm.handleSubmit(onSubmitOtp)} className="flex flex-col gap-6 pt-2 animate-in fade-in slide-in-from-right-8 duration-300">
+               
+               <div className="flex items-center justify-between mb-2">
+                   <button 
+                    type="button" 
+                    onClick={handleEditPhone}
+                    className="text-blue-500 text-xs font-bold bg-blue-50 px-3 py-1.5 rounded-lg hover:bg-blue-100 transition-colors"
+                  >
+                    ویرایش شماره
+                  </button>
+                  <p className="text-[#6C7278] text-sm font-medium dir-ltr">{phoneForm.getValues("phoneNumber")}</p>
+              </div>
+
+              <div className="flex justify-center dir-ltr py-2">
+                  <Input 
+                    {...otpForm.register("otp")}
+                    maxLength={6}
+                    className="text-center text-4xl tracking-[0.5em] py-8 rounded-2xl font-black bg-[#F3F6FC] border-none focus-visible:ring-1 focus-visible:ring-[#FDD00A]/50 text-[#393E46]"
+                    placeholder="— — — — — —"
+                    autoComplete="one-time-code"
+                    inputMode="numeric"
+                  />
+              </div>
+               {otpForm.formState.errors.otp && (
+                  <p className="text-red-500 text-xs font-medium text-center -mt-2">{otpForm.formState.errors.otp.message}</p>
+                )}
+
+              {serverError && (
+                 <div className="bg-red-50 text-red-600 text-xs font-bold p-3 rounded-xl text-center border border-red-100">
+                    {serverError}
+                 </div>
+              )}
+
+               <div className="flex items-center justify-center text-sm">
+                  {timeLeft > 0 ? (
+                      <div className="flex items-center gap-2 text-[#6C7278] font-medium bg-gray-50 px-4 py-2 rounded-full">
+                          <Loader2 className="w-4 h-4 animate-spin opacity-50" />
+                          <span>{formatTime(timeLeft)} تا ارسال مجدد</span>
+                      </div>
+                  ) : (
+                      <button type="button" onClick={handleResend} className="text-blue-500 font-bold hover:underline bg-blue-50 px-4 py-2 rounded-full hover:bg-blue-100 transition-colors">
+                          ارسال مجدد کد پیامک
+                      </button>
+                  )}
+              </div>
+
+               <Button 
+                  type="submit" 
+                  className="w-full bg-[#FDD00A] hover:bg-[#e5bc09] text-[#1A1C1E] font-extrabold py-8 text-xl rounded-2xl mt-4 shadow-lg shadow-[#FDD00A]/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                  disabled={isLoading}
+              >
+                 {isLoading ? <Loader2 className="animate-spin w-6 h-6 text-[#1A1C1E]" /> : "تایید و ورود"}
+              </Button>
+            </form>
+          )}
+
+        </div>
         
       </div>
     </div>

@@ -61,73 +61,61 @@ export function LoginView4({ onNext }: LoginViewProps) {
   };
 
   return (
-   <div className="flex h-full w-full flex-col">
-      
+   <div className="flex h-full w-full flex-col bg-[#F8FAFC]">
       <LoginHeader imageSrc={headerImg} />
-      {/* Header Content */}
-      <div className="absolute top-0 left-0 right-0 mx-auto w-full max-w-[440px] px-10 pt-15 z-10 flex flex-col gap-8">
-         <div className="w-full flex justify-end items-center">
-            <span className="text-[#393E46] text-lg font-black">دیجی کارا</span>
-         </div>
-         
-         {/* Title Section */}
-         <div className="flex flex-col gap-4 text-right">
-            <h1 className="text-[#393E46] text-4xl font-black leading-tight">
-                نوع حساب کاربری
-            </h1>
-            <p className="text-[#393E46] text-sm font-semibold">
-                نوع حساب کاربری خود را انتخاب کنید.
-            </p>
-         </div>
+
+      {/* Header Text */}
+      <div className="absolute top-[100px] left-0 right-0 px-8 z-10 text-right">
+        <h1 className="text-3xl font-black text-[#393E46] mb-2">نوع حساب</h1>
+        <p className="text-[#393E46] text-sm font-bold opacity-80 leading-relaxed">
+           لطفا نوع کاربری خود را انتخاب کنید
+        </p>
       </div>
+
       {/* Main Content */}
-      <div className="w-full max-w-[440px] mx-auto px-0 mt-12 z-10 flex flex-col gap-8 flex-1 pb-24">
-        
-        {/* Title Section */}
-
-
-        {/* Account Types List */}
-        <div className="flex flex-col gap-6 mt-4">
-            {accountTypes.map((type) => (
-                <div 
-                    key={type.id}
-                    onClick={() => setSelectedType(type.id)}
-                    className="flex justify-between items-center cursor-pointer group"
-                >
-                    {/* Left: Radio */}
-                    <div className="relative w-6 h-6 flex items-center justify-center shrink-0">
-                        <div className={`w-6 h-6 rounded-full border-[1.5px] transition-colors ${selectedType === type.id ? 'border-[#0C1415]' : 'border-[#D1D1D6]'}`}></div>
-                        {selectedType === type.id && (
-                            <div className="absolute w-3 h-3 bg-[#0C1415] rounded-full"></div>
-                        )}
-                    </div>
-
-                    {/* Right: Icon & Text */}
-                    <div className="flex items-center gap-4">
-                        <div className="flex flex-col gap-1 text-right">
-                            <span className="text-[#393E46] text-base font-black">{type.title}</span>
-                            <span className="text-[#393E46] text-sm font-semibold">{type.subtitle}</span>
+       <div className="flex flex-col flex-1 px-6 w-full max-w-[440px] mx-auto -mt-20 z-20 pb-28"> 
+        <div className="bg-white rounded-[2.5rem] shadow-xl shadow-black/5 p-6 sm:p-8 animate-in slide-in-from-bottom-5 fade-in duration-500 relative pt-8">
+            
+            <div className="flex flex-col gap-4">
+                {accountTypes.map((type) => (
+                    <div 
+                        key={type.id}
+                        onClick={() => setSelectedType(type.id)}
+                        className={`flex justify-between items-center cursor-pointer group p-3 rounded-2xl border transition-all ${
+                            selectedType === type.id 
+                            ? "bg-[#F3F6FC] border-[#FDD00A] shadow-sm" 
+                            : "bg-white border-transparent hover:bg-gray-50 hover:border-gray-100"
+                        }`}
+                    >
+                        {/* Radio */}
+                         <div className="relative w-6 h-6 flex items-center justify-center shrink-0">
+                            <div className={`w-5 h-5 rounded-full border-[1.5px] transition-colors ${selectedType === type.id ? 'border-[#FDD00A]' : 'border-[#D1D1D6]'}`}></div>
+                            {selectedType === type.id && (
+                                <div className="absolute w-2.5 h-2.5 bg-[#FDD00A] rounded-full"></div>
+                            )}
                         </div>
-                        <div className="w-[52px] h-[52px] rounded-full border border-black/10 bg-white flex items-center justify-center shrink-0 overflow-hidden">
-                            {type.icon}
+
+                        <div className="flex items-center gap-3 flex-1 justify-end">
+                            <div className="flex flex-col gap-0.5 text-right">
+                                <span className="text-[#393E46] text-sm font-bold">{type.title}</span>
+                                <span className="text-[#9CA3AF] text-xs font-medium">{type.subtitle}</span>
+                            </div>
+                            <div className="w-12 h-12 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden">
+                                {type.icon}
+                            </div>
                         </div>
                     </div>
-                    
-                    
-
-                </div>
-            ))}
+                ))}
+            </div>
         </div>
-
       </div>
 
-      {/* Fixed Bottom Button */}
       <div className="fixed bottom-0 left-0 right-0 w-full max-w-[440px] mx-auto p-6 bg-transparent z-50">
            <button 
                 onClick={handleSelect}
-                className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-2 hover:bg-[#e5bc09] transition-colors text-[#1A1C1E] text-lg font-semibold shadow-sm"
+                className="w-full h-[57px] bg-[#FDD00A] rounded-2xl flex items-center justify-center gap-2 hover:bg-[#e5bc09] transition-colors text-[#1A1C1E] text-lg font-bold shadow-lg shadow-[#FDD00A]/20"
             >
-                انتخاب
+                شروع کنید
             </button>
       </div>
 

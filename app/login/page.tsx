@@ -45,7 +45,7 @@ export default function LoginPage() {
     case Step.INTRO_3:
       return <LoginView3 onNext={() => setStep(Step.INTRO_3_5)} />;
     case Step.INTRO_3_5:
-      return <LoginView35 onNext={() => setStep(Step.LOGIN_LANDING)} />;
+      return <LoginView35 onNext={() => setStep(Step.LOGIN_FORM)} />;
     
     // Main Login Flow
     case Step.LOGIN_LANDING:

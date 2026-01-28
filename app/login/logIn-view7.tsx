@@ -142,9 +142,12 @@ export function LoginView7({ onNext }: LoginViewProps) {
 
   // --- Render Steps ---
 
+  // --- Render Steps ---
+  // Modified to remove the individual card wrapper since the parent will have it
+
   const renderStep1 = () => (
     <div className="flex flex-col gap-6 animate-in slide-in-from-right-8 fade-in duration-300">
-      <div className="bg-white border border-[#DCE4E8] rounded-2xl p-5 shadow-sm">
+      <div className="p-1">
         <h3 className="text-[#393E46] font-bold text-lg mb-4 text-right">تجربه تولید محصولات</h3>
         <p className="text-[#6C7278] text-sm mb-6 text-right">آیا سابقه تولید محصولی را دارید؟</p>
         
@@ -152,10 +155,10 @@ export function LoginView7({ onNext }: LoginViewProps) {
           {["داشته ام", "نداشته ام"].map((option) => (
             <label
               key={option}
-              className={`flex items-center gap-3 cursor-pointer p-3 rounded-xl border transition-all ${
+              className={`flex items-center gap-3 cursor-pointer p-4 rounded-2xl border transition-all ${
                 formState.productionExperience === option 
                   ? "bg-[#FDD00A]/10 border-[#FDD00A]" 
-                  : "bg-white border-transparent hover:bg-gray-50"
+                  : "bg-white border-[#F3F4F6] hover:bg-gray-50"
               }`}
             >
                <input
@@ -178,7 +181,7 @@ export function LoginView7({ onNext }: LoginViewProps) {
                 {fieldOptions.map((field) => (
                   <label
                     key={field}
-                    className="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-[#F3F6FC] transition-colors"
+                    className="flex items-center gap-3 cursor-pointer p-3 rounded-xl hover:bg-[#F3F6FC] transition-colors"
                   >
                     <input
                       type="checkbox"
@@ -198,7 +201,7 @@ export function LoginView7({ onNext }: LoginViewProps) {
 
   const renderStep2 = () => (
     <div className="flex flex-col gap-6 animate-in slide-in-from-right-8 fade-in duration-300">
-      <div className="bg-white border border-[#DCE4E8] rounded-2xl p-5 shadow-sm">
+      <div className="p-1">
         <h3 className="text-[#393E46] font-bold text-lg mb-4 text-right">تجربه فروش محصولات</h3>
         <p className="text-[#6C7278] text-sm mb-6 text-right">آیا سابقه فروش محصولی را دارید؟</p>
         
@@ -206,10 +209,10 @@ export function LoginView7({ onNext }: LoginViewProps) {
           {["داشته ام", "نداشته ام"].map((option) => (
             <label
               key={option}
-              className={`flex items-center gap-3 cursor-pointer p-3 rounded-xl border transition-all ${
+              className={`flex items-center gap-3 cursor-pointer p-4 rounded-2xl border transition-all ${
                 formState.salesExperience === option 
                   ? "bg-[#FDD00A]/10 border-[#FDD00A]" 
-                  : "bg-white border-transparent hover:bg-gray-50"
+                  : "bg-white border-[#F3F4F6] hover:bg-gray-50"
               }`}
             >
                <input
@@ -232,7 +235,7 @@ export function LoginView7({ onNext }: LoginViewProps) {
                 {fieldOptions.map((field) => (
                   <label
                     key={field}
-                    className="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-[#F3F6FC] transition-colors"
+                    className="flex items-center gap-3 cursor-pointer p-3 rounded-xl hover:bg-[#F3F6FC] transition-colors"
                   >
                     <input
                       type="checkbox"
@@ -252,7 +255,7 @@ export function LoginView7({ onNext }: LoginViewProps) {
 
   const renderStep3 = () => (
     <div className="flex flex-col gap-6 animate-in slide-in-from-right-8 fade-in duration-300">
-      <div className="bg-white border border-[#DCE4E8] rounded-2xl p-5 shadow-sm">
+      <div className="p-1">
         <h3 className="text-[#393E46] font-bold text-lg mb-4 text-right">دوره آموزشی</h3>
         <p className="text-[#6C7278] text-sm mb-6 text-right leading-relaxed">
           آیا دوره آموزشی در زمینه راه اندازی کسب و کار اینترنتی گذرانده اید؟
@@ -262,10 +265,10 @@ export function LoginView7({ onNext }: LoginViewProps) {
           {["بلی", "خیر"].map((option) => (
             <label
               key={option}
-              className={`flex items-center gap-3 cursor-pointer p-3 rounded-xl border transition-all ${
+              className={`flex items-center gap-3 cursor-pointer p-4 rounded-2xl border transition-all ${
                 formState.businessCourse === option 
                   ? "bg-[#FDD00A]/10 border-[#FDD00A]" 
-                  : "bg-white border-transparent hover:bg-gray-50"
+                  : "bg-white border-[#F3F4F6] hover:bg-gray-50"
               }`}
             >
                <input
@@ -289,20 +292,20 @@ export function LoginView7({ onNext }: LoginViewProps) {
       <LoginHeader imageSrc={headerImg} />
 
       {/* Header Info */}
-      <div className="absolute top-0 left-0 right-0 mx-auto w-full max-w-[440px] px-8 pt-12 z-10 flex flex-col gap-6">
+      <div className="absolute top-[80px] left-0 right-0 mx-auto w-full max-w-[440px] px-8 z-10 flex flex-col gap-4">
          {/* Top Bar with Back Button */}
-         <div className="w-full flex justify-between items-center">
+         <div className="w-full flex justify-between items-center mb-1">
             {currentStep > 1 ? (
               <button 
                 onClick={handleBack}
-                className="rounded-full p-2 bg-white/20 backdrop-blur-sm text-[#393E46] hover:bg-white/40 transition-colors"
+                className="rounded-full p-2 bg-[#FDD00A]/20 backdrop-blur-sm text-[#393E46] hover:bg-[#FDD00A]/40 transition-colors"
               >
                  <ArrowRight className="w-5 h-5" /> 
               </button>
             ) : (
-                <div /> // Spacer
+                <div /> 
             )}
-            <span className="text-[#393E46] text-lg font-black tracking-tight">دیجی کارا</span>
+            <span className="text-[#393E46] text-lg font-black tracking-tight opacity-50"> </span>
          </div>
 
         <div className="flex flex-col gap-2 text-right">
@@ -311,50 +314,53 @@ export function LoginView7({ onNext }: LoginViewProps) {
              {currentStep === 2 && "تجربه فروش"}
              {currentStep === 3 && "آموزش کسب و کار"}
           </h1>
-          <p className="text-[#555] text-sm font-medium">
-             مرحله {currentStep} از {totalSteps}
-          </p>
-          
-          {/* Simple Progress Bar */}
-          <div className="w-full h-1.5 bg-gray-200/50 rounded-full mt-2 overflow-hidden" dir="rtl">
-            <div 
-                className="h-full bg-[#393E46] rounded-full transition-all duration-500 ease-out"
-                style={{ width: `${(currentStep / totalSteps) * 100}%` }}
-            />
+          <div className="flex items-center justify-between">
+              <div className="w-32 h-1.5 bg-black/5 rounded-full overflow-hidden" dir="rtl">
+                <div 
+                    className="h-full bg-[#393E46] rounded-full transition-all duration-500 ease-out"
+                    style={{ width: `${(currentStep / totalSteps) * 100}%` }}
+                />
+              </div>
+              <p className="text-[#393E46] text-xs font-bold opacity-70">
+                 مرحله {currentStep} از {totalSteps}
+              </p>
           </div>
         </div>
       </div>
 
       {/* Main Content Area */}
-      <div className="w-full max-w-[440px] mx-auto px-6 mt-16 z-10 flex flex-col flex-1 pb-28 overflow-y-auto" dir="rtl">
-         {currentStep === 1 && renderStep1()}
-         {currentStep === 2 && renderStep2()}
-         {currentStep === 3 && renderStep3()}
-      </div>
+      <div className="flex flex-col flex-1 px-6 w-full max-w-[440px] mx-auto -mt-16 z-20 pb-10">
+         <div className="bg-white rounded-[2.5rem] shadow-xl shadow-black/5 p-6 sm:p-8 animate-in slide-in-from-bottom-5 fade-in duration-500 relative pt-8 min-h-[400px] flex flex-col justify-between">
+            
+            <div dir="rtl">
+                {currentStep === 1 && renderStep1()}
+                {currentStep === 2 && renderStep2()}
+                {currentStep === 3 && renderStep3()}
+            </div>
 
-      {/* Fixed Bottom Action Bar */}
-      <div className="fixed bottom-0 left-0 right-0 w-full max-w-[440px] mx-auto p-6 bg-gradient-to-t from-white via-white to-transparent z-50">
-        <button
-          onClick={handleNext}
-          disabled={!isCurrentStepValid() || isLoading}
-          className={`w-full h-[56px] rounded-2xl flex items-center justify-center gap-2 transition-all duration-200 text-lg font-bold shadow-lg shadow-[#FDD00A]/20 ${
-            isCurrentStepValid()
-              ? "bg-[#FDD00A] hover:bg-[#FDD00A]/90 hover:scale-[1.02] active:scale-[0.98] text-[#1A1C1E] cursor-pointer"
-              : "bg-gray-100 text-gray-400 cursor-not-allowed"
-          }`}
-        >
-          {isLoading ? (
-            <Loader2 className="animate-spin w-6 h-6" />
-          ) : (
-             <>
-               {currentStep === totalSteps ? "ثبت اطلاعات" : "مرحله بعد"}
-               
-               {currentStep < totalSteps && (
-                 <ChevronLeft className="w-5 h-5 mr-1" />
-               )}
-             </>
-          )}
-        </button>
+            <button
+            onClick={handleNext}
+            disabled={!isCurrentStepValid() || isLoading}
+            className={`w-full h-[60px] rounded-2xl flex items-center justify-center gap-2 transition-all duration-200 text-lg font-bold shadow-lg shadow-[#FDD00A]/20 mt-8 ${
+                isCurrentStepValid()
+                ? "bg-[#FDD00A] hover:bg-[#e5bc09] hover:scale-[1.02] active:scale-[0.98] text-[#1A1C1E] cursor-pointer"
+                : "bg-gray-100 text-gray-400 cursor-not-allowed"
+            }`}
+            >
+            {isLoading ? (
+                <Loader2 className="animate-spin w-6 h-6" />
+            ) : (
+                <>
+                {currentStep === totalSteps ? "ثبت اطلاعات" : "مرحله بعد"}
+                
+                {currentStep < totalSteps && (
+                    <ChevronLeft className="w-5 h-5 mr-1" />
+                )}
+                </>
+            )}
+            </button>
+
+         </div>
       </div>
     </div>
   );
