@@ -71,7 +71,7 @@ export function LoginView5({ onNext, onReport }: LoginViewProps) {
             <div className="flex items-center justify-between p-5 bg-[#F9FAFB]">
               <div className="text-right">
                 <p className="text-[#393E46] text-lg font-black">
-                  {user.name}
+                  {user.firstname} {user.lastname}
                 </p>
               </div>
               <p className="text-[#9CA3AF] text-xs font-bold">نام و نام خانوادگی</p>
