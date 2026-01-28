@@ -49,6 +49,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Ensure local state is updated
       setUser(userData);
       setToken(result.token || null);
+      console.log("🔐 [AuthProvider] Token Received:", result.token);
       setIsAuthenticated(true);
     }
 
