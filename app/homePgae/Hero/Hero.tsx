@@ -16,7 +16,7 @@ const Hero = () => {
 
   return (
 
-    <section className="relative flex flex-col lg:flex-row items-center justify-between h-[750px] sm:h-[800px] md:h-[950px] lg:h-[550px] xl:h-[650px] 2xl:h-[850px] overflow-hidden bg-white lg:pl-10 xl:pl-20 2xl:pl-32 lg:pr-0 lg:py-0 mb-[5%]">
+    <section className="relative flex flex-col lg:flex-row items-center justify-between h-[750px] sm:h-[800px] md:h-[950px] lg:h-[550px] xl:h-[650px] 2xl:h-[850px] overflow-hidden bg-white lg:pl-10 xl:pl-20 2xl:pl-32 lg:pr-0 lg:py-0 mb-[5%] ">
       <div className="absolute z-0 left-0 top-[370px] min-[375px]:top-[330px] sm:top-[300px] sm:left-[20px] md:top-[37%] md:left-[40] lg:left-0 lg:top-[-5%] xl:left-0 xl:top-[-3%] opacity-80">
         <Image
           src="/man spins an object in virtual reality.png"

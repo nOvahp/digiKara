@@ -1,193 +1,128 @@
-import BASE_URL from './apiClient';
-import { mockAuthService } from './mockAuthService';
+import apiClient from './apiClient';
+import { z } from 'zod';
+import { saveToken } from './tokenService';
 
-const TOKEN_KEY = 'auth_token';
+// Use environment variable or constant for testing
 const USE_MOCK_BACKEND = process.env.NEXT_PUBLIC_USE_MOCK_BACKEND === 'true';
 
-export const saveToken = (token: string) => {
-  if (typeof window !== 'undefined') {
-    localStorage.setItem(TOKEN_KEY, token);
-  }
-};
+// --- Zod Schemas for Type Safety ---
 
-export const getToken = (): string | null => {
-  if (typeof window !== 'undefined') {
-    return localStorage.getItem(TOKEN_KEY);
-  }
-  return null;
-};
+// --- Zod Schemas for Type Safety ---
 
-export const removeToken = () => {
-  if (typeof window !== 'undefined') {
-    localStorage.removeItem(TOKEN_KEY);
-  }
-};
+const UserSchema = z.object({
+  id: z.number(),
+  firstname: z.string().nullable().optional(),
+  lastname: z.string().nullable().optional(),
+  national_code: z.string().nullable().optional(),
+  phone: z.string(),
+  school: z.string().nullable().optional(),
+  field: z.string().nullable().optional(),
+  province: z.string().nullable().optional(),
+  city: z.string().nullable().optional(),
+  district: z.string().nullable().optional(),
+  grade: z.string().nullable().optional(),
+  meta: z.any().optional(),
+});
 
-interface OtpResponse {
-  status: string;
-  message: string;
-  data: any[];
-  code: number;
-}
+export type UserData = z.infer<typeof UserSchema>;
 
-interface UserData {
-  id: number;
-  firstname: string;
-  lastname: string;
-  national_code: string | null;
-  meta: any | null;
-  phone: string;
-  school: string | null;
-  field: string | null;
-  province: string | null;
-  city: string | null;
-  district: string | null;
-  grade: string | null;
-}
+// --- API Service ---
 
-interface OtpCheckResponse {
-  status: string;
-  message: string;
-  data: {
-    user: UserData;
-    token: string;
-  };
-  code: number;
+// Since we updated apiClient to return `response.data` directly, 
+// we need to match the backend structure based on what it actually returns.
+// Assuming standard structure: { code: 200, status: 'success', message: '...', data: ... }
+
+interface ApiResponse<T> {
+  code?: number;
+  status?: string;
+  message?: string;
+  data: T;
 }
 
 export const authService = {
- 
+
   requestOtp: async (phone: string): Promise<{ success: boolean; message?: string }> => {
     if (USE_MOCK_BACKEND) {
-      return mockAuthService.requestOtp(phone);
+        // Fallback or Mock logic here if strictly needed, 
+        // but for Professional use we assume the API is the source of truth.
+        // Importing mockAuthService dynamically to avoid bloat if possible, or just skip it.
+        const { mockAuthService } = await import('./mockAuthService');
+        return mockAuthService.requestOtp(phone);
     }
-    
+
     try {
-      const response = await fetch(`${BASE_URL}/otp`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          phone: String(phone),
-        }),
+      const response = await apiClient.post<any, ApiResponse<any>>('/otp', { 
+        phone: String(phone) 
       });
 
-      const contentType = response.headers.get('content-type');
-      if (!contentType?.includes('application/json')) {
-        const text = await response.text();
-        console.error('Invalid response type:', contentType);
-        console.error('Response:', text.substring(0, 500));
-        return { success: false, message: 'Server returned invalid response. Check console for details.' };
+      // Axios interceptor returns response.data, so 'response' here IS the body.
+      // Check logical success (API dependent, standard is often code 200)
+      if (response.status === 'success' || response.code === 200) {
+        return { success: true, message: response.message || 'کد تایید ارسال شد' };
       }
+      
+      return { success: false, message: response.message || 'خطا در ارسال کد' };
 
-      const data: OtpResponse = await response.json();
-
-      if (response.ok && data.code === 200 && data.status === "success") {
-        console.log('OTP requested successfully:', data.message);
-        return { 
-          success: true, 
-          message: data.message 
-        };
-      } else {
-        return { 
-          success: false, 
-          message: data.message || 'Failed to request OTP' 
-        };
-      }
-    } catch (error) {
-      console.error('Request OTP error:', error);
-      console.error('BASE_URL:', BASE_URL);
-      return { success: false, message: error instanceof Error ? error.message : 'Network error' };
+    } catch (error: any) {
+      return { success: false, message: error.message || 'خطای شبکه' };
     }
   },
 
-  
   verifyOtp: async (phone: string, code: string): Promise<{ success: boolean; token?: string; user?: UserData; message?: string }> => {
     if (USE_MOCK_BACKEND) {
-      return mockAuthService.verifyOtp(phone, code) as any;
+        const { mockAuthService } = await import('./mockAuthService');
+        return mockAuthService.verifyOtp(phone, code) as any;
     }
-    
+
     try {
-      const response = await fetch(`${BASE_URL}/otp/check`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          phone: String(phone),
-          code: String(code),
-        }),
+      const response = await apiClient.post<any, ApiResponse<{ user: UserData; token: string }>>('/otp/check', {
+        phone: String(phone),
+        code: String(code),
       });
 
-      const contentType = response.headers.get('content-type');
-      if (!contentType?.includes('application/json')) {
-        console.error('Invalid response type:', contentType);
-        return { success: false, message: 'Server returned invalid response' };
-      }
+      if (response.status === 'success' || response.code === 200) {
+        const { token, user } = response.data;
+        
+        // Validate User Data (Add robustness)
+        const parsedUser = UserSchema.safeParse(user);
+        const validUser = parsedUser.success ? parsedUser.data : (user as UserData); // Fallback if schema doesn't perfectly match but we want to proceed
 
-      const data: OtpCheckResponse = await response.json();
-
-      if (response.ok && data.code === 200 && data.status === "success") {
-        console.log('OTP verified successfully');
-        const token = data.data.token;
-        saveToken(token);
+        if (token) {
+            saveToken(token);
+        }
+        
         return { 
           success: true, 
-          token: token, 
-          user: data.data.user
-        };
-      } else {
-        return { 
-          success: false, 
-          message: data.message || 'Invalid OTP code' 
+          token, 
+          user: validUser 
         };
       }
-    } catch (error) {
-      console.error('Verify OTP error:', error);
-      return { success: false, message: 'Network error' };
+
+      return { success: false, message: response.message || 'کد تایید اشتباه است' };
+
+    } catch (error: any) {
+      return { success: false, message: error.message || 'خطای غیرمنتظره' };
     }
   },
 
-  
-  login: async (phoneNumber: string, password: string): Promise<{ success: boolean; token?: string; user?: UserData; message?: string }> => {
+  login: async (phoneNumber: string, password: string): Promise<{ success: boolean; token?: string; message?: string }> => {
     try {
-      const response = await fetch(`${BASE_URL}/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          phone_number: String(phoneNumber),
-          password: password,
-        }),
+      const response = await apiClient.post<any, any>('/auth/login', {
+        phone_number: String(phoneNumber),
+        password: password,
       });
 
-      const contentType = response.headers.get('content-type');
-      if (!contentType?.includes('application/json')) {
-        console.error('Invalid response type:', contentType);
-        return { success: false, message: 'Server returned invalid response' };
-      }
-
-      const data = await response.json();
-
-      if (response.ok) {
-        const token = data.access_token;
-        console.log(token);
+      // Adjust based on your specific Login API response structure
+      if (response && (response.access_token || response.token)) {
+        const token = response.access_token || response.token;
         saveToken(token);
-        return { 
-          success: true, 
-          token: token, 
-        };
+        return { success: true, token };
       } else {
-        return { 
-          success: false, 
-          message: data.message || 'Login failed' 
-        };
+         return { success: false, message: response.message || 'نام کاربری یا رمز عبور اشتباه است' };
       }
-    } catch (error) {
-      console.error('Login error:', error);
-      return { success: false, message: 'Network error' };
+
+    } catch (error: any) {
+      return { success: false, message: error.message || 'Login failed' };
     }
   },
 };

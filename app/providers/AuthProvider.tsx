@@ -1,39 +1,17 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { authService, getToken, saveToken, removeToken } from "../services/authService";
+import { authService, UserData } from "../services/authService";
+import { getToken, saveToken, removeToken } from "../services/tokenService";
 
-interface UserData {
-  id: number;
-  name: string;
-  firstname: string;
-  lastname: string;
-  national_code: string | null;
-  meta: any | null;
-  phone: string;
-  school: string | null;
-  field: string | null;
-  province: string | null;
-  city: string | null;
-  district: string | null;
-  grade: string | null;
-}
 type AuthContextType = {
   isAuthenticated: boolean;
   isLoading: boolean;
   user: UserData | null;
   token: string | null;
-  requestOtp: (
-    phoneNumber: string,
-  ) => Promise<{ success: boolean; message?: string }>;
-  verifyOtp: (
-    phoneNumber: string,
-    code: string,
-  ) => Promise<{ success: boolean; message?: string }>;
-  signIn: (
-    phoneNumber: string,
-    password: string,
-  ) => Promise<{ success: boolean; message?: string }>;
+  requestOtp: (phoneNumber: string) => Promise<{ success: boolean; message?: string }>;
+  verifyOtp: (phoneNumber: string, code: string) => Promise<{ success: boolean; message?: string }>;
+  signIn: (phoneNumber: string, password: string) => Promise<{ success: boolean; message?: string }>;
   signOut: () => Promise<void>;
 };
 
@@ -46,104 +24,52 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
+    // Check for token on mount
     const storedToken = getToken();
     if (storedToken) {
       setToken(storedToken);
       setIsAuthenticated(true);
+      // Optional: Fetch user profile here if token exists but user data is missing
     }
     setIsLoading(false);
   }, []);
 
-  const requestOtp = async (
-    phoneNumber: string,
-  ): Promise<{ success: boolean; message?: string }> => {
-    try {
-      const result = await authService.requestOtp(phoneNumber);
-      return result;
-    } catch (error) {
-      console.error("Request OTP error:", error);
-      return { success: false, message: "An unexpected error occurred" };
-    }
+  const requestOtp = async (phoneNumber: string) => {
+    return await authService.requestOtp(phoneNumber);
   };
 
-  const verifyOtp = async (
-    phoneNumber: string,
-    code: string,
-  ): Promise<{ success: boolean; message?: string }> => {
-    try {
-      const result = await authService.verifyOtp(phoneNumber, code);
+  const verifyOtp = async (phoneNumber: string, code: string) => {
+    const result = await authService.verifyOtp(phoneNumber, code);
 
-      if (result.success) {
-        // Transform API user data to expected format
-        const transformedUser: UserData | null = result.user ? {
-          id: result.user.id,
-          name: `${result.user.firstname} ${result.user.lastname}`,
-          firstname: result.user.firstname,
-          lastname: result.user.lastname,
-          national_code: result.user.national_code,
-          meta: result.user.meta,
-          phone: result.user.phone,
-          school: result.user.school || '',
-          city: result.user.city || '', 
-          field: result.user.field || '',
-          grade: result.user.grade || '',
-          district: result.user.district || '',
-          province: result.user.province || '',
-        } : null;
-
-        setToken(result.token || null);
-        setUser(transformedUser);
-        setIsAuthenticated(true);
-
-        if (result.token) {
-          saveToken(result.token);
-        }
-
-        return { success: true };
-      } else {
-        return {
-          success: false,
-          message: result.message || "OTP verification failed",
-        };
-      }
-    } catch (error) {
-      console.error("Verify OTP error:", error);
-      return { success: false, message: "An unexpected error occurred" };
+    if (result.success && result.user) {
+      const userData = result.user;
+      
+      // Ensure local state is updated
+      setUser(userData);
+      setToken(result.token || null);
+      setIsAuthenticated(true);
     }
+
+    return { success: result.success, message: result.message };
   };
 
-  const signIn = async (
-    phoneNumber: string,
-    password: string,
-  ): Promise<{ success: boolean; message?: string }> => {
-    try {
-      const result = await authService.login(phoneNumber, password);
+  const signIn = async (phoneNumber: string, password: string) => {
+    const result = await authService.login(phoneNumber, password);
 
-      if (result.success) {
-        setToken(result.token || null);
-        setIsAuthenticated(true);
-        if (result.token) {
-          saveToken(result.token);
-        }
-        return { success: true };
-      } else {
-        return { success: false, message: result.message || "Login failed" };
-      }
-    } catch (error) {
-      console.error("Sign in error:", error);
-      return { success: false, message: "An unexpected error occurred" };
+    if (result.success && result.token) {
+      setToken(result.token);
+      setIsAuthenticated(true);
+      // If login endpoint returns user data, set it here. Otherwise, you might need a separate /me call.
     }
+
+    return { success: result.success, message: result.message };
   };
 
   const signOut = async () => {
-    try {
-      setIsAuthenticated(false);
-      setUser(null);
-      setToken(null);
-      removeToken();
-    } catch (error) {
-      console.error("Error signing out:", error);
-    }
+    setIsAuthenticated(false);
+    setUser(null);
+    setToken(null);
+    removeToken();
   };
 
   const value: AuthContextType = {
