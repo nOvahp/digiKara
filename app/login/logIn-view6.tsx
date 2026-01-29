@@ -43,11 +43,19 @@ export function LoginView6({ onNext }: LoginViewProps) {
     );
   };
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (selectedInterests.length >= 2) {
-      console.log("Selected Interests:", selectedInterests);
-      if (onNext) {
-        onNext();
+      // Dynamic import to avoid circular dependency issues if any, or just direct
+      const { authService } = await import("@/app/services/authService");
+
+      console.log("🚀 Payload being sent (IDs):", selectedInterests);
+
+      const result = await authService.addFavorites(selectedInterests);
+
+      if (result.success) {
+        if (onNext) {
+          onNext();
+        }
       }
     }
   };

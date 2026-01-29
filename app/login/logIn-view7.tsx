@@ -109,6 +109,9 @@ export function LoginView7({ onNext }: LoginViewProps) {
   };
 
   const handleSubmit = async () => {
+    // Only validate if user is experienced or has courses
+    // For now, simpler validation logic based on steps
+    
     setIsLoading(true);
     try {
       const metaData = {

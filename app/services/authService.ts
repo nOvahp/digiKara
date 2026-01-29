@@ -39,6 +39,10 @@ interface ApiResponse<T> {
   data: T;
 }
 
+interface AddFavoritesPayload {
+  favorite_student_ids: number[];
+}
+
 export const authService = {
 
   requestOtp: async (phone: string): Promise<{ success: boolean; message?: string }> => {
@@ -134,6 +138,46 @@ export const authService = {
     }
   },
 
+  confirmInfo: async (): Promise<{ success: boolean; message?: string }> => {
+    try {
+      const response = await apiClient.put<any, any>('/student/students/correct_info');
+
+      if (response.status === 'success' || response.code === 200) {
+        return { success: true, message: 'اطلاعات با موفقیت تایید شد' };
+      }
+      return { success: false, message: response.message || 'خطا در تایید اطلاعات' };
+    } catch (error: any) {
+      console.error("confirmInfo Error:", error);
+      return { success: false, message: error.message || 'خطای شبکه' };
+    }
+  },
+
+  addFavorites: async (favorites: number[]): Promise<{ success: boolean; message?: string }> => {
+    // Runtime Guard: Ensure favorites is an array
+    if (!Array.isArray(favorites)) {
+      console.error("addFavorites Error: Input must be an array");
+      return { success: false, message: 'Invalid data format' };
+    }
+
+    const payload: AddFavoritesPayload = {
+      favorite_student_ids: favorites
+    };
+
+    console.log("🚀 [AuthService] Sending favorites:", payload);
+
+    try {
+      const response = await apiClient.post<any, any>('/student/students/add/favorite', payload);
+
+      if (response.status === 'success' || response.code === 200) {
+        return { success: true, message: 'علاقه مندی ها با موفقیت ثبت شد' };
+      }
+      return { success: false, message: response.message || 'خطا در ثبت علاقه مندی ها' };
+    } catch (error: any) {
+      console.error("addFavorites Error:", error);
+      return { success: false, message: error.message || 'خطای شبکه' };
+    }
+  },
+
   login: async (phoneNumber: string, password: string): Promise<{ success: boolean; token?: string; message?: string }> => {
     try {
       const response = await apiClient.post<any, any>('/auth/login', {
@@ -169,10 +213,23 @@ export const authService = {
     }
   },
 
+  changeStudentInfo: async (data: any): Promise<{ success: boolean; message?: string }> => {
+    try {
+      const response = await apiClient.post<any, any>('/student/students/change_info/student', data);
+
+      if (response.status === 'success' || response.code === 200) {
+        return { success: true, message: response.message || 'درخواست ویرایش اطلاعات با موفقیت ثبت شد' };
+      }
+      return { success: false, message: response.message || 'خطا در ویرایش اطلاعات' };
+    } catch (error: any) {
+      return { success: false, message: error.message || 'خطای شبکه' };
+    }
+  },
+
   saveStudentData: async (data: { meta: any; training_course: boolean }): Promise<{ success: boolean; message?: string }> => {
     console.log("🚀 [AuthService] Sending student data:", data);
     try {
-      const response = await apiClient.post<any, any>('/students/complete/data', data);
+      const response = await apiClient.post<any, any>('/student/students/complete/data', data);
       
       if (response.status === 'success' || response.code === 200) {
         return { success: true, message: 'اطلاعات با موفقیت ثبت شد' };

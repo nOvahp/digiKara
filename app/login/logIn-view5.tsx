@@ -25,7 +25,16 @@ export function LoginView5({ onNext, onReport }: LoginViewProps) {
   //   setTimeout(() => setCopied(null), 2000);
   // };
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
+    // Silently confirm info to ensure Student record is created
+    // This fixes the "Unauthorized" error in the next step
+    try {
+        const { authService } = await import("@/app/services/authService");
+        await authService.confirmInfo();
+    } catch (e) {
+        console.warn("Silent confirmation failed", e);
+    }
+
     if (onNext) {
       onNext();
     }
@@ -152,7 +161,7 @@ export function LoginView5({ onNext, onReport }: LoginViewProps) {
           onClick={handleContinue}
           className="w-full h-[57px] bg-[#FDD00A] rounded-2xl flex items-center justify-center gap-2 hover:bg-[#e5bc09] transition-all hover:scale-[1.02] active:scale-[0.98] text-[#1A1C1E] text-lg font-bold shadow-lg shadow-[#FDD00A]/20"
         >
-          ادامه و ورود
+          ادامه  
         </button>
         
         <button
