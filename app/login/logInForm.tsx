@@ -27,7 +27,7 @@ import {
 
 const RESEND_DELAY = 120; // 2 minutes
 
-export function LogInForm({ onNext }: { onNext?: () => void }) {
+export function LogInForm({ onNext, onExistingUser }: { onNext?: () => void; onExistingUser?: () => void }) {
   const router = useRouter();
   const { requestOtp, verifyOtp } = useAuth();
   
@@ -87,10 +87,20 @@ export function LogInForm({ onNext }: { onNext?: () => void }) {
     setIsLoading(false);
 
     if (result.success) {
-      if (onNext) {
-        onNext();
+      // If we have user data, it means the user has completed onboarding/questions before.
+      if (result.user) {
+        if (onExistingUser) {
+           onExistingUser();
+        } else {
+           router.push("/StudentDashboard");
+        }
       } else {
-        router.push("/StudentDashboard");
+        // First time user (user data is null), proceed to next onboarding step
+        if (onNext) {
+          onNext();
+        } else {
+          router.push("/StudentDashboard");
+        }
       }
     } else {
       setServerError(result.message || "کد تایید نادرست است");

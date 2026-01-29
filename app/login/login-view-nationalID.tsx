@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
+import { useAuth } from "@/app/providers/AuthProvider";
 
 interface LoginViewProps {
   onNext?: () => void;
@@ -15,6 +16,7 @@ interface LoginViewProps {
 
 export function LoginViewNationalID({ onNext }: LoginViewProps) {
   const router = useRouter();
+  const { verifyNationalId } = useAuth();
   const [nationalId, setNationalId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -42,22 +44,18 @@ export function LoginViewNationalID({ onNext }: LoginViewProps) {
     setIsLoading(true);
 
     try {
-      // TODO: Connect to backend API when ready
-      // const result = await verifyNationalId(nationalId);
-      // if (result.success) {
-      //   if (onNext) {
-      //     onNext();
-      //   }
-      // } else {
-      //   setError(result.message || "خطا در تایید شماره ملی");
-      // }
-
-      // For now, simulate successful submission
-      console.log("🆔 National ID submitted:", nationalId);
+      const result = await verifyNationalId(nationalId);
+      
       setIsLoading(false);
-      if (onNext) {
-        onNext();
+
+      if (result.success) {
+        if (onNext) {
+          onNext();
+        }
+      } else {
+        setError(result.message || "خطا در تایید شماره ملی");
       }
+
     } catch (err) {
       setIsLoading(false);
       setError("خطای شبکه");

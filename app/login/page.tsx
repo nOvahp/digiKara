@@ -53,7 +53,7 @@ export default function LoginPage() {
       return <Login onNext={() => setStep(Step.LOGIN_FORM)} />;
     case Step.LOGIN_FORM:
       // The actual Form (Phone -> OTP)
-      return <LogInForm onNext={() => setStep(Step.NATIONAL_ID)} />;
+      return <LogInForm onNext={() => setStep(Step.NATIONAL_ID)} onExistingUser={() => setStep(Step.FINAL)} />;
     
     // Post-Login / Flow Specifics
     case Step.NATIONAL_ID:

@@ -116,6 +116,14 @@ export function LoginView5({ onNext, onReport }: LoginViewProps) {
                   <p className="text-[#9CA3AF] text-xs font-bold mb-1">پایه</p>
                   <p className="text-[#393E46] text-sm font-black truncate">{user.grade}</p>
               </div>
+              <div className="bg-[#F3F6FC] p-4 rounded-3xl text-right">
+                  <p className="text-[#9CA3AF] text-xs font-bold mb-1">استان</p>
+                  <p className="text-[#393E46] text-sm font-black truncate">{user.province}</p>
+              </div>
+              <div className="bg-[#F3F6FC] p-4 rounded-3xl text-right">
+                  <p className="text-[#9CA3AF] text-xs font-bold mb-1">منطقه</p>
+                  <p className="text-[#393E46] text-sm font-black truncate">{user.district}</p>
+              </div>
            </div>
 
 

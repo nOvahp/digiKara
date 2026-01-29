@@ -105,6 +105,22 @@ export const authService = {
     }
   },
 
+  verifyNationalId: async (nationalCode: string): Promise<{ success: boolean; user?: UserData; message?: string }> => {
+    try {
+      const response = await apiClient.post<any, ApiResponse<UserData>>('/student/users/check/national_code', {
+        national_code: nationalCode
+      });
+
+      if (response.status === 'success' || response.code === 200) {
+        return { success: true, user: response.data };
+      }
+      
+      return { success: false, message: response.message || 'خطا در تایید کد ملی' };
+    } catch (error: any) {
+      return { success: false, message: error.message || 'خطای شبکه' };
+    }
+  },
+
   login: async (phoneNumber: string, password: string): Promise<{ success: boolean; token?: string; message?: string }> => {
     try {
       const response = await apiClient.post<any, any>('/auth/login', {

@@ -10,7 +10,8 @@ type AuthContextType = {
   user: UserData | null;
   token: string | null;
   requestOtp: (phoneNumber: string) => Promise<{ success: boolean; message?: string }>;
-  verifyOtp: (phoneNumber: string, code: string) => Promise<{ success: boolean; message?: string }>;
+  verifyOtp: (phoneNumber: string, code: string) => Promise<{ success: boolean; message?: string; user?: UserData | null; token?: string }>;
+  verifyNationalId: (nationalId: string) => Promise<{ success: boolean; message?: string }>;
   signIn: (phoneNumber: string, password: string) => Promise<{ success: boolean; message?: string }>;
   reportIssue: (data: any) => Promise<{ success: boolean; message?: string }>;
   saveStudentData: (data: { meta: any; training_course: boolean }) => Promise<{ success: boolean; message?: string }>;
@@ -43,17 +44,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const verifyOtp = async (phoneNumber: string, code: string) => {
     const result = await authService.verifyOtp(phoneNumber, code);
 
-    if (result.success && result.user) {
-      const userData = result.user;
+    if (result.success) {
+      const userData = result.user || null;
       
       // Ensure local state is updated
       setUser(userData);
-      setToken(result.token || null);
-      console.log("🔐 [AuthProvider] Token Received:", result.token);
-      setIsAuthenticated(true);
+      if (result.token) {
+        setToken(result.token);
+        console.log("🔐 [AuthProvider] Token Received:", result.token);
+        setIsAuthenticated(true);
+      }
+      
+      return { success: result.success, message: result.message, user: userData, token: result.token };
     }
 
     return { success: result.success, message: result.message };
+  };
+
+  const verifyNationalId = async (nationalId: string) => {
+    const result = await authService.verifyNationalId(nationalId);
+
+    if (result.success && result.user) {
+      setUser(result.user);
+      return { success: true };
+    }
+
+    return { success: false, message: result.message };
   };
 
   const signIn = async (phoneNumber: string, password: string) => {
@@ -90,6 +106,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     token,
     requestOtp,
     verifyOtp,
+    verifyNationalId,
     signIn,
     reportIssue,
     saveStudentData,
