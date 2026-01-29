@@ -121,6 +121,19 @@ export const authService = {
     }
   },
 
+  getInterests: async (): Promise<{ success: boolean; data?: any[]; message?: string }> => {
+    try {
+      const response = await apiClient.get<any, ApiResponse<any[]>>('/student/students/favorites/list');
+
+      if (response.status === 'success' || response.code === 200) {
+        return { success: true, data: response.data };
+      }
+      return { success: false, message: response.message || 'خطا در دریافت لیست علاقه مندی ها' };
+    } catch (error: any) {
+      return { success: false, message: error.message || 'خطای شبکه' };
+    }
+  },
+
   login: async (phoneNumber: string, password: string): Promise<{ success: boolean; token?: string; message?: string }> => {
     try {
       const response = await apiClient.post<any, any>('/auth/login', {

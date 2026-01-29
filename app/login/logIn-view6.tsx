@@ -20,62 +20,24 @@ interface LoginViewProps {
 }
 
 export function LoginView6({ onNext }: LoginViewProps) {
-  // const router = useRouter();
-  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
+  const [selectedInterests, setSelectedInterests] = useState<number[]>([]);
+  const [interests, setInterests] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const interests = [
-    {
-      id: "skill-training",
-      title: "آموزش مهارت",
-      subtitle: "یادگیری مهارات جدید",
-      icon: BookOpen,
-      color: "from-blue-400 to-blue-600",
-    },
-    {
-      id: "product-production",
-      title: "تولید محصول",
-      subtitle: "ایجاد و طراحی محصولات",
-      icon: Package,
-      color: "from-purple-400 to-purple-600",
-    },
-    {
-      id: "product-sales",
-      title: "فروش محصول",
-      subtitle: "فروش و بازاریابی",
-      icon: ShoppingCart,
-      color: "from-orange-400 to-orange-600",
-    },
-    {
-      id: "computer-web",
-      title: "کامپیوتر / وبسایت",
-      subtitle: "برنامه‌نویسی و توسعه وب",
-      icon: Code2,
-      color: "from-green-400 to-green-600",
-    },
-    {
-      id: "ai",
-      title: "هوش مصنوعی",
-      subtitle: "یادگیری ماشین و هوش مصنوعی",
-      icon: Zap,
-      color: "from-yellow-400 to-yellow-600",
-    },
-    {
-      id: "art",
-      title: "هنری",
-      subtitle: "هنرهای تجسمی و گرافیکی",
-      icon: Palette,
-      color: "from-pink-400 to-pink-600",
-    },
-    {
-      id: "music",
-      title: "موسیقی",
-      subtitle: "آموزش و تولید موسیقی",
-      icon: Music,
-      color: "from-indigo-400 to-indigo-600",
-    },
-  ];
+  React.useEffect(() => {
+    const fetchInterests = async () => {
+      // Dynamic import to avoid circular dependency issues if any, or just direct import
+      const { authService } = await import("@/app/services/authService");
+      const result = await authService.getInterests();
+      if (result.success && result.data) {
+        setInterests(result.data);
+      }
+      setIsLoading(false);
+    };
+    fetchInterests();
+  }, []);
 
-  const toggleInterest = (id: string) => {
+  const toggleInterest = (id: number) => {
     setSelectedInterests((prev) =>
       prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
     );
@@ -110,44 +72,51 @@ export function LoginView6({ onNext }: LoginViewProps) {
             
              {/* Interests Grid */}
             <div className="flex flex-col gap-3">
-            {interests.map((interest) => {
-                const IconComponent = interest.icon;
-                const isSelected = selectedInterests.includes(interest.id);
+            {isLoading ? (
+                <div className="text-center text-gray-400 py-10">درحال بارگذاری...</div>
+            ) : (
+                interests.map((interest) => {
+                    const isSelected = selectedInterests.includes(interest.id);
 
-                return (
-                <div
-                    key={interest.id}
-                    onClick={() => toggleInterest(interest.id)}
-                    className={`relative p-3 rounded-2xl cursor-pointer transition-all duration-200 border-2 ${
-                    isSelected
-                        ? "border-[#FDD00A] bg-[#FFFBEB]"
-                        : "border-transparent bg-[#F9FAFB] hover:bg-[#F3F4F6]"
-                    }`}
-                >
-                    <div className="flex items-center gap-4">
-                    {/* Checkbox Visual */}
-                    <div className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all ${
-                        isSelected ? "bg-[#FDD00A] border-[#FDD00A]" : "border-[#D1D5DB] bg-white"
-                        }`}>
-                        {isSelected && <div className="w-2.5 h-1.5 border-b-2 border-l-2 border-black -rotate-45 mb-0.5" />}
-                    </div>
+                    return (
+                    <div
+                        key={interest.id}
+                        onClick={() => toggleInterest(interest.id)}
+                        className={`relative p-3 rounded-2xl cursor-pointer transition-all duration-200 border-2 ${
+                        isSelected
+                            ? "border-[#FDD00A] bg-[#FFFBEB]"
+                            : "border-transparent bg-[#F9FAFB] hover:bg-[#F3F4F6]"
+                        }`}
+                    >
+                        <div className="flex items-center gap-4">
+                        {/* Checkbox Visual */}
+                        <div className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all ${
+                            isSelected ? "bg-[#FDD00A] border-[#FDD00A]" : "border-[#D1D5DB] bg-white"
+                            }`}>
+                            {isSelected && <div className="w-2.5 h-1.5 border-b-2 border-l-2 border-black -rotate-45 mb-0.5" />}
+                        </div>
 
-                    <div className="flex-1 text-right">
-                        <p className="text-[#393E46] text-sm font-bold">
-                        {interest.title}
-                        </p>
-                        <p className="text-[#9CA3AF] text-xs mt-0.5">
-                        {interest.subtitle}
-                        </p>
-                    </div>
+                        <div className="flex-1 text-right">
+                            <p className="text-[#393E46] text-sm font-bold">
+                            {interest.title}
+                            </p>
+                            <p className="text-[#9CA3AF] text-xs mt-0.5">
+                            {interest.sub_title}
+                            </p>
+                        </div>
 
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-sm bg-gradient-to-br ${interest.color}`}>
-                        <IconComponent className="w-5 h-5" />
+                         <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-sm overflow-hidden bg-gray-100`}>
+                            {interest.icon ? (
+                                <img src={interest.icon} alt={interest.title} className="w-full h-full object-cover" />
+                            ) : (
+                                <div className="w-full h-full bg-blue-400" />
+                            )}
+                        </div>
+                        </div>
                     </div>
-                    </div>
-                </div>
-                );
-            })}
+                    );
+                })
+            )}
             </div>
 
             <div className={`mt-6 text-center text-xs font-medium transition-colors ${
