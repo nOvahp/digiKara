@@ -103,6 +103,7 @@ export default function SellsPage() {
         stock: '',
         reminder: '',
         imageFiles: [] as File[],
+        extraPrices: [] as any[], 
     });
 
     const updateFormData = (data: Partial<typeof formData>) => {
@@ -138,9 +139,17 @@ export default function SellsPage() {
         }
         console.groupEnd();
 
-        const { success, message } = await studentProductService.addProduct(data);
+        const response = await studentProductService.addProduct(data);
+        const { success, message, data: createdProduct } = response;
         
         if (success) {
+            // Handle Extra Prices
+            if (formData.extraPrices && formData.extraPrices.length > 0 && createdProduct?.id) {
+                for (const price of formData.extraPrices) {
+                     await studentProductService.addProductPrice(createdProduct.id, price);
+                }
+            }
+
             toast.success(message || 'محصول با موفقیت اضافه شد');
             setActivePopup('step7');
             // Refresh list
@@ -159,7 +168,7 @@ export default function SellsPage() {
         setFormData({
             name: '', description: '', images: [], category: '', tags: [], id: generateProductCode(),
             price: '', fee: '', receive: '', discount: '', code: '', percent: '', stock: '', reminder: '',
-            imageFiles: []
+            imageFiles: [], extraPrices: []
         });
     };
 

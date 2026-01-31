@@ -138,7 +138,7 @@ export const studentProductService = {
     }
   },
 
-  addProduct: async (data: FormData): Promise<{ success: boolean; message?: string }> => {
+  addProduct: async (data: FormData): Promise<{ success: boolean; message?: string; data?: any }> => {
     try {
       const response = await apiClient.post<any, any>('/student/products', data, {
         headers: {
@@ -147,12 +147,37 @@ export const studentProductService = {
       });
 
       if (response.status === 'success' || response.code === 200) {
-        return { success: true, message: 'محصول با موفقیت ثبت شد' };
+        return { success: true, message: 'محصول با موفقیت ثبت شد', data: response.data };
       }
       return { success: false, message: response.message || 'خطا در ثبت محصول' };
     } catch (error: any) {
       console.error('addProduct Error:', error);
       return { success: false, message: error.message || 'خطای شبکه' };
     }
+  },
+
+  addProductPrice: async (productId: string | number, priceData: any): Promise<{ success: boolean; message?: string }> => {
+      try {
+          const response = await apiClient.post<any, any>(`/student/products/${productId}/prices`, priceData);
+          if (response.status === 'success' || response.code === 200) {
+              return { success: true, message: 'قیمت با موفقیت افزوده شد' };
+          }
+          return { success: false, message: response.message || 'خطا در ثبت قیمت' };
+      } catch (error: any) {
+          console.error('addProductPrice Error:', error);
+          return { success: false, message: error.message || 'خطای شبکه' };
+      }
+  },
+  updateProductPrice: async (priceId: string | number, priceData: any): Promise<{ success: boolean; message?: string }> => {
+      try {
+          const response = await apiClient.put<any, any>(`/student/products/prices/${priceId}`, priceData);
+          if (response.status === 'success' || response.code === 200) {
+              return { success: true, message: 'قیمت با موفقیت ویرایش شد' };
+          }
+          return { success: false, message: response.message || 'خطا در ویرایش قیمت' };
+      } catch (error: any) {
+          console.error('updateProductPrice Error:', error);
+          return { success: false, message: error.message || 'خطای شبکه' };
+      }
   }
 };

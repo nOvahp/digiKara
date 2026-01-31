@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import { PricingForm } from './shared/PricingForm';
 import { toast } from 'sonner';
 import axios from 'axios';
 
-const toFarsiNumber = (n: number | string | undefined): string => {
-    if (n === undefined || n === null) return '';
-    return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
-}
+const PRICE_TYPES = [
+    { id: 1, label: 'رنگ' },
+    { id: 2, label: 'سایز' },
+    { id: 3, label: 'جنس' },
+    { id: 4, label: 'گارانتی' },
+    { id: 5, label: 'متفرقه' },
+];
 
 interface NewProductPage3Props {
     onClose: () => void;
@@ -17,20 +20,62 @@ interface NewProductPage3Props {
     updateFormData: (data: any) => void;
 }
 
+const toFarsiNumber = (n: number | string | undefined): string => {
+    if (n === undefined || n === null) return '';
+    return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
+}
+
 export function NewProductPage3({ onClose, onNext, onStepClick, formData, updateFormData }: NewProductPage3Props) {
+    const [isMultiPrice, setIsMultiPrice] = useState((formData.extraPrices && formData.extraPrices.length > 0));
+    const [newPrice, setNewPrice] = useState({
+        title: '', 
+        amount: '', 
+        discount_percent: '', 
+        inventory: '', 
+        type: '1', 
+        warn_inventory: ''
+    });
+
     const handleNext = () => {
-        try {
-            if (!formData.price || formData.price === '0') throw new Error("لطفا قیمت کالا را وارد کنید");
-            // Add other mandatory fields if any
-            
+         try {
+            // If Single Price mode: Check main price
+            if (!isMultiPrice) {
+                if (!formData.price || formData.price === '0') throw new Error("لطفا قیمت کالا را وارد کنید");
+            } else {
+                // If Multi Price mode: Check if at least one price added
+                if (!formData.extraPrices || formData.extraPrices.length === 0) throw new Error("لطفا حداقل یک قیمت اضافه کنید");
+            }
             onNext();
         } catch (error) {
-             if (axios.isAxiosError(error)) {
-                toast.error("خطای شبکه رخ داده است");
-            } else {
-                toast.error((error as Error).message);
-            }
+             toast.error((error as Error).message);
         }
+    };
+
+    const handleAddPrice = () => {
+        if (!newPrice.title || !newPrice.amount) {
+            toast.error("عنوان و قیمت الزامی است");
+            return;
+        }
+
+        const priceObj = {
+            title: newPrice.title,
+            amount: parseInt(newPrice.amount.replace(/\D/g, '') || '0'),
+            type: parseInt(newPrice.type || '1'),
+            discount_percent: newPrice.discount_percent ? parseInt(newPrice.discount_percent) : null,
+            inventory: newPrice.inventory ? parseInt(newPrice.inventory) : null,
+            type_inventory: 1, 
+            warn_inventory: newPrice.warn_inventory ? parseInt(newPrice.warn_inventory) : null,
+        };
+
+        updateFormData({ extraPrices: [...(formData.extraPrices || []), priceObj] });
+        setNewPrice({ title: '', amount: '', discount_percent: '', inventory: '', type: '1', warn_inventory: '' });
+        toast.success("قیمت افزوده شد");
+    };
+
+    const removePrice = (index: number) => {
+        const newPrices = [...(formData.extraPrices || [])];
+        newPrices.splice(index, 1);
+        updateFormData({ extraPrices: newPrices });
     };
 
     return (
@@ -66,22 +111,106 @@ export function NewProductPage3({ onClose, onNext, onStepClick, formData, update
                          <StepItem number="4" label="تائید نهایی" state="inactive" onClick={() => onStepClick('step6')} />
                     </div>
 
-                    {/* Form Fields - Replaced with Shared Component */}
+                    {/* Form Fields */}
                     <div className="w-full px-5 py-5 flex flex-col gap-4" dir="rtl">
-                        {/* Pricing Type Toggle - Kept here as it feels specific to the wizard step */}
+                        {/* Pricing Type Toggle */}
                         <div className="w-full h-9 p-0.5 bg-[#F6F6F6] rounded-lg border border-[#D7D8DA] flex items-center mb-2">
-                             <div className="flex-1 h-[29px] px-3 py-1 rounded-md flex justify-center items-center gap-2.5 cursor-pointer text-[#0A0A0A] text-sm font-semibold font-['PeydaWeb'] opacity-50">
+                             <div 
+                                onClick={() => setIsMultiPrice(true)}
+                                className={`flex-1 h-[29px] px-3 py-1 rounded-md flex justify-center items-center gap-2.5 cursor-pointer text-sm font-semibold font-['PeydaWeb'] ${isMultiPrice ? 'bg-[#FFDD8A] shadow-sm border border-[#D7D8DA] text-[#0D0D12]' : 'text-[#0A0A0A] opacity-50'}`}
+                             >
                                  دارای چند قیمت
                              </div>
-                             <div className="flex-1 h-[29px] px-3 py-1 bg-[#FFDD8A] shadow-sm rounded-md border border-[#D7D8DA] flex justify-center items-center gap-2.5 cursor-pointer text-[#0D0D12] text-sm font-semibold font-['PeydaWeb']">
+                             <div 
+                                onClick={() => setIsMultiPrice(false)}
+                                className={`flex-1 h-[29px] px-3 py-1 rounded-md flex justify-center items-center gap-2.5 cursor-pointer text-sm font-semibold font-['PeydaWeb'] ${!isMultiPrice ? 'bg-[#FFDD8A] shadow-sm border border-[#D7D8DA] text-[#0D0D12]' : 'text-[#0A0A0A] opacity-50'}`}
+                             >
                                  تک قیمتی
                              </div>
                         </div>
 
-                        <PricingForm 
-                            values={formData}
-                            onChange={(updates) => updateFormData(updates)} 
-                        />
+                        {!isMultiPrice ? (
+                            <PricingForm 
+                                values={formData}
+                                onChange={(updates) => updateFormData(updates)} 
+                            />
+                        ) : (
+                            <div className="flex flex-col gap-4">
+                                {/* Add New Price Form */}
+                                <div className="p-4 rounded-xl border border-gray-200 bg-gray-50 flex flex-col gap-3">
+                                    <div className="text-sm font-bold text-gray-700">افزودن قیمت جدید</div>
+                                    <div className="flex gap-2">
+                                        <div className="relative w-1/3">
+                                            <select 
+                                                className="w-full h-10 px-3 rounded-lg border border-[#DFE1E7] text-right font-['PeydaWeb'] text-sm bg-white outline-none focus:border-[#0A33FF] appearance-none cursor-pointer"
+                                                value={newPrice.type}
+                                                onChange={e => setNewPrice({...newPrice, type: e.target.value})}
+                                            >
+                                                {PRICE_TYPES.map(t => (
+                                                    <option key={t.id} value={t.id}>{t.label}</option>
+                                                ))}
+                                            </select>
+                                            <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                                                <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M1 1L5 5L9 1" stroke="#666D80" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <input 
+                                            placeholder="عنوان (مثلا: قرمز، XL)"
+                                            className="flex-1 h-10 px-3 rounded-lg border border-[#DFE1E7] text-right font-['PeydaWeb'] text-sm outline-none focus:border-[#0A33FF]"
+                                            value={newPrice.title}
+                                            onChange={e => setNewPrice({...newPrice, title: e.target.value})}
+                                        />
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <input 
+                                            placeholder="قیمت (تومان)"
+                                            className="flex-1 h-10 px-3 rounded-lg border border-[#DFE1E7] text-right font-['PeydaWeb'] text-sm"
+                                            value={newPrice.amount ? parseInt(newPrice.amount).toLocaleString() : ''}
+                                            onChange={e => setNewPrice({...newPrice, amount: e.target.value.replace(/\D/g, '')})}
+                                        />
+                                        <input 
+                                            placeholder="تخفیف %"
+                                            className="w-20 h-10 px-3 rounded-lg border border-[#DFE1E7] text-center font-['PeydaWeb'] text-sm"
+                                            value={newPrice.discount_percent}
+                                            onChange={e => setNewPrice({...newPrice, discount_percent: e.target.value})}
+                                        />
+                                    </div>
+                                    <input 
+                                        placeholder="موجودی"
+                                        className="w-full h-10 px-3 rounded-lg border border-[#DFE1E7] text-right font-['PeydaWeb'] text-sm"
+                                        value={newPrice.inventory}
+                                        onChange={e => setNewPrice({...newPrice, inventory: e.target.value})}
+                                    />
+                                    <input 
+                                        placeholder="هشدار موجودی"
+                                        className="w-full h-10 px-3 rounded-lg border border-[#DFE1E7] text-right font-['PeydaWeb'] text-sm"
+                                        value={newPrice.warn_inventory}
+                                        onChange={e => setNewPrice({...newPrice, warn_inventory: e.target.value})}
+                                    />
+                                    <button 
+                                        onClick={handleAddPrice}
+                                        className="w-full h-9 bg-blue-600 text-white rounded-lg text-sm font-bold mt-1"
+                                    >
+                                        افزودن
+                                    </button>
+                                </div>
+
+                                {/* List of Added Prices */}
+                                <div className="flex flex-col gap-2">
+                                    {formData.extraPrices?.map((p: any, idx: number) => (
+                                        <div key={idx} className="p-3 rounded-lg border border-[#E0E0E0] flex justify-between items-center bg-white">
+                                            <div className="flex flex-col gap-1">
+                                                <span className="text-sm font-bold text-[#0D0D12]">{p.title}</span>
+                                                <span className="text-xs text-gray-500">{p.amount.toLocaleString()} تومان | {p.inventory || 0} عدد</span>
+                                            </div>
+                                            <X className="w-4 h-4 text-red-500 cursor-pointer" onClick={() => removePrice(idx)} />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
 

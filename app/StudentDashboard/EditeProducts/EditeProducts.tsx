@@ -13,6 +13,7 @@ import { studentProductService } from '@/app/services/studentProductService';
 import { Skeleton } from "@/app/components/Skeleton";
 import { ConfirmModal } from '@/app/components/ConfirmModal';
 import { SuccessModal } from '@/app/components/SuccessModal';
+import { PriceListEditor } from './components/PriceListEditor';
 
 export function EditeProducts() {
     const router = useRouter();
@@ -27,15 +28,17 @@ export function EditeProducts() {
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
 
+    const fetchProduct = async () => {
+        if (!productId) return;
+        const { success, data } = await studentProductService.getProductById(productId as string);
+        if (success && data) {
+            setFormData(data);
+        }
+        setIsLoading(false);
+    };
+
     useEffect(() => {
         if (productId) {
-            const fetchProduct = async () => {
-                const { success, data } = await studentProductService.getProductById(productId as string);
-                if (success && data) {
-                    setFormData(data);
-                }
-                setIsLoading(false);
-            };
             fetchProduct();
         } else {
              setIsLoading(false);
@@ -180,6 +183,7 @@ export function EditeProducts() {
                     <>
                         <BasicInfoForm values={formData} onChange={handleUpdateChange} />
                         <PricingForm values={formData} onChange={handleUpdateChange} />
+                        <PriceListEditor prices={formData.prices || []} onRefresh={fetchProduct} />
                         <CategoryTagsForm values={formData} onChange={handleUpdateChange} />
                         <ProductPreviewCard product={formData} />
                     </>
