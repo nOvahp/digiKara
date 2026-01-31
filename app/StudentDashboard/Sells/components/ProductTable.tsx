@@ -31,12 +31,12 @@ function ProductTableRow({ product, index, isChecked, onToggle, onDelete }: Prod
     const isPositive = product.trendType === 'positive';
     const trendBg = isPositive ? 'bg-[#ECF9F7]' : 'bg-[#FCE8EC]';
     const trendText = isPositive ? 'text-[#267666]' : 'text-[#B21634]';
-    const menuRef = useRef<HTMLDivElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     // Close menu when clicking outside
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
-            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+            if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
                 setIsMenuOpen(false);
             }
         }
@@ -52,13 +52,18 @@ function ProductTableRow({ product, index, isChecked, onToggle, onDelete }: Prod
 
     const toggleMenu = (e: React.MouseEvent) => {
         e.stopPropagation();
-        setIsMenuOpen(!isMenuOpen);
+        setIsMenuOpen(prev => !prev);
     };
 
     const handleDeleteClick = (e: React.MouseEvent) => {
         e.stopPropagation();
+        console.log("Delete clicked for id:", product.id);
         setIsMenuOpen(false);
-        if (onDelete) onDelete(product.id);
+        if (onDelete) {
+            onDelete(product.id);
+        } else {
+            console.error("onDelete prop is missing in ProductTableRow");
+        }
     };
 
     const handleEditClick = (e: React.MouseEvent) => {
@@ -72,7 +77,10 @@ function ProductTableRow({ product, index, isChecked, onToggle, onDelete }: Prod
             className="flex min-w-max h-16 px-[9px] border-b border-[#DFE1E7] justify-end items-center hover:bg-gray-50 transition-colors cursor-pointer bg-white relative"
         >
             {/* Edit Menu */}
-            <div className="h-16 px-3 border-b border-[#DFE1E7] flex justify-start items-center gap-2 relative">
+            <div 
+                ref={containerRef}
+                className="h-16 px-3 border-b border-[#DFE1E7] flex justify-start items-center gap-2 relative z-20"
+            >
                 <button 
                     onClick={toggleMenu}
                     className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 transition-colors"
@@ -82,7 +90,7 @@ function ProductTableRow({ product, index, isChecked, onToggle, onDelete }: Prod
                 
                 {/* Dropdown Menu */}
                 {isMenuOpen && (
-                    <div ref={menuRef} className="absolute top-10 left-0 z-50 w-32 bg-white rounded-lg shadow-lg border border-gray-100 flex flex-col overflow-hidden animate-fade-in" dir="rtl">
+                    <div className="absolute top-10 left-0 w-32 bg-white rounded-lg shadow-[0px_4px_16px_rgba(0,0,0,0.1)] border border-[#EFF0F2] flex flex-col overflow-hidden animate-fade-in" dir="rtl">
                          <div 
                             onClick={handleEditClick}
                             className="px-3 py-2 hover:bg-gray-50 flex items-center gap-2 text-[#0D0D12] text-sm cursor-pointer"

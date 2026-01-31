@@ -186,7 +186,7 @@ export default function SellsPage() {
                     </div>
                 </div>
 
-                <ProductTable products={productsList} loading={isLoading} />
+                <ProductTable products={productsList} loading={isLoading} onDelete={handleDeleteProduct} />
             </div>
 
             <div className="fixed bottom-0 w-full z-50">
