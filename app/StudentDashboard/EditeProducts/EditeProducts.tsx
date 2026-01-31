@@ -11,6 +11,8 @@ import { ProductPreviewCard } from "../Sells/components/shared/ProductPreviewCar
 import { NewProductPage6 } from "../Sells/components/NewProductPage6";
 import { studentProductService } from '@/app/services/studentProductService';
 import { Skeleton } from "@/app/components/Skeleton";
+import { ConfirmModal } from '@/app/components/ConfirmModal';
+import { SuccessModal } from '@/app/components/SuccessModal';
 
 export function EditeProducts() {
     const router = useRouter();
@@ -19,6 +21,11 @@ export function EditeProducts() {
     const [showPreview, setShowPreview] = useState(false);
     const [formData, setFormData] = useState<any>({});
     const [isLoading, setIsLoading] = useState(true);
+    
+    // Modal State
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
 
     useEffect(() => {
         if (productId) {
@@ -80,20 +87,32 @@ export function EditeProducts() {
         }
     };
 
-    const handleDelete = async () => {
-        if (!productId) return;
-        if (!confirm('آیا از حذف این محصول اطمینان دارید؟')) return;
+    const [isDeleting, setIsDeleting] = useState(false);
 
-        setIsLoading(true);
+    const handleDelete = () => {
+        console.log("Handling delete click...");
+        setShowDeleteModal(true);
+    };
+
+    const handleConfirmDelete = async () => {
+        if (!productId) return;
+        
+        setIsDeleting(true);
         const { success, message } = await studentProductService.deleteProduct(productId as string);
-        setIsLoading(false);
+        setIsDeleting(false);
+        setShowDeleteModal(false);
 
         if (success) {
-            alert(message);
-            router.push('/StudentDashboard/Sells');
+            setModalMessage(message || 'محصول با موفقیت حذف شد');
+            setShowSuccessModal(true);
         } else {
             alert(message || 'خطا در حذف محصول');
         }
+    };
+
+    const handleSuccessClose = () => {
+        setShowSuccessModal(false);
+        router.push('/StudentDashboard/Sells');
     };
 
     return (
@@ -190,6 +209,21 @@ export function EditeProducts() {
                     formData={formData} // Passing actual form data to preview
                 />
              )}
+             <ConfirmModal 
+                isOpen={showDeleteModal} 
+                onClose={() => setShowDeleteModal(false)}
+                onConfirm={handleConfirmDelete}
+                title="حذف محصول"
+                message="آیا از حذف این محصول اطمینان دارید؟ این عملیات غیرقابل بازگشت است."
+                isLoading={isDeleting}
+             />
+             
+             <SuccessModal 
+                isOpen={showSuccessModal}
+                onClose={handleSuccessClose}
+                title="عملیات موفق"
+                message={modalMessage}
+             />
         </div>
     );
 }

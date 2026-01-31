@@ -15,6 +15,8 @@ import { NewProductPage4 } from "./components/NewProductPage4";
 import { NewProductPage5 } from "./components/NewProductPage5";
 import { NewProductPage6 } from "./components/NewProductPage6";
 import { NewProductPage7 } from "./components/NewProductPage7";
+import { ConfirmModal } from '@/app/components/ConfirmModal';
+import { SuccessModal } from '@/app/components/SuccessModal';
 
 // Initial Mock Data
 import { Product } from "@/app/StudentDashboard/data/products";
@@ -37,6 +39,13 @@ export default function SellsPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [categoriesList, setCategoriesList] = useState<{id: number | string, name: string}[]>([]); 
     
+    // Modal State
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
+    const [deleteId, setDeleteId] = useState<string | number | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
+
     const fetchProducts = async () => {
         setIsLoading(true);
         const { success, data } = await studentProductService.getProducts();
@@ -50,13 +59,25 @@ export default function SellsPage() {
         fetchProducts();
     }, []);
     
-    const handleDeleteProduct = async (id: number | string) => {
-        if (!confirm('آیا از حذف این محصول اطمینان دارید؟')) return;
+    // Triggered by Table
+    const handleDeleteProduct = (id: number | string) => {
+        setDeleteId(id);
+        setShowDeleteModal(true);
+    };
+
+    // Actual API Call
+    const handleConfirmDelete = async () => {
+        if (!deleteId) return;
         
-        const { success, message } = await studentProductService.deleteProduct(id);
+        setIsDeleting(true);
+        const { success, message } = await studentProductService.deleteProduct(deleteId);
+        setIsDeleting(false);
+        setShowDeleteModal(false);
+
         if (success) {
-             alert(message);
              fetchProducts();
+             setModalMessage(message || 'محصول با موفقیت حذف شد');
+             setShowSuccessModal(true);
         } else {
              alert(message || 'خطا در حذف محصول');
         }
@@ -239,6 +260,22 @@ export default function SellsPage() {
                     onStepClick={(step) => setActivePopup(step as any)}
                 />
             )}
+
+            <ConfirmModal 
+                isOpen={showDeleteModal} 
+                onClose={() => setShowDeleteModal(false)}
+                onConfirm={handleConfirmDelete}
+                title="حذف محصول"
+                message="آیا از حذف این محصول اطمینان دارید؟ این عملیات غیرقابل بازگشت است."
+                isLoading={isDeleting}
+            />
+             
+            <SuccessModal 
+                isOpen={showSuccessModal}
+                onClose={() => setShowSuccessModal(false)}
+                title="عملیات موفق"
+                message={modalMessage}
+            />
         </div>
     );
 }
