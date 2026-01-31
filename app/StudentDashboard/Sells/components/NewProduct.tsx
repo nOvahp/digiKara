@@ -10,9 +10,10 @@ interface NewProductProps {
     onStepClick: (step: string) => void;
     formData: any;
     updateFormData: (data: any) => void;
+    categories?: {id: number | string, name: string}[];
 }
 
-export function NewProduct({ onClose, onNext, onStepClick, formData, updateFormData }: NewProductProps) {
+export function NewProduct({ onClose, onNext, onStepClick, formData, updateFormData, categories = [] }: NewProductProps) {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleNext = () => {
@@ -34,14 +35,27 @@ export function NewProduct({ onClose, onNext, onStepClick, formData, updateFormD
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
-            const newImages = Array.from(e.target.files).map(file => URL.createObjectURL(file));
-            updateFormData({ images: [...formData.images, ...newImages] });
+            const newFiles = Array.from(e.target.files);
+            const newImages = newFiles.map(file => URL.createObjectURL(file));
+            
+            const currentFiles = formData.imageFiles || [];
+            
+            updateFormData({ 
+                images: [...formData.images, ...newImages],
+                imageFiles: [...currentFiles, ...newFiles]
+            });
         }
     };
 
     const removeImage = (index: number) => {
         const newImages = formData.images.filter((_: string, i: number) => i !== index);
-        updateFormData({ images: newImages });
+        const currentFiles = formData.imageFiles || [];
+        const newFiles = currentFiles.filter((_: any, i: number) => i !== index);
+        
+        updateFormData({ 
+            images: newImages, 
+            imageFiles: newFiles 
+        });
     };
 
     return (
@@ -181,6 +195,7 @@ export function NewProduct({ onClose, onNext, onStepClick, formData, updateFormD
                                 metadata: '' // Assuming metadata isn't in main formData yet, or add it
                             }}
                             onChange={(updates) => updateFormData(updates)}
+                            categories={categories}
                         />
 
                         {/* Product ID */}

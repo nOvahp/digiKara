@@ -6,13 +6,15 @@ interface CategoryTagsFormProps {
     defaultValues?: any;
     values?: { category: string; tags: string[]; metadata: string };
     onChange?: (updates: { category?: string; tags?: string[]; metadata?: string }) => void;
+    categories?: {id: number | string, name: string}[];
 }
 
-export function CategoryTagsForm({ defaultValues = {}, values, onChange }: CategoryTagsFormProps) {
+export function CategoryTagsForm({ defaultValues = {}, values, onChange, categories = [] }: CategoryTagsFormProps) {
     const [localTags, setLocalTags] = useState<string[]>( defaultValues.tags || ["ارگانیک", "عسل طبیعی"] );
 
     const currentTags = values?.tags || localTags;
-    const currentCategory = values ? values.category : (defaultValues.category || "agricultural");
+    // Default to empty string instead of "agricultural" to force selection from valid list
+    const currentCategory = values ? values.category : (defaultValues.category || "");
     const currentMetadata = values ? values.metadata : (defaultValues.metadata || "");
 
     // Mock available tags
@@ -58,11 +60,21 @@ export function CategoryTagsForm({ defaultValues = {}, values, onChange }: Categ
                           value={currentCategory}
                           onChange={(e) => onChange ? onChange({ category: e.target.value }) : null}
                       >
-                          <option value="agricultural">محصولات کشاورزی</option>
-                          <option value="electronic">کالای دیجیتال</option>
-                          <option value="fashion">مد و پوشاک</option>
-                          <option value="home">خانه و آشپزخانه</option>
-                          <option value="other">سایر</option>
+                          <option value="">انتخاب کنید...</option>
+                          {categories.length > 0 ? (
+                              categories.map(cat => (
+                                  <option key={cat.id} value={cat.id}>{cat.name}</option>
+                              ))
+                          ) : (
+                              // Fallback to hardcoded IDs if fetch is empty/loading
+                              <>
+                                <option value="5">صنایع چوبی (5)</option>
+                                <option value="4">پوشاک (4)</option>
+                                <option value="2">صنایع هنری (2)</option>
+                                <option value="1">طلا و جواهر (1)</option>
+                                <option value="3">سایر (3)</option>
+                              </>
+                          )}
                       </select>
                       <div className="absolute left-3 w-5 h-5 pointer-events-none">
                          <ChevronDown className="w-5 h-5 text-[#818898]" />

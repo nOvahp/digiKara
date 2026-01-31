@@ -47,8 +47,8 @@ apiClient.interceptors.response.use(
     if (error.response?.status === 401) {
       removeToken();
       if (typeof window !== 'undefined') {
-        // Optional: Redirect to login or dispatch a global event
-        // window.location.href = '/login'; 
+        // Redirect to login on 401 Unauthorized
+        window.location.href = '/login'; 
       }
     }
     

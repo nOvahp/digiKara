@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { toast } from 'sonner';
 import { ClipboardList, Plus, Package, Layers, PackageX, AlertTriangle } from 'lucide-react';
 import { DashboardNavBar } from "../DashboardNavBar";
 import { Navigation } from "../Navigation";
@@ -16,7 +17,8 @@ import { NewProductPage6 } from "./components/NewProductPage6";
 import { NewProductPage7 } from "./components/NewProductPage7";
 
 // Initial Mock Data
-import { productService, Product } from "@/app/StudentDashboard/data/products";
+import { Product } from "@/app/StudentDashboard/data/products";
+import { studentProductService } from "@/app/services/studentProductService";
 
 // Initial Mock Data (Moved to data/products.ts)
 
@@ -31,14 +33,46 @@ export default function SellsPage() {
             setActivePopup('step1');
         }
     }, [searchParams]);
-    const [productsList, setProductsList] = useState<Product[]>(productService.getAll());
+    const [productsList, setProductsList] = useState<Product[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [categoriesList, setCategoriesList] = useState<{id: number | string, name: string}[]>([]); 
+    
+    const fetchProducts = async () => {
+        setIsLoading(true);
+        const { success, data } = await studentProductService.getProducts();
+        if (success && data) {
+            setProductsList(data);
+        }
+        setIsLoading(false);
+    };
+
+    useEffect(() => {
+        fetchProducts();
+    }, []);
+    
+    const handleDeleteProduct = async (id: number | string) => {
+        if (!confirm('آیا از حذف این محصول اطمینان دارید؟')) return;
+        
+        const { success, message } = await studentProductService.deleteProduct(id);
+        if (success) {
+             alert(message);
+             fetchProducts();
+        } else {
+             alert(message || 'خطا در حذف محصول');
+        }
+    };
+
+    const generateProductCode = () => {
+        return `NK-PRD-${Math.floor(100000 + Math.random() * 900000)}`;
+    };
+
     const [formData, setFormData] = useState({
         name: '',
         description: '',
         images: [] as string[],
         category: '',
         tags: [] as string[],
-        id: 'NK-PEG40-GRY-001',
+        id: generateProductCode(),
         price: '',
         fee: '',
         receive: '',
@@ -46,38 +80,65 @@ export default function SellsPage() {
         code: '',
         percent: '',
         stock: '',
-        reminder: ''
+        reminder: '',
+        imageFiles: [] as File[],
     });
 
     const updateFormData = (data: Partial<typeof formData>) => {
         setFormData(prev => ({ ...prev, ...data }));
     };
 
+    const handleSubmitProduct = async () => {
+        const data = new FormData();
+        
+        // Required fields
+        // Since we are now using real category IDs from the dropdown, we send formData.category directly.
+        // If empty, we default to '1' (or whatever logic) but ideally user must select one.
+        data.append('category_id', formData.category || '1'); 
+        data.append('code', formData.id); 
+        data.append('inventory', (formData.stock || '').replace(/\D/g, '') || '0');
+        data.append('price', (formData.price || '').replace(/\D/g, '') || '0'); // Remove non-digits
+        data.append('title', formData.name);
+        data.append('type_inventory', '1'); // Assuming 1 is default/physical
+        data.append('warn_inventory', (formData.reminder || '').replace(/\D/g, '') || '0');
+        
+        // Optional fields
+        if (formData.description) data.append('description', formData.description);
+        
+        // Image - The API expects 'image' (singular). We take the first one.
+        if (formData.imageFiles && formData.imageFiles.length > 0) {
+           data.append('image', formData.imageFiles[0]);
+        }
+
+        // Debug: Log FormData entries
+        console.group('🚀 Submitting Product Data');
+        for (const [key, value] of data.entries()) {
+            console.log(`${key}:`, value);
+        }
+        console.groupEnd();
+
+        const { success, message } = await studentProductService.addProduct(data);
+        
+        if (success) {
+            toast.success(message || 'محصول با موفقیت اضافه شد');
+            setActivePopup('step7');
+            // Refresh list
+            const { success: refreshSuccess, data: products } = await studentProductService.getProducts();
+            if (refreshSuccess && products) {
+                setProductsList(products);
+            }
+        } else {
+            toast.error(message || 'خطا در ثبت محصول');
+        }
+    };
+
     const handleAddProduct = () => {
-        // Create new ProductData object
-        const newProduct: Product = {
-            id: Math.floor(Math.random() * 100000), // Better temporary ID
-            name: formData.name,
-            soldCount: 0, // Starts at 0
-            revenue: "۰ ریال", // Starts at 0
-            inventoryCount: parseInt(formData.stock || '0', 10),
-            trendPercentage: "+0.0%", // Initial trend
-            trendType: "positive",
-            description: formData.description,
-            category: formData.category,
-            tags: formData.tags,
-            price: formData.price,
-            images: formData.images
-        };
-
-        productService.add(newProduct);
-        setProductsList([...productService.getAll()]); // Refresh list
-
         // Reset and close
         setActivePopup('none');
         setFormData({
-            name: '', description: '', images: [], category: '', tags: [], id: 'NK-PEG40-GRY-001',
-            price: '', fee: '', receive: '', discount: '', code: '', percent: '', stock: '', reminder: ''
+            name: '', description: '', images: [], category: '', tags: [], id: generateProductCode(),
+            price: '', fee: '', receive: '', discount: '', code: '', percent: '', stock: '', reminder: '',
+            imageFiles: []
         });
     };
 
@@ -125,7 +186,7 @@ export default function SellsPage() {
                     </div>
                 </div>
 
-                <ProductTable products={productsList} />
+                <ProductTable products={productsList} loading={isLoading} />
             </div>
 
             <div className="fixed bottom-0 w-full z-50">
@@ -140,6 +201,7 @@ export default function SellsPage() {
                     onStepClick={(step) => setActivePopup(step as any)}
                     formData={formData}
                     updateFormData={updateFormData}
+                    categories={categoriesList}
                 />
             )}
             {/* Step 2 removed */}
@@ -165,7 +227,7 @@ export default function SellsPage() {
             {activePopup === 'step6' && (
                 <NewProductPage6
                     onClose={() => setActivePopup('none')}
-                    onNext={() => setActivePopup('step7')} // Transition to Success Page
+                    onNext={handleSubmitProduct} // Trigger submission
                     onStepClick={(step) => setActivePopup(step as any)}
                     formData={formData}
                 />

@@ -2,8 +2,9 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { cn } from "@/lib/utils";
-import { ChevronLeft, ChevronRight, Filter, Search, MoreHorizontal } from "lucide-react";
+import { ChevronLeft, ChevronRight, Filter, Search, MoreHorizontal, Trash2, Edit } from "lucide-react";
 import { useRouter } from 'next/navigation';
+import { Skeleton } from "@/app/components/Skeleton";
 
 // Types for our data
 import { Product } from '@/app/StudentDashboard/data/products';
@@ -16,6 +17,7 @@ interface ProductTableRowProps {
     index: number;
     isChecked: boolean;
     onToggle: (id: number | string) => void;
+    onDelete?: (id: number | string) => void;
 }
 
 function toFarsiNumber(n: number | string | undefined): string {
@@ -23,30 +25,80 @@ function toFarsiNumber(n: number | string | undefined): string {
     return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
 }
 
-function ProductTableRow({ product, index, isChecked, onToggle }: ProductTableRowProps) {
+function ProductTableRow({ product, index, isChecked, onToggle, onDelete }: ProductTableRowProps) {
     const router = useRouter();
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const isPositive = product.trendType === 'positive';
     const trendBg = isPositive ? 'bg-[#ECF9F7]' : 'bg-[#FCE8EC]';
     const trendText = isPositive ? 'text-[#267666]' : 'text-[#B21634]';
+    const menuRef = useRef<HTMLDivElement>(null);
 
-    const handleEdit = (e: React.MouseEvent) => {
+    // Close menu when clicking outside
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+                setIsMenuOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+    const handleRowClick = () => {
+        router.push(`/StudentDashboard/EditeProducts?id=${product.id}`);
+    };
+
+    const toggleMenu = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setIsMenuOpen(!isMenuOpen);
+    };
+
+    const handleDeleteClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setIsMenuOpen(false);
+        if (onDelete) onDelete(product.id);
+    };
+
+    const handleEditClick = (e: React.MouseEvent) => {
         e.stopPropagation();
         router.push(`/StudentDashboard/EditeProducts?id=${product.id}`);
     };
 
     return (
         <div 
-            onClick={() => onToggle(product.id)}
-            className="flex min-w-max h-16 px-[9px] border-b border-[#DFE1E7] justify-end items-center hover:bg-gray-50 transition-colors cursor-pointer bg-white"
+            onClick={handleRowClick}
+            className="flex min-w-max h-16 px-[9px] border-b border-[#DFE1E7] justify-end items-center hover:bg-gray-50 transition-colors cursor-pointer bg-white relative"
         >
-            {/* Edit Menu - Replaces Trend Icon */}
-            <div className="h-16 px-3 border-b border-[#DFE1E7] flex justify-start items-center gap-2">
+            {/* Edit Menu */}
+            <div className="h-16 px-3 border-b border-[#DFE1E7] flex justify-start items-center gap-2 relative">
                 <button 
-                    onClick={handleEdit}
+                    onClick={toggleMenu}
                     className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 transition-colors"
                 >
                     <MoreHorizontal className="w-5 h-5 text-[#666D80]" />
                 </button>
+                
+                {/* Dropdown Menu */}
+                {isMenuOpen && (
+                    <div ref={menuRef} className="absolute top-10 left-0 z-50 w-32 bg-white rounded-lg shadow-lg border border-gray-100 flex flex-col overflow-hidden animate-fade-in" dir="rtl">
+                         <div 
+                            onClick={handleEditClick}
+                            className="px-3 py-2 hover:bg-gray-50 flex items-center gap-2 text-[#0D0D12] text-sm cursor-pointer"
+                         >
+                            <Edit className="w-4 h-4" />
+                            <span>ویرایش</span>
+                         </div>
+                         <div 
+                            onClick={handleDeleteClick}
+                            className="px-3 py-2 hover:bg-red-50 flex items-center gap-2 text-red-500 text-sm cursor-pointer border-t border-gray-50"
+                         >
+                            <Trash2 className="w-4 h-4" />
+                            <span>حذف</span>
+                         </div>
+                    </div>
+                )}
             </div>
 
             {/* Badge */}
@@ -91,8 +143,10 @@ function ProductTableRow({ product, index, isChecked, onToggle }: ProductTableRo
                 <div className="flex-1 text-right text-[#0D0D12] text-sm font-semibold font-num-medium leading-[21px] tracking-wide">
                     {toFarsiNumber(product.id)}
                 </div>
-                <div className={cn(
-                    "w-4 h-4 relative rounded border flex items-center justify-center",
+                <div 
+                    onClick={(e) => { e.stopPropagation(); onToggle(product.id); }}
+                    className={cn(
+                    "w-4 h-4 relative rounded border flex items-center justify-center hover:bg-gray-100",
                     isChecked ? "bg-white border-[#DFE1E7]" : "bg-white border-[#DFE1E7]" 
                 )}>
                    {isChecked && (
@@ -110,9 +164,11 @@ function ProductTableRow({ product, index, isChecked, onToggle }: ProductTableRo
 
 interface ProductTableProps {
     products: ProductData[];
+    loading?: boolean;
+    onDelete?: (id: number | string) => void;
 }
 
-export function ProductTable({ products }: ProductTableProps) {
+export function ProductTable({ products, loading = false, onDelete }: ProductTableProps) {
     const [currentPage, setCurrentPage] = useState(1);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [checkedIds, setCheckedIds] = useState<(number | string)[]>([]);
@@ -199,6 +255,36 @@ export function ProductTable({ products }: ProductTableProps) {
             setCurrentPage(prev => prev - 1);
         }
     };
+
+    if (loading) {
+        return (
+            <div className="w-full flex-col justify-start items-center inline-flex" dir="rtl">
+                 {/* Header Mock */}
+                <div className="w-full h-[54px] px-3 bg-[#F8F9FB] border-b border-[#DFE1E7] flex justify-end items-center">
+                     <div className="w-full flex justify-end gap-2 p-2">
+                        <Skeleton className="h-4 w-24 ml-4" />
+                        <Skeleton className="h-4 w-16 ml-4" />
+                        <Skeleton className="h-4 w-16 ml-4" />
+                        <Skeleton className="h-4 w-16 ml-4" />
+                        <Skeleton className="h-4 w-32 ml-4" />
+                     </div>
+                </div>
+                {[1, 2, 3, 4, 5].map((i) => (
+                    <div key={i} className="w-full h-16 px-[9px] border-b border-[#DFE1E7] flex justify-end items-center gap-4">
+                        <div className="flex-1 flex justify-end gap-10 items-center">
+                             <Skeleton className="h-6 w-20" />
+                             <Skeleton className="h-6 w-20" />
+                             <Skeleton className="h-6 w-20" />
+                             <Skeleton className="h-6 w-20" />
+                             <Skeleton className="h-6 w-32" />
+                             <Skeleton className="h-6 w-8" />
+                        </div>
+                         <Skeleton className="h-4 w-4 rounded ml-2" />
+                    </div>
+                ))}
+            </div>
+        );
+    }
 
     return (
         <div className="w-full bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl border border-[#DFE1E7] flex flex-col justify-start items-end inline-flex mb-8">
@@ -318,6 +404,7 @@ export function ProductTable({ products }: ProductTableProps) {
                         index={i} 
                         isChecked={checkedIds.includes(p.id)} 
                         onToggle={toggleId}
+                        onDelete={onDelete}
                     />
                 ))}
             </div>

@@ -9,7 +9,8 @@ import { PricingForm } from "../Sells/components/shared/PricingForm";
 import { CategoryTagsForm } from "../Sells/components/shared/CategoryTagsForm";
 import { ProductPreviewCard } from "../Sells/components/shared/ProductPreviewCard";
 import { NewProductPage6 } from "../Sells/components/NewProductPage6";
-import { productService } from '@/app/StudentDashboard/data/products';
+import { studentProductService } from '@/app/services/studentProductService';
+import { Skeleton } from "@/app/components/Skeleton";
 
 export function EditeProducts() {
     const router = useRouter();
@@ -17,13 +18,20 @@ export function EditeProducts() {
     const productId = searchParams.get('id');
     const [showPreview, setShowPreview] = useState(false);
     const [formData, setFormData] = useState<any>({});
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         if (productId) {
-            const product = productService.getById(productId);
-            if (product) {
-                setFormData(product);
-            }
+            const fetchProduct = async () => {
+                const { success, data } = await studentProductService.getProductById(productId as string);
+                if (success && data) {
+                    setFormData(data);
+                }
+                setIsLoading(false);
+            };
+            fetchProduct();
+        } else {
+             setIsLoading(false);
         }
     }, [productId]);
 
@@ -31,9 +39,61 @@ export function EditeProducts() {
         setFormData((prev: any) => ({ ...prev, ...updates }));
     };
 
-    const handleSave = () => {
-        // In a real app we would call productService.update(productId, formData);
-        router.push('/StudentDashboard/Sells');
+    const handleSave = async () => {
+        if (!productId) return;
+
+        // Prepare payload according to spec
+        const payload = {
+            category_id: formData.category, 
+            code: formData.code,
+            inventory: parseInt(String(formData.stock || '0').replace(/\D/g, ''), 10),
+            price: parseInt(String(formData.price || '0').replace(/\D/g, ''), 10),
+            title: formData.name,
+            type_inventory: 1,
+            warn_inventory: parseInt(String(formData.reminder || '0').replace(/\D/g, ''), 10),
+            description: formData.description || null,
+            // Image: Endpoint requires file (multipart) or null. 
+            // We cannot send File via application/json. 
+            // Sending URL string fails "must be file" validation.
+            // sending null allows text-only updates without validation error.
+            image: null,
+            tag_id: null
+        };
+        
+        console.log("🚀 Update Payload:", payload);
+
+        // Basic validation
+        if (!payload.title || !payload.category_id || !payload.code) {
+            alert('لطفا فیلدهای اجباری (عنوان، دسته بندی، کد محصول) را پر کنید.');
+            return;
+        }
+
+        setIsLoading(true);
+        const { success, message } = await studentProductService.updateProduct(productId as string, payload);
+        setIsLoading(false);
+
+        if (success) {
+            // Optional: Show success toast
+            router.push('/StudentDashboard/Sells');
+        } else {
+            alert(message || 'خطا در ویرایش محصول');
+        }
+    };
+
+    const handleDelete = async () => {
+        if (!productId) return;
+        if (!confirm('آیا از حذف این محصول اطمینان دارید؟')) return;
+
+        setIsLoading(true);
+        const { success, message } = await studentProductService.deleteProduct(productId as string);
+        setIsLoading(false);
+
+        if (success) {
+            alert(message);
+            router.push('/StudentDashboard/Sells');
+        } else {
+            alert(message || 'خطا در حذف محصول');
+        }
     };
 
     return (
@@ -67,6 +127,13 @@ export function EditeProducts() {
                          >
                              <span className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb']">پیش نمایش محصول</span>
                          </button>
+                         {/* Delete Button */}
+                         <button 
+                            onClick={handleDelete}
+                            className="w-full h-10 bg-white rounded-lg shadow-sm border border-red-200 flex justify-center items-center gap-2 hover:bg-red-50 transition-colors"
+                         >
+                             <span className="text-red-500 text-sm font-semibold font-['PeydaWeb']">حذف محصول</span>
+                         </button>
                      </div>
                 </div>
 
@@ -83,10 +150,21 @@ export function EditeProducts() {
                 </div>
 
                 {/* Shared Forms */}
-                <BasicInfoForm values={formData} onChange={handleUpdateChange} />
-                <PricingForm values={formData} onChange={handleUpdateChange} />
-                <CategoryTagsForm values={formData} onChange={handleUpdateChange} />
-                <ProductPreviewCard product={formData} />
+                {/* Shared Forms */}
+                {isLoading ? (
+                    <div className="w-full flex flex-col gap-6">
+                        <Skeleton className="w-full h-[320px] rounded-xl" />
+                        <Skeleton className="w-full h-[200px] rounded-xl" />
+                        <Skeleton className="w-full h-[250px] rounded-xl" />
+                    </div>
+                ) : (
+                    <>
+                        <BasicInfoForm values={formData} onChange={handleUpdateChange} />
+                        <PricingForm values={formData} onChange={handleUpdateChange} />
+                        <CategoryTagsForm values={formData} onChange={handleUpdateChange} />
+                        <ProductPreviewCard product={formData} />
+                    </>
+                )}
 
                 {/* Final Save Button */}
                 <button 
