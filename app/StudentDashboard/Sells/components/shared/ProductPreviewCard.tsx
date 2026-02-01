@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Star, Heart, Eye } from 'lucide-react';
+import { Star, Heart, Eye, X } from 'lucide-react';
 
 export interface ProductPreviewProps {
     product?: {
@@ -13,6 +13,7 @@ export interface ProductPreviewProps {
 
 export function ProductPreviewCard({ product }: ProductPreviewProps) {
     const [activeImage, setActiveImage] = useState(1);
+    const [expandedImage, setExpandedImage] = useState<string | null>(null);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
 
     const handleScroll = () => {
@@ -48,9 +49,21 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
                             <div 
                                 key={i} 
                                 id={`preview-img-${i + 1}`}
-                                className="w-full h-full flex-shrink-0 bg-center bg-contain bg-no-repeat snap-center"
-                                style={{ backgroundImage: `url('${img}')` }}
-                            />
+                                className="w-full h-full flex-shrink-0 snap-center flex items-center justify-center bg-gray-50"
+                            >
+                                <img 
+                                    src={img} 
+                                    alt={`preview-${i}`}
+                                    className="w-full h-full object-cover cursor-zoom-in hover:scale-105 transition-transform duration-500"
+                                    onClick={() => setExpandedImage(img)}
+                                    onError={(e) => {
+                                        const target = e.target as HTMLImageElement;
+                                        target.style.display = 'none';
+                                        target.parentElement?.classList.add('bg-gray-100');
+                                        target.parentElement?.insertAdjacentHTML('beforeend', '<div class="text-gray-400 text-[10px] absolute inset-0 flex items-center justify-center">تصویر یافت نشد</div>');
+                                    }}
+                                />
+                            </div>
                         ))}
                     </div>
                      {/* Dots */}
@@ -123,6 +136,30 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
                 </div>
 
             </div>
+            
+            {/* Lightbox Modal */}
+            {expandedImage && (
+                <div 
+                    className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200"
+                    onClick={() => setExpandedImage(null)}
+                >
+                    <button 
+                        className="absolute top-5 right-5 text-white/70 hover:text-white transition-colors bg-white/10 p-2 rounded-full hover:bg-white/20"
+                        onClick={(e) => {
+                             e.stopPropagation();
+                             setExpandedImage(null);
+                        }}
+                    >
+                        <X className="w-6 h-6" />
+                    </button>
+                    <img 
+                         src={expandedImage} 
+                         className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl scale-100 animate-in zoom-in-95 duration-300"
+                         onClick={(e) => e.stopPropagation()}
+                         alt="Full size"
+                    />
+                </div>
+            )}
         </div>
     );
 }

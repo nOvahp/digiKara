@@ -16,6 +16,7 @@ interface BasicInfoFormProps {
 
 export function BasicInfoForm({ defaultValues = {}, values, onChange }: BasicInfoFormProps) {
     const [activeImage, setActiveImage] = useState(1);
+    const [expandedImage, setExpandedImage] = useState<string | null>(null);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -187,29 +188,21 @@ export function BasicInfoForm({ defaultValues = {}, values, onChange }: BasicInf
                                         <img 
                                             src={img} 
                                             alt={`product-${i}`}
-                                            className="w-full h-full object-contain"
+                                            className="w-full h-full object-cover transition-transform duration-500 hover:scale-105 cursor-zoom-in"
+                                            onClick={() => setExpandedImage(img)}
                                             onError={(e) => {
                                                 const target = e.target as HTMLImageElement;
                                                 target.style.display = 'none';
                                                 const parent = target.parentElement;
                                                 if (parent) {
-                                                    // Show error state in parent
-                                                    parent.classList.add('bg-red-50');
-                                                    
-                                                    // Create error message element if not exists
+                                                    parent.classList.add('bg-gray-100');
                                                     if (!parent.querySelector('.img-error-msg')) {
                                                         const msg = document.createElement('div');
-                                                        msg.className = 'img-error-msg absolute inset-0 flex flex-col items-center justify-center p-2 text-center';
-                                                        msg.innerHTML = `
-                                                            <div class="text-red-500 mb-1">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                                                            </div>
-                                                            <span class="text-[10px] text-red-600 break-all font-mono leading-tight">${img}</span>
-                                                        `;
+                                                        msg.className = 'img-error-msg absolute inset-0 flex flex-col items-center justify-center p-2 text-center text-gray-400';
+                                                        msg.innerHTML = `<span class="text-[10px]">تصویر یافت نشد</span>`;
                                                         parent.appendChild(msg);
                                                     }
                                                 }
-                                                console.error('Image Load Error:', img);
                                             }}
                                         />
                                         
@@ -265,6 +258,30 @@ export function BasicInfoForm({ defaultValues = {}, values, onChange }: BasicInf
                     )}
                  </div>
             </div>
+
+            {/* Lightbox Modal */}
+            {expandedImage && (
+                <div 
+                    className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200"
+                    onClick={() => setExpandedImage(null)}
+                >
+                    <button 
+                        className="absolute top-5 right-5 text-white/70 hover:text-white transition-colors bg-white/10 p-2 rounded-full hover:bg-white/20"
+                        onClick={(e) => {
+                             e.stopPropagation();
+                             setExpandedImage(null);
+                        }}
+                    >
+                        <X className="w-6 h-6" />
+                    </button>
+                    <img 
+                        src={expandedImage} 
+                        className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl scale-100 animate-in zoom-in-95 duration-300"
+                        onClick={(e) => e.stopPropagation()}
+                        alt="Full size"
+                    />
+                </div>
+            )}
         </div>
     );
 }
