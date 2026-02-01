@@ -28,6 +28,8 @@ export function EditeProducts() {
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
 
+    const [fetchedCategories, setFetchedCategories] = useState<{id: number | string, name: string}[]>([]); 
+
     const fetchProduct = async () => {
         if (!productId) return;
         const { success, data } = await studentProductService.getProductById(productId as string);
@@ -37,9 +39,17 @@ export function EditeProducts() {
         setIsLoading(false);
     };
 
+    const fetchCategories = async () => {
+        const { success, data } = await studentProductService.getCategories();
+        if (success && data) {
+           setFetchedCategories(data);
+        }
+    };
+
     useEffect(() => {
         if (productId) {
             fetchProduct();
+            fetchCategories();
         } else {
              setIsLoading(false);
         }
@@ -54,10 +64,10 @@ export function EditeProducts() {
 
         // Prepare payload according to spec
         const payload = {
-            category_id: formData.category, 
+            category_id: formData.category ? String(formData.category) : '1', 
             code: formData.code,
-            inventory: parseInt(String(formData.stock || '0').replace(/\D/g, ''), 10),
-            price: parseInt(String(formData.price || '0').replace(/\D/g, ''), 10),
+            inventory: parseInt(String(formData.stock || '0').replace(/\D/g, ''), 10) || 0,
+            price: parseInt(String(formData.price || '0').replace(/\D/g, ''), 10) || 0,
             title: formData.name,
             type_inventory: 1,
             warn_inventory: parseInt(String(formData.reminder || '0').replace(/\D/g, ''), 10),
@@ -184,7 +194,7 @@ export function EditeProducts() {
                         <BasicInfoForm values={formData} onChange={handleUpdateChange} />
                         <PricingForm values={formData} onChange={handleUpdateChange} />
                         <PriceListEditor prices={formData.prices || []} onRefresh={fetchProduct} />
-                        <CategoryTagsForm values={formData} onChange={handleUpdateChange} />
+                        <CategoryTagsForm values={formData} onChange={handleUpdateChange} categories={fetchedCategories} />
                         <ProductPreviewCard product={formData} />
                     </>
                 )}

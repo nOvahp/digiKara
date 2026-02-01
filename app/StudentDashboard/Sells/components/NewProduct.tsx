@@ -4,6 +4,8 @@ import { X, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import axios from 'axios';
 
+import { studentProductService } from '@/app/services/studentProductService';
+
 interface NewProductProps {
     onClose: () => void;
     onNext: () => void;
@@ -15,6 +17,17 @@ interface NewProductProps {
 
 export function NewProduct({ onClose, onNext, onStepClick, formData, updateFormData, categories = [] }: NewProductProps) {
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const [fetchedCategories, setFetchedCategories] = useState<{id: number | string, name: string}[]>([]);
+
+    React.useEffect(() => {
+        const fetchCategories = async () => {
+            const { success, data } = await studentProductService.getCategories();
+            if (success && data) {
+                setFetchedCategories(data);
+            }
+        };
+        fetchCategories();
+    }, []);
 
     const handleNext = () => {
         try {
@@ -188,6 +201,7 @@ export function NewProduct({ onClose, onNext, onStepClick, formData, updateFormD
                         </div>
 
                         {/* Category and Tags - Replaced with Shared Component */}
+                        {/* Category and Tags - Replaced with Shared Component */}
                         <CategoryTagsForm
                             values={{
                                 category: formData.category,
@@ -195,7 +209,7 @@ export function NewProduct({ onClose, onNext, onStepClick, formData, updateFormD
                                 metadata: '' // Assuming metadata isn't in main formData yet, or add it
                             }}
                             onChange={(updates) => updateFormData(updates)}
-                            categories={categories}
+                            categories={fetchedCategories.length > 0 ? fetchedCategories : categories}
                         />
 
                         {/* Product ID */}

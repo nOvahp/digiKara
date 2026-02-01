@@ -116,7 +116,8 @@ export default function SellsPage() {
         // Required fields
         // Since we are now using real category IDs from the dropdown, we send formData.category directly.
         // If empty, we default to '1' (or whatever logic) but ideally user must select one.
-        data.append('category_id', formData.category || '1'); 
+        const categoryId = formData.category ? String(formData.category) : '1';
+        data.append('category_id', categoryId); 
         data.append('code', formData.id); 
         data.append('inventory', (formData.stock || '').replace(/\D/g, '') || '0');
         data.append('price', (formData.price || '').replace(/\D/g, '') || '0'); // Remove non-digits
@@ -131,6 +132,9 @@ export default function SellsPage() {
         if (formData.imageFiles && formData.imageFiles.length > 0) {
            data.append('image', formData.imageFiles[0]);
         }
+        // Explicitly avoid sending image as null string or empty if no file, usually FormData handles missing keys by just not sending them unless appended.
+        // But if backend requires it:
+        // data.append('tag_id', ''); // If needed
 
         // Debug: Log FormData entries
         console.group('🚀 Submitting Product Data');
