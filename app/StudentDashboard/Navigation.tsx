@@ -18,7 +18,7 @@ export function Navigation() {
   );
 
   const getTextClasses = (active: boolean) => cn(
-      "text-[10px] sm:text-xs font-semibold font-['PeydaWeb'] whitespace-nowrap",
+      "text-[10px] sm:text-xs font-semibold whitespace-nowrap",
       active ? "text-[#F7C61A]" : "text-[#605F5F]"
   );
   

@@ -164,7 +164,7 @@ export default function ExportPopUp({ onClose, ordersData }: ExportPopUpProps) {
                 
                 {/* Header */}
                 <div className="w-full h-20 px-5 border-b border-[#DFE1E7] flex justify-between items-center bg-white rounded-t-xl">
-                     <span className="text-[#0D0D12] text-lg font-semibold font-num-medium">خروجی از سفارشات</span>
+                     <span className="text-[#0D0D12] text-lg font-num-medium">خروجی از سفارشات</span>
                     <button 
                         onClick={onClose}
                         className="w-10 h-10 rounded-full border border-[#DFE1E7] flex items-center justify-center hover:bg-gray-50 transition-colors"
@@ -178,12 +178,12 @@ export default function ExportPopUp({ onClose, ordersData }: ExportPopUpProps) {
                     
                     {/* Format Dropdown */}
                     <div className="w-full flex flex-col gap-2 relative z-30">
-                         <span className="text-right text-[#818898] text-sm font-semibold font-['PeydaWeb']">فرمت خروجی</span>
+                         <span className="text-right text-[#818898] text-sm font-semibold">فرمت خروجی</span>
                          <div 
                             onClick={() => { setIsFormatOpen(!isFormatOpen); setIsStatusOpen(false); setIsColumnsOpen(false); }}
                             className="w-full h-[52px] px-3 bg-white rounded-xl border border-[#DFE1E7] flex items-center justify-between cursor-pointer hover:border-gray-300 transition-colors"
                          >
-                            <span className="text-[#0D0D12] text-base font-normal font-num-medium">{format}</span>
+                            <span className="text-[#0D0D12] text-base font-num-medium">{format}</span>
                             {isFormatOpen ? <ChevronUp size={20} className="text-[#818898]" /> : <ChevronDown size={20} className="text-[#818898]" />}
                          </div>
                          {isFormatOpen && (
@@ -197,21 +197,21 @@ export default function ExportPopUp({ onClose, ordersData }: ExportPopUpProps) {
 
                     {/* Date Range - Static */}
                     <div className="w-full flex flex-col gap-2 relative z-0">
-                         <span className="text-right text-[#818898] text-sm font-semibold font-['PeydaWeb']">محدوده تاریخ</span>
+                         <span className="text-right text-[#818898] text-sm font-semibold">محدوده تاریخ</span>
                          <div className="w-full h-[52px] px-3 bg-white rounded-xl border border-[#DFE1E7] flex items-center justify-between cursor-pointer hover:border-gray-300 transition-colors">
-                            <span className="text-[#0D0D12] text-base font-normal font-num-medium">۱۰ مرداد - ۱۷ مرداد ۱۴۰۴</span>
+                            <span className="text-[#0D0D12] text-base font-num-medium">۱۰ مرداد - ۱۷ مرداد ۱۴۰۴</span>
                              <Calendar size={20} className="text-[#818898]" />
                          </div>
                     </div>
 
                     {/* Customer Status Dropdown */}
                     <div className="w-full flex flex-col gap-2 relative z-20">
-                         <span className="text-right text-[#818898] text-sm font-semibold font-['PeydaWeb']">وضعیت مشتری</span>
+                         <span className="text-right text-[#818898] text-sm font-semibold">وضعیت مشتری</span>
                          <div 
                             onClick={() => { setIsStatusOpen(!isStatusOpen); setIsFormatOpen(false); setIsColumnsOpen(false); }}
                             className="w-full h-[52px] px-3 bg-white rounded-xl border border-[#DFE1E7] flex items-center justify-between cursor-pointer hover:border-gray-300 transition-colors"
                          >
-                            <span className="text-[#0D0D12] text-base font-normal font-num-medium">{statusFilter}</span>
+                            <span className="text-[#0D0D12] text-base font-num-medium">{statusFilter}</span>
                              {isStatusOpen ? <ChevronUp size={20} className="text-[#818898]" /> : <ChevronDown size={20} className="text-[#818898]" />}
                          </div>
                          {isStatusOpen && (
@@ -225,12 +225,12 @@ export default function ExportPopUp({ onClose, ordersData }: ExportPopUpProps) {
 
                     {/* Columns Dropdown */}
                      <div className="w-full flex flex-col gap-2 relative z-10">
-                         <span className="text-right text-[#818898] text-sm font-semibold font-['PeydaWeb']">شامل ستون ها</span>
+                         <span className="text-right text-[#818898] text-sm font-semibold">شامل ستون ها</span>
                          <div 
                             onClick={() => { setIsColumnsOpen(!isColumnsOpen); setIsFormatOpen(false); setIsStatusOpen(false); }}
                             className="w-full h-[52px] px-3 bg-white rounded-xl border border-[#DFE1E7] flex items-center justify-between cursor-pointer hover:border-gray-300 transition-colors"
                          >
-                            <span className="text-[#0D0D12] text-base font-normal font-num-medium">{columnsFilter}</span>
+                            <span className="text-[#0D0D12] text-base font-num-medium">{columnsFilter}</span>
                              {isColumnsOpen ? <ChevronUp size={20} className="text-[#818898]" /> : <ChevronDown size={20} className="text-[#818898]" />}
                          </div>
                          {isColumnsOpen && (
@@ -249,7 +249,7 @@ export default function ExportPopUp({ onClose, ordersData }: ExportPopUpProps) {
                         onClick={handleExport}
                         className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center hover:bg-yellow-400 transition-colors shadow-sm"
                     >
-                        <span className="text-[#1A1C1E] text-lg font-semibold font-['PeydaWeb']">دانلود فایل سفارشات</span>
+                        <span className="text-[#1A1C1E] text-lg font-semibold">دانلود فایل سفارشات</span>
                     </button>
                 </div>
 

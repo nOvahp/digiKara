@@ -49,7 +49,7 @@ export function NewProductPage4({ onClose, onNext, onStepClick, formData, update
                              <X className="w-5 h-5 text-[#0D0D12]" />
                         </div>
                     </div>
-                    <div className="text-[#0D0D12] text-lg font-semibold font-['PeydaWeb'] leading-relaxed tracking-wide">
+                    <div className="text-[#0D0D12] text-lg font-semibold leading-relaxed tracking-wide">
                         افزودن محصول جدید
                     </div>
                 </div>
@@ -76,11 +76,11 @@ export function NewProductPage4({ onClose, onNext, onStepClick, formData, update
                                      value={formData.stock}
                                      placeholder="تعداد موجودی"
                                      onChange={(e) => updateFormData({ stock: e.target.value })}
-                                     className="flex-1 h-full bg-transparent border-none outline-none text-[#0D0D12] text-base font-semibold font-num-medium text-right tracking-wider placeholder:text-gray-400" 
+                                     className="flex-1 h-full bg-transparent border-none outline-none text-[#0D0D12] text-base font-num-medium text-right tracking-wider placeholder:text-gray-400" 
                                      dir="rtl"
                                  />
                                  <div className="w-px h-6 bg-[#DFE1E7]"></div>
-                                 <div className="w-11 text-center text-[#0D0D12] text-base font-semibold font-['PeydaWeb'] h-full flex items-center justify-center">
+                                 <div className="w-11 text-center text-[#0D0D12] text-base font-semibold h-full flex items-center justify-center">
                                      عدد
                                  </div>
                              </div>
@@ -95,11 +95,11 @@ export function NewProductPage4({ onClose, onNext, onStepClick, formData, update
                                      value={formData.reminder}
                                      placeholder={`حداقل موجودی (مثلا ${toFarsiNumber(10)})`}
                                      onChange={(e) => updateFormData({ reminder: e.target.value })}
-                                     className="flex-1 h-full bg-transparent border-none outline-none text-[#0D0D12] text-base font-semibold font-num-medium text-right tracking-wider placeholder:text-gray-400" 
+                                     className="flex-1 h-full bg-transparent border-none outline-none text-[#0D0D12] text-base font-num-medium text-right tracking-wider placeholder:text-gray-400" 
                                      dir="rtl"
                                  />
                                  <div className="w-px h-6 bg-[#DFE1E7]"></div>
-                                 <div className="w-11 text-center text-[#0D0D12] text-base font-semibold font-['PeydaWeb'] h-full flex items-center justify-center">
+                                 <div className="w-11 text-center text-[#0D0D12] text-base font-semibold h-full flex items-center justify-center">
                                      عدد
                                  </div>
                              </div>
@@ -114,7 +114,7 @@ export function NewProductPage4({ onClose, onNext, onStepClick, formData, update
                         onClick={handleNext}
                         className="flex-1 h-10 px-4 py-2 bg-gradient-to-t from-[rgba(255,255,255,0)] to-[rgba(255,255,255,0.15)] bg-[#0A33FF] shadow-[0px_1px_2px_rgba(13,13,18,0.06)] rounded-lg border border-[#0A33FF] flex justify-center items-center gap-2 hover:opacity-90 transition-opacity"
                      >
-                         <span className="text-center text-white text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">ادامه</span>
+                         <span className="text-center text-white text-sm font-semibold leading-[21px] tracking-wide">ادامه</span>
                      </button>
                 </div>
 
@@ -139,10 +139,10 @@ function StepItem({ number, label, state, onClick }: { number: string, label: st
 
     return (
         <div className="flex items-center gap-2.5 flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity" onClick={onClick}>
-            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold font-num-medium leading-[21px] tracking-wide ${circleClass}`}>
+            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-num-medium leading-[21px] tracking-wide ${circleClass}`}>
                 {toFarsiNumber(number)}
             </div>
-            <span className={`text-sm font-['PeydaWeb'] leading-[21px] tracking-wide whitespace-nowrap ${textClass}`}>
+            <span className={`text-sm leading-[21px] tracking-wide whitespace-nowrap ${textClass}`}>
                 {label}
             </span>
         </div>
@@ -151,7 +151,7 @@ function StepItem({ number, label, state, onClick }: { number: string, label: st
 
 function Label({ text }: { text: string }) {
     return (
-        <div className="w-full text-right text-[#666D80] text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">
+        <div className="w-full text-right text-[#666D80] text-sm font-semibold leading-[21px] tracking-wide">
             {text}
         </div>
     );

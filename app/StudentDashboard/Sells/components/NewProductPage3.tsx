@@ -26,7 +26,7 @@ const toFarsiNumber = (n: number | string | undefined): string => {
 }
 
 export function NewProductPage3({ onClose, onNext, onStepClick, formData, updateFormData }: NewProductPage3Props) {
-    const [isMultiPrice, setIsMultiPrice] = useState((formData.extraPrices && formData.extraPrices.length > 0));
+    const isMultiPrice = formData.isMultiPrice;
     const [newPrice, setNewPrice] = useState({
         title: '', 
         amount: '', 
@@ -50,6 +50,14 @@ export function NewProductPage3({ onClose, onNext, onStepClick, formData, update
              toast.error((error as Error).message);
         }
     };
+    
+    // ...
+
+    // In the return JSX
+    // Update the toggles to use updateFormData({ isMultiPrice: ... })
+    // I need to use MultiReplace for the toggles as well or do a larger replace.
+    // I'll do a larger replace of the component body parts.
+
 
     const handleAddPrice = () => {
         if (!newPrice.title || !newPrice.amount) {
@@ -96,7 +104,7 @@ export function NewProductPage3({ onClose, onNext, onStepClick, formData, update
                              <X className="w-5 h-5 text-[#0D0D12]" />
                         </div>
                     </div>
-                    <div className="text-[#0D0D12] text-lg font-semibold font-['PeydaWeb'] leading-relaxed tracking-wide">
+                    <div className="text-[#0D0D12] text-lg font-semibold leading-relaxed tracking-wide">
                         افزودن محصول جدید
                     </div>
                 </div>
@@ -116,14 +124,14 @@ export function NewProductPage3({ onClose, onNext, onStepClick, formData, update
                         {/* Pricing Type Toggle */}
                         <div className="w-full h-9 p-0.5 bg-[#F6F6F6] rounded-lg border border-[#D7D8DA] flex items-center mb-2">
                              <div 
-                                onClick={() => setIsMultiPrice(true)}
-                                className={`flex-1 h-[29px] px-3 py-1 rounded-md flex justify-center items-center gap-2.5 cursor-pointer text-sm font-semibold font-['PeydaWeb'] ${isMultiPrice ? 'bg-[#FFDD8A] shadow-sm border border-[#D7D8DA] text-[#0D0D12]' : 'text-[#0A0A0A] opacity-50'}`}
+                                onClick={() => updateFormData({ isMultiPrice: true })}
+                                className={`flex-1 h-[29px] px-3 py-1 rounded-md flex justify-center items-center gap-2.5 cursor-pointer text-sm font-semibold ${isMultiPrice ? 'bg-[#FFDD8A] shadow-sm border border-[#D7D8DA] text-[#0D0D12]' : 'text-[#0A0A0A] opacity-50'}`}
                              >
                                  دارای چند قیمت
                              </div>
                              <div 
-                                onClick={() => setIsMultiPrice(false)}
-                                className={`flex-1 h-[29px] px-3 py-1 rounded-md flex justify-center items-center gap-2.5 cursor-pointer text-sm font-semibold font-['PeydaWeb'] ${!isMultiPrice ? 'bg-[#FFDD8A] shadow-sm border border-[#D7D8DA] text-[#0D0D12]' : 'text-[#0A0A0A] opacity-50'}`}
+                                onClick={() => updateFormData({ isMultiPrice: false })}
+                                className={`flex-1 h-[29px] px-3 py-1 rounded-md flex justify-center items-center gap-2.5 cursor-pointer text-sm font-semibold ${!isMultiPrice ? 'bg-[#FFDD8A] shadow-sm border border-[#D7D8DA] text-[#0D0D12]' : 'text-[#0A0A0A] opacity-50'}`}
                              >
                                  تک قیمتی
                              </div>
@@ -142,7 +150,7 @@ export function NewProductPage3({ onClose, onNext, onStepClick, formData, update
                                     <div className="flex gap-2">
                                         <div className="relative w-1/3">
                                             <select 
-                                                className="w-full h-10 px-3 rounded-lg border border-[#DFE1E7] text-right font-['PeydaWeb'] text-sm bg-white outline-none focus:border-[#0A33FF] appearance-none cursor-pointer"
+                                                className="w-full h-10 px-3 rounded-lg border border-[#DFE1E7] text-right font-regular text-sm bg-white outline-none focus:border-[#0A33FF] appearance-none cursor-pointer"
                                                 value={newPrice.type}
                                                 onChange={e => setNewPrice({...newPrice, type: e.target.value})}
                                             >
@@ -158,7 +166,7 @@ export function NewProductPage3({ onClose, onNext, onStepClick, formData, update
                                         </div>
                                         <input 
                                             placeholder="عنوان (مثلا: قرمز، XL)"
-                                            className="flex-1 h-10 px-3 rounded-lg border border-[#DFE1E7] text-right font-['PeydaWeb'] text-sm outline-none focus:border-[#0A33FF]"
+                                            className="flex-1 h-10 px-3 rounded-lg border border-[#DFE1E7] text-right font-regular text-sm outline-none focus:border-[#0A33FF]"
                                             value={newPrice.title}
                                             onChange={e => setNewPrice({...newPrice, title: e.target.value})}
                                         />
@@ -166,26 +174,26 @@ export function NewProductPage3({ onClose, onNext, onStepClick, formData, update
                                     <div className="flex gap-2">
                                         <input 
                                             placeholder="قیمت (تومان)"
-                                            className="flex-1 h-10 px-3 rounded-lg border border-[#DFE1E7] text-right font-['PeydaWeb'] text-sm"
+                                            className="flex-1 h-10 px-3 rounded-lg border border-[#DFE1E7] text-right font-num-medium text-sm"
                                             value={newPrice.amount ? parseInt(newPrice.amount).toLocaleString() : ''}
                                             onChange={e => setNewPrice({...newPrice, amount: e.target.value.replace(/\D/g, '')})}
                                         />
                                         <input 
                                             placeholder="تخفیف %"
-                                            className="w-20 h-10 px-3 rounded-lg border border-[#DFE1E7] text-center font-['PeydaWeb'] text-sm"
+                                            className="w-20 h-10 px-3 rounded-lg border border-[#DFE1E7] text-center font-num-medium text-sm"
                                             value={newPrice.discount_percent}
                                             onChange={e => setNewPrice({...newPrice, discount_percent: e.target.value})}
                                         />
                                     </div>
                                     <input 
                                         placeholder="موجودی"
-                                        className="w-full h-10 px-3 rounded-lg border border-[#DFE1E7] text-right font-['PeydaWeb'] text-sm"
+                                        className="w-full h-10 px-3 rounded-lg border border-[#DFE1E7] text-right font-num-medium text-sm"
                                         value={newPrice.inventory}
                                         onChange={e => setNewPrice({...newPrice, inventory: e.target.value})}
                                     />
                                     <input 
                                         placeholder="هشدار موجودی"
-                                        className="w-full h-10 px-3 rounded-lg border border-[#DFE1E7] text-right font-['PeydaWeb'] text-sm"
+                                        className="w-full h-10 px-3 rounded-lg border border-[#DFE1E7] text-right font-num-medium text-sm"
                                         value={newPrice.warn_inventory}
                                         onChange={e => setNewPrice({...newPrice, warn_inventory: e.target.value})}
                                     />
@@ -220,7 +228,7 @@ export function NewProductPage3({ onClose, onNext, onStepClick, formData, update
                         onClick={handleNext}
                         className="flex-1 h-10 px-4 py-2 bg-gradient-to-t from-[rgba(255,255,255,0)] to-[rgba(255,255,255,0.15)] bg-[#0A33FF] shadow-[0px_1px_2px_rgba(13,13,18,0.06)] rounded-lg border border-[#0A33FF] flex justify-center items-center gap-2 hover:opacity-90 transition-opacity"
                      >
-                         <span className="text-center text-white text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">ادامه</span>
+                         <span className="text-center text-white text-sm font-semibold leading-[21px] tracking-wide">ادامه</span>
                      </button>
                 </div>
             </div>
@@ -243,10 +251,10 @@ function StepItem({ number, label, state, onClick }: { number: string, label: st
 
     return (
         <div className="flex items-center gap-2.5 flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity" onClick={onClick}>
-            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold font-num-medium leading-[21px] tracking-wide ${circleClass}`}>
+            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-num-medium leading-[21px] tracking-wide ${circleClass}`}>
                 {toFarsiNumber(number)}
             </div>
-            <span className={`text-sm font-['PeydaWeb'] leading-[21px] tracking-wide whitespace-nowrap ${textClass}`}>
+            <span className={`text-sm leading-[21px] tracking-wide whitespace-nowrap ${textClass}`}>
                 {label}
             </span>
         </div>

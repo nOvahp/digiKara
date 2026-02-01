@@ -38,13 +38,13 @@ export function PopUpProduct({ order, onClose }: PopUpProductProps) {
 
             {/* Title */}
             <div className="self-stretch text-right mt-2">
-                <span className="text-[#0D0D12] text-base font-semibold font-['PeydaWeb'] leading-relaxed tracking-wide">
+                <span className="text-[#0D0D12] text-base font-semibold leading-relaxed tracking-wide">
                     {order.productName} | 
                 </span>
                 <span className="text-[#0D0D12] text-base  font-num-medium leading-relaxed tracking-wide mx-1">
                     {order.weight.replace(/[^0-9]/g, '')}
                 </span>
-                <span className="text-[#0D0D12] text-base font-semibold font-['PeydaWeb'] leading-relaxed tracking-wide">
+                <span className="text-[#0D0D12] text-base font-semibold leading-relaxed tracking-wide">
                      {order.weight.replace(/[0-9]/g, '')}
                 </span>
             </div>
@@ -65,11 +65,11 @@ export function PopUpProduct({ order, onClose }: PopUpProductProps) {
                     
                     {/* Count */}
                     <div className="self-stretch h-[52px] px-3 py-2 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] flex justify-between items-center gap-2">
-                        <div className="flex-1 text-[#818898] text-base font-normal font-num-medium leading-relaxed tracking-wide text-left" dir="rtl">
+                        <div className="flex-1 text-[#818898] text-base font-num-medium leading-relaxed tracking-wide text-left" dir="rtl">
                             {order.count} عدد
                         </div>
                         <div className="flex justify-end items-center gap-2 w-[70px]">
-                            <div className="flex-1 text-right text-[#666D80] text-sm font-semibold font-['PeydaWeb'] leading-tight tracking-wide">
+                            <div className="flex-1 text-right text-[#666D80] text-sm font-semibold leading-tight tracking-wide">
                                 تعداد
                             </div>
                         </div>
@@ -77,11 +77,11 @@ export function PopUpProduct({ order, onClose }: PopUpProductProps) {
 
                     {/* Delivery Time */}
                     <div className="self-stretch h-[52px] px-3 py-2 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] flex justify-between items-center gap-2">
-                        <div className="flex-1 text-[#818898] text-base font-normal font-num-medium leading-relaxed tracking-wide text-left" dir="rtl">
+                        <div className="flex-1 text-[#818898] text-base font-num-medium leading-relaxed tracking-wide text-left" dir="rtl">
                             {order.deliveryTime}
                         </div>
                         <div className="flex justify-end items-center gap-2 w-[79px]">
-                            <div className="flex-1 text-right text-[#666D80] text-sm font-semibold font-['PeydaWeb'] leading-tight tracking-wide">
+                            <div className="flex-1 text-right text-[#666D80] text-sm font-semibold leading-tight tracking-wide">
                                 موعد تحویل
                             </div>
                         </div>
@@ -89,11 +89,11 @@ export function PopUpProduct({ order, onClose }: PopUpProductProps) {
 
                     {/* Income */}
                     <div className="self-stretch h-[52px] px-3 py-2 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] flex justify-between items-center gap-2">
-                        <div className="flex-1 text-[#818898] text-base font-normal font-num-medium leading-relaxed tracking-wide text-left" dir="rtl">
+                        <div className="flex-1 text-[#818898] text-base font-num-medium leading-relaxed tracking-wide text-left" dir="rtl">
                             {order.price}
                         </div>
                         <div className="flex justify-end items-center gap-2 w-[120px]">
-                            <div className="w-full text-right text-[#666D80] text-sm font-semibold font-['PeydaWeb'] leading-tight tracking-wide">
+                            <div className="w-full text-right text-[#666D80] text-sm font-semibold leading-tight tracking-wide">
                                 درآمد شما از فروش
                             </div>
                         </div>
@@ -106,7 +106,7 @@ export function PopUpProduct({ order, onClose }: PopUpProductProps) {
                              ? "bg-[#ECF9F7]" 
                              : "bg-[#FCE8EC]"
                         }`}>
-                            <div className={`text-center text-xs font-normal font-num-medium leading-[18px] tracking-wide ${
+                            <div className={`text-center text-xs font-num-medium leading-[18px] tracking-wide ${
                                 order.statusLabel.includes("ارسال شده") || order.statusLabel.includes("تحویل") 
                                 ? "text-[#267666]" 
                                 : "text-[#B21634]"
@@ -115,7 +115,7 @@ export function PopUpProduct({ order, onClose }: PopUpProductProps) {
                             </div>
                         </div>
                         <div className="flex justify-end items-center gap-2 w-[79px]">
-                            <div className="w-full text-right text-[#666D80] text-sm font-semibold font-['PeydaWeb'] leading-tight tracking-wide">
+                            <div className="w-full text-right text-[#666D80] text-sm font-semibold leading-tight tracking-wide">
                                 وضعیت
                             </div>
                         </div>
@@ -125,12 +125,12 @@ export function PopUpProduct({ order, onClose }: PopUpProductProps) {
                 {/* Description */}
                 <div className="self-stretch flex-col justify-start items-start gap-2 flex w-full h-[180px]">
                     <div className="self-stretch flex justify-start items-center">
-                        <div className="flex-1 text-right text-[#666D80] text-sm font-semibold font-['PeydaWeb'] leading-tight tracking-wide">
+                        <div className="flex-1 text-right text-[#666D80] text-sm font-semibold leading-tight tracking-wide">
                             توضیحات
                         </div>
                     </div>
                     <div className="self-stretch flex-1 px-3 py-2.5 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] overflow-hidden flex flex-col justify-start items-start">
-                        <div className="self-stretch flex-1 text-right text-[#0D0D12] text-base font-light font-['PeydaWeb'] leading-relaxed tracking-wide">
+                        <div className="self-stretch flex-1 text-right text-[#0D0D12] text-base font-light leading-relaxed tracking-wide">
                             {order.description || order.note || "-"}
                         </div>
                     </div>
@@ -139,7 +139,7 @@ export function PopUpProduct({ order, onClose }: PopUpProductProps) {
                 {/* Action Button */}
                 <div className="self-stretch flex justify-center items-center gap-4 w-full mt-2">
                     <div className="flex-1 h-12 px-6 py-3 bg-[#0A33FF] rounded-xl flex justify-center items-center gap-2.5 cursor-pointer hover:bg-blue-700 transition-colors">
-                        <div className="text-center text-[#D7D8DA] text-base font-extrabold font-num-medium leading-snug">
+                        <div className="text-center text-[#D7D8DA] text-base font-num-medium leading-snug">
                             تغییر وضعیت سفارش
                         </div>
                     </div>

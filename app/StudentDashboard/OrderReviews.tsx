@@ -710,7 +710,7 @@ export function OrderReviews() {
 
       {/* Header */}
       <div className="self-stretch justify-end items-center px-1 inline-flex w-full">
-         <div className="text-[#222831] text-lg font-extrabold font-num-medium leading-relaxed">
+         <div className="text-[#222831] text-lg font-num-medium leading-relaxed">
             {activeTab === 'active_orders' ? 'سفارش ها' : 'پروژه ها'}
          </div>
          {/* Spacer or extra actions could go here */}
@@ -722,13 +722,13 @@ export function OrderReviews() {
             onClick={() => setActiveTab("active_projects")}
             className={`flex-1 h-[29px] px-3 py-1 rounded-md justify-center items-center gap-2.5 flex cursor-pointer ${activeTab === 'active_projects' ? 'bg-[#F7C61A] shadow-sm border border-[#D7D8DA]' : 'hover:bg-gray-100'}`}
          >
-             <div className="text-[#0A0A0A] text-sm font-semibold font-['PeydaWeb'] leading-tight">پروژه های فعال</div>
+             <div className="text-[#0A0A0A] text-sm font-semibold leading-tight">پروژه های فعال</div>
          </div>
          <div 
              onClick={() => setActiveTab("active_orders")}
              className={`flex-1 h-[29px] px-3 py-1 rounded-md justify-center items-center gap-2.5 flex cursor-pointer ${activeTab === 'active_orders' ? 'bg-[#F7C61A] shadow-sm border border-[#D7D8DA]' : 'hover:bg-gray-100'}`}
          >
-             <div className="text-[#0A0A0A] text-sm font-semibold font-['PeydaWeb'] leading-tight">سفارش های  فعال</div>
+             <div className="text-[#0A0A0A] text-sm font-semibold leading-tight">سفارش های  فعال</div>
          </div>
       </div>
 
@@ -787,7 +787,7 @@ export function OrderReviews() {
                          <Search className="w-4 h-4 text-[#666D80]" />
                     </div>
                 </div>
-                <div className="text-[#0D0D12] text-base font-semibold font-['PeydaWeb'] leading-normal tracking-wide">
+                <div className="text-[#0D0D12] text-base font-semibold leading-normal tracking-wide">
                     {activeTab === 'active_orders' ? 'سفارش های  فعال' : 'پروژه های فعال'}
                 </div>
             </div>
@@ -801,24 +801,24 @@ export function OrderReviews() {
                 <div className="flex min-w-max border-b border-[#DFE1E7] bg-[#F6F8FA]">
                      <div className="w-[44px] h-10 px-3 bg-[#F6F8FA] flex items-center justify-center"></div> {/* Spacer / Checkbox */}
                      <div className="w-[272px] h-10 px-3 bg-[#F6F8FA] flex items-center justify-end">
-                         <span className="text-right text-[#666D80] text-sm font-semibold font-['PeydaWeb'] tracking-wide">توضیحات</span>
+                         <span className="text-right text-[#666D80] text-sm font-semibold tracking-wide">توضیحات</span>
                      </div>
                      <div className="w-[104px] h-10 px-3 bg-[#F6F8FA] flex items-center justify-center">
-                         <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb'] tracking-wide">وضعیت</span>
+                         <span className="text-[#666D80] text-sm font-semibold tracking-wide">وضعیت</span>
                      </div>
                      <div className="w-[140px] h-10 px-3 bg-[#F6F8FA] flex items-center justify-center">
-                         <span className="text-center text-[#666D80] text-sm font-semibold font-['PeydaWeb'] tracking-wide">درآمد شما از فروش</span>
+                         <span className="text-center text-[#666D80] text-sm font-semibold tracking-wide">درآمد شما از فروش</span>
                      </div>
                      <div className="w-[127px] h-10 px-3 bg-[#F6F8FA] flex items-center justify-center">
-                         <span className="text-center text-[#666D80] text-sm font-semibold font-['PeydaWeb'] tracking-wide">موعد تحویل</span>
+                         <span className="text-center text-[#666D80] text-sm font-semibold tracking-wide">موعد تحویل</span>
                      </div>
                      <div className="w-[73px] h-10 px-3 bg-[#F6F8FA] flex items-center justify-center">
-                         <span className="text-center text-[#666D80] text-sm font-semibold font-['PeydaWeb'] tracking-wide">
+                         <span className="text-center text-[#666D80] text-sm font-semibold tracking-wide">
                              {activeTab === 'active_orders' ? 'تعداد' : 'تیم'}
                          </span>
                      </div>
                      <div className="w-[272px] h-10 px-3 bg-[#F6F8FA] flex items-center justify-end">
-                         <span className="text-right text-[#666D80] text-sm font-semibold font-['PeydaWeb'] tracking-wide">
+                         <span className="text-right text-[#666D80] text-sm font-semibold tracking-wide">
                              {activeTab === 'active_orders' ? 'محصول' : 'پروژه'}
                          </span>
                      </div>
@@ -842,7 +842,7 @@ export function OrderReviews() {
                          
                          {/* Description/Note */}
                          <div className="w-[272px] h-16 px-3 flex items-center justify-end border-b border-[#DFE1E7]">
-                             <div className="text-right text-[#0D0D12] text-sm font-semibold font-['PeydaWeb'] tracking-wide line-clamp-2">
+                             <div className="text-right text-[#0D0D12] text-sm font-semibold tracking-wide line-clamp-2">
                                  {item.description || item.note}
                              </div>
                          </div>
@@ -850,7 +850,7 @@ export function OrderReviews() {
                          {/* Status */}
                          <div className="w-[104px] h-16 px-3 flex items-center justify-center border-b border-[#DFE1E7]">
                              <div className={`px-2 py-0.5 rounded-2xl flex items-center justify-center ${getStatusStyles(item.statusLabel)}`}>
-                                 <span className="text-center text-xs font-normal font-num-medium tracking-wide whitespace-nowrap">
+                                 <span className="text-center text-xs font-num-medium tracking-wide whitespace-nowrap">
                                      {item.statusLabel}
                                  </span>
                              </div>
@@ -858,21 +858,21 @@ export function OrderReviews() {
 
                          {/* Price */}
                          <div className="w-[140px] h-16 px-3 flex items-center justify-end border-b border-[#DFE1E7]">
-                              <span className="text-center text-[#0D0D12] text-sm font-semibold font-['PeydaWeb'] tracking-wide w-full"dir="rtl">
+                              <span className="text-center text-[#0D0D12] text-sm font-num-medium tracking-wide w-full"dir="rtl">
                                   {toFarsiNumber(item.price)}
                               </span>
                          </div>
 
                          {/* Delivery Time */}
                          <div className="w-[127px] h-16 px-3 flex items-center justify-end border-b border-[#DFE1E7]"dir="rtl">
-                              <span className="text-center text-[#0D0D12] text-sm font-semibold font-num-medium tracking-wide w-full">
+                              <span className="text-center text-[#0D0D12] text-sm font-num-medium tracking-wide w-full">
                                   {toFarsiNumber(item.deliveryTime)}
                               </span>
                          </div>
 
                          {/* Count / Team */}
                          <div className="w-[73px] h-16 px-3 flex items-center justify-end border-b border-[#DFE1E7]">
-                              <span className={`text-center text-[#0D0D12] text-sm ${activeTab === 'active_projects' ? "font-num-medium font-semibold" : "font-num-medium font-semibold"} tracking-wide w-full`}>
+                              <span className={`text-center text-[#0D0D12] text-sm ${activeTab === 'active_projects' ? "font-num-medium" : "font-num-medium"} tracking-wide w-full`}>
                                   {activeTab === 'active_orders' ? toFarsiNumber(item.count) : item.team || '-'}
                               </span>
                          </div>
@@ -881,17 +881,17 @@ export function OrderReviews() {
                           <div className="w-[272px] h-16 px-3 flex items-center justify-end gap-1 border-b border-[#DFE1E7]">
                               {activeTab === 'active_orders' ? (
                                 <>
-                                    <span className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb'] tracking-wide"> {item.productName} | </span>
-                                    <span className="text-[#0D0D12] text-sm font-semibold font-num-medium tracking-wide"dir="rtl"> {toFarsiNumber(item.weight)} </span>
+                                    <span className="text-[#0D0D12] text-sm font-semibold tracking-wide"> {item.productName} | </span>
+                                    <span className="text-[#0D0D12] text-sm font-num-medium tracking-wide"dir="rtl"> {toFarsiNumber(item.weight)} </span>
                                 </>
                               ) : (
-                                <span className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb'] tracking-wide"> {item.projectName} </span>
+                                <span className="text-[#0D0D12] text-sm font-semibold tracking-wide"> {item.projectName} </span>
                               )}
                          </div>
 
                          {/* Index & Checkbox */}
                          <div className="w-[80px] h-16 px-3 flex items-center justify-start gap-2.5 border-b border-[#DFE1E7]">
-                             <span className="flex-1 text-center text-[#0D0D12] text-sm font-semibold font-num-medium tracking-wide">
+                             <span className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium tracking-wide">
                                  {toFarsiNumber(item.id)}
                              </span>
                              <div className="w-4 h-4 bg-white rounded border border-[#DFE1E7]" />
@@ -903,7 +903,7 @@ export function OrderReviews() {
 
             {/* Footer / Pagination */}
             <div className="self-stretch px-5 py-4 flex justify-between items-center w-full">
-                 <div className="text-center text-[#0D0D12] text-sm font-medium font-num-medium tracking-wide">
+                 <div className="text-center text-[#0D0D12] text-sm font-num-medium tracking-wide">
                      صفحه {toFarsiNumber(currentPage)} از {toFarsiNumber(totalPages)}
                  </div>
                  <div className="flex justify-start items-center gap-2">
@@ -915,7 +915,7 @@ export function OrderReviews() {
                          <ChevronLeft className="w-4 h-4 text-[#0D0D12]" />
                      </button>
                      <div className="w-[55px] h-8 rounded-lg border border-[#DFE1E7] flex flex-col justify-center items-center">
-                         <span className="text-[#0D0D12] text-xs font-medium font-num-medium tracking-wide">{toFarsiNumber(currentPage)}/{toFarsiNumber(totalPages)}</span>
+                          <span className="text-[#0D0D12] text-xs font-num-medium tracking-wide">{toFarsiNumber(currentPage)}/{toFarsiNumber(totalPages)}</span>
                      </div>
                      <button
                         onClick={handleNextPage}

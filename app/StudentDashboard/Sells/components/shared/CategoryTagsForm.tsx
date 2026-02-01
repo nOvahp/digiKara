@@ -46,7 +46,7 @@ export function CategoryTagsForm({ defaultValues = {}, values, onChange, categor
 
     return (
         <div className="w-full bg-white rounded-xl border border-[#DFE1E7] p-5 flex flex-col gap-5 shadow-[0px_1px_2px_rgba(13,13,18,0.06)]">
-            <div className="text-[#0D0D12] text-base font-semibold font-['PeydaWeb'] tracking-wide text-right">
+            <div className="text-[#0D0D12] text-base font-semibold tracking-wide text-right">
                 دسته بندی و برچسب ها
             </div>
 
@@ -55,7 +55,7 @@ export function CategoryTagsForm({ defaultValues = {}, values, onChange, categor
                   <FormLabel text="دسته بندی" />
                   <div className="h-[52px] px-3 bg-white rounded-xl border border-[#DFE1E7] flex items-center justify-between relative">
                       <select 
-                          className="w-full h-full appearance-none bg-transparent border-none outline-none text-[#0D0D12] text-base font-light font-['PeydaWeb'] leading-normal cursor-pointer text-right dir-rtl pr-2 z-10" 
+                          className="w-full h-full appearance-none bg-transparent border-none outline-none text-[#0D0D12] text-base font-light leading-normal cursor-pointer text-right dir-rtl pr-2 z-10" 
                           dir="rtl"
                           value={currentCategory}
                           onChange={(e) => onChange ? onChange({ category: e.target.value }) : null}
@@ -91,7 +91,7 @@ export function CategoryTagsForm({ defaultValues = {}, values, onChange, categor
                       <div className="flex gap-2 flex-wrap z-20 pointer-events-none">
                           {currentTags.map(tag => (
                               <div key={tag} className="flex items-center gap-1 px-2 py-0.5 border border-[#DFE1E7] rounded bg-white pointer-events-auto">
-                                  <span className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb']">{tag}</span>
+                                  <span className="text-[#0D0D12] text-sm font-semibold">{tag}</span>
                                   <X 
                                      className="w-3 h-3 text-[#818898] cursor-pointer hover:text-red-500" 
                                      onClick={(e) => {
@@ -127,12 +127,12 @@ export function CategoryTagsForm({ defaultValues = {}, values, onChange, categor
               <div className="flex flex-col gap-2">
                   <FormLabel text="متا دیتا" />
                   <textarea 
-                     className="h-[100px] w-full p-3 bg-white rounded-xl border border-[#DFE1E7] resize-none outline-none text-right font-['PeydaWeb']"
+                     className="h-[100px] w-full p-3 bg-white rounded-xl border border-[#DFE1E7] resize-none outline-none text-right font-regular"
                      value={currentMetadata}
                      onChange={(e) => onChange ? onChange({ metadata: e.target.value }) : null}
                      dir="rtl"
                   />
-                 <div className="text-[#818898] text-sm font-light font-['PeydaWeb'] text-right">برای بهبود رتبه بندی در موتورهای جستجو، توضیحات متا را اضافه کنید.</div>
+                 <div className="text-[#818898] text-sm font-light text-right">برای بهبود رتبه بندی در موتورهای جستجو، توضیحات متا را اضافه کنید.</div>
             </div>
         </div>
     );

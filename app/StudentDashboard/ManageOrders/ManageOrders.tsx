@@ -180,11 +180,11 @@ export default function ManageOrders() {
                 <div className="w-full px-0 flex flex-col items-center gap-6" dir="rtl">
                     {/* Title & Action */}
                     <div className="w-full flex flex-col items-start gap-4 pr-0">
-                        <h1 className="w-full text-END text-[#0D0D12] text-xl font-semibold font-['PeydaWeb']">مدیریت سفارشات</h1>
+                        <h1 className="w-full text-END text-[#0D0D12] text-xl font-semibold">مدیریت سفارشات</h1>
                         <button 
                             onClick={() => setShowExportPopup(true)}
                             className="w-full h-[47px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-2 hover:bg-yellow-400 transition-colors">
-                            <span className="text-[#1A1C1E] text-lg font-semibold font-['PeydaWeb']">خروجی از سفارشات</span>
+                            <span className="text-[#1A1C1E] text-lg font-semibold">خروجی از سفارشات</span>
                         </button>
                     </div>
 
@@ -197,16 +197,16 @@ export default function ManageOrders() {
                                     <div className="w-9 h-9 bg-[#FFD369] rounded-lg shadow-inner flex items-center justify-center flex-shrink-0">
                                         <ShoppingBag size={20} className="text-[#393E46]" />
                                     </div>
-                                    <span className="text-right text-[#818898] text-sm font-semibold font-['PeydaWeb'] truncate">کل سفارشات</span>
+                                    <span className="text-right text-[#818898] text-sm font-semibold truncate">کل سفارشات</span>
                                 </div>
                                 <div className="flex items-center justify-end gap-2 w-full">
                                     <div className="px-2 py-0.5 bg-[#DDF3EF] rounded-full flex items-center justify-center flex-shrink-0">
-                                        <span className="text-[#28806F] text-xs font-semibold font-['PeydaWeb']">+۵.۳٪</span>
+                                        <span className="text-[#28806F] text-xs font-semibold">+۵.۳٪</span>
                                     </div>
-                                    <span className="text-[#0D0D12] text-xl font-semibold font-num-medium truncate" >۴,۲۸۰</span>
+                                    <span className="text-[#0D0D12] text-xl font-num-medium truncate" >۴,۲۸۰</span>
                                 </div>
                             </div>
-                            <span className="text-right text-[#818898] text-xs font-light font-['PeydaWeb'] truncate">از ماه گذشته</span>
+                            <span className="text-right text-[#818898] text-xs font-light truncate">از ماه گذشته</span>
                         </div>
                         {/* Total Revenue */}
                         <div className="w-full p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl border border-[#DFE1E7] flex flex-col gap-2.5">
@@ -215,16 +215,16 @@ export default function ManageOrders() {
                                     <div className="w-9 h-9 bg-[#FFD369] rounded-lg shadow-inner flex items-center justify-center flex-shrink-0">
                                         <DollarSign size={20} className="text-[#393E46]" />
                                     </div>
-                                    <span className="text-right text-[#818898] text-sm font-semibold font-['PeydaWeb'] truncate">کل درآمد</span>
+                                    <span className="text-right text-[#818898] text-sm font-semibold truncate">کل درآمد</span>
                                 </div>
                                 <div className="flex items-center justify-end gap-2 w-full">
                                     <div className="px-2 py-0.5 bg-[#DDF3EF] rounded-full flex items-center justify-center flex-shrink-0">
-                                        <span className="text-[#28806F] text-xs font-semibold font-['PeydaWeb']">+۶.۷٪</span>
+                                        <span className="text-[#28806F] text-xs font-semibold">+۶.۷٪</span>
                                     </div>
-                                    <span className="text-[#0D0D12] text-xl font-semibold font-num-medium truncate" dir="rtl">۴۸۲,۶۰۰</span>
+                                    <span className="text-[#0D0D12] text-xl font-num-medium truncate" dir="rtl">۴۸۲,۶۰۰</span>
                                 </div>
                             </div>
-                            <span className="text-right text-[#818898] text-xs font-light font-['PeydaWeb'] truncate">از ماه گذشته</span>
+                            <span className="text-right text-[#818898] text-xs font-light truncate">از ماه گذشته</span>
                         </div>
                         {/* Pending Orders */}
                         <div className="w-full p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl border border-[#DFE1E7] flex flex-col gap-2.5">
@@ -233,16 +233,16 @@ export default function ManageOrders() {
                                     <div className="w-9 h-9 bg-[#FFD369] rounded-lg shadow-inner flex items-center justify-center flex-shrink-0">
                                         <Clock size={20} className="text-[#393E46]" />
                                     </div>
-                                    <span className="text-right text-[#818898] text-sm font-semibold font-['PeydaWeb'] truncate">سفارشات در انتظار</span>
+                                    <span className="text-right text-[#818898] text-sm font-semibold truncate">سفارشات در انتظار</span>
                                 </div>
                                 <div className="flex items-center justify-end gap-2 w-full">
                                     <div className="px-2 py-0.5 bg-[#FFF0F3] rounded-full flex items-center justify-center flex-shrink-0">
-                                        <span className="text-[#DF1C41] text-xs font-semibold font-['PeydaWeb']">−۲.۱٪</span>
+                                        <span className="text-[#DF1C41] text-xs font-semibold">−۲.۱٪</span>
                                     </div>
-                                    <span className="text-[#0D0D12] text-xl font-semibold font-num-medium truncate" dir="rtl">۱۲۴</span>
+                                    <span className="text-[#0D0D12] text-xl font-num-medium truncate" dir="rtl">۱۲۴</span>
                                 </div>
                             </div>
-                            <span className="text-right text-[#818898] text-xs font-light font-['PeydaWeb'] truncate">از ماه گذشته</span>
+                            <span className="text-right text-[#818898] text-xs font-light truncate">از ماه گذشته</span>
                         </div>
                         {/* Shipped Orders */}
                         <div className="w-full p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl border border-[#DFE1E7] flex flex-col gap-2.5">
@@ -251,16 +251,16 @@ export default function ManageOrders() {
                                     <div className="w-9 h-9 bg-[#FFD369] rounded-lg shadow-inner flex items-center justify-center flex-shrink-0">
                                         <Truck size={20} className="text-[#393E46]" />
                                     </div>
-                                    <span className="text-right text-[#818898] text-sm font-semibold font-['PeydaWeb'] truncate">ارسال شده</span>
+                                    <span className="text-right text-[#818898] text-sm font-semibold truncate">ارسال شده</span>
                                 </div>
                                 <div className="flex items-center justify-end gap-2 w-full">
                                     <div className="px-2 py-0.5 bg-[#DDF3EF] rounded-full flex items-center justify-center flex-shrink-0">
-                                        <span className="text-[#28806F] text-xs font-semibold font-['PeydaWeb']">+۴.۸٪</span>
+                                        <span className="text-[#28806F] text-xs font-semibold">+۴.۸٪</span>
                                     </div>
-                                    <span className="text-[#0D0D12] text-xl font-semibold font-num-medium truncate" dir="rtl">۳,۹۸۰</span>
+                                    <span className="text-[#0D0D12] text-xl font-num-medium truncate" dir="rtl">۳,۹۸۰</span>
                                 </div>
                             </div>
-                            <span className="text-right text-[#818898] text-xs font-light font-['PeydaWeb'] truncate">از ماه گذشته</span>
+                            <span className="text-right text-[#818898] text-xs font-light truncate">از ماه گذشته</span>
                         </div>
                     </div>
 
@@ -268,7 +268,7 @@ export default function ManageOrders() {
                     <div className="w-full bg-white rounded-xl border border-[#DFE1E7] shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] overflow-hidden flex flex-col mx-4">
                          {/* Toolbar */}
                         <div className="w-full h-16 px-5 py-2 border-b border-[#DFE1E7] flex justify-between items-center bg-white">
-                             <div className="text-[#0D0D12] text-base font-semibold font-['PeydaWeb'] tracking-wide">
+                             <div className="text-[#0D0D12] text-base font-semibold tracking-wide">
                                  جدول سفارشات
                              </div>
                              <div className="flex items-center gap-2" ref={filterRef}>
@@ -331,22 +331,22 @@ export default function ManageOrders() {
                                 <div className="w-full h-10 bg-[#F6F8FA] border-b border-[#DFE1E7] flex items-center px-[9px]">
                                     <div className="flex-1 h-10 px-3 flex items-center justify-start gap-2.5">
                                         <div className="w-4 h-4 rounded border border-[#DFE1E7] bg-white"></div>
-                                        <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">شناسه سفارش</span>
+                                        <span className="text-[#666D80] text-sm font-semibold">شناسه سفارش</span>
                                     </div>
                                     <div className="flex-1 h-10 px-3 flex items-center justify-center gap-1.5">
-                                        <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">مشتری</span>
+                                        <span className="text-[#666D80] text-sm font-semibold">مشتری</span>
                                     </div>
                                     <div className="flex-1 h-10 px-3 flex items-center justify-center gap-1.5">
-                                        <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">تاریخ</span>
+                                        <span className="text-[#666D80] text-sm font-semibold">تاریخ</span>
                                     </div>
                                     <div className="flex-1 h-10 px-3 flex items-center justify-center gap-1.5">
-                                        <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">وضعیت</span>
+                                        <span className="text-[#666D80] text-sm font-semibold">وضعیت</span>
                                     </div>
                                     <div className="flex-1 h-10 px-3 flex items-center justify-center gap-1.5">
-                                        <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">پرداخت</span>
+                                        <span className="text-[#666D80] text-sm font-semibold">پرداخت</span>
                                     </div>
                                     <div className="flex-1 h-10 px-3 flex items-center justify-center gap-1.5">
-                                        <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">مجموع</span>
+                                        <span className="text-[#666D80] text-sm font-semibold">مجموع</span>
                                     </div>
                                     <div className="w-11 h-10 px-3 bg-[#F6F8FA]"></div> 
                                 </div>
@@ -359,35 +359,35 @@ export default function ManageOrders() {
                                             {/* Order ID */}
                                             <div className="flex-1 h-16 px-3 flex items-center justify-start gap-2.5">
                                                 <div className="w-4 h-4 rounded border border-[#DFE1E7] bg-white cursor-pointer"></div>
-                                                <span className="text-[#0D0D12] text-sm font-semibold font-num-medium">{order.id}</span>
+                                                <span className="text-[#0D0D12] text-sm font-num-medium">{order.id}</span>
                                             </div>
 
                                             {/* Customer */}
                                             <div className="flex-1 h-16 px-3 flex items-center justify-center">
-                                                <span className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb']">{order.customer}</span>
+                                                <span className="text-[#0D0D12] text-sm font-semibold">{order.customer}</span>
                                             </div>
 
                                             {/* Date */}
                                             <div className="flex-1 h-16 px-3 flex items-center justify-center">
-                                                <span className="text-[#0D0D12] text-sm font-semibold font-num-medium">{order.date}</span>
+                                                <span className="text-[#0D0D12] text-sm font-num-medium">{order.date}</span>
                                             </div>
 
                                             {/* Status */}
                                             <div className="flex-1 h-16 px-3 flex items-center justify-center">
                                                 <div className={`h-5 px-2 py-0.5 rounded-2xl flex items-center gap-1 ${styles.bg}`}>
                                                     <div className={`w-1.5 h-1.5 rounded-full ${styles.dot}`} />
-                                                    <span className={`text-xs font-normal font-num-medium ${styles.text}`}>{order.statusText}</span>
+                                                    <span className={`text-xs font-num-medium ${styles.text}`}>{order.statusText}</span>
                                                 </div>
                                             </div>
 
                                             {/* Payment */}
                                             <div className="flex-1 h-16 px-3 flex items-center justify-center">
-                                                <span className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb']">{order.paymentMethod}</span>
+                                                <span className="text-[#0D0D12] text-sm font-semibold">{order.paymentMethod}</span>
                                             </div>
 
                                             {/* Amount */}
                                             <div className="flex-1 h-16 px-3 flex items-center justify-center">
-                                                <span className="text-[#0D0D12] text-sm font-semibold font-num-medium"dir="rtl">{order.amount}</span>
+                                                <span className="text-[#0D0D12] text-sm font-num-medium"dir="rtl">{order.amount}</span>
                                             </div>
 
                                             {/* Actions */}
@@ -412,7 +412,7 @@ export default function ManageOrders() {
                                      <ChevronRight size={16} className="text-[#0D0D12]" />
                                  </button>
                                  <div className="w-[55px] h-8 rounded-lg border border-[#DFE1E7] flex items-center justify-center bg-white">
-                                     <span className="text-[#0D0D12] text-xs font-medium font-num-medium">{currentPage.toLocaleString('fa-IR')}/{totalPages.toLocaleString('fa-IR')}</span>
+                                     <span className="text-[#0D0D12] text-xs font-num-medium">{currentPage.toLocaleString('fa-IR')}/{totalPages.toLocaleString('fa-IR')}</span>
                                  </div>
                                  <button 
                                      onClick={handlePrevPage}
@@ -421,7 +421,7 @@ export default function ManageOrders() {
                                      <ChevronLeft size={16} className="text-[#0D0D12]" />
                                  </button>
                              </div>
-                             <div className="text-[#0D0D12] text-sm font-medium font-num-medium">
+                             <div className="text-[#0D0D12] text-sm font-num-medium">
                                  صفحه {currentPage.toLocaleString('fa-IR')} از {totalPages.toLocaleString('fa-IR')}
                              </div>
                         </div>

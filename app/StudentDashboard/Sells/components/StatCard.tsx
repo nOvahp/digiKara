@@ -21,7 +21,7 @@ export function StatCard({ title, value, trend, trendType, trendLabel, icon }: S
         <div className="flex-1 min-w-[150px] p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] overflow-hidden rounded-xl border border-[#DFE1E7] flex flex-col gap-2.5">
             <div className="w-full flex flex-col gap-0.5">
                 <div className="w-full flex justify-between items-center gap-2.5">
-                    <div className="flex-1 text-right text-[#818898] text-sm font-semibold font-['PeydaWeb'] leading-relaxed tracking-wide">
+                    <div className="flex-1 text-right text-[#818898] text-sm font-semibold leading-relaxed tracking-wide">
                         {title}
                     </div>
                     {/* Icon Container */}
@@ -31,18 +31,18 @@ export function StatCard({ title, value, trend, trendType, trendLabel, icon }: S
                 </div>
                 
                 <div className="w-full flex justify-start items-center gap-2">
-                    <div className="text-[#0D0D12] text-2xl font-semibold font-num-medium leading-[31.2px]">
+                    <div className="text-[#0D0D12] text-2xl font-num-medium leading-[31.2px]">
                         {value}
                     </div>
                     <div className={cn("px-2 py-[1px] rounded-[36px] flex justify-center items-center gap-0.5", trendBgColor)}>
-                         <div className={cn("text-xs font-semibold font-num-medium leading-[18px] tracking-wide", trendTextColor)}>
+                         <div className={cn("text-xs font-num-medium leading-[18px] tracking-wide", trendTextColor)}>
                             {trend}
                          </div>
                     </div>
                 </div>
             </div>
             
-            <div className="w-full text-center text-[#818898] text-xs font-light font-['PeydaWeb'] leading-[18px] tracking-wide">
+            <div className="w-full text-center text-[#818898] text-xs font-light leading-[18px] tracking-wide">
                 {trendLabel}
             </div>
         </div>

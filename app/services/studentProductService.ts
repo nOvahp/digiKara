@@ -2,6 +2,25 @@ import apiClient from './apiClient';
 import { ApiResponse } from './schemas';
 import { Product } from '@/app/StudentDashboard/data/products';
 
+// Helper to normalize image URLs
+const getImageUrl = (path: string | null | undefined): string => {
+  if (!path) return '';
+  if (path.startsWith('http') || path.startsWith('data:')) return path;
+  
+  // Base URL for images
+  const baseUrl = "https://digikara.back.adiaweb.dev";
+  let cleanPath = path.replace(/^\//, '');
+
+  // Common Laravel usage: if path doesn't start with 'storage', prepend it
+  if (!cleanPath.startsWith('storage')) {
+      cleanPath = `storage/${cleanPath}`;
+  }
+  
+  const fullUrl = `${baseUrl}/${cleanPath}`;
+  console.log(`🖼️ Processed Image URL: ${path} -> ${fullUrl}`);
+  return fullUrl;
+};
+
 // Define the shape of a product as it comes from the API
 export interface ApiProduct {
   id: number | string;
@@ -14,6 +33,8 @@ export interface ApiProduct {
   revenue?: string | number;
   trend?: string;
   status?: string;
+  image_path?: string;
+  images?: string[];
   // Add other potential fields
   [key: string]: any;
 }
@@ -37,7 +58,10 @@ export const studentProductService = {
           description: item.description || 'توضیحات موجود نیست',
           category: item.category || 'دسته بندی نشده',
           tags: item.tags || [],
-          images: item.images || [],
+          // Handle both singular image_path and plural images array
+          images: item.image_path 
+            ? [getImageUrl(item.image_path)] 
+            : (Array.isArray(item.images) ? item.images.map(getImageUrl) : []),
           // Fill other required fields with placeholders if missing
           fee: item.fee ? item.fee.toString() : '---',
           receive: item.receive ? item.receive.toString() : '---',
@@ -84,28 +108,46 @@ export const studentProductService = {
       
       if (response.status === 'success' || response.code === 200 && response.data) {
         const item = response.data;
-        const product: Product = {
-          id: item.id,
-          name: item.name || item.title || 'نامشخص',
-          soldCount: item.sold_count || 0,
-          revenue: item.revenue ? item.revenue.toString() : '0', // API doesn't seem to return revenue in single product, default 0
-          inventoryCount: item.inventory || 0,
-          trendPercentage: item.trend || '0%', // Mock or derived
-          trendType: 'positive', // Default
-          price: item.price ? item.price.toString() : '0',
-          description: item.description || '',
-          category: item.category_id ? item.category_id.toString() : '', // Mapping ID to string? Or fetching name? UI expects name or ID? EditeProducts uses `formData`.
-          // `Product` interface has `category?: string`.
-          // `CategoryTagsForm` expects `category` to be the ID string if using the new logic.
-          tags: [], // API returning `tag_path` null? Need to check. User example `tag_path: null`.
-          images: item.image_path ? [item.image_path] : [], 
-          code: item.code,
-          stock: item.inventory ? item.inventory.toString() : '',
-          reminder: item.warn_inventory ? item.warn_inventory.toString() : '',
-          metadata: '', // Not in API response example
-          prices: item.prices || [], // Map prices array
-          // Add other fields as necessary for the form
-        };
+        
+        console.log("📦 Raw Product Data:", item); // Debug log
+        
+          // Fix: Combine image_path (main) and images (gallery)
+          const allImages: string[] = [];
+          
+          if (item.image_path) {
+              allImages.push(getImageUrl(item.image_path));
+          }
+          
+          if (Array.isArray(item.images)) {
+              item.images.forEach((img: string) => {
+                  const url = getImageUrl(img);
+                  // Avoid duplicates
+                  if (!allImages.includes(url)) {
+                       allImages.push(url);
+                  }
+              });
+          }
+          
+          const product: Product = {
+            id: item.id,
+            name: item.name || item.title || 'نامشخص',
+            soldCount: item.sold_count || 0,
+            revenue: item.revenue ? item.revenue.toString() : '0',
+            inventoryCount: item.inventory || 0,
+            trendPercentage: item.trend || '0%',
+            trendType: 'positive',
+            price: item.price ? item.price.toString() : '0',
+            description: item.description || '',
+            category: item.category_id ? item.category_id.toString() : '',
+            tags: [],
+            images: allImages, // Use the combined list
+            stock: item.inventory ? item.inventory.toString() : '',
+            reminder: item.warn_inventory ? item.warn_inventory.toString() : '',
+            metadata: '',
+            prices: item.prices || [],
+            code: item.code,
+          };
+          console.log("🔄 Mapped Product Images:", product.images);
         return { success: true, data: product };
       }
       return { success: false, message: response.message || 'خطا در دریافت اطلاعات محصول' };
@@ -117,7 +159,11 @@ export const studentProductService = {
 
   updateProduct: async (id: string | number, data: any): Promise<{ success: boolean; message?: string }> => {
     try {
-      const response = await apiClient.put<any, any>(`/student/products/${id}`, data);
+      const isFormData = data instanceof FormData;
+      const headers = isFormData ? { 'Content-Type': 'multipart/form-data' } : {};
+      
+      const response = await apiClient.put<any, any>(`/student/products/${id}`, data, { headers });
+      
       if (response.status === 'success' || response.code === 200) {
           return { success: true, message: 'محصول با موفقیت ویرایش شد' };
       }
@@ -180,6 +226,18 @@ export const studentProductService = {
           return { success: false, message: response.message || 'خطا در ویرایش قیمت' };
       } catch (error: any) {
           console.error('updateProductPrice Error:', error);
+          return { success: false, message: error.message || 'خطای شبکه' };
+      }
+  },
+  deleteProductPrice: async (priceId: string | number): Promise<{ success: boolean; message?: string }> => {
+      try {
+          const response = await apiClient.delete<any, any>(`/student/products/prices/${priceId}`);
+          if (response.status === 'success' || response.code === 200) {
+              return { success: true, message: 'قیمت با موفقیت حذف شد' };
+          }
+          return { success: false, message: response.message || 'خطا در حذف قیمت' };
+      } catch (error: any) {
+          console.error('deleteProductPrice Error:', error);
           return { success: false, message: error.message || 'خطای شبکه' };
       }
   }

@@ -31,7 +31,7 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
 
     return (
         <div className="w-full bg-white rounded-xl border border-[#DFE1E7] p-5 flex flex-col gap-5 shadow-[0px_1px_2px_rgba(13,13,18,0.06)]">
-            <div className="text-[#0D0D12] text-base font-semibold font-['PeydaWeb'] tracking-wide text-right">
+            <div className="text-[#0D0D12] text-base font-semibold tracking-wide text-right">
                 پیش نمایش زنده
             </div>
             
@@ -73,7 +73,7 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
                                     }}
                                     className="cursor-pointer"
                                 >
-                                    <div className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold font-num-medium ${activeImage === num ? 'bg-[#FFD369] text-[#0D0D12]' : 'bg-[#0D0D12]/45 text-white'}`}>
+                                    <div className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-num-medium ${activeImage === num ? 'bg-[#FFD369] text-[#0D0D12]' : 'bg-[#0D0D12]/45 text-white'}`}>
                                         {num}
                                     </div>
                                 </div>
@@ -85,14 +85,14 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
                 {/* Preview Header */}
                 <div className="flex justify-between items-center">
                      <div className="bg-[#ECF9F7] px-3 py-1 rounded-2xl">
-                         <span className="text-[#267666] text-sm font-semibold font-['PeydaWeb']">پرفروش ترین</span>
+                         <span className="text-[#267666] text-sm font-semibold">پرفروش ترین</span>
                      </div>
-                     <div className="text-[#0047AB] text-lg font-semibold font-num-medium dir-rtl">
+                     <div className="text-[#0047AB] text-lg font-num-medium dir-rtl">
                         {product?.price ? `${product.price} ریال` : '--- ریال'}
                      </div>
                 </div>
                 
-                <div className="text-right text-[#0D0D12] text-xl font-semibold font-['PeydaWeb']">
+                <div className="text-right text-[#0D0D12] text-xl font-semibold">
                     {product?.name || "نام محصول..."}
                 </div>
 
@@ -102,22 +102,22 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
                          <div className="bg-[#FFBE4C] w-5 h-5 rounded-full flex items-center justify-center p-[3px]">
                              <Star className="text-white fill-white w-full h-full" />
                          </div>
-                         <span className="text-[#666D80] text-sm font-normal font-num-medium">0 (0 نظر)</span>
+                         <span className="text-[#666D80] text-sm font-num-medium">0 (0 نظر)</span>
                     </div>
                     <div className="h-7 px-3 bg-white border border-[#DFE1E7] rounded-lg flex items-center justify-center gap-2">
                          <Heart className="w-4 h-4 text-[#DF1C41] fill-[#DF1C41]" />
-                         <span className="text-[#666D80] text-sm font-normal font-num-medium">0</span>
+                         <span className="text-[#666D80] text-sm font-num-medium">0</span>
                     </div>
                     <div className="h-7 px-3 bg-white border border-[#DFE1E7] rounded-lg flex items-center justify-center gap-2">
                          <Eye className="w-4 h-4 text-[#A4ACB9]" />
-                         <span className="text-[#666D80] text-sm font-normal font-num-medium">0</span>
+                         <span className="text-[#666D80] text-sm font-num-medium">0</span>
                     </div>
                 </div>
 
                 {/* Preview Desc */}
                 <div className="flex flex-col gap-2 items-end">
-                    <div className="text-[#0D0D12] text-base font-semibold font-['PeydaWeb']">توضیحات</div>
-                    <div className="text-right text-[#818898] text-base font-light font-['PeydaWeb'] leading-relaxed w-full break-words whitespace-pre-wrap">
+                    <div className="text-[#0D0D12] text-base font-semibold">توضیحات</div>
+                    <div className="text-right text-[#818898] text-base font-light leading-relaxed w-full break-words whitespace-pre-wrap">
                         {product?.description || "توضیحات محصول در اینجا نمایش داده می‌شود..."}
                     </div>
                 </div>

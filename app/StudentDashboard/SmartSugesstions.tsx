@@ -9,7 +9,7 @@ export function SmartSugesstions() {
         
         {/* Header */}
         <div className="self-stretch inline-flex justify-start items-center gap-20">
-            <div className="text-[#222831] text-[18px] font-num-medium font-extrabold leading-[25.20px] break-words">
+            <div className="text-[#222831] text-[18px] font-num-medium leading-[25.20px] break-words">
                 پیشنهادات هوشمند
             </div>
         </div>
@@ -32,7 +32,7 @@ export function SmartSugesstions() {
                     </div>
                     {/* Description */}
                     <div className="self-stretch flex justify-start items-center gap-1.5">
-                        <div className="flex-1 text-right text-[#888B90] text-[10px] font-num-medium font-medium leading-[15.50px] break-words">
+                        <div className="flex-1 text-right text-[#888B90] text-[10px] font-num-medium leading-[15.50px] break-words">
                             دوره «عکاسی از محصول با موبایل» می‌تواند به فروش شما کمک کند.
                         </div>
                     </div>
@@ -54,7 +54,7 @@ export function SmartSugesstions() {
                     </div>
                     {/* Description */}
                     <div className="self-stretch flex justify-start items-center gap-1.5">
-                         <div className="flex-1 text-right text-[#888B90] text-[10px] font-num-medium font-medium leading-[15.50px] break-words">
+                         <div className="flex-1 text-right text-[#888B90] text-[10px] font-num-medium leading-[15.50px] break-words">
                             «کارهای دستی چوبی» در منطقه شما محبوبیت زیادی پیدا کرده است.
                         </div>
                     </div>

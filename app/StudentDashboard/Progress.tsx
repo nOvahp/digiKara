@@ -9,7 +9,7 @@ export function Progress() {
         
         {/* Header */}
         <div className="self-stretch inline-flex justify-start items-center gap-20">
-            <div className="text-[#222831] text-[18px] font-num-medium font-extrabold leading-[25.20px] break-words">
+            <div className="text-[#222831] text-[18px] font-num-medium leading-[25.20px] break-words">
                 مسیر پیشرفت شما
             </div>
         </div>
@@ -22,7 +22,7 @@ export function Progress() {
                 <div className="self-stretch inline-flex justify-start items-center gap-1.5">
                     <div className="text-right">
                         <span className="text-[#0F172A] text-sm font-['Meem'] font-medium leading-[21.70px]">سطح </span>
-                        <span className="text-[#0F172A] text-sm font-num-medium font-medium leading-[21.70px]">5</span>
+                        <span className="text-[#0F172A] text-sm font-num-medium leading-[21.70px]">5</span>
                         <span className="text-[#0F172A] text-sm font-['Meem'] font-medium leading-[21.70px]"> : فروشنده ماهر</span>
                     </div>
                 </div>
@@ -49,7 +49,7 @@ export function Progress() {
                         <div className="w-[38px] h-[38px] relative bg-[#FDF9C3] rounded-full flex justify-center items-center">
                             <Medal className="w-5 h-5 text-[#0A0A0A]" strokeWidth={1.5} />
                         </div>
-                        <div className="w-[49px] text-center text-[#888B90] text-[10px] font-num-medium font-medium leading-[15.50px] break-words">
+                        <div className="w-[49px] text-center text-[#888B90] text-[10px] font-num-medium leading-[15.50px] break-words">
                             فروشنده برتر
                         </div>
                     </div>
@@ -59,7 +59,7 @@ export function Progress() {
                          <div className="w-[38px] h-[38px] relative bg-[#FDC3C3] rounded-full flex justify-center items-center">
                             <ShoppingBag className="w-5 h-5 text-[#0A0A0A]" strokeWidth={1.5} />
                         </div>
-                        <div className="text-center text-[#888B90] text-[10px] font-num-medium font-medium leading-[15.50px] break-words">
+                        <div className="text-center text-[#888B90] text-[10px] font-num-medium leading-[15.50px] break-words">
                             ۱0۰ سفارش
                         </div>
                     </div>
@@ -69,7 +69,7 @@ export function Progress() {
                         <div className="w-[38px] h-[38px] relative bg-[#C3FDD8] rounded-full flex justify-center items-center">
                             <Star className="w-5 h-5 text-[#0A0A0A]" strokeWidth={1.5} />
                         </div>
-                        <div className="text-center text-[#888B90] text-[10px] font-num-medium font-medium leading-[15.50px] break-words">
+                        <div className="text-center text-[#888B90] text-[10px] font-num-medium leading-[15.50px] break-words">
                             امتیاز بالا
                         </div>
                     </div>
@@ -79,7 +79,7 @@ export function Progress() {
                         <div className="w-[38px] h-[38px] relative bg-[#C3E4FD] rounded-full flex justify-center items-center">
                              <DollarSign className="w-5 h-5 text-[#0A0A0A]" strokeWidth={1.5} />
                         </div>
-                        <div className="text-center text-[#888B90] text-[10px] font-num-medium font-medium leading-[15.50px] break-words">
+                        <div className="text-center text-[#888B90] text-[10px] font-num-medium leading-[15.50px] break-words">
                             اولین فروش
                         </div>
                     </div>

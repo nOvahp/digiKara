@@ -27,7 +27,7 @@ export function QuickAccess() {
 
             {/* Header */}
             <div className="self-stretch inline-flex justify-start items-center gap-20">
-                <div className="text-[#222831] text-[18px] font-num-medium font-extrabold leading-[25.20px] break-words">
+                <div className="text-[#222831] text-[18px] font-num-medium leading-[25.20px] break-words">
                     دسترسی سریع
                 </div>
             </div>

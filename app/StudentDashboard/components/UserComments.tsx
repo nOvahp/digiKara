@@ -94,7 +94,7 @@ export default function UserComments() {
         <div className="w-full flex flex-col items-center py-8 px-4 gap-6 bg-transparent">
             {/* Header */}
             <div className="w-full flex flex-col items-end gap-4">
-                <div className="text-center text-[#0D0D12] text-xl font-semibold font-['PeydaWeb'] leading-[27px]">
+                <div className="text-center text-[#0D0D12] text-xl font-semibold leading-[27px]">
                     نظرات کاربران
                 </div>
             </div>
@@ -114,7 +114,7 @@ export default function UserComments() {
                                 <Search size={16} />
                             </div>
                          </div>
-                         <div className="text-[#0D0D12] text-base font-semibold font-['PeydaWeb'] tracking-wide">
+                         <div className="text-[#0D0D12] text-base font-semibold tracking-wide">
                              جدول نظرات
                          </div>
                     </div>
@@ -126,23 +126,23 @@ export default function UserComments() {
                             <div className="w-full h-10 bg-[#F6F8FA] border-b border-[#DFE1E7] flex items-center px-[9px]">
                                 <div className="w-11 h-10 px-3 bg-[#F6F8FA]"></div> {/* Empty/Action */}
                                 
-                                <div className="flex-1 h-10 px-3 flex items-center justify-center gap-2.5">
-                                    <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">وضعیت</span>
+                                 <div className="flex-1 h-10 px-3 flex items-center justify-center gap-2.5">
+                                    <span className="text-[#666D80] text-sm font-semibold">وضعیت</span>
                                 </div>
                                 <div className="flex-1 h-10 px-3 flex items-center justify-center gap-2.5">
-                                    <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">امتیاز</span>
+                                    <span className="text-[#666D80] text-sm font-semibold">امتیاز</span>
                                 </div>
                                  <div className="flex-1 h-10 px-3 flex items-center justify-end gap-2.5">
-                                    <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">تاریخ</span>
+                                    <span className="text-[#666D80] text-sm font-semibold">تاریخ</span>
                                 </div>
                                  <div className="w-[248px] h-10 px-3 flex items-center justify-end gap-2.5">
-                                    <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">بررسی</span>
+                                    <span className="text-[#666D80] text-sm font-semibold">بررسی</span>
                                 </div>
                                 <div className="w-[200px] h-10 px-3 flex items-center justify-end gap-2.5">
-                                    <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">محصول</span>
+                                    <span className="text-[#666D80] text-sm font-semibold">محصول</span>
                                 </div>
                                 <div className="w-[200px] h-10 px-3 flex items-center justify-end gap-2.5">
-                                    <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">کاربر</span>
+                                    <span className="text-[#666D80] text-sm font-semibold">کاربر</span>
                                     <div className="w-4 h-4 rounded border border-[#DFE1E7] bg-white ml-2"></div>
                                 </div>
                             </div>
@@ -164,7 +164,7 @@ export default function UserComments() {
                                             <div className="flex-1 h-16 px-3 flex items-center justify-center gap-1.5">
                                                 <div className={`h-5 px-2 py-0.5 rounded-2xl flex items-center gap-1 ${styles.bg}`}>
                                                     <div className={`w-1.5 h-1.5 rounded-full ${styles.dot}`} />
-                                                    <span className={`text-xs font-normal font-num-medium ${styles.text}`}>{comment.statusText}</span>
+                                                    <span className={`text-xs font-num-medium ${styles.text}`}>{comment.statusText}</span>
                                                 </div>
                                             </div>
 
@@ -177,19 +177,19 @@ export default function UserComments() {
 
                                             {/* Date */}
                                             <div className="flex-1 h-16 px-3 flex items-center justify-end gap-2.5">
-                                                <span className="text-[#0D0D12] text-sm font-semibold font-num-medium">{toFarsiNumber(comment.date)}</span>
+                                                <span className="text-[#0D0D12] text-sm font-num-medium">{toFarsiNumber(comment.date)}</span>
                                             </div>
 
                                             {/* Review */}
                                             <div className="w-[248px] h-16 px-3 flex items-center justify-end gap-2.5">
-                                                <span className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb'] truncate text-right w-full" dir="rtl">
+                                                <span className="text-[#0D0D12] text-sm font-semibold truncate text-right w-full" dir="rtl">
                                                     “{comment.review}”
                                                 </span>
                                             </div>
 
                                             {/* Product */}
                                             <div className="w-[200px] h-16 px-3 flex items-center justify-end gap-2.5">
-                                                <span className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb'] truncate text-right w-full" dir="rtl">
+                                                <span className="text-[#0D0D12] text-sm font-semibold truncate text-right w-full" dir="rtl">
                                                     {comment.product}
                                                 </span>
                                             </div>
@@ -197,7 +197,7 @@ export default function UserComments() {
                                             {/* User */}
                                             <div className="w-[200px] h-16 px-3 flex items-center justify-end gap-2.5 text-right">
                                                 <div className="flex flex-col items-end gap-0.5 flex-1">
-                                                    <span className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb'] truncate">
+                                                    <span className="text-[#0D0D12] text-sm font-semibold truncate">
                                                         {comment.user}
                                                     </span>
                                                 </div>
@@ -216,7 +216,7 @@ export default function UserComments() {
 
                     {/* Footer / Pagination */}
                     <div className="w-full h-[60px] px-5 py-4 flex justify-between items-center border-t border-[#DFE1E7] bg-white">
-                         <div className="text-[#0D0D12] text-sm font-medium font-num-medium">
+                         <div className="text-[#0D0D12] text-sm font-num-medium">
                              صفحه {toFarsiNumber(currentPage)} از {toFarsiNumber(totalPages)}
                          </div>
                          <div className="flex items-center gap-2">
@@ -228,7 +228,7 @@ export default function UserComments() {
                                  <ChevronLeft size={16} className="text-[#0D0D12]" />
                              </button>
                              <div className="h-8 px-3 rounded-lg border border-[#DFE1E7] flex items-center justify-center bg-white">
-                                 <span className="text-[#0D0D12] text-xs font-medium font-num-medium">{toFarsiNumber(currentPage)}/{toFarsiNumber(totalPages)}</span>
+                                 <span className="text-[#0D0D12] text-xs font-num-medium">{toFarsiNumber(currentPage)}/{toFarsiNumber(totalPages)}</span>
                              </div>
                              <button 
                                 onClick={handleNextPage}

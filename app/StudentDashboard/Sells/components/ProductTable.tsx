@@ -112,7 +112,7 @@ function ProductTableRow({ product, index, isChecked, onToggle, onDelete }: Prod
             {/* Badge */}
             <div className="w-[104px] h-16 px-3 border-b border-[#DFE1E7] flex justify-end items-center gap-1.5">
                 <div className={cn("h-5 px-2 py-[2px] rounded-2xl flex justify-start items-center", trendBg)}>
-                    <div className={cn("text-center text-xs font-normal font-num-medium leading-[18px] tracking-wide", trendText)}>
+                    <div className={cn("text-center text-xs font-num-medium leading-[18px] tracking-wide", trendText)}>
                         {toFarsiNumber(product.trendPercentage)}
                     </div>
                 </div>
@@ -120,35 +120,35 @@ function ProductTableRow({ product, index, isChecked, onToggle, onDelete }: Prod
 
             {/* Inventory Count */}
             <div className="w-[127px] h-16 px-3 border-b border-[#DFE1E7] flex justify-end items-center gap-2.5">
-                <div className="flex-1 text-center text-[#0D0D12] text-sm font-semibold font-num-medium leading-[21px] tracking-wide">
+                <div className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium leading-[21px] tracking-wide">
                     {toFarsiNumber(product.inventoryCount)}
                 </div>
             </div>
 
             {/* Revenue */}
             <div className="w-[140px] h-16 px-3 border-b border-[#DFE1E7] flex justify-end items-center gap-2.5">
-                <div className="flex-1 text-center text-[#0D0D12] text-sm font-semibold font-num-medium leading-[21px] tracking-wide"dir="rtl">
+                <div className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium leading-[21px] tracking-wide"dir="rtl">
                     {toFarsiNumber(product.revenue)}
                 </div>
             </div>
 
             {/* Sold Count */}
             <div className="w-[138px] h-16 px-3 border-b border-[#DFE1E7] flex justify-end items-center gap-2.5">
-                <div className="flex-1 text-center text-[#0D0D12] text-sm font-semibold font-num-medium leading-[21px] tracking-wide">
+                <div className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium leading-[21px] tracking-wide">
                     {toFarsiNumber(product.soldCount)}
                 </div>
             </div>
 
             {/* Product Name */}
             <div className="w-[177px] h-16 px-3 border-b border-[#DFE1E7] flex justify-start items-center gap-2.5">
-                <div className="flex-1 text-right text-[#0D0D12] text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide truncate">
+                <div className="flex-1 text-right text-[#0D0D12] text-sm font-semibold leading-[21px] tracking-wide truncate">
                     {product.name}
                 </div>
             </div>
 
             {/* Number & Checkbox */}
             <div className="w-20 h-16 px-3 border-b border-[#DFE1E7] flex justify-start items-center gap-2.5">
-                <div className="flex-1 text-right text-[#0D0D12] text-sm font-semibold font-num-medium leading-[21px] tracking-wide">
+                <div className="flex-1 text-right text-[#0D0D12] text-sm font-num-medium leading-[21px] tracking-wide">
                     {toFarsiNumber(product.id)}
                 </div>
                 <div 
@@ -439,7 +439,7 @@ export function ProductTable({ products, loading = false, onDelete }: ProductTab
                         <Search className="w-4 h-4 text-[#818898]" />
                     </div>
                 </div>
-                <div className="text-[#0D0D12] text-base font-semibold font-['PeydaWeb'] leading-normal tracking-wide">
+                <div className="text-[#0D0D12] text-base font-semibold leading-normal tracking-wide">
                     جدول محصولات
                 </div>
             </div>
@@ -457,42 +457,42 @@ export function ProductTable({ products, loading = false, onDelete }: ProductTab
                     {/* 2. Trend */}
                     <div className="w-[104px] h-10 px-3 bg-[#F6F8FA] flex justify-end items-center gap-2.5">
                         <div className="flex justify-start items-center gap-1.5">
-                            <div className="text-[#666D80] text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">روند</div>
+                            <div className="text-[#666D80] text-sm font-semibold leading-[21px] tracking-wide">روند</div>
                         </div>
                     </div>
 
                     {/* 3. Inventory */}
                     <div className="w-[127px] h-10 px-3 bg-[#F6F8FA] flex justify-center items-center gap-2.5">
                         <div className="flex justify-start items-center gap-1.5">
-                            <div className="text-center text-[#666D80] text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">موجودی</div>
+                            <div className="text-center text-[#666D80] text-sm font-semibold leading-[21px] tracking-wide">موجودی</div>
                         </div>
                     </div>
 
                     {/* 4. Revenue */}
                     <div className="w-[140px] h-10 px-3 bg-[#F6F8FA] flex justify-center items-center gap-2.5">
                     <div className="flex justify-start items-center gap-1.5">
-                            <div className="text-center text-[#666D80] text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">درآمد</div>
+                            <div className="text-center text-[#666D80] text-sm font-semibold leading-[21px] tracking-wide">درآمد</div>
                         </div>
                     </div>
 
                     {/* 5. Sold */}
                     <div className="w-[138px] h-10 px-3 bg-[#F6F8FA] flex justify-center items-center gap-2.5">
                         <div className="flex justify-start items-center gap-1.5">
-                            <div className="text-center text-[#666D80] text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">فروخته شده</div>
+                            <div className="text-center text-[#666D80] text-sm font-semibold leading-[21px] tracking-wide">فروخته شده</div>
                         </div>
                     </div>
 
                     {/* 6. Product */}
                     <div className="w-[177px] h-10 px-3 bg-[#F6F8FA] flex justify-end items-center gap-2.5">
                         <div className="flex justify-start items-center gap-1.5">
-                            <div className="text-right text-[#666D80] text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">محصول</div>
+                            <div className="text-right text-[#666D80] text-sm font-semibold leading-[21px] tracking-wide">محصول</div>
                         </div>
                     </div>
 
                     {/* 7. Number & Checkbox */}
                     <div className="w-20 h-10 px-3 bg-[#F6F8FA] flex justify-end items-center gap-2.5">
                         <div className="flex justify-start items-center gap-1.5">
-                            <div className="text-[#666D80] text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">شماره</div>
+                            <div className="text-[#666D80] text-sm font-semibold leading-[21px] tracking-wide">شماره</div>
                         </div>
                         <div className="w-4 h-4 bg-white rounded border border-[#DFE1E7]" />
                     </div>
@@ -513,7 +513,7 @@ export function ProductTable({ products, loading = false, onDelete }: ProductTab
 
             {/* Pagination Footer */}
             <div className="w-full px-5 py-4 flex justify-between items-center">
-                <div className="text-center text-[#0D0D12] text-sm font-medium font-num-medium leading-[21px] tracking-wide">
+                <div className="text-center text-[#0D0D12] text-sm font-num-medium leading-[21px] tracking-wide">
                     صفحه {currentPage.toLocaleString('fa-IR')} از {totalPages.toLocaleString('fa-IR')}
                 </div>
                 <div className="flex justify-start items-center gap-2">
@@ -531,7 +531,7 @@ export function ProductTable({ products, loading = false, onDelete }: ProductTab
 
                     {/* Page Indicator */}
                     <div className="w-[55px] h-8 rounded-lg border border-[#DFE1E7] flex flex-col justify-center items-center gap-2">
-                        <div className="flex flex-col justify-center text-[#0D0D12] text-xs font-medium font-num-medium leading-[18px] tracking-wide">
+                        <div className="flex flex-col justify-center text-[#0D0D12] text-xs font-num-medium leading-[18px] tracking-wide">
                              {currentPage.toLocaleString('fa-IR')}/{totalPages.toLocaleString('fa-IR')}
                         </div>
                     </div>

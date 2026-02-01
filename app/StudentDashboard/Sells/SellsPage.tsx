@@ -104,6 +104,7 @@ export default function SellsPage() {
         reminder: '',
         imageFiles: [] as File[],
         extraPrices: [] as any[], 
+        isMultiPrice: false,
     });
 
     const updateFormData = (data: Partial<typeof formData>) => {
@@ -128,13 +129,36 @@ export default function SellsPage() {
         // Optional fields
         if (formData.description) data.append('description', formData.description);
         
-        // Image - The API expects 'image' (singular). We take the first one.
+        // Image(s) handling
+        // We append all files to 'images[]' to support multiple uploads.
         if (formData.imageFiles && formData.imageFiles.length > 0) {
-           data.append('image', formData.imageFiles[0]);
+           formData.imageFiles.forEach((file: File) => {
+               data.append('images[]', file);
+           });
         }
-        // Explicitly avoid sending image as null string or empty if no file, usually FormData handles missing keys by just not sending them unless appended.
-        // But if backend requires it:
-        // data.append('tag_id', ''); // If needed
+        
+        // Also handling 'image' singular for backward compatibility or main image if backend needs it.
+        // If the backend strictly needs 'image' as a single file, this might need adjustment.
+        // But usually 'images[]' is the standard for multiple.
+        if (formData.imageFiles && formData.imageFiles.length > 0) {
+            data.append('image', formData.imageFiles[0]);
+        }
+
+        // Handle Extra Prices (Multi-Price)
+        if (formData.isMultiPrice && formData.extraPrices && formData.extraPrices.length > 0) {
+             formData.extraPrices.forEach((price: any, index: number) => {
+                  data.append(`prices[${index}][amount]`, String(price.amount).replace(/\D/g, ''));
+                  data.append(`prices[${index}][title]`, price.title);
+                  data.append(`prices[${index}][type]`, String(price.type));
+                  
+                  if (price.discount_percent) data.append(`prices[${index}][discount_percent]`, String(price.discount_percent));
+                  if (price.inventory) data.append(`prices[${index}][inventory]`, String(price.inventory));
+                  
+                  data.append(`prices[${index}][type_inventory]`, '1'); 
+                  
+                  if (price.warn_inventory) data.append(`prices[${index}][warn_inventory]`, String(price.warn_inventory));
+             });
+        }
 
         // Debug: Log FormData entries
         console.group('🚀 Submitting Product Data');
@@ -147,13 +171,6 @@ export default function SellsPage() {
         const { success, message, data: createdProduct } = response;
         
         if (success) {
-            // Handle Extra Prices
-            if (formData.extraPrices && formData.extraPrices.length > 0 && createdProduct?.id) {
-                for (const price of formData.extraPrices) {
-                     await studentProductService.addProductPrice(createdProduct.id, price);
-                }
-            }
-
             toast.success(message || 'محصول با موفقیت اضافه شد');
             setActivePopup('step7');
             // Refresh list
@@ -172,7 +189,7 @@ export default function SellsPage() {
         setFormData({
             name: '', description: '', images: [], category: '', tags: [], id: generateProductCode(),
             price: '', fee: '', receive: '', discount: '', code: '', percent: '', stock: '', reminder: '',
-            imageFiles: [], extraPrices: []
+            imageFiles: [], extraPrices: [], isMultiPrice: false
         });
     };
 
@@ -185,13 +202,13 @@ export default function SellsPage() {
             <div className="flex-1 w-full flex flex-col items-center gap-6 px-0 py-0 pb-24">
                 {/* Page Header and Stats - No Change */}
                 <div className="w-full flex flex-col items-end gap-4">
-                    <div className="text-center text-[#0D0D12] text-[20px] font-semibold font-['PeydaWeb'] leading-[27px]">
+                    <div className="text-center text-[#0D0D12] text-[20px] font-semibold leading-[27px]">
                         همه محصولات
                     </div>
 
                     {/* Order Management Button */}
                     <div onClick={() => router.push('/StudentDashboard/ManageOrders')} className="w-full h-[57px] px-[26px] py-[14px] bg-[#FDD00A] rounded-xl flex justify-center items-center gap-2 cursor-pointer hover:opacity-90 transition-opacity">
-                        <div className="text-center text-[#1A1C1E] text-[17.58px] font-semibold font-['PeydaWeb'] leading-6">
+                        <div className="text-center text-[#1A1C1E] text-[17.58px] font-semibold leading-6">
                             مدیریت سفارشات
                         </div>
                         <ClipboardList className="w-6 h-6 text-[#1A1C1E]" strokeWidth={1.5} />
@@ -202,7 +219,7 @@ export default function SellsPage() {
                         onClick={() => setActivePopup('step1')}
                         className="w-full h-[57px] px-[26px] py-[14px] bg-white rounded-xl border border-[#DFE1E7] flex justify-center items-center gap-2 hover:bg-gray-50 transition-colors"
                     >
-                        <div className="text-center text-[#1A1C1E] text-[17.58px] font-semibold font-['PeydaWeb'] leading-6">
+                        <div className="text-center text-[#1A1C1E] text-[17.58px] font-semibold leading-6">
                             اضافه کردن محصول
                         </div>
                         <Plus className="w-6 h-6 text-[#1A1C1E]" strokeWidth={1.5} />

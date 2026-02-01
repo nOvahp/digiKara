@@ -26,7 +26,7 @@ export function NewProductPage7({ onClose, onReset, onStepClick }: NewProductPag
                              <X className="w-5 h-5 text-[#0D0D12]" />
                         </div>
                     </div>
-                    <div className="text-[#0D0D12] text-lg font-semibold font-['PeydaWeb'] leading-relaxed tracking-wide">
+                    <div className="text-[#0D0D12] text-lg font-semibold leading-relaxed tracking-wide">
                         افزودن محصول جدید
                     </div>
                 </div>
@@ -60,10 +60,10 @@ export function NewProductPage7({ onClose, onReset, onStepClick }: NewProductPag
 
                     {/* Message */}
                     <div className="w-full flex flex-col items-center gap-1.5 ">
-                        <div className="text-center text-black text-[28px] font-semibold font-['PeydaWeb']">
+                        <div className="text-center text-black text-[28px] font-semibold">
                             با موفقیت افزوده شد
                         </div>
-                        <div className="text-center text-black text-xs font-light font-['PeydaWeb'] w-[293px]">
+                        <div className="text-center text-black text-xs font-light w-[293px]">
                             محصول پس از تائید مدرسه  به انتشار عمومی درخواهد آمد.
                         </div>
                     </div>
@@ -76,7 +76,7 @@ export function NewProductPage7({ onClose, onReset, onStepClick }: NewProductPag
                         onClick={onReset}
                         className="flex-1 h-10 px-4 py-2 bg-gradient-to-t from-[rgba(255,255,255,0)] to-[rgba(255,255,255,0.15)] bg-[#0A33FF] shadow-[0px_1px_2px_rgba(13,13,18,0.06)] rounded-lg border border-[#0A33FF] flex justify-center items-center gap-2 hover:opacity-90 transition-opacity"
                      >
-                         <span className="text-center text-white text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">
+                         <span className="text-center text-white text-sm font-semibold leading-[21px] tracking-wide">
                              افزودن محصول جدید
                          </span>
                      </button>
@@ -103,10 +103,10 @@ function StepItem({ number, label, state, onClick }: { number: string, label: st
 
     return (
         <div className="flex items-center gap-2.5 flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity" onClick={onClick}>
-            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold font-num-medium leading-[21px] tracking-wide ${circleClass}`}>
+            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-num-medium leading-[21px] tracking-wide ${circleClass}`}>
                 {number}
             </div>
-            <span className={`text-sm font-['PeydaWeb'] leading-[21px] tracking-wide whitespace-nowrap ${textClass}`}>
+            <span className={`text-sm leading-[21px] tracking-wide whitespace-nowrap ${textClass}`}>
                 {label}
             </span>
         </div>

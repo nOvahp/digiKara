@@ -40,13 +40,13 @@ export function DashboardNavBar() {
                   <div className="w-full flex justify-end items-center gap-2">
                       {/* Badge */}
                       <div className="shrink-0 h-6 px-3 bg-[#64B327]/10 rounded-2xl flex justify-center items-center border border-[#64B327]/20">
-                          <div className="text-center text-[#64B327] text-xs font-num-medium font-medium leading-[18px]">
+                          <div className="text-center text-[#64B327] text-xs font-num-medium leading-[18px]">
                               حمایت شده
                           </div>
                       </div>
                       {/* Name */}
                       <div 
-                          className="text-right text-[#222831] text-sm font-num-medium font-bold leading-snug  cursor-default"
+                          className="text-right text-[#222831] text-sm font-num-medium leading-snug  cursor-default"
                           title="امیرحسین محمدی"
                       >
                           امیرحسین محمدی
@@ -54,7 +54,7 @@ export function DashboardNavBar() {
                   </div>
                   {/* Role/School */}
                   <div 
-                      className="w-full text-right text-[#61656B] text-xs font-num-medium font-medium truncate cursor-default"
+                      className="w-full text-right text-[#61656B] text-xs font-num-medium truncate cursor-default"
                       title="طراح سطح 2 گرافیک - مدرسه  البرز"
                   >
                       طراح سطح 2 گرافیک - مدرسه  البرز

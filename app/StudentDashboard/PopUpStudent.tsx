@@ -35,7 +35,7 @@ export function PopUpStudent({ onClose }: PopUpStudentProps) {
 
             {/* Title Section */}
             <div className="w-full relative flex justify-end items-center mt-2 px-1">
-                 <div className="text-right text-[#0D0D12] text-base font-semibold font-['PeydaWeb'] leading-relaxed tracking-wide">
+                 <div className="text-right text-[#0D0D12] text-base font-semibold leading-relaxed tracking-wide">
                      استعداد حمایت شده
                  </div>
                  {/* Badge Icon */}
@@ -59,11 +59,11 @@ export function PopUpStudent({ onClose }: PopUpStudentProps) {
                 
                 {/* Support Type */}
                 <div className="w-full h-[52px] px-3 py-2 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] flex justify-between items-center gap-2">
-                    <div className="flex-1 text-[#818898] text-base font-normal font-num-medium leading-relaxed tracking-wide text-left">
+                    <div className="flex-1 text-[#818898] text-base font-num-medium leading-relaxed tracking-wide text-left">
                         سرمایه اولیه نقدی/ تسهیلات بانکی
                     </div>
                     <div className="flex justify-end items-center gap-2 w-[80px]">
-                        <div className="flex-1 text-right text-[#666D80] text-sm font-semibold font-['PeydaWeb'] leading-tight tracking-wide">
+                        <div className="flex-1 text-right text-[#666D80] text-sm font-semibold leading-tight tracking-wide">
                             نوع حمایت
                         </div>
                     </div>
@@ -71,11 +71,11 @@ export function PopUpStudent({ onClose }: PopUpStudentProps) {
 
                 {/* Amount */}
                 <div className="w-full h-[52px] px-3 py-2 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] flex justify-between items-center gap-2">
-                    <div className="flex-1 text-[#818898] text-base font-normal font-num-medium leading-relaxed tracking-wide text-left"dir="rtl">
+                    <div className="flex-1 text-[#818898] text-base font-num-medium leading-relaxed tracking-wide text-left"dir="rtl">
                         ۲۰.۰۰۰.۰۰۰.۰۰۰ ریال
                     </div>
                     <div className="flex justify-end items-center gap-2 w-[80px]">
-                        <div className="flex-1 text-right text-[#666D80] text-sm font-semibold font-['PeydaWeb'] leading-tight tracking-wide">
+                        <div className="flex-1 text-right text-[#666D80] text-sm font-semibold leading-tight tracking-wide">
                             تامین شده
                         </div>
                     </div>
@@ -83,11 +83,11 @@ export function PopUpStudent({ onClose }: PopUpStudentProps) {
 
                 {/* Organization */}
                 <div className="w-full h-[52px] px-3 py-2 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] flex justify-between items-center gap-2">
-                    <div className="flex-1 text-[#818898] text-base font-normal font-num-medium leading-relaxed tracking-wide text-left">
+                    <div className="flex-1 text-[#818898] text-base font-num-medium leading-relaxed tracking-wide text-left">
                         جهاد کشاورزی
                     </div>
                     <div className="flex justify-end items-center gap-2 w-[115px]">
-                        <div className="w-full text-right text-[#666D80] text-sm font-semibold font-['PeydaWeb'] leading-tight tracking-wide">
+                        <div className="w-full text-right text-[#666D80] text-sm font-semibold leading-tight tracking-wide">
                             دستگاه
                         </div>
                     </div>
@@ -95,11 +95,11 @@ export function PopUpStudent({ onClose }: PopUpStudentProps) {
 
                 {/* Location */}
                 <div className="w-full h-[52px] px-3 py-2 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] flex justify-between items-center gap-2">
-                    <div className="flex-1 text-[#818898] text-base font-normal font-num-medium leading-relaxed tracking-wide text-left">
+                    <div className="flex-1 text-[#818898] text-base font-num-medium leading-relaxed tracking-wide text-left">
                         سیستان و بلوچستان_ ایرانشهر
                     </div>
                      <div className="flex justify-end items-center gap-2 w-[115px]">
-                        <div className="w-full text-right text-[#666D80] text-sm font-semibold font-['PeydaWeb'] leading-tight tracking-wide">
+                        <div className="w-full text-right text-[#666D80] text-sm font-semibold leading-tight tracking-wide">
                             استان /منطقه
                         </div>
                     </div>
