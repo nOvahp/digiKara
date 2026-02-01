@@ -45,7 +45,9 @@ export const studentProductService = {
           code: item.code || '---',
           percent: item.percent ? item.percent.toString() : '---',
           stock: item.stock ? item.stock.toString() : '---',
-          reminder: item.reminder || '---'
+          reminder: item.reminder || '---',
+          created_at: item.created_at || '',
+          updated_at: item.updated_at || ''
         }));
 
         return { success: true, data: mappedProducts };

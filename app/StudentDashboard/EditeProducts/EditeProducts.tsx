@@ -65,7 +65,7 @@ export function EditeProducts() {
         // Prepare payload according to spec
         const payload = {
             category_id: formData.category ? String(formData.category) : '1', 
-            code: formData.code,
+            
             inventory: parseInt(String(formData.stock || '0').replace(/\D/g, ''), 10) || 0,
             price: parseInt(String(formData.price || '0').replace(/\D/g, ''), 10) || 0,
             title: formData.name,
@@ -83,7 +83,7 @@ export function EditeProducts() {
         console.log("🚀 Update Payload:", payload);
 
         // Basic validation
-        if (!payload.title || !payload.category_id || !payload.code) {
+        if (!payload.title || !payload.category_id ) {
             alert('لطفا فیلدهای اجباری (عنوان، دسته بندی، کد محصول) را پر کنید.');
             return;
         }

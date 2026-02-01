@@ -20,6 +20,8 @@ export interface Product {
     percent?: string;
     stock?: string;
     reminder?: string;
+    created_at?: string;
+    updated_at?: string;
 }
 
 const initialProducts: Product[] = [

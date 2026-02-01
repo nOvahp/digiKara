@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { cn } from "@/lib/utils";
-import { ChevronLeft, ChevronRight, Filter, Search, MoreHorizontal, Trash2, Edit } from "lucide-react";
+import { ChevronLeft, ChevronRight, Filter, Search, MoreHorizontal, Trash2, Edit, ArrowUpDown } from "lucide-react";
 import { useRouter } from 'next/navigation';
 import { Skeleton } from "@/app/components/Skeleton";
 
@@ -182,6 +182,45 @@ export function ProductTable({ products, loading = false, onDelete }: ProductTab
     const [checkedIds, setCheckedIds] = useState<(number | string)[]>([]);
     const itemsPerPage = 8; 
 
+    // Sort State
+    type SortOption = 'id' | 'created_at' | 'updated_at';
+    const [sortOption, setSortOption] = useState<SortOption>('id');
+    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
+    const [isSortOpen, setIsSortOpen] = useState(false);
+    const sortRef = useRef<HTMLDivElement>(null);
+
+    // Close sort menu
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (sortRef.current && !sortRef.current.contains(event.target as Node)) {
+                setIsSortOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+    const handleSortChange = (option: SortOption) => {
+        if (sortOption === option) {
+            setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
+        } else {
+            setSortOption(option);
+            setSortDirection('desc'); // Default to newest
+        }
+        setIsSortOpen(false);
+        setCurrentPage(1);
+    };
+
+    const getSortLabel = (option: SortOption) => {
+        switch(option) {
+            case 'id': return 'شماره محصول';
+            case 'created_at': return 'تاریخ ایجاد';
+            case 'updated_at': return 'تاریخ ویرایش';
+        }
+    };
+
     const toggleId = (id: number | string) => {
         setCheckedIds(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
     };
@@ -243,11 +282,30 @@ export function ProductTable({ products, loading = false, onDelete }: ProductTab
         return false;
     });
 
-    // Calculate total pages based on filtered products
-    const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+    // Sorting
+    const sortedProducts = [...filteredProducts].sort((a, b) => {
+        let valA: any = a[sortOption];
+        let valB: any = b[sortOption];
+
+        if (sortOption === 'id') {
+             valA = Number(valA);
+             valB = Number(valB);
+        } else {
+             // For dates (strings), ensure we handle empty strings
+             valA = valA || '';
+             valB = valB || '';
+        }
+
+        if (valA < valB) return sortDirection === 'asc' ? -1 : 1;
+        if (valA > valB) return sortDirection === 'asc' ? 1 : -1;
+        return 0;
+    });
+
+    // Calculate total pages based on sorted (filtered) products
+    const totalPages = Math.ceil(sortedProducts.length / itemsPerPage);
 
     // Slice for current page
-    const currentProducts = filteredProducts.slice(
+    const currentProducts = sortedProducts.slice(
         (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
     );
@@ -300,9 +358,45 @@ export function ProductTable({ products, loading = false, onDelete }: ProductTab
             {/* Header */}
             <div className="w-full h-16 px-5 py-2 border-b border-[#DFE1E7] flex justify-between items-center bg-white">
                 <div className="flex justify-start items-center gap-2 relative" ref={filterRef}>
+                    
+                    {/* Sort Dropdown */}
+                    <div className="relative" ref={sortRef}>
+                         <div 
+                            className={`w-8 h-8 px-0 py-0 bg-white rounded-lg border border-[#DFE1E7] flex justify-center items-center gap-2 cursor-pointer transition-colors ${isSortOpen ? 'bg-gray-100 ring-2 ring-blue-100' : 'hover:bg-gray-50'}`}
+                            onClick={() => { setIsSortOpen(!isSortOpen); setIsFilterOpen(false); }}
+                        >
+                            <ArrowUpDown className={`w-4 h-4 ${sortOption !== 'id' || sortDirection === 'asc' ? 'text-[#F7C61A]' : 'text-[#818898]'}`} />
+                        </div>
+                        {isSortOpen && (
+                            <div className="absolute top-9 left-0 z-50 w-48 bg-white rounded-xl shadow-[0px_4px_24px_rgba(0,0,0,0.08)] border border-[#EFF0F2] p-2 flex flex-col gap-1 anim-fade-in" dir="rtl">
+                                <div className="text-[#666D80] text-xs font-medium px-2 py-1 mb-1 border-b border-gray-100 text-right">
+                                    مرتب‌سازی بر اساس
+                                </div>
+                                {(['id', 'created_at', 'updated_at'] as SortOption[]).map((opt) => (
+                                    <div 
+                                        key={opt}
+                                        className="flex items-center gap-2 px-2 py-1.5 hover:bg-gray-50 rounded-lg cursor-pointer"
+                                        onClick={() => handleSortChange(opt)}
+                                    >
+                                        <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${sortOption === opt ? 'bg-[#F7C61A] border-[#F7C61A]' : 'border-[#DFE1E7] bg-white'}`}>
+                                            {sortOption === opt && (
+                                                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                                </svg>
+                                            )}
+                                        </div>
+                                        <span className={`text-sm ${sortOption === opt ? 'text-[#0D0D12] font-semibold' : 'text-[#666D80] font-medium'}`}>
+                                            {getSortLabel(opt)} {sortOption === opt && (sortDirection === 'asc' ? '(صعودی)' : '(نزولی)')}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
                     <div 
                         className={`w-8 h-8 px-0 py-0 bg-white rounded-lg border border-[#DFE1E7] flex justify-center items-center gap-2 cursor-pointer transition-colors ${isFilterOpen ? 'bg-gray-100 ring-2 ring-blue-100' : 'hover:bg-gray-50'}`}
-                        onClick={() => setIsFilterOpen(!isFilterOpen)}
+                        onClick={() => { setIsFilterOpen(!isFilterOpen); setIsSortOpen(false); }}
                     >
                         <Filter className={`w-4 h-4 ${selectedFilters.length > 0 ? 'text-[#F7C61A]' : 'text-[#818898]'}`} />
                     </div>
