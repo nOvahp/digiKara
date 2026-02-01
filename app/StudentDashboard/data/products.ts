@@ -1,4 +1,15 @@
 
+export interface Price {
+    id: number | string;
+    title?: string;
+    amount?: string | number;
+    type?: number;
+    discount_percent?: string | number;
+    inventory?: string | number;
+    warn_inventory?: string | number;
+    type_inventory?: number;
+}
+
 export interface Product {
     id: number | string;
     name: string;
@@ -22,6 +33,7 @@ export interface Product {
     reminder?: string;
     created_at?: string;
     updated_at?: string;
+    prices?: Price[];
 }
 
 const initialProducts: Product[] = [

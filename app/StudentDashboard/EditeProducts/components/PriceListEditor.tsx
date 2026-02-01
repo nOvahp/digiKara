@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Check, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { studentProductService } from '@/app/services/studentProductService';
+import { Price } from '@/app/StudentDashboard/data/products';
 
 const PRICE_TYPES = [
     { id: 1, label: 'رنگ' },
@@ -12,7 +13,7 @@ const PRICE_TYPES = [
 ];
 
 interface PriceListEditorProps {
-    prices: any[];
+    prices: Price[];
     onRefresh: () => void;
 }
 
@@ -22,7 +23,7 @@ export function PriceListEditor({ prices, onRefresh }: PriceListEditorProps) {
     // When props change, clear edits? Or keep them? 
     // Usually keep unless saved.
 
-    const handleChange = (id: string, field: string, value: any) => {
+    const handleChange = (id: string | number, field: string, value: any) => {
         setEditedPrices(prev => {
             const currentEdit = prev[id] || prices.find(p => p.id === id) || {};
             return {
@@ -32,11 +33,12 @@ export function PriceListEditor({ prices, onRefresh }: PriceListEditorProps) {
         });
     };
 
-    const handleSave = async (id: string) => {
+    const handleSave = async (id: string | number) => {
         const changes = editedPrices[id];
         if (!changes) return;
 
         const original = prices.find(p => p.id === id);
+        if (!original) return;
         
         // Construct payload
         // Ensure numbers are numbers
@@ -65,7 +67,7 @@ export function PriceListEditor({ prices, onRefresh }: PriceListEditorProps) {
         }
     };
 
-    const handleCancel = (id: string) => {
+    const handleCancel = (id: string | number) => {
         setEditedPrices(prev => {
             const newState = { ...prev };
             delete newState[id];

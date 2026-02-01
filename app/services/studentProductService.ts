@@ -103,6 +103,7 @@ export const studentProductService = {
           stock: item.inventory ? item.inventory.toString() : '',
           reminder: item.warn_inventory ? item.warn_inventory.toString() : '',
           metadata: '', // Not in API response example
+          prices: item.prices || [], // Map prices array
           // Add other fields as necessary for the form
         };
         return { success: true, data: product };
