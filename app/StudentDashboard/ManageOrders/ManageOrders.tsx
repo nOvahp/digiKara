@@ -11,29 +11,11 @@ import {
 import { DashboardNavBar } from "../DashboardNavBar";
 import { Navigation } from "../Navigation"; 
 import { SmartSugesstions } from "../SmartSugesstions"; 
-import { studentService } from '@/app/services/studentService';
-
-interface Order {
-    id: string;
-    customer: string;
-    date: string;
-    status: 'Completed' | 'Pending' | 'Cancelled';
-    statusText: string;
-    paymentMethod: string;
-    amount: string;
-}
+import { studentService, Order } from '@/app/services/studentService';
 
 const toFarsiNumber = (n: number | string | undefined): string => {
     if (n === undefined || n === null) return '';
     return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
-}
-
-// Helper to map API status to our UI status
-const mapApiStatus = (apiStatus: string): 'Completed' | 'Pending' | 'Cancelled' => {
-    if (apiStatus === 'delivered' || apiStatus === 'sent' || apiStatus === 'تکمیل شده' || apiStatus.includes('ارسال شده')) return 'Completed';
-    if (apiStatus === 'pending' || apiStatus === 'not_sent' || apiStatus === 'در انتظار ارسال' || apiStatus.includes('در انتظار')) return 'Pending';
-    if (apiStatus === 'canceled' || apiStatus === 'لغو شده') return 'Cancelled';
-    return 'Pending'; 
 }
 
 export default function ManageOrders() {
@@ -50,16 +32,7 @@ export default function ManageOrders() {
             setIsLoading(true);
             const response = await studentService.getOrders();
             if (response.success && response.data) {
-                const mappedOrders: Order[] = response.data.map((item: any) => ({
-                    id: toFarsiNumber(item.id),
-                    customer: item.customerName || 'کاربر مهمان', 
-                    date: toFarsiNumber(item.deliveryTime) || toFarsiNumber("1403/01/01"),
-                    status: mapApiStatus(item.status || item.statusLabel),
-                    statusText: item.statusLabel || 'نامشخص',
-                    paymentMethod: 'اینترنتی',
-                    amount: toFarsiNumber(item.price) || '۰'
-                }));
-                setOrdersData(mappedOrders);
+                setOrdersData(response.data);
             }
             setIsLoading(false);
         };

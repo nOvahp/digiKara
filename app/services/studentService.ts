@@ -5,6 +5,37 @@ export interface AddFavoritesPayload {
   favorite_student_ids: number[];
 }
 
+export interface Order {
+  id: string;
+  customer: string;
+  date: string;
+  status: 'Completed' | 'Pending' | 'Cancelled';
+  statusText: string;
+  paymentMethod: string;
+  amount: string;
+  // Extra fields for OrderReviews if needed, or keep them optional
+  productName?: string;
+  weight?: string;
+  count?: number;
+  deliveryTime?: string;
+  description?: string;
+  note?: string;
+  item?: any; // Keep original item if needed for other components
+}
+
+const toFarsiNumber = (n: number | string | undefined): string => {
+    if (n === undefined || n === null) return '';
+    return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
+}
+
+const mapApiStatus = (apiStatus: string): 'Completed' | 'Pending' | 'Cancelled' => {
+    if (!apiStatus) return 'Pending';
+    if (apiStatus === 'delivered' || apiStatus === 'sent' || apiStatus === 'تکمیل شده' || apiStatus.includes('ارسال شده')) return 'Completed';
+    if (apiStatus === 'pending' || apiStatus === 'not_sent' || apiStatus === 'در انتظار ارسال' || apiStatus.includes('در انتظار')) return 'Pending';
+    if (apiStatus === 'canceled' || apiStatus === 'لغو شده') return 'Cancelled';
+    return 'Pending'; 
+}
+
 export const studentService = {
   verifyNationalId: async (nationalCode: string): Promise<{ success: boolean; user?: UserData; message?: string }> => {
     try {
@@ -104,12 +135,35 @@ export const studentService = {
     }
   },
 
-  getOrders: async (): Promise<{ success: boolean; data?: any[]; message?: string }> => {
+  getOrders: async (): Promise<{ success: boolean; data?: Order[]; message?: string }> => {
     try {
         const response = await apiClient.get<any, ApiResponse<any[]>>('/student/orders');
         
         if (response.status === 'success' || response.code === 200) {
-            return { success: true, data: response.data || [] };
+            const rawData = response.data || [];
+            if (!Array.isArray(rawData)) return { success: true, data: [] };
+
+            const mappedOrders: Order[] = rawData
+                .filter((item: any) => item !== null && item !== undefined && typeof item === 'object')
+                .map((item: any) => ({
+                    id: toFarsiNumber(item.id),
+                    customer: item.customerName || 'کاربر مهمان',
+                    date: toFarsiNumber(item.deliveryTime) || toFarsiNumber("1403/01/01"),
+                    status: mapApiStatus(item.status || item.statusLabel),
+                    statusText: item.statusLabel || 'نامشخص',
+                    paymentMethod: 'اینترنتی',
+                    amount: toFarsiNumber(item.price) || '۰',
+                    // Preserve other fields
+                    productName: item.productName || '',
+                    weight: item.weight || '',
+                    count: item.count || 0,
+                    deliveryTime: item.deliveryTime,
+                    description: item.description,
+                    note: item.note,
+                    item: item // Full original object just in case
+                }));
+            
+            return { success: true, data: mappedOrders };
         }
         return { success: false, message: response.message || 'خطا در دریافت لیست سفارشات' };
     } catch (error: any) {

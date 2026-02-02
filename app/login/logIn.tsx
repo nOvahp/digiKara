@@ -3,6 +3,7 @@
 import Image from "next/image"
 import headerImg from "../../public/Header2.png"
 import { LoginHeader } from "./login-header"
+import { useAuth } from "@/app/providers/AuthProvider"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import Logo from "../../public/Logo11.svg"
@@ -10,42 +11,41 @@ import AmuzeshLogo from "../../public/amuzeshLogo.svg"
 import Asset1 from "../../public/Asset 1 1.png"
 
 export function Login({ onNext }: { onNext?: () => void }) {
+  const { setRole } = useAuth();
+
+  const handleRoleSelect = (role: 'student' | 'manager') => {
+      setRole(role);
+      if (onNext) onNext();
+  }
+
   return (
     <div className="flex h-full w-full flex-col">
       <LoginHeader imageSrc={headerImg} />
       <div className="flex flex-col items-center justify-start bg-background rounded-t-3xl z-10 p-6 pt-0 gap-4">
+        
+        <div className="w-full text-right mb-2">
+            <h2 className="text-xl font-black text-[#393E46]">خوش آمدید</h2>
+            <p className="text-[#6C7278] text-sm mt-1">لطفا نقش خود را انتخاب کنید</p>
+        </div>
 
-        <Button onClick={onNext} className="w-full bg-[#F3F6FC] hover:bg-zinc-800 text-[#393E46] font-bold py-6 text-lg rounded-xl">
-          ورود با شماره تماس
+        <Button onClick={() => handleRoleSelect('student')} className="w-full bg-[#F3F6FC] hover:bg-[#FDD00A] hover:text-[#1A1C1E] text-[#393E46] font-bold py-8 text-lg rounded-2xl transition-all shadow-sm border border-transparent hover:border-[#FDD00A]">
+          ورود دانش آموز
         </Button>
 
-        
-
-        <Button onClick={onNext} variant="outline" className="w-full border-2 border-[#DCE4E8] text-[#393E46] font-bold py-6 text-lg rounded-xl hover:bg-gray-50">
-          ورود با حساب دانش آموزی
+        <Button onClick={() => handleRoleSelect('manager')} variant="outline" className="w-full border-2 border-[#DCE4E8] text-[#393E46] font-bold py-8 text-lg rounded-2xl hover:bg-gray-50 hover:border-gray-300">
+          ورود مدیر مدرسه
         </Button>
         
-
+        {/*
         <Button onClick={onNext}  className="w-full bg-[#F3F6FC] border-2 border-[#DCE4E8] text-[#393E46] font-bold py-6 text-lg rounded-xl hover:bg-gray-50 mb-4">
           ورود با حساب شاد
         </Button>
+        */}
 
-
-
-        <div className="flex items-center gap-4 mb-2">
-<Image src={Logo} alt="Logo" width={60} height={60} />
-          
-          <Image src={Asset1} alt="Amuzesh Logo" width={60} height={60} />
-          <Image src={AmuzeshLogo} alt="Amuzesh Logo" width={90} height={90} />
-        </div>
-
-        <div className="flex items-center gap-1 mb-0">
-          <Link href="#" onClick={onNext} className="text-[#393E46] font-bold">
-            ورود با شماره تماس
-          </Link>
-          <span className="text-[#6C7278]">حساب کاربری دارید؟</span>
-          
-
+        <div className="flex items-center gap-4 mt-8 mb-2 opacity-80 grayscale hover:grayscale-0 transition-all duration-500">
+          <Image src={Logo} alt="Logo" width={50} height={50} />
+          <Image src={Asset1} alt="Amuzesh Logo" width={50} height={50} />
+          <Image src={AmuzeshLogo} alt="Amuzesh Logo" width={80} height={80} />
         </div>
 
       </div>

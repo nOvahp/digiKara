@@ -29,7 +29,7 @@ const RESEND_DELAY = 120; // 2 minutes
 
 export function LogInForm({ onNext, onExistingUser }: { onNext?: () => void; onExistingUser?: () => void }) {
   const router = useRouter();
-  const { requestOtp, verifyOtp } = useAuth();
+  const { requestOtp, verifyOtp, role } = useAuth();
   
   // Stages: PHONE_ENTRY -> WAITING (sending) -> OTP_ENTRY
   const [stage, setStage] = useState<"PHONE_ENTRY" | "OTP_ENTRY">("PHONE_ENTRY");
@@ -120,6 +120,12 @@ export function LogInForm({ onNext, onExistingUser }: { onNext?: () => void; onE
     return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   };
 
+  // Determine title based on role
+  const getTitle = () => {
+      if (stage === "OTP_ENTRY") return "کد تایید";
+      return role === 'manager' ? "ورود مدیر مدرسه" : "ورود دانش آموز";
+  };
+
   return (
     <div className="flex min-h-full w-full flex-col bg-[#F8FAFC]">
       <LoginHeader imageSrc={headerImg} />
@@ -127,7 +133,7 @@ export function LogInForm({ onNext, onExistingUser }: { onNext?: () => void; onE
       {/* Header Text - Floating on top of the yellow header */}
       <div className="absolute top-[100px] left-0 right-0 px-8 z-10 text-right">
          <h2 className="text-3xl font-black text-[#393E46] mb-2">
-            {stage === "PHONE_ENTRY" ? "ورود | ثبت نام" : "کد تایید"}
+            {getTitle()}
          </h2>
          <p className="text-[#393E46] text-sm font-bold opacity-80 leading-relaxed">
             {stage === "PHONE_ENTRY" 

@@ -11,14 +11,16 @@ const USE_MOCK_BACKEND = process.env.NEXT_PUBLIC_USE_MOCK_BACKEND === 'true';
 
 export const authService = {
   
-  requestOtp: async (phone: string): Promise<{ success: boolean; message?: string }> => {
+  requestOtp: async (phone: string, role: 'student' | 'manager' = 'student'): Promise<{ success: boolean; message?: string }> => {
     if (USE_MOCK_BACKEND) {
         const { mockAuthService } = await import('./mockAuthService');
         return mockAuthService.requestOtp(phone);
     }
 
+    const endpoint = role === 'manager' ? '/manager/otp' : '/students/otp';
+
     try {
-      const response = await apiClient.post<any, ApiResponse<any>>('/otp', { 
+      const response = await apiClient.post<any, ApiResponse<any>>(endpoint, { 
         phone: String(phone) 
       });
 
@@ -33,14 +35,16 @@ export const authService = {
     }
   },
 
-  verifyOtp: async (phone: string, code: string): Promise<{ success: boolean; token?: string; user?: UserData; message?: string }> => {
+  verifyOtp: async (phone: string, code: string, role: 'student' | 'manager' = 'student'): Promise<{ success: boolean; token?: string; user?: UserData; message?: string }> => {
     if (USE_MOCK_BACKEND) {
         const { mockAuthService } = await import('./mockAuthService');
         return mockAuthService.verifyOtp(phone, code) as any;
     }
 
+    const endpoint = role === 'manager' ? '/manager/otp/check' : '/students/otp/check';
+
     try {
-      const response = await apiClient.post<any, ApiResponse<{ user: UserData; token: string }>>('/otp/check', {
+      const response = await apiClient.post<any, ApiResponse<{ user: UserData; token: string }>>(endpoint, {
         phone: String(phone),
         code: String(code),
       });
@@ -48,9 +52,14 @@ export const authService = {
       if (response.status === 'success' || response.code === 200) {
         const { token, user } = response.data;
         
-        // Validate User Data (Add robustness)
-        const parsedUser = UserSchema.safeParse(user);
-        const validUser = parsedUser.success ? parsedUser.data : (user as UserData); 
+        let validUser = user as UserData;
+        
+        // Validate User Data (Add robustness) - Only for students for now as manager schema might differ
+        // Or if schemas share structure, we can validate both.
+        if (role === 'student') {
+             const parsedUser = UserSchema.safeParse(user);
+             validUser = parsedUser.success ? parsedUser.data : (user as UserData); 
+        }
 
         if (token) {
             saveToken(token);

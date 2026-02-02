@@ -3,14 +3,14 @@
 import React, { useState, useEffect, useRef } from "react"
 import { Search, Filter, ChevronLeft, ChevronRight, Eye } from "lucide-react"
 import { PopUpProduct } from "./PopUpProduct"
+import { studentService, Order } from "@/app/services/studentService"
 
 const toFarsiNumber = (n: number | string | undefined): string => {
     if (n === undefined || n === null) return '';
     return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
 }
 
-/*
-// Interface for Project Data
+// Interface for Project Data (Mock)
 export interface Project {
   id: number
   projectName: string
@@ -20,51 +20,14 @@ export interface Project {
   status: "completed" | "in_progress" | "pending" | "canceled"
   statusLabel: string
   description?: string
-  team?: string // e.g. "تیم طراحی", "انفرادی"
+  team?: string 
 }
 
-const projects: Project[] = [
-    {
-        id: 1,
-        projectName: "طراحی لوگو شرکتی",
-        category: "گرافیک",
-        deadline: "2 روز تا تحویل",
-        price: "۱۵,۰۰۰,۰۰۰ ریال",
-        status: "in_progress",
-        statusLabel: "در حال انجام",
-        description: "لوگو برای شرکت تکنولوژی",
-        team: "تیم الف"
-    },
-    // ... (rest of projects)
-]
-*/
-const projects: any[] = []; // Empty mock for now to satisfy type checks if referenced
-
-// Interface for Order Data
-export interface Order {
-  id: number
-  productName: string
-  weight: string
-  count: number
-  deliveryTime: string // formatted string "1 روز تا تحویل"
-  price: string // formatted price
-  status: "delivered" | "not_sent" | "pending" | "sent"
-  statusLabel: string
-  description?: string // e.g., "تخفیف ویژه", "بسته بندی سفارشی"
-  note: string // e.g., "یادداشت ندارد"
-  hasDescription: boolean
-}
-
-/*
-const orders: Order[] = [
-  // ... (data removed for brevity)
-]
-*/
-
-
-
+const projects: any[] = []; 
 
 const getStatusStyles = (statusLabel: string) => {
+  if (!statusLabel) return "bg-[#ECF9F7] text-[#267666]";
+  
   if (statusLabel.includes("تحویل به مدرسه ") || statusLabel.includes("ارسال شده") || statusLabel === "تکمیل شده") {
      if (statusLabel === "تحویل به مدرسه " || (statusLabel === "ارسال شده" && !statusLabel.includes("red")) || statusLabel === "تکمیل شده") return "bg-[#ECF9F7] text-[#267666]"
   }
@@ -74,19 +37,11 @@ const getStatusStyles = (statusLabel: string) => {
   }
   
   if (statusLabel === "در حال انجام") {
-      return "bg-[#FFF8E1] text-[#B7791F]" // Warnings/Progress color (Yellow/Orange)
+      return "bg-[#FFF8E1] text-[#B7791F]" 
   }
   
   return "bg-[#ECF9F7] text-[#267666]" 
 }
-
-
-// Mock data removed/commented
-/* const orders: Order[] = [...] */
-
-import { studentService } from "@/app/services/studentService"
-
-/* ... styles ... */
 
 export function OrderReviews() {
   const [activeTab, setActiveTab] = useState("active_orders")
@@ -109,11 +64,6 @@ export function OrderReviews() {
         setIsLoading(true);
         const response = await studentService.getOrders();
         if (response.success && response.data) {
-            // Map API response to Order interface if needed
-            // Assuming response.data matches or we just use it directly for now
-            // To be safe, let's map it or ensure keys align.
-            // Since we don't know exact API shape, we'll assign and may need to fix mismatches later.
-             // @ts-ignore
             setOrders(response.data);
         }
         setIsLoading(false);
@@ -157,7 +107,9 @@ export function OrderReviews() {
   
   const currentData = rawData.filter((item: any) => {
       if (selectedFilters.length === 0) return true
-      return selectedFilters.includes(item.statusLabel)
+      // Order uses statusText, Project uses statusLabel
+      const status = item.statusText || item.statusLabel;
+      return selectedFilters.includes(status)
   })
 
   
@@ -221,11 +173,6 @@ export function OrderReviews() {
     }
   }
 
-  // Reset pagination on tab change - REMOVED (Handled in the new useEffect)
-  // useEffect(() => {
-  //     setCurrentPage(1)
-  // }, [activeTab])
-
   return (
     <div className="w-full flex-col justify-start items-end gap-3 inline-flex dir-rtl mb-8 relative">
       {selectedOrder && (
@@ -245,14 +192,6 @@ export function OrderReviews() {
 
       {/* Tabs */}
       <div className="self-stretch h-9 p-0.5 bg-[#F6F6F6] rounded-lg border border-[#D7D8DA] justify-center items-center inline-flex">
-         {/* Commented out Projects Tab
-         <div 
-            onClick={() => setActiveTab("active_projects")}
-            className={`flex-1 h-[29px] px-3 py-1 rounded-md justify-center items-center gap-2.5 flex cursor-pointer ${activeTab === 'active_projects' ? 'bg-[#F7C61A] shadow-sm border border-[#D7D8DA]' : 'hover:bg-gray-100'}`}
-         >
-             <div className="text-[#0A0A0A] text-sm font-semibold leading-tight">پروژه های فعال</div>
-         </div>
-         */}
          <div 
              onClick={() => setActiveTab("active_orders")}
              className={`flex-1 h-[29px] px-3 py-1 rounded-md justify-center items-center gap-2.5 flex cursor-pointer ${activeTab === 'active_orders' ? 'bg-[#F7C61A] shadow-sm border border-[#D7D8DA]' : 'hover:bg-gray-100'}`}
@@ -372,15 +311,15 @@ export function OrderReviews() {
                          {/* Description/Note */}
                          <div className="w-[272px] h-16 px-3 flex items-center justify-end border-b border-[#DFE1E7]">
                              <div className="text-right text-[#0D0D12] text-sm font-semibold tracking-wide line-clamp-2">
-                                 {item.description || item.note}
+                                 {item.description || item.note || '-'}
                              </div>
                          </div>
 
                          {/* Status */}
                          <div className="w-[104px] h-16 px-3 flex items-center justify-center border-b border-[#DFE1E7]">
-                             <div className={`px-2 py-0.5 rounded-2xl flex items-center justify-center ${getStatusStyles(item.statusLabel)}`}>
+                             <div className={`px-2 py-0.5 rounded-2xl flex items-center justify-center ${getStatusStyles(item.statusText || item.statusLabel)}`}>
                                  <span className="text-center text-xs font-num-medium tracking-wide whitespace-nowrap">
-                                     {item.statusLabel}
+                                     {item.statusText || item.statusLabel}
                                  </span>
                              </div>
                          </div>
@@ -388,14 +327,14 @@ export function OrderReviews() {
                          {/* Price */}
                          <div className="w-[140px] h-16 px-3 flex items-center justify-end border-b border-[#DFE1E7]">
                               <span className="text-center text-[#0D0D12] text-sm font-num-medium tracking-wide w-full"dir="rtl">
-                                  {toFarsiNumber(item.price)}
+                                  {item.amount || toFarsiNumber(item.price)}
                               </span>
                          </div>
 
                          {/* Delivery Time */}
                          <div className="w-[127px] h-16 px-3 flex items-center justify-end border-b border-[#DFE1E7]"dir="rtl">
                               <span className="text-center text-[#0D0D12] text-sm font-num-medium tracking-wide w-full">
-                                  {toFarsiNumber(item.deliveryTime)}
+                                  {item.date || toFarsiNumber(item.deliveryTime)}
                               </span>
                          </div>
 
@@ -410,7 +349,7 @@ export function OrderReviews() {
                           <div className="w-[272px] h-16 px-3 flex items-center justify-end gap-1 border-b border-[#DFE1E7]">
                               {activeTab === 'active_orders' ? (
                                 <>
-                                    <span className="text-[#0D0D12] text-sm font-semibold tracking-wide"> {item.productName} | </span>
+                                    <span className="text-[#0D0D12] text-sm font-semibold tracking-wide"> {item.productName || 'محصول'} | </span>
                                     <span className="text-[#0D0D12] text-sm font-num-medium tracking-wide"dir="rtl"> {toFarsiNumber(item.weight)} </span>
                                 </>
                               ) : (
