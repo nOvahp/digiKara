@@ -13,6 +13,7 @@ import { Navigation } from "../../../layout/Navigation";
 import { SmartSuggestions } from "../../overview/SmartSuggestions"; 
 import { studentService, Order } from '@/app/services/studentService';
 import { OrderTable } from '../OrderTable';
+import { PopUpProduct } from '../../products/PopUpProduct';
 
 const toFarsiNumber = (n: number | string | undefined): string => {
     if (n === undefined || n === null) return '';
@@ -25,6 +26,7 @@ export default function ManageOrders() {
     const [searchTerm, setSearchTerm] = React.useState("");
     const [selectedTab, setSelectedTab] = React.useState("همه");
     const [selectedOrderIds, setSelectedOrderIds] = React.useState<(string | number)[]>([]);
+    const [selectedOrder, setSelectedOrder] = React.useState<Order | null>(null);
 
     const [currentPage, setCurrentPage] = React.useState(1);
     const ITEMS_PER_PAGE = 10;
@@ -230,6 +232,7 @@ export default function ManageOrders() {
                                 selectedOrderIds={selectedOrderIds}
                                 onSelectRow={handleSelectRow}
                                 onSelectAll={handleSelectAll}
+                                onRowClick={(order) => setSelectedOrder(order)}
                             />
                         </div>
                     </div>
@@ -287,6 +290,13 @@ export default function ManageOrders() {
                      </div>
                  </div>
             </div>
+            {/* Product Popup */}
+            {selectedOrder && (
+                <PopUpProduct 
+                    order={selectedOrder} 
+                    onClose={() => setSelectedOrder(null)} 
+                />
+            )}
         </div>
     );
 }

@@ -25,7 +25,7 @@ export function Navigation() {
   const getIconColor = (active: boolean) => active ? "text-[#F7C61A]" : "text-[#605F5F]";
 
   return (
-    <div className="w-full fixed bottom-0 left-0 right-0 z-50 flex flex-col items-center pointer-events-none">
+    <div className="w-full fixed bottom-0 left-0 right-0 z-40 flex flex-col items-center pointer-events-none">
       <div className="relative w-full max-w-[440px] pointer-events-auto">
         <div 
             className="w-full bg-white shadow-[0px_0px_4px_#E9B443] rounded-t-[20px] flex flex-col justify-center items-center gap-1 pb-2 pt-2"

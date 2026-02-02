@@ -478,7 +478,6 @@ export function OrderReviews() {
                         {toFarsiNumber(selectedOrderIds.length)}
                     </div>
                     <span className="text-[#0D0D12] text-sm font-medium">سفارش انتخاب شده</span>
-                    
                 </div>
                 <button 
                     onClick={handleBulkDeliver}
