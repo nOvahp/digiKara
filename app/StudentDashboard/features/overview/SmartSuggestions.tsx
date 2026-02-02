@@ -54,27 +54,27 @@ export function SmartSuggestions() {
     <div className="w-full flex flex-col justify-start items-start gap-4" dir="rtl">
         
         {/* Header */}
-        <div className="w-full flex justify-start items-center px-6">
+        <div className="w-full flex justify-start items-center px-0">
             <div className="text-[#222831] text-[18px] font-num-medium leading-[25.20px]">
                 پیشنهادات هوشمند
             </div>
         </div>
 
         {/* Carousel */}
-        <div className="w-full" dir="ltr"> {/* Carousel needs LTR structure internally usually, but we render content RTL */}
+        <div className="w-full" dir="rtl">
              <Carousel
                 opts={{
                     align: "start",
-                    direction: "rtl", // Shadcn/Embla supports RTL
+                    direction: "rtl",
                 }}
                 className="w-full"
             >
-                <CarouselContent className="-ml-4 px-6"> {/* Negative margin to offset padding for first item alignment */}
+                <CarouselContent className="-ml-4 px-0">
                     {suggestions.map((item) => (
                         <CarouselItem key={item.id} className="pl-4 basis-[85%] sm:basis-[300px]">
                              <div className="h-full">
-                                <Card className="border-none shadow-sm h-full rounded-xl overflow-hidden hover:shadow-md transition-shadow duration-200">
-                                    <CardContent className="p-4 flex flex-col gap-3 h-full justify-between bg-white text-right" dir="rtl">
+                                <Card className="border border-[#DFE1E7] shadow-sm h-full rounded-xl overflow-hidden hover:shadow-md transition-shadow duration-200">
+                                    <CardContent className="px-4 flex flex-col gap-3 h-full justify-between bg-white text-right" dir="rtl">
                                         <div className="flex flex-col gap-3 items-start">
                                             {/* Icon */}
                                             <div className={`w-10 h-10 rounded-full flex justify-center items-center ${item.color}`}>

@@ -11,7 +11,7 @@ export interface ApiResponse<T> {
 
 // --- User Data Types ---
 export interface UserData {
-  id?: number;
+  id: number;
   phone: string;
   firstname?: string;
   lastname?: string;
@@ -27,7 +27,7 @@ export interface UserData {
 
 // --- Zod Schemas ---
 export const UserSchema = z.object({
-    id: z.number().optional(),
+    id: z.number(),
     phone: z.string(),
     firstname: z.string().optional(),
     lastname: z.string().optional(),

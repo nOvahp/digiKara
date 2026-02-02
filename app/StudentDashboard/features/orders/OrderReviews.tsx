@@ -1,10 +1,11 @@
 "use client"
 
 import React, { useState, useEffect, useRef } from "react"
-import { Search, Filter, ChevronLeft, ChevronRight, Eye } from "lucide-react"
+import { Search, Filter, ChevronLeft, ChevronRight, Eye, MoreHorizontal } from "lucide-react"
 import { PopUpProduct } from "../products/PopUpProduct"
 import { studentService, Order } from "@/app/services/studentService"
 import { toFarsiNumber } from "@/app/services/common/utils"
+import { OrderTable } from "./OrderTable"
 
 // Interface for Project Data (Mock)
 export interface Project {
@@ -21,23 +22,9 @@ export interface Project {
 
 const projects: any[] = []; 
 
-const getStatusStyles = (statusLabel: string) => {
-  if (!statusLabel) return "bg-[#ECF9F7] text-[#267666]";
-  
-  if (statusLabel.includes("تحویل به مدرسه ") || statusLabel.includes("ارسال شده") || statusLabel === "تکمیل شده") {
-     if (statusLabel === "تحویل به مدرسه " || (statusLabel === "ارسال شده" && !statusLabel.includes("red")) || statusLabel === "تکمیل شده") return "bg-[#ECF9F7] text-[#267666]"
-  }
-  
-  if (statusLabel === "ارسال نشده" || statusLabel === "در انتظار ارسال" || statusLabel === "در انتظار تایید" || statusLabel === "لغو شده") {
-      return "bg-[#FCE8EC] text-[#B21634]"
-  }
-  
-  if (statusLabel === "در حال انجام") {
-      return "bg-[#FFF8E1] text-[#B7791F]" 
-  }
-  
-  return "bg-[#ECF9F7] text-[#267666]" 
-}
+ 
+
+// getStatusStyles removed (moved to OrderTable)
 
 export function OrderReviews() {
   const [activeTab, setActiveTab] = useState("active_orders")
@@ -53,6 +40,67 @@ export function OrderReviews() {
   
   // Status Update State
   const [openStatusId, setOpenStatusId] = useState<string | number | null>(null);
+
+  // Bulk Selection State
+  const [selectedOrderIds, setSelectedOrderIds] = useState<(string | number)[]>([])
+
+  // Toggle Single Row Selection
+  const handleSelectRow = (id: string | number) => {
+      setSelectedOrderIds(prev => {
+          if (prev.includes(id)) {
+              return prev.filter(item => item !== id)
+          } else {
+              return [...prev, id]
+          }
+      })
+  }
+
+  // Toggle Select All (current page)
+  const handleSelectAll = () => {
+      // Check if all current visible items are selected
+      const allSelected = currentItems.every(item => selectedOrderIds.includes(item.id))
+      
+      if (allSelected) {
+          // Deselect all current items
+          const currentIds = currentItems.map(item => item.id)
+          setSelectedOrderIds(prev => prev.filter(id => !currentIds.includes(id)))
+      } else {
+          // Select all current items
+          const currentIds = currentItems.map(item => item.id)
+          // Add current IDs to selection, avoiding duplicates
+          setSelectedOrderIds(prev => {
+              const newSet = new Set([...prev, ...currentIds])
+              return Array.from(newSet)
+          })
+      }
+  }
+
+  // Bulk Delivery Action
+  const handleBulkDeliver = async () => {
+      if (selectedOrderIds.length === 0) return;
+
+      if (!confirm("آیا از تحویل سفارش‌های انتخاب شده به مدرسه اطمینان دارید؟")) return;
+
+      setIsLoading(true);
+      try {
+          // Process updates in parallel
+           await Promise.all(selectedOrderIds.map(id => 
+              studentService.updateOrderStatus(id, "تحویل به مدرسه ") // Note space to match filter option
+          ));
+          
+          // Refetch and clear selection
+          const response = await studentService.getOrders();
+          if (response.success && response.data) {
+              setOrders(response.data);
+          }
+          setSelectedOrderIds([]);
+      } catch (error) {
+          console.error("Bulk update failed", error);
+          alert("خطا در بروزرسانی وضعیت سفارش‌ها");
+      } finally {
+          setIsLoading(false);
+      }
+  }
 
   const itemsPerPage = 10
   const scrollContainerRef = useRef<HTMLDivElement>(null)
@@ -214,7 +262,7 @@ export function OrderReviews() {
   }
 
   return (
-    <div className="w-full flex-col justify-start items-end gap-3 inline-flex dir-rtl mb-8 relative">
+    <div className="w-full flex-col justify-start items-end gap-3 inline-flex mb-8 relative" dir="rtl">
       {selectedOrder && (
           <PopUpProduct 
             order={selectedOrder} 
@@ -223,11 +271,10 @@ export function OrderReviews() {
       )}
 
       {/* Header */}
-      <div className="self-stretch justify-end items-center px-1 inline-flex w-full">
+      <div className="self-stretch justify-start items-center px-1 inline-flex w-full">
          <div className="text-[#222831] text-lg font-num-medium leading-relaxed">
             {activeTab === 'active_orders' ? 'سفارش ها' : 'پروژه ها'}
          </div>
-         {/* Spacer or extra actions could go here */}
       </div>
 
       {/* Tabs */}
@@ -238,6 +285,13 @@ export function OrderReviews() {
          >
              <div className="text-[#0A0A0A] text-sm font-semibold leading-tight">سفارش های  فعال</div>
          </div>
+         {/* Projects Tab (Commented out as per request) */}
+         {/* <div 
+             onClick={() => setActiveTab("active_projects")}
+             className={`flex-1 h-[29px] px-3 py-1 rounded-md justify-center items-center gap-2.5 flex cursor-pointer ${activeTab !== 'active_orders' ? 'bg-[#F7C61A] shadow-sm border border-[#D7D8DA]' : 'hover:bg-gray-100'}`}
+         >
+             <div className="text-[#0A0A0A] text-sm font-semibold leading-tight">پروژه های فعال</div>
+         </div> */}
       </div>
 
       {/* Table Section */}
@@ -246,6 +300,10 @@ export function OrderReviews() {
             
             {/* Table Top Bar */}
             <div className="w-full h-16 px-5 py-2 border-b border-[#DFE1E7] justify-between items-center inline-flex bg-white">
+                <div className="text-[#0D0D12] text-base font-semibold leading-normal tracking-wide">
+                    {activeTab === 'active_orders' ? 'سفارش های  فعال' : 'پروژه های فعال'}
+                </div>
+
                 <div className="flex justify-start items-center gap-2 relative" ref={filterRef}>
                     {/* Filter Button */}
                     <div 
@@ -295,151 +353,91 @@ export function OrderReviews() {
                          <Search className="w-4 h-4 text-[#666D80]" />
                     </div>
                 </div>
-                <div className="text-[#0D0D12] text-base font-semibold leading-normal tracking-wide">
-                    {activeTab === 'active_orders' ? 'سفارش های  فعال' : 'پروژه های فعال'}
-                </div>
             </div>
 
             {/* Scrollable Table Content */}
             <div 
                 ref={scrollContainerRef}
-                className="self-stretch w-full overflow-x-auto flex flex-col"
+                className="self-stretch w-full overflow-x-auto flex flex-col no-scrollbar"
             >
-                {/* Header Row */}
-                <div className="flex min-w-max border-b border-[#DFE1E7] bg-[#F6F8FA]">
-                     <div className="w-[44px] h-10 px-3 bg-[#F6F8FA] flex items-center justify-center"></div> {/* Spacer / Checkbox */}
-                     <div className="w-[272px] h-10 px-3 bg-[#F6F8FA] flex items-center justify-end">
-                         <span className="text-right text-[#666D80] text-sm font-semibold tracking-wide">توضیحات</span>
-                     </div>
-                     <div className="w-[104px] h-10 px-3 bg-[#F6F8FA] flex items-center justify-center">
-                         <span className="text-[#666D80] text-sm font-semibold tracking-wide">وضعیت</span>
-                     </div>
-                     <div className="w-[140px] h-10 px-3 bg-[#F6F8FA] flex items-center justify-center">
-                         <span className="text-center text-[#666D80] text-sm font-semibold tracking-wide">درآمد شما از فروش</span>
-                     </div>
-                     <div className="w-[127px] h-10 px-3 bg-[#F6F8FA] flex items-center justify-center">
-                         <span className="text-center text-[#666D80] text-sm font-semibold tracking-wide">موعد تحویل</span>
-                     </div>
-                     <div className="w-[73px] h-10 px-3 bg-[#F6F8FA] flex items-center justify-center">
-                         <span className="text-center text-[#666D80] text-sm font-semibold tracking-wide">
-                             {activeTab === 'active_orders' ? 'تعداد' : 'تیم'}
-                         </span>
-                     </div>
-                     <div className="w-[272px] h-10 px-3 bg-[#F6F8FA] flex items-center justify-end">
-                         <span className="text-right text-[#666D80] text-sm font-semibold tracking-wide">
-                             {activeTab === 'active_orders' ? 'محصول' : 'پروژه'}
-                         </span>
-                     </div>
-                     <div className="w-[80px] h-10 px-3 bg-[#F6F8FA] flex items-center justify-end">
-                         {/* Header Checkbox */}
-                         <div className="w-4 h-4 bg-white rounded border border-[#DFE1E7]" />
-                     </div>
-                </div>
-
-                {/* Data Rows */}
-                {currentItems.map((item: any) => (
-                    <div 
-                        key={item.id} 
-                        className="flex min-w-max border-b border-[#DFE1E7] bg-white hover:bg-gray-50 cursor-pointer h-16"
-                        onClick={() => handleRowClick(item)}
-                    >
-                         {/* Action / Icon Column */}
-                         <div className="w-[44px] h-16 px-3 flex items-center justify-center border-b border-[#DFE1E7]">
-                             <Eye className="w-5 h-5 text-[#666D80]" />
-                         </div>
-                         
-                         {/* Description/Note */}
-                         <div className="w-[272px] h-16 px-3 flex items-center justify-end border-b border-[#DFE1E7]">
-                             <div className="text-right text-[#0D0D12] text-sm font-semibold tracking-wide line-clamp-2">
-                                 {item.description || item.note || '-'}
-                             </div>
-                         </div>
-
-                         {/* Status */}
-                         <div className="w-[104px] h-16 px-3 flex items-center justify-center border-b border-[#DFE1E7] relative">
-                             <div 
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    setOpenStatusId(openStatusId === item.id ? null : item.id);
-                                }}
-                                className={`px-2 py-0.5 rounded-2xl flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity gap-1 ${getStatusStyles(item.statusText || item.statusLabel)}`}
-                             >
-                                 <span className="text-center text-xs font-num-medium tracking-wide whitespace-nowrap">
-                                     {item.statusText || item.statusLabel}
-                                 </span>
-                                 <svg width="10" height="6" viewBox="0 0 10 6" fill="none" className="opacity-50">
-                                     <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                                 </svg>
-                             </div>
-
-                             {/* Status Change Dropdown */}
-                             {openStatusId === item.id && (
-                                 <div 
-                                    className="absolute top-12 z-[60] w-32 bg-white rounded-xl shadow-[0px_4px_24px_rgba(0,0,0,0.12)] border border-[#EFF0F2] p-1 flex flex-col gap-0.5 animate-in fade-in zoom-in-95 duration-200"
-                                    onClick={(e) => e.stopPropagation()}
-                                 >
-                                     {[
-                                         { label: 'در انتظار ارسال', value: '1' },
-                                         { label: 'ارسال شده', value: '2' },
-                                         { label: 'تحویل به مدرسه', value: '3' }, 
-                                         // { label: 'تکمیل شده', value: '4' }, // Optional additional status
-                                         { label: 'لغو شده', value: '9' }
-                                     ].map((opt) => (
-                                         <div 
-                                            key={opt.value}
-                                            className="px-3 py-2 text-xs text-[#0D0D12] hover:bg-gray-50 rounded-lg cursor-pointer text-right font-medium transition-colors"
-                                            onClick={() => handleStatusUpdate(item.id, item.orderDetailId, opt.value)}
-                                         >
-                                             {opt.label}
-                                         </div>
-                                     ))}
-                                 </div>
-                             )}
-                         </div>
-
-                         {/* Price */}
-                         <div className="w-[140px] h-16 px-3 flex items-center justify-end border-b border-[#DFE1E7]">
-                              <span className="text-center text-[#0D0D12] text-sm font-num-medium tracking-wide w-full"dir="rtl">
-                                  {item.amount || toFarsiNumber(item.price)}
-                              </span>
-                         </div>
-
-                         {/* Delivery Time */}
-                         <div className="w-[127px] h-16 px-3 flex items-center justify-end border-b border-[#DFE1E7]"dir="rtl">
-                              <span className="text-center text-[#0D0D12] text-sm font-num-medium tracking-wide w-full">
-                                  {item.date || toFarsiNumber(item.deliveryTime)}
-                              </span>
-                         </div>
-
-                         {/* Count / Team */}
-                         <div className="w-[73px] h-16 px-3 flex items-center justify-end border-b border-[#DFE1E7]">
-                              <span className={`text-center text-[#0D0D12] text-sm ${activeTab === 'active_projects' ? "font-num-medium" : "font-num-medium"} tracking-wide w-full`}>
-                                  {activeTab === 'active_orders' ? toFarsiNumber(item.count) : item.team || '-'}
-                              </span>
-                         </div>
-
-                         {/* Product / Project Name */}
-                          <div className="w-[272px] h-16 px-3 flex items-center justify-end gap-1 border-b border-[#DFE1E7]">
-                              {activeTab === 'active_orders' ? (
-                                <>
-                                    <span className="text-[#0D0D12] text-sm font-semibold tracking-wide"> {item.productName || 'محصول'} | </span>
-                                    <span className="text-[#0D0D12] text-sm font-num-medium tracking-wide"dir="rtl"> {toFarsiNumber(item.weight)} </span>
-                                </>
-                              ) : (
-                                <span className="text-[#0D0D12] text-sm font-semibold tracking-wide"> {item.projectName} </span>
-                              )}
-                         </div>
-
-                         {/* Index & Checkbox */}
-                         <div className="w-[80px] h-16 px-3 flex items-center justify-start gap-2.5 border-b border-[#DFE1E7]">
-                             <span className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium tracking-wide">
-                                 {toFarsiNumber(item.id)}
-                             </span>
-                             <div className="w-4 h-4 bg-white rounded border border-[#DFE1E7]" />
-                         </div>
+                {activeTab === 'active_orders' ? (
+                    <div className="min-w-[1120px]">
+                        <OrderTable 
+                            orders={currentItems}
+                            isLoading={false}
+                            selectedOrderIds={selectedOrderIds}
+                            onSelectRow={handleSelectRow}
+                            onSelectAll={handleSelectAll}
+                            onRowClick={handleRowClick}
+                            showCheckboxes={true}
+                        />
                     </div>
-                ))}
+                ) : (
+                     <div className="min-w-[1120px]">
+                        {/* Header Row - Legacy Projects Style */}
+                        <div className="flex min-w-max border-b border-[#DFE1E7] bg-[#F6F8FA]">
+                             <div className="w-[44px] h-10 px-3 bg-[#F6F8FA] flex items-center justify-center"></div>
+                             <div className="w-[272px] h-10 px-3 bg-[#F6F8FA] flex items-center justify-end">
+                                 <span className="text-right text-[#666D80] text-sm font-semibold tracking-wide">توضیحات</span>
+                             </div>
+                             <div className="w-[104px] h-10 px-3 bg-[#F6F8FA] flex items-center justify-center">
+                                 <span className="text-[#666D80] text-sm font-semibold tracking-wide">وضعیت</span>
+                             </div>
+                             <div className="w-[140px] h-10 px-3 bg-[#F6F8FA] flex items-center justify-center">
+                                 <span className="text-center text-[#666D80] text-sm font-semibold tracking-wide">درآمد شما</span>
+                             </div>
+                             <div className="w-[127px] h-10 px-3 bg-[#F6F8FA] flex items-center justify-center">
+                                 <span className="text-center text-[#666D80] text-sm font-semibold tracking-wide">موعد تحویل</span>
+                             </div>
+                             <div className="w-[73px] h-10 px-3 bg-[#F6F8FA] flex items-center justify-center">
+                                 <span className="text-center text-[#666D80] text-sm font-semibold tracking-wide">تیم</span>
+                             </div>
+                             <div className="w-[272px] h-10 px-3 bg-[#F6F8FA] flex items-center justify-end">
+                                 <span className="text-right text-[#666D80] text-sm font-semibold tracking-wide">پروژه</span>
+                             </div>
+                             <div className="w-[80px] h-10 px-3 bg-[#F6F8FA] flex items-center justify-end">
+                                 <div className="w-4 h-4 bg-white rounded border border-[#DFE1E7]" />
+                             </div>
+                        </div>
 
+                        {/* Data Rows - Legacy */}
+                        {currentItems.map((item: any) => (
+                            <div 
+                                key={item.id} 
+                                className="flex min-w-max border-b border-[#DFE1E7] bg-white hover:bg-gray-50 cursor-pointer h-16"
+                                onClick={() => handleRowClick(item)}
+                            >
+                                 <div className="w-[44px] h-16 px-3 flex items-center justify-center border-b border-[#DFE1E7]">
+                                     <Eye className="w-5 h-5 text-[#666D80]" />
+                                 </div>
+                                 <div className="w-[272px] h-16 px-3 flex items-center justify-end border-b border-[#DFE1E7]">
+                                     <div className="text-right text-[#0D0D12] text-sm font-semibold tracking-wide line-clamp-2">
+                                         {item.description || item.note || '-'}
+                                     </div>
+                                 </div>
+                                 <div className="w-[104px] h-16 px-3 flex items-center justify-center border-b border-[#DFE1E7]">
+                                     <span className="text-[#0D0D12] text-xs">{item.statusLabel || '-'}</span>
+                                 </div>
+                                 <div className="w-[140px] h-16 px-3 flex items-center justify-end border-b border-[#DFE1E7]">
+                                      <span className="text-center text-[#0D0D12] text-sm font-num-medium">{item.price}</span>
+                                 </div>
+                                 <div className="w-[127px] h-16 px-3 flex items-center justify-end border-b border-[#DFE1E7]">
+                                      <span className="text-center text-[#0D0D12] text-sm font-num-medium">{item.deadline}</span>
+                                 </div>
+                                 <div className="w-[73px] h-16 px-3 flex items-center justify-end border-b border-[#DFE1E7]">
+                                      <span className="text-center text-[#0D0D12] text-sm font-num-medium">{item.team}</span>
+                                 </div>
+                                 <div className="w-[272px] h-16 px-3 flex items-center justify-end gap-1 border-b border-[#DFE1E7]">
+                                      <span className="text-[#0D0D12] text-sm font-semibold"> {item.projectName} </span>
+                                 </div>
+                                 <div className="w-[80px] h-16 px-3 flex items-center justify-start gap-2.5 border-b border-[#DFE1E7]">
+                                     <span className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium"> {toFarsiNumber(item.id)} </span>
+                                     <div className="w-4 h-4 bg-white rounded border border-[#DFE1E7]" />
+                                 </div>
+                            </div>
+                        ))}
+                     </div>
+                )}
             </div>
 
             {/* Footer / Pagination */}
@@ -470,6 +468,27 @@ export function OrderReviews() {
 
          </div>
       </div>
+       {/* Bottom Sheet Action Bar */}
+       <div className={`fixed bottom-0 left-0 right-0 w-full bg-white border-t border-[#DFE1E7] p-4 z-[100] transition-all duration-300 ease-in-out transform ${selectedOrderIds.length > 0 ? 'translate-y-0 opacity-100 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]' : 'translate-y-full opacity-0 pointer-events-none shadow-none'}`}>
+            <div className="max-w-[1120px] mx-auto flex items-center justify-between">
+                
+
+                <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-[#F7C61A] rounded-full flex items-center justify-center text-[#0D0D12] font-bold text-sm">
+                        {toFarsiNumber(selectedOrderIds.length)}
+                    </div>
+                    <span className="text-[#0D0D12] text-sm font-medium">سفارش انتخاب شده</span>
+                    
+                </div>
+                <button 
+                    onClick={handleBulkDeliver}
+                    disabled={isLoading}
+                    className="h-10 px-6 bg-[#F7C61A] rounded-lg text-[#0D0D12] text-sm font-semibold hover:bg-[#E5B50F] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                    تحویل سفارش به مدرسه
+                </button>
+            </div>
+       </div>
     </div>
   )
 }

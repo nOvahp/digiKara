@@ -6,7 +6,7 @@ import { toFarsiNumber } from '../common/utils';
 // Helper to map API status to UI status
 const mapApiStatus = (apiStatus: string): 'Completed' | 'Pending' | 'Cancelled' => {
     if (!apiStatus) return 'Pending';
-    if (apiStatus === 'delivered' || apiStatus === 'sent' || apiStatus === 'تکمیل شده' || apiStatus.includes('ارسال شده')) return 'Completed';
+    if (apiStatus === 'delivered' || apiStatus === 'sent' || apiStatus === 'تکمیل شده' || apiStatus === 'تایید شده' || apiStatus.includes('ارسال شده')) return 'Completed';
     if (apiStatus === 'pending' || apiStatus === 'not_sent' || apiStatus === 'در انتظار ارسال' || apiStatus.includes('در انتظار')) return 'Pending';
     if (apiStatus === 'canceled' || apiStatus === 'لغو شده') return 'Cancelled';
     return 'Pending'; 
@@ -22,6 +22,7 @@ export interface Order {
   paymentMethod: string;
   amount: string;
   productName?: string;
+  productImage?: string;
   weight?: string;
   count?: number;
   deliveryTime?: string;
@@ -44,18 +45,19 @@ export const ordersService = {
                 .map((item: any) => ({
                     id: toFarsiNumber(item.id),
                     orderDetailId: item.id, 
-                    customer: item.customerName || 'کاربر مهمان',
-                    date: toFarsiNumber(item.deliveryTime) || toFarsiNumber("1403/01/01"),
-                    status: mapApiStatus(item.status || item.statusLabel),
-                    statusText: item.statusLabel || 'نامشخص',
+                    customer: 'شما', // Context: Student seeing their own orders
+                    date: toFarsiNumber('1402/12/12'), // Mock date as API misses it
+                    status: mapApiStatus(item.status),
+                    statusText: item.status || 'نامشخص',
                     paymentMethod: 'اینترنتی',
                     amount: toFarsiNumber(item.price) || '۰',
-                    productName: item.productName || '',
-                    weight: item.weight || '',
-                    count: item.count || 0,
-                    deliveryTime: item.deliveryTime,
-                    description: item.description,
-                    note: item.note,
+                    productName: item.product?.title || 'محصول نامشخص',
+                    productImage: item.product?.image || item.product?.image_path || '',
+                    weight: item.product?.description || '', // Using desc as weight placeholder or just empty
+                    count: item.quantity || 0,
+                    deliveryTime: 'نامشخص',
+                    description: item.product?.description,
+                    note: '',
                     item: item 
                 }));
             

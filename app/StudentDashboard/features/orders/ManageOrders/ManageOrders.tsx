@@ -12,6 +12,7 @@ import { DashboardNavBar } from "../../../layout/DashboardNavBar";
 import { Navigation } from "../../../layout/Navigation"; 
 import { SmartSuggestions } from "../../overview/SmartSuggestions"; 
 import { studentService, Order } from '@/app/services/studentService';
+import { OrderTable } from '../OrderTable';
 
 const toFarsiNumber = (n: number | string | undefined): string => {
     if (n === undefined || n === null) return '';
@@ -23,6 +24,7 @@ export default function ManageOrders() {
     const [isLoading, setIsLoading] = React.useState(true);
     const [searchTerm, setSearchTerm] = React.useState("");
     const [selectedTab, setSelectedTab] = React.useState("همه");
+    const [selectedOrderIds, setSelectedOrderIds] = React.useState<(string | number)[]>([]);
 
     const [currentPage, setCurrentPage] = React.useState(1);
     const ITEMS_PER_PAGE = 10;
@@ -63,6 +65,57 @@ export default function ManageOrders() {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const currentOrders = filteredOrders.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
+    // Selection Handlers
+    const handleSelectRow = (id: string | number) => {
+        setSelectedOrderIds(prev => {
+            if (prev.includes(id)) {
+                return prev.filter(item => item !== id)
+            } else {
+                return [...prev, id]
+            }
+        })
+    }
+
+    const handleSelectAll = () => {
+        const allSelected = currentOrders.every(item => selectedOrderIds.includes(item.id))
+        
+        if (allSelected) {
+            const currentIds = currentOrders.map(item => item.id)
+            setSelectedOrderIds(prev => prev.filter(id => !currentIds.includes(id as string)))
+        } else {
+            const currentIds = currentOrders.map(item => item.id)
+            setSelectedOrderIds(prev => {
+                const newSet = new Set([...prev, ...currentIds])
+                return Array.from(newSet)
+            })
+        }
+    }
+
+    const handleBulkDeliver = async () => {
+        if (selectedOrderIds.length === 0) return;
+  
+        if (!confirm("آیا از تحویل سفارش‌های انتخاب شده به مدرسه اطمینان دارید؟")) return;
+  
+        setIsLoading(true);
+        try {
+             await Promise.all(selectedOrderIds.map(id => 
+                studentService.updateOrderStatus(String(id), "تحویل به مدرسه ")
+            ));
+            
+            // Refetch
+            const response = await studentService.getOrders();
+            if (response.success && response.data) {
+                setOrdersData(response.data);
+            }
+            setSelectedOrderIds([]);
+        } catch (error) {
+            console.error("Bulk update failed", error);
+            alert("خطا در بروزرسانی وضعیت سفارش‌ها");
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
     const handleNextPage = () => {
         if (currentPage < totalPages) setCurrentPage(prev => prev + 1);
     };
@@ -80,18 +133,7 @@ export default function ManageOrders() {
         { label: "بایگانی", value: "بایگانی" },
     ];
 
-    const getStatusStyles = (status: string) => {
-        switch (status) {
-            case 'Completed':
-                return { bg: 'bg-[#DDF3EF]', dot: 'bg-[#28806F]', text: 'text-[#28806F]' };
-            case 'Pending':
-                return { bg: 'bg-[#FFF9ED]', dot: 'bg-[#A77B2E]', text: 'text-[#A77B2E]' };
-            case 'Cancelled':
-                return { bg: 'bg-[#FCE8EC]', dot: 'bg-[#861127]', text: 'text-[#B21634]' };
-            default:
-                return { bg: 'bg-gray-100', dot: 'bg-gray-500', text: 'text-gray-500' };
-        }
-    };
+
 
     return (
         <div className="w-full min-h-screen bg-white flex flex-col relative" dir="ltr">
@@ -101,7 +143,7 @@ export default function ManageOrders() {
             </div>
 
             {/* Main Content */}
-            <div className="w-full flex flex-col pb-[150px] px-4 pt-0 gap-6" dir="rtl">
+            <div className="w-full flex flex-col pb-[150px] px-0 pt-0 gap-6" dir="rtl">
                 
                 {/* Header Section: Title */}
                 <div className="w-full flex-col flex items-start gap-4">
@@ -181,88 +223,14 @@ export default function ManageOrders() {
                     {/* Scrollable Content */}
                     <div className="w-full overflow-x-auto no-scrollbar">
                         <div className="min-w-[1120px]">
-                            {/* Header Row */}
-                            <div className="w-full h-10 bg-[#F6F8FA] border-b border-[#DFE1E7] flex items-center px-[9px]">
-                                <div className="flex-1 h-10 px-3 flex items-center justify-start gap-2.5">
-                                    <div className="w-4 h-4 rounded border border-[#DFE1E7] bg-white"></div>
-                                    <span className="text-[#666D80] text-sm font-semibold">شناسه سفارش</span>
-                                </div>
-                                <div className="flex-1 h-10 px-3 flex items-center justify-center gap-1.5">
-                                    <span className="text-[#666D80] text-sm font-semibold">مشتری</span>
-                                </div>
-                                <div className="flex-1 h-10 px-3 flex items-center justify-center gap-1.5">
-                                    <span className="text-[#666D80] text-sm font-semibold">تاریخ</span>
-                                </div>
-                                <div className="flex-1 h-10 px-3 flex items-center justify-center gap-1.5">
-                                    <span className="text-[#666D80] text-sm font-semibold">وضعیت</span>
-                                </div>
-                                <div className="flex-1 h-10 px-3 flex items-center justify-center gap-1.5">
-                                    <span className="text-[#666D80] text-sm font-semibold">پرداخت</span>
-                                </div>
-                                <div className="flex-1 h-10 px-3 flex items-center justify-center gap-1.5">
-                                    <span className="text-[#666D80] text-sm font-semibold">مجموع</span>
-                                </div>
-                                <div className="w-11 h-10 px-3 bg-[#F6F8FA]"></div> 
-                            </div>
-                            
-                            {/* Rows */}
-                            {isLoading ? (
-                                <div className="w-full h-24 flex items-center justify-center">
-                                     <span className="text-[#818898] text-sm">در حال دریافت اطلاعات...</span>
-                                </div>
-                            ) : currentOrders.length > 0 ? (
-                                currentOrders.map((order, idx) => {
-                                    const styles = getStatusStyles(order.status);
-                                    return (
-                                        <div key={idx} className="w-full h-16 bg-white border-b border-[#DFE1E7] flex items-center px-[9px] hover:bg-gray-50 transition-colors">
-                                            {/* Order ID */}
-                                            <div className="flex-1 h-16 px-3 flex items-center justify-start gap-2.5">
-                                                <div className="w-4 h-4 rounded border border-[#DFE1E7] bg-white cursor-pointer"></div>
-                                                <span className="text-[#0D0D12] text-sm font-num-medium">{order.id}</span>
-                                            </div>
-
-                                            {/* Customer */}
-                                            <div className="flex-1 h-16 px-3 flex items-center justify-center">
-                                                <span className="text-[#0D0D12] text-sm font-semibold">{order.customer}</span>
-                                            </div>
-
-                                            {/* Date */}
-                                            <div className="flex-1 h-16 px-3 flex items-center justify-center">
-                                                <span className="text-[#0D0D12] text-sm font-num-medium">{order.date}</span>
-                                            </div>
-
-                                            {/* Status */}
-                                            <div className="flex-1 h-16 px-3 flex items-center justify-center">
-                                                <div className={`h-5 px-2 py-0.5 rounded-2xl flex items-center gap-1 ${styles.bg}`}>
-                                                    <div className={`w-1.5 h-1.5 rounded-full ${styles.dot}`} />
-                                                    <span className={`text-xs font-num-medium ${styles.text}`}>{order.statusText}</span>
-                                                </div>
-                                            </div>
-
-                                            {/* Payment */}
-                                            <div className="flex-1 h-16 px-3 flex items-center justify-center">
-                                                <span className="text-[#0D0D12] text-sm font-semibold">{order.paymentMethod}</span>
-                                            </div>
-
-                                            {/* Amount */}
-                                            <div className="flex-1 h-16 px-3 flex items-center justify-center">
-                                                <span className="text-[#0D0D12] text-sm font-num-medium"dir="rtl">{order.amount}</span>
-                                            </div>
-
-                                            {/* Actions */}
-                                            <div className="w-11 h-16 px-3 flex items-center justify-center">
-                                                 <div className="w-5 h-5 flex items-center justify-center text-[#666D80] cursor-pointer">
-                                                    <MoreHorizontal size={20} />
-                                                 </div>
-                                            </div>
-                                        </div>
-                                    );
-                                })
-                            ) : (
-                                <div className="w-full h-24 flex items-center justify-center">
-                                     <span className="text-[#818898] text-sm">هیچ سفارشی یافت نشد.</span>
-                                </div>
-                            )}
+                            <OrderTable 
+                                orders={currentOrders}
+                                isLoading={isLoading}
+                                showCheckboxes={true}
+                                selectedOrderIds={selectedOrderIds}
+                                onSelectRow={handleSelectRow}
+                                onSelectAll={handleSelectAll}
+                            />
                         </div>
                     </div>
 
@@ -296,6 +264,28 @@ export default function ManageOrders() {
              {/* Bottom Navigation */}
              <div dir="ltr">
                 <Navigation />
+            </div>
+
+            {/* Bottom Sheet Action Bar */}
+            <div className={`fixed bottom-0 left-0 right-0 w-full bg-white border-t border-[#DFE1E7] p-4 z-[100] transition-all duration-300 ease-in-out transform ${selectedOrderIds.length > 0 ? 'translate-y-0 opacity-100 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]' : 'translate-y-full opacity-0 pointer-events-none shadow-none'}`}>
+                 <div className="max-w-[1120px] mx-auto flex items-center justify-between">
+                     
+                     
+                     <button 
+                         onClick={handleBulkDeliver}
+                         disabled={isLoading}
+                         className="h-10 px-6 bg-[#F7C61A] rounded-lg text-[#0D0D12] text-sm font-semibold hover:bg-[#E5B50F] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                     >
+                         تحویل سفارش به مدرسه
+                     </button>
+                     <div className="flex items-center gap-3">
+                         
+                         <span className="text-[#0D0D12] text-sm font-medium">سفارش انتخاب شده</span>
+                     <div className="w-8 h-8 bg-[#F7C61A] rounded-full flex items-center justify-center text-[#0D0D12] font-bold text-sm">
+                             {toFarsiNumber(selectedOrderIds.length)}
+                         </div>
+                     </div>
+                 </div>
             </div>
         </div>
     );
