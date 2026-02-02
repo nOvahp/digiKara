@@ -70,7 +70,7 @@ export function LoginViewManagerReport({ onNext, onLoginAgain }: LoginViewProps)
     try {
       const { managerService } = await import("@/app/services/managerService");
       
-      const result = await managerService.changeManagerInfo(formData);
+      const result = await managerService.reportSchoolDiscrepancy(formData);
 
       if (result.success) {
          setSuccessMessage(result.message || "تغییرات با موفقیت ثبت شد");
