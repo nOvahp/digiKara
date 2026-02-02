@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { Order } from "./OrderReviews"
+import { Order } from "@/app/services/studentService"
 import { cn } from "@/lib/utils"
 
 interface PopUpProductProps {
@@ -42,10 +42,10 @@ export function PopUpProduct({ order, onClose }: PopUpProductProps) {
                     {order.productName} | 
                 </span>
                 <span className="text-[#0D0D12] text-base  font-num-medium leading-relaxed tracking-wide mx-1">
-                    {order.weight.replace(/[^0-9]/g, '')}
+                    {order.weight?.replace(/[^0-9]/g, '')}
                 </span>
                 <span className="text-[#0D0D12] text-base font-semibold leading-relaxed tracking-wide">
-                     {order.weight.replace(/[0-9]/g, '')}
+                     {order.weight?.replace(/[0-9]/g, '')}
                 </span>
             </div>
 
@@ -90,7 +90,7 @@ export function PopUpProduct({ order, onClose }: PopUpProductProps) {
                     {/* Income */}
                     <div className="self-stretch h-[52px] px-3 py-2 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] flex justify-between items-center gap-2">
                         <div className="flex-1 text-[#818898] text-base font-num-medium leading-relaxed tracking-wide text-left" dir="rtl">
-                            {order.price}
+                            {order.amount}
                         </div>
                         <div className="flex justify-end items-center gap-2 w-[120px]">
                             <div className="w-full text-right text-[#666D80] text-sm font-semibold leading-tight tracking-wide">
@@ -102,16 +102,16 @@ export function PopUpProduct({ order, onClose }: PopUpProductProps) {
                     {/* Status */}
                     <div className="self-stretch h-[52px] px-3 py-2 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] flex justify-between items-center">
                         <div className={`h-5 px-2 py-0.5 rounded-2xl flex justify-start items-center ${
-                             order.statusLabel.includes("ارسال شده") || order.statusLabel.includes("تحویل") 
+                             order.statusText.includes("ارسال شده") || order.statusText.includes("تحویل") 
                              ? "bg-[#ECF9F7]" 
                              : "bg-[#FCE8EC]"
                         }`}>
                             <div className={`text-center text-xs font-num-medium leading-[18px] tracking-wide ${
-                                order.statusLabel.includes("ارسال شده") || order.statusLabel.includes("تحویل") 
+                                order.statusText.includes("ارسال شده") || order.statusText.includes("تحویل") 
                                 ? "text-[#267666]" 
                                 : "text-[#B21634]"
                             }`}>
-                                {order.statusLabel}
+                                {order.statusText}
                             </div>
                         </div>
                         <div className="flex justify-end items-center gap-2 w-[79px]">

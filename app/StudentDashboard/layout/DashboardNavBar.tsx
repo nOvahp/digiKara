@@ -3,11 +3,11 @@
 import * as React from "react"
 import Image from "next/image"
 import { Bell, Wallet } from "lucide-react"
-import profileImg from "../../public/DashboardProfile.png"
+import profileImg from "../../../public/DashboardProfile.png"
 
-import { PopUpStudent } from "./PopUpStudent"
+import { PopUpStudent } from "../features/products/PopUpStudent"
 
-import Notifications from './Notifications'; // Import the component
+import Notifications from '../features/notifications/Notifications'; // Import the component
 
 export function DashboardNavBar() {
   const [showStudentPopup, setShowStudentPopup] = React.useState(false)

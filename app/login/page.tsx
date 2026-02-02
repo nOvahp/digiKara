@@ -14,7 +14,12 @@ import { LoginView8 } from "./logIn-view8";
 import { LoginViewNationalID } from "./login-view-nationalID";
 import { LoginViewReport } from "./login-view-report";
 
+import { useRouter } from "next/navigation";
 import { LogInForm } from "./logInForm";
+
+import { useAuth } from "@/app/providers/AuthProvider";
+import { LoginViewManagerInfo } from "./LoginViewManagerInfo";
+import { LoginViewManagerReport } from "./LoginViewManagerReport";
 
 // Define simpler step constants
 enum Step {
@@ -27,17 +32,34 @@ enum Step {
   NATIONAL_ID = 5.5,
   VIEW_REPORT = 6,
   REPORT_DETAILS = 6.5,
+  // Student Flows
   VIEW_6 = 7,
   VIEW_7 = 8,
   VIEW_8 = 9,
-  FINAL = 10
+  FINAL = 10,
+  
+  // Manager Flows
+  MANAGER_INFO = 11,
+  MANAGER_REPORT = 12
 }
 
 export default function LoginPage() {
   const [step, setStep] = React.useState<number>(Step.INTRO_1);
+  const router = useRouter();
+  const { role } = useAuth(); // Get selected role
 
+  // Handler for successful login (returning user)
+  const handleLoginSuccess = () => {
+      if (role === 'manager') {
+          setStep(Step.MANAGER_INFO);
+      } else {
+          setStep(Step.FINAL); // Or dashboard for students who data is OK
+      }
+  };
+  
   // Simple Router based on Step
   switch (step) {
+    // ... (cases INTRO... LOGIN_LANDING... LOGIN_FORM ... NATIONAL_ID ... VIEW_REPORT ... REPORT_DETAILS ... VIEW_6 ... VIEW_7 ... VIEW_8 remain same)
     case Step.INTRO_1:
       return <LoginView onNext={() => setStep(Step.INTRO_2)} />;
     case Step.INTRO_2:
@@ -49,13 +71,14 @@ export default function LoginPage() {
     
     // Main Login Flow
     case Step.LOGIN_LANDING:
-      // "Login" component is the landing with buttons (Login with Phone, Student Account, etc.)
       return <Login onNext={() => setStep(Step.LOGIN_FORM)} />;
     case Step.LOGIN_FORM:
-      // The actual Form (Phone -> OTP)
-      return <LogInForm onNext={() => setStep(Step.NATIONAL_ID)} onExistingUser={() => setStep(Step.FINAL)} />;
+      return <LogInForm 
+                onNext={() => role === 'manager' ? setStep(Step.MANAGER_INFO) : setStep(Step.NATIONAL_ID)} 
+                onExistingUser={handleLoginSuccess} 
+             />;
     
-    // Post-Login / Flow Specifics
+    // Student Post-Login
     case Step.NATIONAL_ID:
       return <LoginViewNationalID onNext={() => setStep(Step.VIEW_REPORT)} />;
     case Step.VIEW_REPORT:
@@ -69,8 +92,15 @@ export default function LoginPage() {
       return <LoginView7 onNext={() => setStep(Step.VIEW_8)} />;
     case Step.VIEW_8:
       return <LoginView8 onNext={() => setStep(Step.FINAL)} />;
+    
+    // Manager Post-Login
+    case Step.MANAGER_INFO:
+      return <LoginViewManagerInfo onNext={() => router.push('/SchoolPanel')} onReport={() => setStep(Step.MANAGER_REPORT)} />;
+    case Step.MANAGER_REPORT:
+        return <LoginViewManagerReport onNext={() => router.push('/SchoolPanel')} onLoginAgain={() => setStep(Step.LOGIN_FORM)} />;
+
     case Step.FINAL:
-      return <LoginView4 />;
+      return <LoginView4 />; // Redirects to dashboard
       
     default:
       return <LoginView onNext={() => setStep(Step.INTRO_1)} />;

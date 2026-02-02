@@ -1,10 +1,10 @@
 import { Suspense } from 'react';
-import { EditeProducts } from "@/app/StudentDashboard/features/products/EditeProducts";
+import SellsPage from "./SellsPage";
 
 export default function Page() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <EditeProducts />
+      <SellsPage />
     </Suspense>
   );
 }

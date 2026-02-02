@@ -2,13 +2,9 @@
 
 import React, { useState, useEffect, useRef } from "react"
 import { Search, Filter, ChevronLeft, ChevronRight, Eye } from "lucide-react"
-import { PopUpProduct } from "./PopUpProduct"
+import { PopUpProduct } from "../products/PopUpProduct"
 import { studentService, Order } from "@/app/services/studentService"
-
-const toFarsiNumber = (n: number | string | undefined): string => {
-    if (n === undefined || n === null) return '';
-    return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
-}
+import { toFarsiNumber } from "@/app/services/common/utils"
 
 // Interface for Project Data (Mock)
 export interface Project {
@@ -55,9 +51,53 @@ export function OrderReviews() {
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const [selectedFilters, setSelectedFilters] = useState<string[]>([])
   
+  // Status Update State
+  const [openStatusId, setOpenStatusId] = useState<string | number | null>(null);
+
   const itemsPerPage = 10
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const filterRef = useRef<HTMLDivElement>(null)
+
+  const handleStatusUpdate = async (displayId: string | number, orderDetailId: string | number | undefined, newStatus: string) => {
+      setOpenStatusId(null);
+      
+      // If we don't have a real orderDetailId, fallback to displayId (mostly safe if they are the same)
+      const targetId = orderDetailId || displayId;
+      
+      setIsLoading(true); // Or use a local loading state for better UX
+      /* Optimistic update could go here */
+      
+      const result = await studentService.updateOrderStatus(targetId, newStatus);
+      
+      if (result.success) {
+          // Refetch to get updated data and status text
+         if (activeTab === 'active_orders') {
+             // Re-fetch logic
+             const response = await studentService.getOrders();
+             if (response.success && response.data) {
+                 setOrders(response.data);
+             }
+         }
+      } else {
+          // Handle Error (Toast or nice alert)
+          alert(result.message || "خطا در بروزرسانی وضعیت");
+      }
+      setIsLoading(false);
+  }
+
+  useEffect(() => {
+    // Click outside listener for status dropdown
+    const handleClickOutsideStatus = (event: MouseEvent) => {
+        if (openStatusId !== null) {
+            // Simple check: if click is not inside a status dropdown (handled by stopPropagation on the dropdown itself usually, but let's be safe)
+            setOpenStatusId(null);
+        }
+    }
+    document.addEventListener("click", handleClickOutsideStatus);
+    return () => {
+        document.removeEventListener("click", handleClickOutsideStatus);
+    }
+  }, [openStatusId]);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -316,12 +356,45 @@ export function OrderReviews() {
                          </div>
 
                          {/* Status */}
-                         <div className="w-[104px] h-16 px-3 flex items-center justify-center border-b border-[#DFE1E7]">
-                             <div className={`px-2 py-0.5 rounded-2xl flex items-center justify-center ${getStatusStyles(item.statusText || item.statusLabel)}`}>
+                         <div className="w-[104px] h-16 px-3 flex items-center justify-center border-b border-[#DFE1E7] relative">
+                             <div 
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setOpenStatusId(openStatusId === item.id ? null : item.id);
+                                }}
+                                className={`px-2 py-0.5 rounded-2xl flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity gap-1 ${getStatusStyles(item.statusText || item.statusLabel)}`}
+                             >
                                  <span className="text-center text-xs font-num-medium tracking-wide whitespace-nowrap">
                                      {item.statusText || item.statusLabel}
                                  </span>
+                                 <svg width="10" height="6" viewBox="0 0 10 6" fill="none" className="opacity-50">
+                                     <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                 </svg>
                              </div>
+
+                             {/* Status Change Dropdown */}
+                             {openStatusId === item.id && (
+                                 <div 
+                                    className="absolute top-12 z-[60] w-32 bg-white rounded-xl shadow-[0px_4px_24px_rgba(0,0,0,0.12)] border border-[#EFF0F2] p-1 flex flex-col gap-0.5 animate-in fade-in zoom-in-95 duration-200"
+                                    onClick={(e) => e.stopPropagation()}
+                                 >
+                                     {[
+                                         { label: 'در انتظار ارسال', value: '1' },
+                                         { label: 'ارسال شده', value: '2' },
+                                         { label: 'تحویل به مدرسه', value: '3' }, 
+                                         // { label: 'تکمیل شده', value: '4' }, // Optional additional status
+                                         { label: 'لغو شده', value: '9' }
+                                     ].map((opt) => (
+                                         <div 
+                                            key={opt.value}
+                                            className="px-3 py-2 text-xs text-[#0D0D12] hover:bg-gray-50 rounded-lg cursor-pointer text-right font-medium transition-colors"
+                                            onClick={() => handleStatusUpdate(item.id, item.orderDetailId, opt.value)}
+                                         >
+                                             {opt.label}
+                                         </div>
+                                     ))}
+                                 </div>
+                             )}
                          </div>
 
                          {/* Price */}

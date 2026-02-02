@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { DashboardNavBar } from "../DashboardNavBar";
-import { Navigation } from "../Navigation";
-import { BasicInfoForm } from "../Sells/components/shared/BasicInfoForm";
-import { PricingForm } from "../Sells/components/shared/PricingForm";
-import { CategoryTagsForm } from "../Sells/components/shared/CategoryTagsForm";
-import { ProductPreviewCard } from "../Sells/components/shared/ProductPreviewCard";
-import { NewProductPage6 } from "../Sells/components/NewProductPage6";
+import { DashboardNavBar } from "../../layout/DashboardNavBar";
+import { Navigation } from "../../layout/Navigation";
+import { BasicInfoForm } from "./Sells/components/shared/BasicInfoForm";
+import { PricingForm } from "./Sells/components/shared/PricingForm";
+import { CategoryTagsForm } from "./Sells/components/shared/CategoryTagsForm";
+import { ProductPreviewCard } from "./Sells/components/shared/ProductPreviewCard";
+import { NewProductPage6 } from "./Sells/components/NewProductPage6";
 import { studentProductService } from '@/app/services/studentProductService';
 import { Skeleton } from "@/app/components/Skeleton";
 import { ConfirmModal } from '@/app/components/ConfirmModal';

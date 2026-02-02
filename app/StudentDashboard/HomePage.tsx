@@ -1,13 +1,13 @@
 "use client"
 
 import * as React from "react"
-import { DashboardNavBar } from "./DashboardNavBar"
-import { QuickAccess } from "./Quickaccess"
-import { DashboardOverview } from "./DashboardOverView"
-import { Progress } from "./Progress"
-import { SmartSugesstions } from "./SmartSugesstions"
-import OrderReviews from "./OrderReviews"
-import { Navigation } from "./Navigation"
+import { DashboardNavBar } from "./layout/DashboardNavBar"
+import { QuickAccess } from "./features/overview/Quickaccess"
+import { DashboardOverview } from "./features/overview/DashboardOverView"
+import { Progress } from "./features/overview/Progress"
+import { SmartSuggestions } from "./features/overview/SmartSuggestions"
+import OrderReviews from "./features/orders/OrderReviews"
+import { Navigation } from "./layout/Navigation"
 
 export function HomePage() {
   return (
@@ -19,7 +19,7 @@ export function HomePage() {
         <DashboardOverview />
         <QuickAccess />
         <Progress />
-        <SmartSugesstions />
+        <SmartSuggestions />
         <OrderReviews />
       </div>
       <Navigation />

@@ -3,7 +3,7 @@
 import * as React from "react"
 import Image from "next/image"
 import { Store, ShoppingBag, Package } from "lucide-react"
-import earningBg from "../../public/DashboardEarning.png"
+import earningBg from "../../../../public/DashboardEarning.png"
 
 export function DashboardOverview() {
     return (

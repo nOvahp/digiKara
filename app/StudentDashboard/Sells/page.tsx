@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import SellsPage from "./SellsPage";
+import SellsPage from "@/app/StudentDashboard/features/products/Sells/SellsPage";
 
 export default function Page() {
   return (

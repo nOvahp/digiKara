@@ -8,9 +8,9 @@ import {
     ChevronLeft,
     Check
 } from 'lucide-react';
-import { DashboardNavBar } from "../DashboardNavBar";
-import { Navigation } from "../Navigation"; 
-import { SmartSugesstions } from "../SmartSugesstions"; 
+import { DashboardNavBar } from "../../../layout/DashboardNavBar";
+import { Navigation } from "../../../layout/Navigation"; 
+import { SmartSuggestions } from "../../overview/SmartSuggestions"; 
 import { studentService, Order } from '@/app/services/studentService';
 
 const toFarsiNumber = (n: number | string | undefined): string => {
@@ -161,7 +161,7 @@ export default function ManageOrders() {
 
                 {/* Suggestions Component */}
                 <div className="w-full">
-                    <SmartSugesstions />
+                    <SmartSuggestions />
                 </div>
 
                 {/* Table */}
