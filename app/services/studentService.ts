@@ -102,5 +102,19 @@ export const studentService = {
       console.error("Save student data error:", error);
       return { success: false, message: error.message || 'خطا در برقراری ارتباط با سرور' };
     }
+  },
+
+  getOrders: async (): Promise<{ success: boolean; data?: any[]; message?: string }> => {
+    try {
+        const response = await apiClient.get<any, ApiResponse<any[]>>('/student/orders');
+        
+        if (response.status === 'success' || response.code === 200) {
+            return { success: true, data: response.data || [] };
+        }
+        return { success: false, message: response.message || 'خطا در دریافت لیست سفارشات' };
+    } catch (error: any) {
+        console.error("getOrders Error:", error);
+        return { success: false, message: error.message || 'خطای شبکه' };
+    }
   }
 };

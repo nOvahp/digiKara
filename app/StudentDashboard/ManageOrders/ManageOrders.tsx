@@ -3,19 +3,15 @@ import React from 'react';
 import { 
     Filter, 
     Search,
-    BarChart3,
-
     MoreHorizontal, 
     ChevronRight, 
     ChevronLeft,
-    ShoppingBag,
-    DollarSign,
-    Clock,
-    Truck
+    Check
 } from 'lucide-react';
 import { DashboardNavBar } from "../DashboardNavBar";
-import { Navigation } from "../Navigation";
-import ExportPopUp from './ExportPopUp';
+import { Navigation } from "../Navigation"; 
+import { SmartSugesstions } from "../SmartSugesstions"; 
+import { studentService } from '@/app/services/studentService';
 
 interface Order {
     id: string;
@@ -27,131 +23,67 @@ interface Order {
     amount: string;
 }
 
-const ordersData: Order[] = [
-    { id: '#سفارش-۹۴۸۲', customer: 'سارا محمدی', date: '۱۹ آبان ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '۴,۵۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۴۸۳', customer: 'مایکل داوودی', date: '۲۰ آبان ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'پی پال', amount: '۳,۲۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۴۸۴', customer: 'امیر حسینی', date: '۲۱ آبان ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت نقدی', amount: '۷,۸۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۴۸۵', customer: 'جیمز کریمی', date: '۲۲ آبان ۱۴۰۴', status: 'Cancelled', statusText: 'لغو شده', paymentMethod: 'کارت اعتباری', amount: '۲,۱۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۴۸۶', customer: 'لیلا احمدی', date: '۲۳ آبان ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'اپل پی', amount: '۱,۵۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۴۸۷', customer: 'رضا گودرزی', date: '۲۴ آبان ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'انتقال بانکی', amount: '۵,۶۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۴۸۸', customer: 'مینا محمدی', date: '۲۵ آبان ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '۲,۹۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۴۸۹', customer: 'امیر یوسفی', date: '۲۶ آبان ۱۴۰۴', status: 'Cancelled', statusText: 'لغو شده', paymentMethod: 'کارت هدیه', amount: '۰ ریال' },
-    { id: '#سفارش-۹۴۹۰', customer: 'علی رضایی', date: '۲۷ آبان ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '۸,۵۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۴۹۱', customer: 'زهرا ابراهیمی', date: '۲۸ آبان ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'پی پال', amount: '۱,۸۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۴۹۲', customer: 'حسین مرادی', date: '۲۹ آبان ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت نقدی', amount: '۴,۲۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۴۹۳', customer: 'فاطمه اکبری', date: '۳۰ آبان ۱۴۰۴', status: 'Cancelled', statusText: 'لغو شده', paymentMethod: 'کارت اعتباری', amount: '۹۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۴۹۴', customer: 'محمد موسوی', date: '۱ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'اپل پی', amount: '۳,۰۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۴۹۵', customer: 'مریم جعفری', date: '۲ آذر ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'انتقال بانکی', amount: '۶,۹۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۴۹۶', customer: 'سعید کریمی', date: '۳ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '۲,۴۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۴۹۷', customer: 'نیلوفر رحیمی', date: '۴ آذر ۱۴۰۴', status: 'Cancelled', statusText: 'لغو شده', paymentMethod: 'کارت هدیه', amount: '۴۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۴۹۸', customer: 'کامران سلیمی', date: '۵ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '۵,۵۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۴۹۹', customer: 'الهام زارع', date: '۶ آذر ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'پی پال', amount: '۲,۷۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۰۰', customer: 'رضا علیزاده', date: '۷ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت نقدی', amount: '۳,۶۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۰۱', customer: 'سیمین دانشور', date: '۸ آذر ۱۴۰۴', status: 'Cancelled', statusText: 'لغو شده', paymentMethod: 'کارت اعتباری', amount: '۱,۵۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۰۲', customer: 'بهروز وثوقی', date: '۹ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'اپل پی', amount: '۱۱,۰۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۰۳', customer: 'گوگوش آتشین', date: '۱۰ آذر ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'انتقال بانکی', amount: '۹,۲۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۰۴', customer: 'داریوش اقبالی', date: '۱۱ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '۴,۵۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۰۵', customer: 'ابی حامدی', date: '۱۲ آذر ۱۴۰۴', status: 'Cancelled', statusText: 'لغو شده', paymentMethod: 'کارت هدیه', amount: '۶۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۰۶', customer: 'سیاوش قمیشی', date: '۱۳ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '۶,۸۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۰۷', customer: 'معین اصفهانی', date: '۱۴ آذر ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'پی پال', amount: '۲,۲۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۰۸', customer: 'هایده فراهانی', date: '۱۵ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت نقدی', amount: '۷,۹۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۰۹', customer: 'مهستی گنجی', date: '۱۶ آذر ۱۴۰۴', status: 'Cancelled', statusText: 'لغو شده', paymentMethod: 'کارت اعتباری', amount: '۲,۱۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۱۰', customer: 'ستار بهروزی', date: '۱۷ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'اپل پی', amount: '۳,۴۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۱۱', customer: 'عارف عارف‌کیا', date: '۱۸ آذر ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'انتقال بانکی', amount: '۵,۱۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۱۲', customer: 'ویگن دردریان', date: '۱۹ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '۲,۸۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۱۳', customer: 'فرهاد مهراد', date: '۲۰ آذر ۱۴۰۴', status: 'Cancelled', statusText: 'لغو شده', paymentMethod: 'کارت هدیه', amount: '۸۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۱۴', customer: 'فریدون فروغی', date: '۲۱ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '۶,۱۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۱۵', customer: 'سیمین غانم', date: '۲۲ آذر ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'پی پال', amount: '۳,۳۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۱۶', customer: 'گیتی پاشایی', date: '۲۳ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت نقدی', amount: '۴,۰۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۱۷', customer: 'پروین اعتصامی', date: '۲۴ آذر ۱۴۰۴', status: 'Cancelled', statusText: 'لغو شده', paymentMethod: 'کارت اعتباری', amount: '۱,۹۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۱۸', customer: 'جلال آل‌احمد', date: '۲۵ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'اپل پی', amount: '۱۲,۰۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۱۹', customer: 'صادق هدایت', date: '۲۶ آذر ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'انتقال بانکی', amount: '۹,۹۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۲۰', customer: 'نیما یوشیج', date: '۲۷ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '۵,۲۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۲۱', customer: 'سهراب سپهری', date: '۲۸ آذر ۱۴۰۴', status: 'Cancelled', statusText: 'لغو شده', paymentMethod: 'کارت هدیه', amount: '۱,۲۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۲۲', customer: 'فروغ فرخزاد', date: '۲۹ آذر ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '۷,۵۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۲۳', customer: 'احمد شاملو', date: '۳۰ آذر ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'پی پال', amount: '۲,۸۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۲۴', customer: 'مهدی اخوان ثالث', date: '۱ دی ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت نقدی', amount: '۸,۴۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۲۵', customer: 'هوشنگ ابتهاج', date: '۲ دی ۱۴۰۴', status: 'Cancelled', statusText: 'لغو شده', paymentMethod: 'کارت اعتباری', amount: '۲,۵۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۲۶', customer: 'محمدرضا شجریان', date: '۳ دی ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'اپل پی', amount: '۳,۶۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۲۷', customer: 'شهرام ناظری', date: '۴ دی ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'انتقال بانکی', amount: '۵,۹۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۲۸', customer: 'کیهان کلهر', date: '۵ دی ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '۳,۰۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۲۹', customer: 'حسین علیزاده', date: '۶ دی ۱۴۰۴', status: 'Cancelled', statusText: 'لغو شده', paymentMethod: 'کارت هدیه', amount: '۱,۰۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۳۰', customer: 'پرویز مشکاتیان', date: '۷ دی ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '۶,۵۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۳۱', customer: 'جلیل شهناز', date: '۸ دی ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'پی پال', amount: '۳,۵۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۳۲', customer: 'فرهنگ شریف', date: '۹ دی ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت نقدی', amount: '۴,۴۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۳۳', customer: 'غلامحسین بنان', date: '۱۰ دی ۱۴۰۴', status: 'Cancelled', statusText: 'لغو شده', paymentMethod: 'کارت اعتباری', amount: '۲,۳۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۳۴', customer: 'محمدرضا لطفی', date: '۱۱ دی ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'اپل پی', amount: '۱۲,۵۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۳۵', customer: 'حسن کسایی', date: '۱۲ دی ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'انتقال بانکی', amount: '۱۰,۵۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۳۶', customer: 'علی تجویدی', date: '۱۳ دی ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '۵,۴۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۳۷', customer: 'همایون خرم', date: '۱۴ دی ۱۴۰۴', status: 'Cancelled', statusText: 'لغو شده', paymentMethod: 'کارت هدیه', amount: '۱,۴۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۳۸', customer: 'پرویز یاحقی', date: '۱۵ دی ۱۴۰۴', status: 'Completed', statusText: 'تکمیل شده', paymentMethod: 'کارت اعتباری', amount: '۷,۷۰۰,۰۰۰ ریال' },
-    { id: '#سفارش-۹۵۳۹', customer: 'حبیب‌الله بدیعی', date: '۱۶ دی ۱۴۰۴', status: 'Pending', statusText: 'در انتظار', paymentMethod: 'پی پال', amount: '۳,۱۰۰,۰۰۰ ریال' }
-];
+const toFarsiNumber = (n: number | string | undefined): string => {
+    if (n === undefined || n === null) return '';
+    return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
+}
 
-const getStatusStyles = (status: string) => {
-    switch (status) {
-        case 'Completed':
-            return { bg: 'bg-[#DDF3EF]', dot: 'bg-[#28806F]', text: 'text-[#28806F]' };
-        case 'Pending':
-            return { bg: 'bg-[#FFF9ED]', dot: 'bg-[#A77B2E]', text: 'text-[#A77B2E]' };
-        case 'Cancelled':
-            return { bg: 'bg-[#FCE8EC]', dot: 'bg-[#861127]', text: 'text-[#B21634]' };
-        default:
-            return { bg: 'bg-gray-100', dot: 'bg-gray-500', text: 'text-gray-500' };
-    }
-};
+// Helper to map API status to our UI status
+const mapApiStatus = (apiStatus: string): 'Completed' | 'Pending' | 'Cancelled' => {
+    if (apiStatus === 'delivered' || apiStatus === 'sent' || apiStatus === 'تکمیل شده' || apiStatus.includes('ارسال شده')) return 'Completed';
+    if (apiStatus === 'pending' || apiStatus === 'not_sent' || apiStatus === 'در انتظار ارسال' || apiStatus.includes('در انتظار')) return 'Pending';
+    if (apiStatus === 'canceled' || apiStatus === 'لغو شده') return 'Cancelled';
+    return 'Pending'; 
+}
 
 export default function ManageOrders() {
-    const [showExportPopup, setShowExportPopup] = React.useState(false);
+    const [ordersData, setOrdersData] = React.useState<Order[]>([]);
+    const [isLoading, setIsLoading] = React.useState(true);
+    const [searchTerm, setSearchTerm] = React.useState("");
+    const [selectedTab, setSelectedTab] = React.useState("همه");
+
     const [currentPage, setCurrentPage] = React.useState(1);
     const ITEMS_PER_PAGE = 10;
 
-    // Filter & Scroll Logic
-    const [isFilterOpen, setIsFilterOpen] = React.useState(false);
-    const [selectedFilters, setSelectedFilters] = React.useState<string[]>([]);
-    const filterRef = React.useRef<HTMLDivElement>(null);
-    const scrollContainerRef = React.useRef<HTMLDivElement>(null);
-
-    // Close filter when clicking outside
     React.useEffect(() => {
-        function handleClickOutside(event: MouseEvent) {
-            if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
-                setIsFilterOpen(false);
+        const fetchOrders = async () => {
+            setIsLoading(true);
+            const response = await studentService.getOrders();
+            if (response.success && response.data) {
+                const mappedOrders: Order[] = response.data.map((item: any) => ({
+                    id: toFarsiNumber(item.id),
+                    customer: item.customerName || 'کاربر مهمان', 
+                    date: toFarsiNumber(item.deliveryTime) || toFarsiNumber("1403/01/01"),
+                    status: mapApiStatus(item.status || item.statusLabel),
+                    statusText: item.statusLabel || 'نامشخص',
+                    paymentMethod: 'اینترنتی',
+                    amount: toFarsiNumber(item.price) || '۰'
+                }));
+                setOrdersData(mappedOrders);
             }
-        }
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
+            setIsLoading(false);
         };
+        fetchOrders();
     }, []);
 
-    // Default scroll to right
-    React.useEffect(() => {
-        if (scrollContainerRef.current) {
-            scrollContainerRef.current.scrollLeft = scrollContainerRef.current.scrollWidth;
-        }
-    }, [ordersData]);
-
-    const handleFilterChange = (value: string) => {
-        setSelectedFilters(prev => {
-            if (prev.includes(value)) {
-                return prev.filter(f => f !== value);
-            } else {
-                return [...prev, value];
-            }
-        });
-        setCurrentPage(1);
-    };
-
-    const getFilterOptions = () => [
-        { label: "تکمیل شده", value: "Completed" },
-        { label: "در انتظار", value: "Pending" },
-        { label: "لغو شده", value: "Cancelled" },
-    ];
-
+    // Filter Logic
     const filteredOrders = ordersData.filter(order => {
-        if (selectedFilters.length === 0) return true;
-        return selectedFilters.includes(order.status);
+        // Search Filter
+        const matchesSearch = searchTerm ? (
+             order.id.includes(searchTerm) || 
+             order.customer.includes(searchTerm)
+        ) : true;
+        
+        if (!matchesSearch) return false;
+
+        // Tab Filter
+        if (selectedTab === "همه") return true;
+        if (selectedTab === "فعال") return order.status === 'Completed'; 
+        if (selectedTab === "در انتظار") return order.status === 'Pending';
+        if (selectedTab === "غیرفعال") return order.status === 'Cancelled';
+        if (selectedTab === "بایگانی") return false; // No archive data yet
+
+        return true;
     });
 
     const totalPages = Math.ceil(filteredOrders.length / ITEMS_PER_PAGE);
@@ -166,193 +98,147 @@ export default function ManageOrders() {
         if (currentPage > 1) setCurrentPage(prev => prev - 1);
     };
 
+    // Tabs Config
+    const tabs = [
+        { label: "همه", value: "همه" }, // Active by default
+        { label: "فعال", value: "فعال" },
+        { label: "در انتظار", value: "در انتظار" },
+        { label: "غیرفعال", value: "غیرفعال" },
+        { label: "بایگانی", value: "بایگانی" },
+    ];
+
+    const getStatusStyles = (status: string) => {
+        switch (status) {
+            case 'Completed':
+                return { bg: 'bg-[#DDF3EF]', dot: 'bg-[#28806F]', text: 'text-[#28806F]' };
+            case 'Pending':
+                return { bg: 'bg-[#FFF9ED]', dot: 'bg-[#A77B2E]', text: 'text-[#A77B2E]' };
+            case 'Cancelled':
+                return { bg: 'bg-[#FCE8EC]', dot: 'bg-[#861127]', text: 'text-[#B21634]' };
+            default:
+                return { bg: 'bg-gray-100', dot: 'bg-gray-500', text: 'text-gray-500' };
+        }
+    };
+
     return (
         <div className="w-full min-h-screen bg-white flex flex-col relative" dir="ltr">
-            {/* Main Scrollable Content */}
-            <div className="w-full h-full flex flex-col pb-[150px] gap-0">
+             {/* Navbar - Sticky */}
+             <div className="sticky top-0 z-40 w-full bg-white px-0 pt-0" dir="ltr">
+                <DashboardNavBar />
+            </div>
+
+            {/* Main Content */}
+            <div className="w-full flex flex-col pb-[150px] px-4 pt-0 gap-6" dir="rtl">
                 
-                {/* Navbar - Sticky */}
-                <div className="sticky top-0 z-40 w-full bg-white px-0 pt-0" dir="ltr">
-                    <DashboardNavBar />
+                {/* Header Section: Title */}
+                <div className="w-full flex-col flex items-start gap-4">
+                     <h1 className="text-center text-[#0D0D12] text-xl  font-semibold leading-[27px]">مدیریت سفارشات</h1>
                 </div>
 
-                {/* Content - RTL */}
-                <div className="w-full px-0 flex flex-col items-center gap-6" dir="rtl">
-                    {/* Title & Action */}
-                    <div className="w-full flex flex-col items-start gap-4 pr-0">
-                        <h1 className="w-full text-END text-[#0D0D12] text-xl font-semibold">مدیریت سفارشات</h1>
-                        <button 
-                            onClick={() => setShowExportPopup(true)}
-                            className="w-full h-[47px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-2 hover:bg-yellow-400 transition-colors">
-                            <span className="text-[#1A1C1E] text-lg font-semibold">خروجی از سفارشات</span>
-                        </button>
-                    </div>
+                {/* Toolbar: Search & Tabs */}
+                <div className="w-full flex flex-col items-start gap-3">
+                    {/* Search Row */}
+                    <div className="w-full flex justify-between items-center gap-1">
+                        {/* Search Input */}
+                         <div className="flex-1 h-9 bg-white rounded-lg border border-[#DFE1E7] flex items-center">
+                            <div className="px-3 py-1.5 flex items-center justify-center border-l border-[#DFE1E7]">
+                                <span className="text-[#737373] text-opacity-25 text-sm font-['PeydaFaNum'] font-medium">{toFarsiNumber(filteredOrders.length)} نتیحه</span>
+                            </div>
+                            <div className="flex-1 flex items-center px-2 py-1">
+                                <input 
+                                    className="w-full h-full outline-none text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold placeholder:text-[#737373] placeholder:opacity-50"
+                                    placeholder="جستجو در سفارشات"
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                />
+                            </div>
+                            <div className="pr-3 pl-2 py-1.5 flex items-center justify-center">
+                                <Search className="w-4 h-4 text-[#737373]" />
+                            </div>
+                        </div>
 
-                    {/* Stats Grid */}
-                    <div className="w-full grid grid-cols-2 gap-3 px-0">
-                        {/* Total Orders */}
-                        <div className="w-full p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl border border-[#DFE1E7] flex flex-col gap-2.5">
-                            <div className="flex flex-col gap-2">
-                                <div className="flex justify-start items-center gap-2 min-w-0">
-                                    <div className="w-9 h-9 bg-[#FFD369] rounded-lg shadow-inner flex items-center justify-center flex-shrink-0">
-                                        <ShoppingBag size={20} className="text-[#393E46]" />
-                                    </div>
-                                    <span className="text-right text-[#818898] text-sm font-semibold truncate">کل سفارشات</span>
-                                </div>
-                                <div className="flex items-center justify-end gap-2 w-full">
-                                    <div className="px-2 py-0.5 bg-[#DDF3EF] rounded-full flex items-center justify-center flex-shrink-0">
-                                        <span className="text-[#28806F] text-xs font-semibold">+۵.۳٪</span>
-                                    </div>
-                                    <span className="text-[#0D0D12] text-xl font-num-medium truncate" >۴,۲۸۰</span>
-                                </div>
-                            </div>
-                            <span className="text-right text-[#818898] text-xs font-light truncate">از ماه گذشته</span>
-                        </div>
-                        {/* Total Revenue */}
-                        <div className="w-full p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl border border-[#DFE1E7] flex flex-col gap-2.5">
-                            <div className="flex flex-col gap-2">
-                                <div className="flex justify-start items-center gap-2 min-w-0">
-                                    <div className="w-9 h-9 bg-[#FFD369] rounded-lg shadow-inner flex items-center justify-center flex-shrink-0">
-                                        <DollarSign size={20} className="text-[#393E46]" />
-                                    </div>
-                                    <span className="text-right text-[#818898] text-sm font-semibold truncate">کل درآمد</span>
-                                </div>
-                                <div className="flex items-center justify-end gap-2 w-full">
-                                    <div className="px-2 py-0.5 bg-[#DDF3EF] rounded-full flex items-center justify-center flex-shrink-0">
-                                        <span className="text-[#28806F] text-xs font-semibold">+۶.۷٪</span>
-                                    </div>
-                                    <span className="text-[#0D0D12] text-xl font-num-medium truncate" dir="rtl">۴۸۲,۶۰۰</span>
-                                </div>
-                            </div>
-                            <span className="text-right text-[#818898] text-xs font-light truncate">از ماه گذشته</span>
-                        </div>
-                        {/* Pending Orders */}
-                        <div className="w-full p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl border border-[#DFE1E7] flex flex-col gap-2.5">
-                            <div className="flex flex-col gap-2">
-                                <div className="flex justify-start items-center gap-2 min-w-0">
-                                    <div className="w-9 h-9 bg-[#FFD369] rounded-lg shadow-inner flex items-center justify-center flex-shrink-0">
-                                        <Clock size={20} className="text-[#393E46]" />
-                                    </div>
-                                    <span className="text-right text-[#818898] text-sm font-semibold truncate">سفارشات در انتظار</span>
-                                </div>
-                                <div className="flex items-center justify-end gap-2 w-full">
-                                    <div className="px-2 py-0.5 bg-[#FFF0F3] rounded-full flex items-center justify-center flex-shrink-0">
-                                        <span className="text-[#DF1C41] text-xs font-semibold">−۲.۱٪</span>
-                                    </div>
-                                    <span className="text-[#0D0D12] text-xl font-num-medium truncate" dir="rtl">۱۲۴</span>
-                                </div>
-                            </div>
-                            <span className="text-right text-[#818898] text-xs font-light truncate">از ماه گذشته</span>
-                        </div>
-                        {/* Shipped Orders */}
-                        <div className="w-full p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl border border-[#DFE1E7] flex flex-col gap-2.5">
-                            <div className="flex flex-col gap-2">
-                                <div className="flex justify-start items-center gap-2 min-w-0">
-                                    <div className="w-9 h-9 bg-[#FFD369] rounded-lg shadow-inner flex items-center justify-center flex-shrink-0">
-                                        <Truck size={20} className="text-[#393E46]" />
-                                    </div>
-                                    <span className="text-right text-[#818898] text-sm font-semibold truncate">ارسال شده</span>
-                                </div>
-                                <div className="flex items-center justify-end gap-2 w-full">
-                                    <div className="px-2 py-0.5 bg-[#DDF3EF] rounded-full flex items-center justify-center flex-shrink-0">
-                                        <span className="text-[#28806F] text-xs font-semibold">+۴.۸٪</span>
-                                    </div>
-                                    <span className="text-[#0D0D12] text-xl font-num-medium truncate" dir="rtl">۳,۹۸۰</span>
-                                </div>
-                            </div>
-                            <span className="text-right text-[#818898] text-xs font-light truncate">از ماه گذشته</span>
+                        {/* Filter Button (Visual only based on snippet, or could toggle filters) */}
+                        <div className="w-9 h-9 p-2 bg-white rounded-lg border border-[#DFE1E7] flex items-center justify-center cursor-pointer hover:bg-gray-50">
+                             <Filter className="w-4 h-4 text-[#818898]" />
                         </div>
                     </div>
 
-                    {/* Orders Table */}
-                    <div className="w-full bg-white rounded-xl border border-[#DFE1E7] shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] overflow-hidden flex flex-col mx-4">
-                         {/* Toolbar */}
-                        <div className="w-full h-16 px-5 py-2 border-b border-[#DFE1E7] flex justify-between items-center bg-white">
-                             <div className="text-[#0D0D12] text-base font-semibold tracking-wide">
-                                 جدول سفارشات
-                             </div>
-                             <div className="flex items-center gap-2" ref={filterRef}>
-                                 <div className="relative">
-                                     <div 
-                                         className={`w-8 h-8 flex items-center justify-center rounded-lg border border-[#DFE1E7] cursor-pointer transition-colors ${isFilterOpen ? 'bg-gray-100 ring-2 ring-blue-100' : 'hover:bg-gray-50 bg-white'}`}
-                                         onClick={() => setIsFilterOpen(!isFilterOpen)}
-                                     >
-                                        <Filter size={16} className={selectedFilters.length > 0 ? 'text-[#F7C61A]' : 'text-[#818898]'} />
-                                    </div>
-                                    
-                                    {/* Filter Dropdown */}
-                                    {isFilterOpen && (
-                                        <div className="absolute top-9 left-0 z-50 w-48 bg-white rounded-xl shadow-[0px_4px_24px_rgba(0,0,0,0.08)] border border-[#EFF0F2] p-2 flex flex-col gap-1 anim-fade-in" dir="rtl">
-                                            <div className="text-[#666D80] text-xs font-medium px-2 py-1 mb-1 border-b border-gray-100 text-right">
-                                                فیلتر بر اساس وضعیت
-                                            </div>
-                                            {getFilterOptions().map((option) => (
-                                                <div 
-                                                    key={option.value}
-                                                    className="flex items-center gap-2 px-2 py-1.5 hover:bg-gray-50 rounded-lg cursor-pointer"
-                                                    onClick={() => handleFilterChange(option.value)}
-                                                >
-                                                    <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${selectedFilters.includes(option.value) ? 'bg-[#F7C61A] border-[#F7C61A]' : 'border-[#DFE1E7] bg-white'}`}>
-                                                        {selectedFilters.includes(option.value) && (
-                                                            <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                                                            </svg>
-                                                        )}
-                                                    </div>
-                                                    <span className={`text-sm ${selectedFilters.includes(option.value) ? 'text-[#0D0D12] font-semibold' : 'text-[#666D80] font-medium'}`}>
-                                                        {option.label}
-                                                    </span>
-                                                </div>
-                                            ))}
-                                            {selectedFilters.length > 0 && (
-                                                <div 
-                                                    className="text-center text-[#B21634] text-xs font-medium py-1.5 mt-1 border-t border-gray-100 cursor-pointer hover:bg-red-50 rounded-b-lg"
-                                                    onClick={() => setSelectedFilters([])}
-                                                >
-                                                    حذف فیلترها
-                                                </div>
-                                            )}
-                                        </div>
-                                    )}
-                                 </div>
-                                 <div className="w-8 h-8 flex items-center justify-center rounded-lg border border-[#DFE1E7] bg-white text-[#818898] cursor-pointer hover:bg-gray-50">
-                                    <Search size={16} />
+                    {/* Tabs Row */}
+                    <div className="w-full flex items-center justify-start gap-2 overflow-x-auto no-scrollbar pb-1">
+                        {tabs.map((tab) => {
+                            const isActive = selectedTab === tab.value;
+                            return (
+                                <div 
+                                    key={tab.value}
+                                    onClick={() => setSelectedTab(tab.value)}
+                                    className={`h-8 px-4 rounded-xl border flex items-center justify-center cursor-pointer transition-colors whitespace-nowrap
+                                        ${isActive 
+                                            ? 'bg-[#F7C61A] border-[#E5E5E5] shadow-sm' 
+                                            : 'bg-white border-[#E5E5E5] hover:bg-gray-50 shadow-sm'
+                                        }`}
+                                >
+                                    <span className={`text-sm font-['PeydaWeb'] font-semibold ${isActive ? 'text-[#393E46]' : 'text-[#737373]'}`}>
+                                        {tab.label}
+                                    </span>
                                 </div>
-                             </div>
+                            );
+                        })}
+                    </div>
+                </div>
+
+                {/* Suggestions Component */}
+                <div className="w-full">
+                    <SmartSugesstions />
+                </div>
+
+                {/* Table */}
+                <div className="w-full bg-white rounded-xl border border-[#DFE1E7] shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] overflow-hidden flex flex-col">
+                    {/* Toolbar */}
+                    <div className="w-full h-16 px-5 py-2 border-b border-[#DFE1E7] flex justify-between items-center bg-white">
+                        <div className="text-[#0D0D12] text-base font-semibold tracking-wide">
+                            جدول سفارشات
                         </div>
-                    
-                        {/* Scrollable Content */}
-                        <div 
-                            ref={scrollContainerRef}
-                            className="w-full overflow-x-auto no-scrollbar"
-                        >
-                            <div className="min-w-[1120px]">
-                                {/* Header Row */}
-                                <div className="w-full h-10 bg-[#F6F8FA] border-b border-[#DFE1E7] flex items-center px-[9px]">
-                                    <div className="flex-1 h-10 px-3 flex items-center justify-start gap-2.5">
-                                        <div className="w-4 h-4 rounded border border-[#DFE1E7] bg-white"></div>
-                                        <span className="text-[#666D80] text-sm font-semibold">شناسه سفارش</span>
-                                    </div>
-                                    <div className="flex-1 h-10 px-3 flex items-center justify-center gap-1.5">
-                                        <span className="text-[#666D80] text-sm font-semibold">مشتری</span>
-                                    </div>
-                                    <div className="flex-1 h-10 px-3 flex items-center justify-center gap-1.5">
-                                        <span className="text-[#666D80] text-sm font-semibold">تاریخ</span>
-                                    </div>
-                                    <div className="flex-1 h-10 px-3 flex items-center justify-center gap-1.5">
-                                        <span className="text-[#666D80] text-sm font-semibold">وضعیت</span>
-                                    </div>
-                                    <div className="flex-1 h-10 px-3 flex items-center justify-center gap-1.5">
-                                        <span className="text-[#666D80] text-sm font-semibold">پرداخت</span>
-                                    </div>
-                                    <div className="flex-1 h-10 px-3 flex items-center justify-center gap-1.5">
-                                        <span className="text-[#666D80] text-sm font-semibold">مجموع</span>
-                                    </div>
-                                    <div className="w-11 h-10 px-3 bg-[#F6F8FA]"></div> 
+                        <div className="flex items-center gap-2">
+                             <div className="w-8 h-8 flex items-center justify-center rounded-lg border border-[#DFE1E7] bg-white text-[#818898] cursor-pointer hover:bg-gray-50">
+                                <Search size={16} />
+                            </div>
+                        </div>
+                    </div>
+                
+                    {/* Scrollable Content */}
+                    <div className="w-full overflow-x-auto no-scrollbar">
+                        <div className="min-w-[1120px]">
+                            {/* Header Row */}
+                            <div className="w-full h-10 bg-[#F6F8FA] border-b border-[#DFE1E7] flex items-center px-[9px]">
+                                <div className="flex-1 h-10 px-3 flex items-center justify-start gap-2.5">
+                                    <div className="w-4 h-4 rounded border border-[#DFE1E7] bg-white"></div>
+                                    <span className="text-[#666D80] text-sm font-semibold">شناسه سفارش</span>
                                 </div>
-                                
-                                {/* Rows */}
-                                {currentOrders.map((order, idx) => {
+                                <div className="flex-1 h-10 px-3 flex items-center justify-center gap-1.5">
+                                    <span className="text-[#666D80] text-sm font-semibold">مشتری</span>
+                                </div>
+                                <div className="flex-1 h-10 px-3 flex items-center justify-center gap-1.5">
+                                    <span className="text-[#666D80] text-sm font-semibold">تاریخ</span>
+                                </div>
+                                <div className="flex-1 h-10 px-3 flex items-center justify-center gap-1.5">
+                                    <span className="text-[#666D80] text-sm font-semibold">وضعیت</span>
+                                </div>
+                                <div className="flex-1 h-10 px-3 flex items-center justify-center gap-1.5">
+                                    <span className="text-[#666D80] text-sm font-semibold">پرداخت</span>
+                                </div>
+                                <div className="flex-1 h-10 px-3 flex items-center justify-center gap-1.5">
+                                    <span className="text-[#666D80] text-sm font-semibold">مجموع</span>
+                                </div>
+                                <div className="w-11 h-10 px-3 bg-[#F6F8FA]"></div> 
+                            </div>
+                            
+                            {/* Rows */}
+                            {isLoading ? (
+                                <div className="w-full h-24 flex items-center justify-center">
+                                     <span className="text-[#818898] text-sm">در حال دریافت اطلاعات...</span>
+                                </div>
+                            ) : currentOrders.length > 0 ? (
+                                currentOrders.map((order, idx) => {
                                     const styles = getStatusStyles(order.status);
                                     return (
                                         <div key={idx} className="w-full h-16 bg-white border-b border-[#DFE1E7] flex items-center px-[9px] hover:bg-gray-50 transition-colors">
@@ -398,44 +284,46 @@ export default function ManageOrders() {
                                             </div>
                                         </div>
                                     );
-                                })}
-                            </div>
-                        </div>
-
-                         {/* Footer / Pagination */}
-                        <div className="w-full h-[64px] px-5 py-4 flex justify-between items-center bg-white border-t border-[#DFE1E7]">
-                             <div className="flex items-center gap-2">
-                                 <button 
-                                     onClick={handleNextPage}
-                                     disabled={currentPage === totalPages}
-                                     className="w-8 h-8 rounded-lg border border-[#DFE1E7] flex items-center justify-center bg-white hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                                     <ChevronRight size={16} className="text-[#0D0D12]" />
-                                 </button>
-                                 <div className="w-[55px] h-8 rounded-lg border border-[#DFE1E7] flex items-center justify-center bg-white">
-                                     <span className="text-[#0D0D12] text-xs font-num-medium">{currentPage.toLocaleString('fa-IR')}/{totalPages.toLocaleString('fa-IR')}</span>
-                                 </div>
-                                 <button 
-                                     onClick={handlePrevPage}
-                                     disabled={currentPage === 1}
-                                     className="w-8 h-8 rounded-lg border border-[#DFE1E7] flex items-center justify-center bg-white hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                                     <ChevronLeft size={16} className="text-[#0D0D12]" />
-                                 </button>
-                             </div>
-                             <div className="text-[#0D0D12] text-sm font-num-medium">
-                                 صفحه {currentPage.toLocaleString('fa-IR')} از {totalPages.toLocaleString('fa-IR')}
-                             </div>
+                                })
+                            ) : (
+                                <div className="w-full h-24 flex items-center justify-center">
+                                     <span className="text-[#818898] text-sm">هیچ سفارشی یافت نشد.</span>
+                                </div>
+                            )}
                         </div>
                     </div>
+
+                     {/* Footer / Pagination */}
+                    <div className="w-full h-[64px] px-5 py-4 flex justify-between items-center bg-white border-t border-[#DFE1E7]">
+                         <div className="flex items-center gap-2">
+                             <button 
+                                 onClick={handleNextPage}
+                                 disabled={currentPage === totalPages}
+                                 className="w-8 h-8 rounded-lg border border-[#DFE1E7] flex items-center justify-center bg-white hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                                 <ChevronRight size={16} className="text-[#0D0D12]" />
+                             </button>
+                             <div className="w-[55px] h-8 rounded-lg border border-[#DFE1E7] flex items-center justify-center bg-white">
+                                 <span className="text-[#0D0D12] text-xs font-num-medium">{toFarsiNumber(currentPage)}/{toFarsiNumber(totalPages || 1)}</span>
+                             </div>
+                             <button 
+                                 onClick={handlePrevPage}
+                                 disabled={currentPage === 1}
+                                 className="w-8 h-8 rounded-lg border border-[#DFE1E7] flex items-center justify-center bg-white hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                                 <ChevronLeft size={16} className="text-[#0D0D12]" />
+                             </button>
+                         </div>
+                         <div className="text-[#0D0D12] text-sm font-num-medium">
+                             صفحه {toFarsiNumber(currentPage)} از {toFarsiNumber(totalPages || 1)}
+                         </div>
+                    </div>
                 </div>
+
             </div>
 
-            {/* Bottom Navigation */}
-            <div dir="ltr">
+             {/* Bottom Navigation */}
+             <div dir="ltr">
                 <Navigation />
             </div>
-
-            {/* Export Popup */}
-            {showExportPopup && <ExportPopUp onClose={() => setShowExportPopup(false)} ordersData={ordersData} />}
         </div>
     );
 }
