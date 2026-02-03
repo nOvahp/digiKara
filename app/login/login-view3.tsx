@@ -8,8 +8,9 @@ import { loginContent3 } from "./login-data"
 
  interface LoginViewProps {
   onNext?: () => void;
+  onBack?: () => void;
 }
-export function LoginView3({ onNext }: LoginViewProps) {
+export function LoginView3({ onNext, onBack }: LoginViewProps) {
  
  
   return (
@@ -17,6 +18,7 @@ export function LoginView3({ onNext }: LoginViewProps) {
           <LoginHeader 
             imageSrc={loginContent3.headerImage}
             overlayImageSrc={loginContent3.overlayImage}
+            onBack={onBack}
           />
           <div className="flex flex-1 flex-col items-center justify-start    bg-background rounded-t-3xl z-10">
             <LoginDescription onNext={onNext} title={loginContent3.title}

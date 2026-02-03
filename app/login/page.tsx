@@ -63,24 +63,24 @@ export default function LoginPage() {
     case Step.INTRO_1:
       return <LoginView onNext={() => setStep(Step.INTRO_2)} />;
     case Step.INTRO_2:
-      return <LoginView2 onNext={() => setStep(Step.INTRO_3)} />;
+      return <LoginView2 onNext={() => setStep(Step.INTRO_3)} onBack={() => setStep(Step.INTRO_1)} />;
     case Step.INTRO_3:
-      return <LoginView3 onNext={() => setStep(Step.INTRO_3_5)} />;
+      return <LoginView3 onNext={() => setStep(Step.INTRO_3_5)} onBack={() => setStep(Step.INTRO_2)} />;
     case Step.INTRO_3_5:
-      return <LoginView35 onNext={() => setStep(Step.LOGIN_LANDING)} />;
+      return <LoginView35 onNext={() => setStep(Step.LOGIN_LANDING)} onBack={() => setStep(Step.INTRO_3)} />;
     
-    // Main Login Flow
     case Step.LOGIN_LANDING:
-      return <Login onNext={() => setStep(Step.LOGIN_FORM)} />;
+      return <Login onNext={() => setStep(Step.LOGIN_FORM)} onBack={() => setStep(Step.INTRO_3_5)} />;
     case Step.LOGIN_FORM:
       return <LogInForm 
                 onNext={() => role === 'manager' ? setStep(Step.MANAGER_INFO) : setStep(Step.NATIONAL_ID)} 
-                onExistingUser={handleLoginSuccess} 
+                onExistingUser={handleLoginSuccess}
+                onBack={() => setStep(Step.LOGIN_LANDING)}
              />;
     
     // Student Post-Login
     case Step.NATIONAL_ID:
-      return <LoginViewNationalID onNext={() => setStep(Step.VIEW_REPORT)} />;
+      return <LoginViewNationalID onNext={() => setStep(Step.VIEW_REPORT)} onBack={() => setStep(Step.LOGIN_FORM)} />;
     case Step.VIEW_REPORT:
       return <LoginView5 onNext={() => setStep(Step.VIEW_6)} onReport={() => setStep(Step.REPORT_DETAILS)} />;
     case Step.REPORT_DETAILS:

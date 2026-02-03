@@ -17,7 +17,7 @@ export function LoginDescription({
   buttonText
 }: LoginDescriptionProps) {
   return (
-    <div className="flex flex-col items-center gap-2 text-center">
+    <div className="flex flex-col items-center gap-2 text-center p-4">
       <h2 className="text-[25px] font-bold text-foreground">
         {title}
       </h2>
