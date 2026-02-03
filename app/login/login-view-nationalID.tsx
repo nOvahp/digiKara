@@ -11,7 +11,7 @@ import { Loader2, ChevronLeft } from "lucide-react";
 import { useAuth } from "@/app/providers/AuthProvider";
 
 interface LoginViewProps {
-  onNext?: () => void;
+  onNext?: (user: any) => void;
   onBack?: () => void;
 }
 
@@ -51,7 +51,8 @@ export function LoginViewNationalID({ onNext, onBack }: LoginViewProps) {
 
       if (result.success) {
         if (onNext) {
-          onNext();
+          // @ts-ignore - passing data to next step
+          onNext(result.user);
         }
       } else {
         setError(result.message || "خطا در تایید شماره ملی");

@@ -21,14 +21,16 @@ import { useAuth } from "@/app/providers/AuthProvider";
 import { LoginViewManagerInfo } from "./LoginViewManagerInfo";
 import { LoginViewManagerReport } from "./LoginViewManagerReport";
 
-// Define simpler step constants
+// Define step constants
 enum Step {
+  LOADING = 0,
   INTRO_1 = 1,
   INTRO_2 = 2,
   INTRO_3 = 3,
   INTRO_3_5 = 3.5,
   LOGIN_LANDING = 4,
   LOGIN_FORM = 5,
+  // Otp is handled inside LOGIN_FORM
   NATIONAL_ID = 5.5,
   VIEW_REPORT = 6,
   REPORT_DETAILS = 6.5,
@@ -46,7 +48,7 @@ enum Step {
 export default function LoginPage() {
   const [step, setStep] = React.useState<number>(Step.INTRO_1);
   const router = useRouter();
-  const { role } = useAuth(); // Get selected role
+  const { role, user } = useAuth(); // Get selected role and user
 
   // Handler for successful login (returning user)
   const handleLoginSuccess = () => {
@@ -56,10 +58,113 @@ export default function LoginPage() {
           setStep(Step.FINAL); // Or dashboard for students who data is OK
       }
   };
+
+  // --- Smart Navigation Logic ---
+  const handleNextStep = (currentUserData: any = user) => {
+    console.log("🚀 [Smart Nav] Checking Flags:", currentUserData);
+
+    // If no user data, fallback
+    if (!currentUserData) {
+       console.warn("Navigation: No user data found");
+       return;
+    }
+
+    // 1. Check Info Correct -> View 5 (Confirmation)
+    // If is_info_correct is FALSE or NULL, we go to View 5
+    console.log("Checking is_info_correct:", currentUserData.is_info_correct);
+    if (currentUserData.is_info_correct !== true) {
+      console.log("-> Going to View 5 (is_info_correct is not true)");
+      setStep(Step.VIEW_REPORT);
+      return;
+    }
+
+    // 2. Check Favorites -> View 6 (Interests)
+    // If favorites is FALSE or NULL, we go to View 6
+    if (currentUserData.favorites !== true) {
+      setStep(Step.VIEW_6);
+      return;
+    }
+
+    // 3. Check Meta -> View 7 (Experience)
+    // If meta is FALSE or NULL, we go to View 7
+    if (currentUserData.meta !== true) {
+      setStep(Step.VIEW_7);
+      return;
+    }
+
+    // 4. All Flags True -> Go to Final Destination
+    handleFinalRedirect();
+  };
+
+  const handleFinalRedirect = () => {
+      // Direct redirect based on role
+      if (role === 'manager') {
+          router.push('/SchoolPanel');
+      } else {
+          router.push('/StudentDashboard');
+      }
+  };
+
+  // Wrapper for LoginViewNationalID which passes userData directly
+  const handleNationalIdNext = (userData: any) => {
+     handleNextStep(userData);
+  };
+
+  // Wrapper for subsequent steps which rely on stored context
+  // This logic assumes the CURRENT step is now "done" and checks FUTURE flags
+  const handleSequentialNext = () => {
+     // From View 5 (Confirmation) -> Next is 6
+     if (step === Step.VIEW_REPORT || step === Step.REPORT_DETAILS) {
+         // Assume Info is now correct. Check Favorites.
+         if (user?.favorites) {
+             // Favorites done. Check Meta.
+             if (user?.meta) {
+                 handleFinalRedirect();
+             } else {
+                 setStep(Step.VIEW_7);
+             }
+         } else {
+             // Favorites not done. Go to 6.
+             setStep(Step.VIEW_6);
+         }
+         return;
+     }
+
+     // From View 6 (Interests) -> Next is 7
+     if (step === Step.VIEW_6) {
+         // Assume Info & Favorites now correct. Check Meta.
+         if (user?.meta) {
+            handleFinalRedirect();
+         } else {
+            setStep(Step.VIEW_7);
+         }
+         return;
+     }
+
+     // From View 7 (Experience) -> Next is Final
+     if (step === Step.VIEW_7) {
+         handleFinalRedirect();
+         return;
+     }
+  };
+
+  
+  // --- Redirect Effect ---
+  React.useEffect(() => {
+    if (step === Step.FINAL || step === Step.VIEW_8) {
+        handleFinalRedirect();
+    }
+  }, [step]);
   
   // Simple Router based on Step
   switch (step) {
-    // ... (cases INTRO... LOGIN_LANDING... LOGIN_FORM ... NATIONAL_ID ... VIEW_REPORT ... REPORT_DETAILS ... VIEW_6 ... VIEW_7 ... VIEW_8 remain same)
+    case Step.LOADING:
+       return (
+        <div className="flex w-full h-full items-center justify-center bg-white">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
+        </div>
+       );
+
     case Step.INTRO_1:
       return <LoginView onNext={() => setStep(Step.INTRO_2)} />;
     case Step.INTRO_2:
@@ -71,6 +176,7 @@ export default function LoginPage() {
     
     case Step.LOGIN_LANDING:
       return <Login onNext={() => setStep(Step.LOGIN_FORM)} onBack={() => setStep(Step.INTRO_3_5)} />;
+    
     case Step.LOGIN_FORM:
       return <LogInForm 
                 onNext={() => role === 'manager' ? setStep(Step.MANAGER_INFO) : setStep(Step.NATIONAL_ID)} 
@@ -80,27 +186,46 @@ export default function LoginPage() {
     
     // Student Post-Login
     case Step.NATIONAL_ID:
-      return <LoginViewNationalID onNext={() => setStep(Step.VIEW_REPORT)} onBack={() => setStep(Step.LOGIN_FORM)} />;
+      return <LoginViewNationalID 
+        onNext={(u: any) => handleNationalIdNext(u)} 
+        onBack={() => setStep(Step.LOGIN_FORM)} 
+      />;
+      
     case Step.VIEW_REPORT:
-      return <LoginView5 onNext={() => setStep(Step.VIEW_6)} onReport={() => setStep(Step.REPORT_DETAILS)} />;
+      return <LoginView5 
+        onNext={handleSequentialNext} 
+        onReport={() => setStep(Step.REPORT_DETAILS)} 
+        onBack={() => setStep(Step.NATIONAL_ID)} 
+      />;
+      
     case Step.REPORT_DETAILS:
-      return <LoginViewReport onNext={() => setStep(Step.VIEW_6)} onLoginAgain={() => setStep(Step.LOGIN_FORM)} />;
+      return <LoginViewReport 
+        onNext={handleSequentialNext} 
+        onLoginAgain={() => setStep(Step.LOGIN_FORM)} 
+        onBack={() => setStep(Step.VIEW_REPORT)} 
+      />;
     
     case Step.VIEW_6:
-      return <LoginView6 onNext={() => setStep(Step.VIEW_7)} />;
+      return <LoginView6 
+        onNext={handleSequentialNext} 
+        onBack={() => setStep(Step.VIEW_REPORT)} 
+      />;
+      
     case Step.VIEW_7:
-      return <LoginView7 onNext={() => setStep(Step.VIEW_8)} />;
+      return <LoginView7 
+        onNext={handleSequentialNext} 
+        onBack={() => setStep(Step.VIEW_6)}
+      />;
+      
+      // Using VIEW_8 / FINAL for any manual redirects if needed, but logic handles it.
     case Step.VIEW_8:
-      return <LoginView8 onNext={() => setStep(Step.FINAL)} />;
-    
-    // Manager Post-Login
-    case Step.MANAGER_INFO:
-      return <LoginViewManagerInfo onNext={() => router.push('/SchoolPanel')} onReport={() => setStep(Step.MANAGER_REPORT)} />;
-    case Step.MANAGER_REPORT:
-        return <LoginViewManagerReport onNext={() => router.push('/SchoolPanel')} onLoginAgain={() => setStep(Step.LOGIN_FORM)} />;
-
     case Step.FINAL:
-      return <LoginView4 />; // Redirects to dashboard
+         // Redirect handled by useEffect
+         return (
+            <div className="flex w-full h-full items-center justify-center bg-white">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
+            </div>
+         );
       
     default:
       return <LoginView onNext={() => setStep(Step.INTRO_1)} />;

@@ -1,15 +1,19 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-// import { useRouter } from "next/navigation";
-import headerImg from "../../public/OtpHeader.png";
-import { LoginHeader } from "./login-header";
-import { ChevronRight, ChevronLeft, Loader2, ArrowRight } from "lucide-react";
+import React, { useState } from "react";
+import { 
+  ChevronLeft,
+  ChevronRight,
+  Loader2,
+  CheckCircle2
+} from "lucide-react";
 import { useAuth } from "@/app/providers/AuthProvider";
 import { toast } from "sonner"; 
+import { Button } from "@/components/ui/button";
 
 interface LoginViewProps {
   onNext?: () => void;
+  onBack?: () => void;
 }
 
 interface FormState {
@@ -20,7 +24,7 @@ interface FormState {
   businessCourse: string | null;
 }
 
-export function LoginView7({ onNext }: LoginViewProps) {
+export function LoginView7({ onNext, onBack }: LoginViewProps) {
   const { saveStudentData } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
@@ -44,7 +48,6 @@ export function LoginView7({ onNext }: LoginViewProps) {
   ];
 
   // --- Handlers ---
-
   const handleProductionExperience = (value: string) => {
     setFormState((prev) => ({ ...prev, productionExperience: value, productionField: [] }));
   };
@@ -76,7 +79,6 @@ export function LoginView7({ onNext }: LoginViewProps) {
   };
 
   // --- Validation ---
-
   const isStep1Valid = formState.productionExperience && (formState.productionExperience === "نداشته ام" || formState.productionField.length > 0);
   const isStep2Valid = formState.salesExperience && (formState.salesExperience === "نداشته ام" || formState.salesField.length > 0);
   const isStep3Valid = !!formState.businessCourse;
@@ -91,7 +93,6 @@ export function LoginView7({ onNext }: LoginViewProps) {
   };
 
   // --- Navigation ---
-
   const handleNext = async () => {
     if (!isCurrentStepValid()) return;
 
@@ -102,16 +103,15 @@ export function LoginView7({ onNext }: LoginViewProps) {
     }
   };
 
-  const handleBack = () => {
+  const handleBackStep = () => {
     if (currentStep > 1) {
       setCurrentStep(prev => prev - 1);
+    } else if (onBack) {
+      onBack();
     }
   };
 
   const handleSubmit = async () => {
-    // Only validate if user is experienced or has courses
-    // For now, simpler validation logic based on steps
-    
     setIsLoading(true);
     try {
       const metaData = {
@@ -125,8 +125,6 @@ export function LoginView7({ onNext }: LoginViewProps) {
         meta: JSON.stringify(metaData),
         training_course: formState.businessCourse === "بلی"
       };
-
-      console.log("🚀 [StudentData] Payload:", JSON.stringify(payload, null, 2));
 
       const result = await saveStudentData(payload);
 
@@ -143,228 +141,182 @@ export function LoginView7({ onNext }: LoginViewProps) {
     }
   };
 
-  // --- Render Steps ---
+  // --- Render Steps (Refactored for new UI) ---
+  const renderOptions = (
+      title: string, 
+      subtitle: string, 
+      selectedValue: string | null, 
+      onSelect: (val: string) => void,
+      options = ["داشته ام", "نداشته ام"]
+  ) => (
+      <div className="flex flex-col gap-6 animate-in slide-in-from-right-4 fade-in duration-300">
+         <div className="text-right space-y-2">
+            <h3 className="text-[#393E46] font-bold text-lg">{title}</h3>
+            <p className="text-[#9CA3AF] text-sm leading-relaxed">{subtitle}</p>
+         </div>
 
-  // --- Render Steps ---
-  // Modified to remove the individual card wrapper since the parent will have it
-
-  const renderStep1 = () => (
-    <div className="flex flex-col gap-6 animate-in slide-in-from-right-8 fade-in duration-300">
-      <div className="p-1">
-        <h3 className="text-[#393E46] font-bold text-lg mb-4 text-right">تجربه تولید محصولات</h3>
-        <p className="text-[#6C7278] text-sm mb-6 text-right">آیا سابقه تولید محصولی را دارید؟</p>
-        
-        <div className="flex flex-col gap-3">
-          {["داشته ام", "نداشته ام"].map((option) => (
-            <label
-              key={option}
-              className={`flex items-center gap-3 cursor-pointer p-4 rounded-2xl border transition-all ${
-                formState.productionExperience === option 
-                  ? "bg-[#FDD00A]/10 border-[#FDD00A]" 
-                  : "bg-white border-[#F3F4F6] hover:bg-gray-50"
-              }`}
-            >
-               <input
-                type="radio"
-                name="production-experience"
-                value={option}
-                checked={formState.productionExperience === option}
-                onChange={(e) => handleProductionExperience(e.target.value)}
-                className="w-5 h-5 accent-[#FDD00A]"
-              />
-              <span className="text-[#393E46] font-medium">{option}</span>
-            </label>
-          ))}
-        </div>
-
-        {formState.productionExperience === "داشته ام" && (
-          <div className="mt-6 pt-6 border-t border-dashed border-gray-200 animate-in slide-in-from-top-2 fade-in">
-             <p className="text-[#393E46] text-sm font-bold mb-4 text-right">زمینه فعالیت خود را انتخاب کنید</p>
-             <div className="flex flex-col gap-2">
-                {fieldOptions.map((field) => (
-                  <label
-                    key={field}
-                    className="flex items-center gap-3 cursor-pointer p-3 rounded-xl hover:bg-[#F3F6FC] transition-colors"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={formState.productionField.includes(field)}
-                      onChange={() => handleProductionField(field)}
-                      className="w-5 h-5 accent-[#FDD00A] rounded-md"
-                    />
-                    <span className="text-[#393E46] text-sm">{field}</span>
-                  </label>
-                ))}
-            </div>
-          </div>
-        )}
+         <div className="flex flex-col gap-3">
+            {options.map((option) => {
+                const isSelected = selectedValue === option;
+                return (
+                    <div
+                        key={option}
+                        onClick={() => onSelect(option)}
+                        className={`relative p-4 rounded-2xl cursor-pointer border-2 transition-all duration-200 flex items-center justify-between group ${
+                            isSelected 
+                            ? "border-[#FDD00A] bg-[#FFFBEB]" 
+                            : "border-transparent bg-[#F9FAFB] hover:bg-[#F3F4F6]"
+                        }`}
+                    >
+                        <span className={`font-bold ${isSelected ? "text-[#393E46]" : "text-[#6C7278]"}`}>
+                            {option}
+                        </span>
+                        
+                        <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                            isSelected ? "border-[#FDD00A] bg-[#FDD00A]" : "border-[#D1D5DB] bg-white group-hover:border-gray-400"
+                        }`}>
+                            {isSelected && <div className="w-2.5 h-2.5 bg-white rounded-full" />}
+                        </div>
+                    </div>
+                )
+            })}
+         </div>
       </div>
-    </div>
   );
 
-  const renderStep2 = () => (
-    <div className="flex flex-col gap-6 animate-in slide-in-from-right-8 fade-in duration-300">
-      <div className="p-1">
-        <h3 className="text-[#393E46] font-bold text-lg mb-4 text-right">تجربه فروش محصولات</h3>
-        <p className="text-[#6C7278] text-sm mb-6 text-right">آیا سابقه فروش محصولی را دارید؟</p>
-        
-        <div className="flex flex-col gap-3">
-          {["داشته ام", "نداشته ام"].map((option) => (
-            <label
-              key={option}
-              className={`flex items-center gap-3 cursor-pointer p-4 rounded-2xl border transition-all ${
-                formState.salesExperience === option 
-                  ? "bg-[#FDD00A]/10 border-[#FDD00A]" 
-                  : "bg-white border-[#F3F4F6] hover:bg-gray-50"
-              }`}
-            >
-               <input
-                type="radio"
-                name="sales-experience"
-                value={option}
-                checked={formState.salesExperience === option}
-                onChange={(e) => handleSalesExperience(e.target.value)}
-                className="w-5 h-5 accent-[#FDD00A]"
-              />
-              <span className="text-[#393E46] font-medium">{option}</span>
-            </label>
-          ))}
-        </div>
+  const renderMultiSelect = (
+      selectedFields: string[], 
+      onToggle: (field: string) => void
+  ) => (
+    <div className="mt-8 pt-8 border-t border-gray-100 animate-in slide-in-from-bottom-4 fade-in duration-500">
+        <p className="text-[#393E46] text-sm font-bold mb-4 text-right">زمینه فعالیت خود را انتخاب کنید</p>
+        <div className="flex flex-col gap-2">
+            {fieldOptions.map((field) => {
+                const isSelected = selectedFields.includes(field);
+                return (
+                    <div
+                        key={field}
+                        onClick={() => onToggle(field)}
+                        className={`flex items-center justify-between p-3 rounded-xl cursor-pointer transition-colors ${
+                            isSelected ? "bg-[#F3F6FC]" : "hover:bg-[#F9FAFB]"
+                        }`}
+                    >
+                         {/* Text (Right) */}
+                        <span className={`text-sm text-right flex-1 ${isSelected ? "text-[#393E46] font-bold" : "text-[#6C7278]"}`}>
+                            {field}
+                        </span>
 
-        {formState.salesExperience === "داشته ام" && (
-          <div className="mt-6 pt-6 border-t border-dashed border-gray-200 animate-in slide-in-from-top-2 fade-in">
-             <p className="text-[#393E46] text-sm font-bold mb-4 text-right">زمینه فعالیت خود را انتخاب کنید</p>
-             <div className="flex flex-col gap-2">
-                {fieldOptions.map((field) => (
-                  <label
-                    key={field}
-                    className="flex items-center gap-3 cursor-pointer p-3 rounded-xl hover:bg-[#F3F6FC] transition-colors"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={formState.salesField.includes(field)}
-                      onChange={() => handleSalesField(field)}
-                      className="w-5 h-5 accent-[#FDD00A] rounded-md"
-                    />
-                    <span className="text-[#393E46] text-sm">{field}</span>
-                  </label>
-                ))}
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-
-  const renderStep3 = () => (
-    <div className="flex flex-col gap-6 animate-in slide-in-from-right-8 fade-in duration-300">
-      <div className="p-1">
-        <h3 className="text-[#393E46] font-bold text-lg mb-4 text-right">دوره آموزشی</h3>
-        <p className="text-[#6C7278] text-sm mb-6 text-right leading-relaxed">
-          آیا دوره آموزشی در زمینه راه اندازی کسب و کار اینترنتی گذرانده اید؟
-        </p>
-        
-        <div className="flex flex-col gap-3">
-          {["بلی", "خیر"].map((option) => (
-            <label
-              key={option}
-              className={`flex items-center gap-3 cursor-pointer p-4 rounded-2xl border transition-all ${
-                formState.businessCourse === option 
-                  ? "bg-[#FDD00A]/10 border-[#FDD00A]" 
-                  : "bg-white border-[#F3F4F6] hover:bg-gray-50"
-              }`}
-            >
-               <input
-                type="radio"
-                name="business-course"
-                value={option}
-                checked={formState.businessCourse === option}
-                onChange={(e) => handleBusinessCourse(e.target.value)}
-                className="w-5 h-5 accent-[#FDD00A]"
-              />
-              <span className="text-[#393E46] font-medium">{option}</span>
-            </label>
-          ))}
+                        {/* Checkbox (Left) */}
+                        <div className={`w-5 h-5 ml-3 rounded-md border-2 flex items-center justify-center transition-all ${
+                            isSelected ? "bg-[#393E46] border-[#393E46]" : "border-[#D1D5DB]"
+                        }`}>
+                            {isSelected && <CheckCircle2 className="w-3.5 h-3.5 text-white" />}
+                        </div>
+                    </div>
+                );
+            })}
         </div>
-      </div>
     </div>
   );
 
   return (
-    <div className="flex h-full w-full flex-col bg-[#F8FAFC]">
-      <LoginHeader imageSrc={headerImg} />
+    <div className="flex h-full w-full flex-col bg-white relative overflow-hidden">
+      
+      {/* Top Background Gradient */}
+      <div className="absolute top-0 left-0 right-0 h-[230px] bg-[linear-gradient(180deg,#F7C309_0%,white_100%)] z-0 pointer-events-none" />
 
-      {/* Header Info */}
-      <div className="absolute top-[80px] left-0 right-0 mx-auto w-full max-w-[440px] px-8 z-10 flex flex-col gap-4">
-         {/* Top Bar with Back Button */}
-         <div className="w-full flex justify-between items-center mb-1">
-            {currentStep > 1 ? (
-              <button 
-                onClick={handleBack}
-                className="rounded-full p-2 bg-[#FDD00A]/20 backdrop-blur-sm text-[#393E46] hover:bg-[#FDD00A]/40 transition-colors"
-              >
-                 <ArrowRight className="w-5 h-5" /> 
-              </button>
-            ) : (
-                <div /> 
-            )}
-            <span className="text-[#393E46] text-lg font-black tracking-tight opacity-50"> </span>
+      {/* Header Content */}
+      <div className="relative z-10 w-full px-6 pt-6 pb-2">
+         <div className="flex justify-between items-center mb-8">
+            <button 
+                onClick={handleBackStep}
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-transparent hover:bg-white/20 transition-all text-[#393E46]"
+             >
+                <ChevronLeft className="w-6 h-6" />
+            </button>
+            <span className="text-[#393E46] text-xl font-black">دیجی کارا</span>
          </div>
 
-        <div className="flex flex-col gap-2 text-right">
-          <h1 className="text-[#393E46] text-3xl font-black">
-             {currentStep === 1 && "تجربه تولید"}
-             {currentStep === 2 && "تجربه فروش"}
-             {currentStep === 3 && "آموزش کسب و کار"}
-          </h1>
-          <div className="flex items-center justify-between">
-              <div className="w-32 h-1.5 bg-black/5 rounded-full overflow-hidden" dir="rtl">
-                <div 
-                    className="h-full bg-[#393E46] rounded-full transition-all duration-500 ease-out"
-                    style={{ width: `${(currentStep / totalSteps) * 100}%` }}
-                />
-              </div>
-              <p className="text-[#393E46] text-xs font-bold opacity-70">
-                 مرحله {currentStep} از {totalSteps}
-              </p>
-          </div>
-        </div>
+         <div className="text-right space-y-2 mb-8">
+            <h1 className="text-[#393E46] text-3xl font-black">
+                {currentStep === 1 && "تجربه تولید"}
+                {currentStep === 2 && "تجربه فروش"}
+                {currentStep === 3 && "آموزش کسب و کار"}
+            </h1>
+            
+            {/* Progress Bar */}
+            <div className="flex items-center justify-end gap-3 pt-2">
+                <span className="text-[#393E46] text-xs font-bold opacity-70 dir-rtl">
+                    مرحله {currentStep} از {totalSteps}
+                </span>
+                <div className="w-32 h-1.5 bg-white/30 rounded-full overflow-hidden flex justify-end">
+                    <div 
+                        className="h-full bg-[#393E46] rounded-full transition-all duration-500 ease-out"
+                        style={{ width: `${(currentStep / totalSteps) * 100}%` }}
+                    />
+                </div>
+            </div>
+         </div>
       </div>
 
-      {/* Main Content Area */}
-      <div className="flex flex-col flex-1 px-6 w-full max-w-[440px] mx-auto -mt-16 z-20 pb-10">
-         <div className="bg-white rounded-[2.5rem] shadow-xl shadow-black/5 p-6 sm:p-8 animate-in slide-in-from-bottom-5 fade-in duration-500 relative pt-8 min-h-[400px] flex flex-col justify-between">
-            
-            <div dir="rtl">
-                {currentStep === 1 && renderStep1()}
-                {currentStep === 2 && renderStep2()}
-                {currentStep === 3 && renderStep3()}
-            </div>
-
-            <button
-            onClick={handleNext}
-            disabled={!isCurrentStepValid() || isLoading}
-            className={`w-full h-[60px] rounded-2xl flex items-center justify-center gap-2 transition-all duration-200 text-lg font-bold shadow-lg shadow-[#FDD00A]/20 mt-8 ${
-                isCurrentStepValid()
-                ? "bg-[#FDD00A] hover:bg-[#e5bc09] hover:scale-[1.02] active:scale-[0.98] text-[#1A1C1E] cursor-pointer"
-                : "bg-gray-100 text-gray-400 cursor-not-allowed"
-            }`}
-            >
-            {isLoading ? (
-                <Loader2 className="animate-spin w-6 h-6" />
-            ) : (
+      {/* Scrollable Content */}
+      <div className="relative z-10 flex-1 w-full max-w-[440px] mx-auto overflow-y-auto px-6 pb-32 no-scrollbar"> 
+         <div className=" p-1 min-h-[300px]">
+            {currentStep === 1 && (
                 <>
-                {currentStep === totalSteps ? "ثبت اطلاعات" : "مرحله بعد"}
-                
-                {currentStep < totalSteps && (
-                    <ChevronLeft className="w-5 h-5 mr-1" />
-                )}
+                    {renderOptions(
+                        "تجربه تولید محصولات", 
+                        "آیا سابقه تولید محصولی را دارید؟", 
+                        formState.productionExperience, 
+                        handleProductionExperience
+                    )}
+                    {formState.productionExperience === "داشته ام" && 
+                        renderMultiSelect(formState.productionField, handleProductionField)
+                    }
                 </>
             )}
-            </button>
 
+            {currentStep === 2 && (
+                <>
+                    {renderOptions(
+                        "تجربه فروش محصولات", 
+                        "آیا سابقه فروش محصولی را دارید؟", 
+                        formState.salesExperience, 
+                        handleSalesExperience
+                    )}
+                    {formState.salesExperience === "داشته ام" && 
+                        renderMultiSelect(formState.salesField, handleSalesField)
+                    }
+                </>
+            )}
+
+            {currentStep === 3 && renderOptions(
+                "دوره آموزشی", 
+                "آیا دوره آموزشی در زمینه راه اندازی کسب و کار اینترنتی گذرانده اید؟", 
+                formState.businessCourse, 
+                handleBusinessCourse,
+                ["بلی", "خیر"]
+            )}
          </div>
       </div>
+
+       {/* Fixed Bottom Button */}
+       <div className="fixed bottom-0 left-0 right-0 p-6 bg-white/80 backdrop-blur-sm z-50 w-full max-w-[440px] mx-auto border-t border-gray-100/50">
+        <Button
+          onClick={handleNext}
+          disabled={!isCurrentStepValid() || isLoading}
+          className={`w-full h-[57px] rounded-2xl text-lg font-bold shadow-lg transition-all ${
+            isCurrentStepValid()
+              ? "bg-[#FDD00A] hover:bg-[#e5bc09] text-[#1A1C1E] shadow-[#FDD00A]/20"
+              : "bg-gray-100 text-gray-400 shadow-none hover:bg-gray-100"
+          }`}
+        >
+          {isLoading ? <Loader2 className="animate-spin" /> : (
+              currentStep === totalSteps ? "ثبت اطلاعات" : "مرحله بعد"
+          )}
+        </Button>
+      </div>
+
     </div>
   );
 }

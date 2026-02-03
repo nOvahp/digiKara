@@ -13,9 +13,24 @@ export const studentService = {
         national_code: nationalCode
       });
 
+
       if (response.status === 'success' || response.code === 200) {
-        return { success: true, user: response.data };
+        // Merge top-level flags into the user object
+        // The flags are inside `data`, not the root response
+        const resData = response.data as any;
+        
+        // Helper to normalize boolean values (handles true, "true", 1, etc)
+        const toBool = (val: any) => val === true || val === "true" || val === 1;
+
+        const userWithFlags = {
+          ...response.data,
+          is_info_correct: toBool(resData.is_info_correct),
+          favorites: toBool(resData.favorites),
+          meta: toBool(resData.meta)
+        };
+        return { success: true, user: userWithFlags };
       }
+
       
       return { success: false, message: response.message || 'خطا در تایید کد ملی' };
     } catch (error: any) {
@@ -38,7 +53,7 @@ export const studentService = {
 
   confirmInfo: async (): Promise<{ success: boolean; message?: string }> => {
     try {
-      const response = await apiClient.put<any, any>('/student/students/correct_info');
+      const response = await apiClient.put<any, any>('/student/students/correct_info', {});
 
       if (response.status === 'success' || response.code === 200) {
         return { success: true, message: 'اطلاعات با موفقیت تایید شد' };
@@ -75,7 +90,7 @@ export const studentService = {
 
   changeStudentInfo: async (data: any): Promise<{ success: boolean; message?: string }> => {
     try {
-      const response = await apiClient.post<any, any>('/student/students/change_info/student', data);
+      const response = await apiClient.post<any, any>('/student/students/change_info', data);
 
       if (response.status === 'success' || response.code === 200) {
         return { success: true, message: response.message || 'درخواست ویرایش اطلاعات با موفقیت ثبت شد' };

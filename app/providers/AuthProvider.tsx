@@ -69,7 +69,7 @@ type AuthContextType = {
   
       if (result.success && result.user) {
         setUser(result.user);
-        return { success: true };
+        return { success: true, user: result.user };
       }
   
       return { success: false, message: result.message };

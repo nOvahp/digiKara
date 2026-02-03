@@ -22,6 +22,9 @@ export interface UserData {
   province?: string;
   city?: string;
   district?: string;
+  is_info_correct?: boolean;
+  favorites?: boolean;
+  meta?: boolean;
   // Add other fields as per your API response
 }
 
