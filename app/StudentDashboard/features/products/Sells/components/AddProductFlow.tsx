@@ -56,7 +56,7 @@ export function AddProductFlow({ isOpen, onClose, onSuccess, initialStep = 'step
         stock: '',
         reminder: '',
         imageFiles: [] as File[],
-        extraPrices: [] as any[], 
+        variantPrices: [] as any[], 
         isMultiPrice: false,
         features: {
             id: [] as { key: string, value: string }[],
@@ -120,19 +120,21 @@ export function AddProductFlow({ isOpen, onClose, onSuccess, initialStep = 'step
             data.append('description', formData.description);
         }
 
-        // tag_id (string | null) - sending null if no tags, or first tag if we had IDs (currently just strings)
-        // Since we only have strings, we'll skip or send null if empty. 
-        // If we had a tag mapping, we would use it here.
+        // tag_id (string | null)
         if (formData.tags && formData.tags.length > 0) {
-             // Placeholder: sending the first tag as string, though API likely wants ID. 
-             // If this fails, we might need to fetch real tag IDs.
+             // API expects tag_id but UI only has tag strings. 
+             // Ideally we should map these strings to IDs if possible or send them as a different field if the backend supports it.
+             // For now, adhering to the spec 'tag_id', we can't send raw strings.
+             // If we must send something, we can try sending it as 'tag_id' if the backend happens to accept strings or we can skip.
+             // Given the instructions, I will comment this out to avoid sending invalid data types (string instead of ID).
              // data.append('tag_id', formData.tags[0]); 
         }
 
         // prices (array object | null[])
         // Structure: amount, title, type, discount_percent, inventory, type_inventory, warn_inventory
-        if (formData.isMultiPrice && formData.extraPrices && formData.extraPrices.length > 0) {
-             formData.extraPrices.forEach((price: any, index: number) => {
+        // CORRECTED: Using variantPrices instead of extraPrices
+        if (formData.isMultiPrice && formData.variantPrices && formData.variantPrices.length > 0) {
+             formData.variantPrices.forEach((price: any, index: number) => {
                   // amount (integer, required)
                   data.append(`prices[${index}][amount]`, String(price.amount).replace(/\D/g, ''));
                   
@@ -143,20 +145,20 @@ export function AddProductFlow({ isOpen, onClose, onSuccess, initialStep = 'step
                   data.append(`prices[${index}][type]`, String(price.type || '1'));
                   
                   // discount_percent (string | null)
-                  if (price.discount_percent) {
+                  if (price.discount_percent !== null && price.discount_percent !== undefined && price.discount_percent !== '') {
                       data.append(`prices[${index}][discount_percent]`, String(price.discount_percent));
                   }
 
                   // inventory (string | null per spec, but logically a count)
-                  if (price.inventory) {
+                  if (price.inventory !== null && price.inventory !== undefined && price.inventory !== '') {
                       data.append(`prices[${index}][inventory]`, String(price.inventory));
                   }
                   
-                  // type_inventory (string | null)
+                  // type_inventory (string | null) -> Hardcoded to 1 as per consistent usage
                   data.append(`prices[${index}][type_inventory]`, '1'); 
-
+                  
                   // warn_inventory (string | null)
-                  if (price.warn_inventory) {
+                  if (price.warn_inventory !== null && price.warn_inventory !== undefined && price.warn_inventory !== '') {
                       data.append(`prices[${index}][warn_inventory]`, String(price.warn_inventory));
                   }
              });
@@ -184,7 +186,7 @@ export function AddProductFlow({ isOpen, onClose, onSuccess, initialStep = 'step
         setFormData({
             name: '', description: '', images: [], category: '', tags: [], id: generateProductCode(),
             price: '', fee: '', receive: '', discount: '', code: '', percent: '', stock: '', reminder: '',
-            imageFiles: [], extraPrices: [], isMultiPrice: false,
+            imageFiles: [], variantPrices: [], isMultiPrice: false,
             features: { id: [], visual: [], production: [], packaging: [] },
             variantFeatures: []
         });

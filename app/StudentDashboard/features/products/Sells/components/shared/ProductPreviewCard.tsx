@@ -29,6 +29,15 @@ const getColorCode = (name: string) => {
     return map[name] || '#CCCCCC';
 }
 
+const PRICE_TYPE_LABELS: Record<number, string> = {
+    1: 'رنگ',
+    2: 'سایز',
+    3: 'جنس',
+    4: 'گارانتی',
+    5: 'متفرقه',
+    6: 'وزن'
+};
+
 export interface ProductPreviewProps {
     product: any; // Using any for flexibility with formData structure
 }
@@ -45,61 +54,154 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
 
     const mainImage = activeImage || (images.length > 0 ? images[0] : null);
 
-    // Initialize default selections and price logic
+    // Determine mode
+    const isEditMode = !!(product.prices && product.prices.length > 0);
+    const isWizardMode = !!(product.variantFeatures && product.variantFeatures.length > 0);
+
+    // Derive features from either variantFeatures (Wizard) or prices (Edit Page)
+    const displayFeatures = React.useMemo(() => {
+        // Priority: Prices (Edit Mode) > VariantFeatures (Wizard Legacy/Metadata)
+        // If we have explicit price definitions, they are the source of truth.
+        if (isEditMode) {
+            const groups: Record<string, Set<string>> = {};
+            product.prices.forEach((p: any) => {
+                let effectiveType = Number(p.type);
+                let value = p.title;
+
+                // HEURISTIC: Detect "Weight" mislabeled as "Color"
+                if (value.trim().startsWith('وزن:') || value.trim().startsWith('وزن :')) {
+                    effectiveType = 6; // Force Weight Type
+                }
+
+                const label = PRICE_TYPE_LABELS[effectiveType] || 'سایر';
+                if (!groups[label]) groups[label] = new Set();
+                
+                // Normalize: string prefix
+                const prefix = `${label}:`;
+                const prefixPersian = `${label} :`;
+                
+                if (value.startsWith(prefix)) {
+                    value = value.substring(prefix.length).trim();
+                } else if (value.startsWith(prefixPersian)) {
+                    value = value.substring(prefixPersian.length).trim();
+                } else if (value.includes(':')) {
+                     const parts = value.split(':');
+                     if (parts.length > 1 && parts[0].trim() === label) {
+                         value = parts.slice(1).join(':').trim();
+                     }
+                }
+
+                if (value) groups[label].add(value);
+            });
+
+            return Object.entries(groups).map(([title, valuesSet]) => ({
+                title,
+                values: Array.from(valuesSet as Set<string>)
+            }));
+        }
+
+        if (isWizardMode) {
+            return product.variantFeatures;
+        }
+        
+        return [];
+    }, [product, isEditMode, isWizardMode]);
+
+    // Initialize default selections
     useEffect(() => {
-        if (product.variantFeatures && product.variantFeatures.length > 0) {
+        if (displayFeatures && displayFeatures.length > 0) {
             const defaults: Record<string, string> = {};
-            product.variantFeatures.forEach((f: any) => {
+            displayFeatures.forEach((f: any) => {
                 if (f.values && f.values.length > 0) {
                     defaults[f.title] = f.values[0];
                 }
             });
             setSelectedVariants(defaults);
         }
-    }, [product.variantFeatures]);
+    }, [displayFeatures]);
 
     // Update price when selections change
     useEffect(() => {
-        // Handle potential key mismatch (formData uses variantPrices, backend submission uses extraPrices)
-        const prices = product.variantPrices || product.extraPrices || [];
-        
-        if (!product.isMultiPrice || !prices || prices.length === 0) {
-            setCurrentPrice(product.price);
-            return;
-        }
-
         const basePrice = parseInt(product.price?.toString().replace(/\D/g, '') || '0');
         let calculatedPrice = basePrice;
         
-        // Additive logic: Base + (Variant1 - Base) + (Variant2 - Base) ...
-        for (const [title, value] of Object.entries(selectedVariants)) {
-            const key = `${title}: ${value}`;
-            // Find price entry for this specific option
-            const variantPrice = prices.find((p: any) => p.variantLabel === key || p.title === key);
-            
-            if (variantPrice) {
-                const variantAmount = parseInt(variantPrice.amount?.toString().replace(/\D/g, '') || '0');
-                const difference = variantAmount - basePrice;
-                calculatedPrice += difference;
-            }
+        // 1. Logic for "Edit Page"
+        if (isEditMode) {
+             Object.entries(selectedVariants).forEach(([label, value]) => {
+                // Find price item matching Type Label + Title
+                const priceItem = product.prices.find((p: any) => {
+                    let effectiveType = Number(p.type);
+                    let rawTitle = p.title;
+
+                    // HEURISTIC: Detect "Weight" mislabeled
+                    if (rawTitle.trim().startsWith('وزن:') || rawTitle.trim().startsWith('وزن :')) {
+                        effectiveType = 6; 
+                    }
+
+                    const typeLabel = PRICE_TYPE_LABELS[effectiveType] || 'سایر';
+                    if (typeLabel !== label) return false;
+
+                    // Normalize title for comparison
+                    const prefix = `${label}:`;
+                    const prefixPersian = `${label} :`;
+                    
+                    if (rawTitle.startsWith(prefix)) {
+                        rawTitle = rawTitle.substring(prefix.length).trim();
+                    } else if (rawTitle.startsWith(prefixPersian)) {
+                        rawTitle = rawTitle.substring(prefixPersian.length).trim();
+                    } else if (rawTitle.includes(':')) {
+                         const parts = rawTitle.split(':');
+                         if (parts.length > 1 && parts[0].trim() === label) {
+                             rawTitle = parts.slice(1).join(':').trim();
+                         }
+                    }
+
+                    return rawTitle === value;
+                });
+
+                if (priceItem) {
+                    const variantAmount = parseInt(priceItem.amount?.toString().replace(/\D/g, '') || '0');
+                    const difference = variantAmount - basePrice;
+                    calculatedPrice += difference;
+                }
+            });
+            setCurrentPrice(calculatedPrice);
+            return;
         }
 
-        setCurrentPrice(calculatedPrice);
+        // 2. Logic for "Wizard"
+        const wizardPrices = product.variantPrices || product.extraPrices || [];
+        if (wizardPrices.length > 0) {
+             for (const [title, value] of Object.entries(selectedVariants)) {
+                const key = `${title}: ${value}`;
+                const variantPrice = wizardPrices.find((p: any) => p.variantLabel === key || p.title === key);
+                if (variantPrice) {
+                     const variantAmount = parseInt(variantPrice.amount?.toString().replace(/\D/g, '') || '0');
+                     const difference = variantAmount - basePrice;
+                     calculatedPrice += difference;
+                }
+            }
+            setCurrentPrice(calculatedPrice);
+            return;
+        }
 
-    }, [selectedVariants, product]);
+        // Fallback
+        setCurrentPrice(basePrice);
 
-    const handleVariantSelect = (title: string, value: string) => {
+    }, [selectedVariants, product, isEditMode]);
+
+    const handleSelect = (title: string, value: string) => {
         setSelectedVariants(prev => ({ ...prev, [title]: value }));
     };
 
     return (
         <div className="w-full flex flex-col gap-5">
+            {/* Headers, Images, Price, etc... (Unchanged) */}
             <div className="text-right text-[#0D0D12] text-base font-semibold font-['PeydaWeb'] leading-normal tracking-wide">
                 پیش نمایش زنده
             </div>
 
             <div className="flex flex-col gap-3">
-                {/* Main Image */}
                 {mainImage ? (
                     <img 
                         src={mainImage} 
@@ -112,8 +214,6 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
                         <span className="text-sm">تصویری بارگذاری نشده است</span>
                     </div>
                 )}
-
-                {/* Thumbnails */}
                 {images.length > 1 && (
                     <div className="flex gap-3 overflow-x-auto pb-2 px-1" dir="rtl">
                         {images.map((img: string, idx: number) => (
@@ -129,7 +229,6 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
                 )}
             </div>
 
-            {/* Price and Badge */}
             <div className="flex justify-between items-center" dir="rtl">
                  <div className="px-3 py-1 bg-[#ECF9F7] rounded-2xl flex items-center justify-center">
                     <span className="text-[#267666] text-sm font-semibold font-['PeydaWeb'] tracking-wide">پرفروش ترین</span>
@@ -138,19 +237,17 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
                     <div className="text-[#0047AB] text-lg font-semibold font-['PeydaFaNum']">
                         {formatPrice(currentPrice)} ریال
                     </div>
-                    {product.isMultiPrice && (
+                    {(isEditMode || product.isMultiPrice) && (
                         <span className="text-xs text-gray-500 font-['PeydaWeb']">قیمت بسته به ویژگی</span>
                     )}
                  </div>
             </div>
 
-            {/* Title */}
             <div className="text-right text-[#0D0D12] text-xl font-semibold font-['PeydaWeb'] leading-relaxed">
                 {product.name || 'نام محصول'}
             </div>
 
-            {/* Engagement Stats - Static for Preview */}
-            {/* Engagement Stats - Static for Preview */}
+            {/* Engagement Stats... (Keep Unchanged) */}
             <div className="flex justify-start items-center gap-2" dir="rtl">
                 <div className="h-[30px] px-2.5 bg-white rounded-lg border border-[#E4E6EA] flex items-center gap-1.5 select-none">
                      <Star className="w-4 h-4 text-[#FFC107] fill-[#FFC107]" />
@@ -172,7 +269,6 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
                 </div>
             </div>
 
-            {/* Description */}
             <div className="flex flex-col gap-2 text-right border-t border-[#DFE1E7] pt-4">
                 <div className="text-[#0D0D12] text-base font-semibold font-['PeydaWeb'] tracking-wide">توضیحات</div>
                 <div className=" rounded-xl p-4 ">
@@ -181,13 +277,13 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
                     </p>
                 </div>
             </div>
-
+            
              {/* Dynamic Variant Features (Selectable) */}
-             {product.variantFeatures && product.variantFeatures.length > 0 && (
+             {displayFeatures && displayFeatures.length > 0 && (
                 <div className="flex flex-col gap-4 border-t border-[#DFE1E7] pt-4" dir="rtl">
                     <div className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb']">ویژگی‌های قابل انتخاب</div>
-                    {product.variantFeatures.map((feature: any) => (
-                        <div key={feature.id} className="flex flex-col gap-2">
+                    {displayFeatures.map((feature: any) => (
+                        <div key={feature.title} className="flex flex-col gap-2">
                              <div className="text-right text-[#0D0D12] text-sm font-medium font-['PeydaWeb']">
                                 {feature.title}: <span className="text-[#35685A]">{selectedVariants[feature.title] || ''}</span>
                              </div>
@@ -197,7 +293,7 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
                                     return (
                                         <div 
                                             key={i} 
-                                            onClick={() => handleVariantSelect(feature.title, val)}
+                                            onClick={() => handleSelect(feature.title, val)}
                                             className={`
                                                 ${feature.title === 'رنگ' ? 'w-8 h-8 rounded-full border' : 'px-3 py-1 rounded-full border text-sm font-medium'}
                                                 cursor-pointer flex items-center justify-center transition-all
@@ -220,6 +316,7 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
                     ))}
                 </div>
              )}
+
 
              {/* All Product Specifications (Read-only from Step 2) */}
              {product.features && (Object.values(product.features).some((arr: any) => arr.length > 0)) && (

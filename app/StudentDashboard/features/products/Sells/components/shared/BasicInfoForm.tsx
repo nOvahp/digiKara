@@ -105,38 +105,36 @@ export function BasicInfoForm({ defaultValues = {}, values, onChange }: BasicInf
     };
 
     return (
-        <div className="w-full bg-white rounded-xl border border-[#DFE1E7] p-5 flex flex-col gap-5 shadow-[0px_1px_2px_rgba(13,13,18,0.06)]">
-             <div className="text-[#0D0D12] text-base font-semibold tracking-wide text-right">
+        <div className="w-full bg-white rounded-2xl border border-[#DFE1E7] p-5 flex flex-col gap-5 shadow-sm">
+             <div className="text-[#0D0D12] text-lg font-semibold font-['PeydaWeb'] text-right">
                 اطلاعات پایه
             </div>
             
             {/* Name */}
             <div className="flex flex-col gap-2">
                  <FormLabel text="نام محصول" />
-                 <div className="h-[52px] px-3 bg-white rounded-xl border border-[#DFE1E7] flex items-center">
-                     <input 
-                        type="text" 
-                        value={val('name') || ""} 
-                        onChange={(e) => handleChange('name', e.target.value)}
-                        className="w-full text-right text-[#0D0D12] text-base font-semibold bg-transparent outline-none" 
-                        dir="rtl" 
-                        placeholder="نام محصول را وارد کنید"
-                     />
-                 </div>
+                 <input 
+                    type="text" 
+                    value={val('name') || ""} 
+                    onChange={(e) => handleChange('name', e.target.value)}
+                    className="w-full h-[52px] px-3 bg-white rounded-xl border border-[#DFE1E7] text-right text-[#0D0D12] text-base font-medium font-['PeydaWeb'] outline-none focus:border-[#FDD00A] transition-colors placeholder:text-[#DFE1E7]" 
+                    dir="rtl" 
+                    placeholder="نام محصول را وارد کنید"
+                 />
             </div>
 
             {/* Description */}
             <div className="flex flex-col gap-2">
                  <FormLabel text="توضیحات" />
-                 <div className="h-[180px] p-3 bg-white rounded-xl border border-[#DFE1E7] flex flex-col">
+                 <div className="h-[180px] p-3 bg-white rounded-xl border border-[#DFE1E7] flex flex-col focus-within:border-[#FDD00A] transition-colors">
                      <textarea 
-                        className="w-full flex-1 text-right text-[#0D0D12] text-base font-light bg-transparent outline-none resize-none leading-relaxed"
+                        className="w-full flex-1 text-right text-[#0D0D12] text-base font-normal font-['PeydaWeb'] bg-transparent outline-none resize-none leading-relaxed placeholder:text-[#DFE1E7]"
                         value={val('description') || ""}
                         onChange={(e) => handleChange('description', e.target.value)}
                         dir="rtl"
                         placeholder="توضیحات محصول..."
                      />
-                     <div className="text-left text-[#A4ACB9] text-xs font-num-medium mt-2">{toFarsiNumber(((val('description') || "").length))}</div>
+                     <div className="text-left text-[#A4ACB9] text-xs font-light font-['PeydaFaNum'] mt-2">{toFarsiNumber(((val('description') || "").length))}</div>
                  </div>
             </div>
 

@@ -8,12 +8,12 @@ import { BasicInfoForm } from "./Sells/components/shared/BasicInfoForm";
 import { PricingForm } from "./Sells/components/shared/PricingForm";
 import { CategoryTagsForm } from "./Sells/components/shared/CategoryTagsForm";
 import { ProductPreviewCard } from "./Sells/components/shared/ProductPreviewCard";
-import { NewProductPage6 } from "./Sells/components/NewProductPage6";
 import { studentProductService } from '@/app/services/studentProductService';
 import { Skeleton } from "@/app/components/Skeleton";
 import { ConfirmModal } from '@/app/components/ConfirmModal';
 import { SuccessModal } from '@/app/components/SuccessModal';
 import { PriceListEditor } from './components/PriceListEditor';
+import { ProductPreviewModal } from './components/ProductPreviewModal';
 
 export function EditeProducts() {
     const router = useRouter();
@@ -165,100 +165,92 @@ export function EditeProducts() {
     };
 
     return (
-        <div className="w-full min-h-screen bg-transparent flex flex-col relative pb-28" dir="ltr">
+        <div className="w-full min-h-screen bg-transparent flex flex-col relative pb-32" dir="ltr">
              {/* Sticky Navbar */}
-             <div className="sticky top-0 z-50 w-full bg-white">
+             <div className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md">
                 <DashboardNavBar />
              </div>
 
              {/* Main Content */}
-             <div className="flex-1 w-full flex flex-col items-center gap-6 px-0 py-0" dir="rtl">
+             <div className="flex-1 w-full max-w-[800px] mx-auto flex flex-col items-center gap-6 px-4 py-8" dir="rtl">
                 
                 {/* Header Section */}
-                <div className="w-full flex flex-col gap-4">
-                     <div className="w-full text-right text-[#0D0D12] text-xl font-semibold leading-[27px]">
+                <div className="w-full flex flex-col gap-5">
+                     <div className="text-[#0D0D12] text-2xl font-medium font-['PeydaWeb'] leading-relaxed text-right w-full">
                          ویرایش محصول
                      </div>
                      
-                     <div className="w-full flex flex-col gap-3">
-                         {/* Save Button (Primary) */}
-                         <button 
-                            onClick={handleSave}
-                            className="w-full h-10 bg-[#0A33FF] rounded-lg shadow-sm border border-[#FFD369] flex justify-center items-center gap-2 hover:opacity-90 transition-opacity"
-                         >
-                             <span className="text-white text-sm font-semibold">ذخیره محصول</span>
-                         </button>
-                         {/* Preview Button (Secondary) */}
+                     <div className="w-full flex items-center gap-3">
+                         {/* Preview Button */}
                          <button 
                             onClick={() => setShowPreview(true)}
-                            className="w-full h-10 bg-white rounded-lg shadow-sm border border-[#DFE1E7] flex justify-center items-center gap-2 hover:bg-gray-50 transition-colors"
+                            className="flex-1 h-[48px] bg-[#F0F3F7] rounded-xl border border-[#DCE4E8] flex justify-center items-center gap-2 hover:bg-[#E2E8F0] transition-all shadow-sm group"
                          >
-                             <span className="text-[#0D0D12] text-sm font-semibold">پیش نمایش محصول</span>
+                             <span className="text-[#0D0D12] text-base font-medium font-['PeydaWeb'] group-hover:scale-105 transition-transform">پیش نمایش</span>
                          </button>
                          {/* Delete Button */}
                          <button 
                             onClick={handleDelete}
-                            className="w-full h-10 bg-white rounded-lg shadow-sm border border-red-200 flex justify-center items-center gap-2 hover:bg-red-50 transition-colors"
+                            className="flex-1 h-[48px] bg-[#FFF5F5] rounded-xl border border-red-200 flex justify-center items-center gap-2 hover:bg-[#FFE0E0] transition-all shadow-sm group"
                          >
-                             <span className="text-red-500 text-sm font-semibold">حذف محصول</span>
+                             <span className="text-red-500 text-base font-medium font-['PeydaWeb'] group-hover:scale-105 transition-transform">حذف محصول</span>
                          </button>
                      </div>
                 </div>
 
                 {/* Status Card */}
-                <div className="w-full p-5 bg-white rounded-xl border border-[#DFE1E7] flex flex-col gap-5 shadow-[0px_1px_2px_rgba(13,13,18,0.06)]">
-                    <div className="w-full flex justify-between items-center">
-                        <div className="text-[#0D0D12] text-base font-semibold tracking-wide">
-                            وضعیت انتشار
-                        </div>
-                        <div className="bg-[#ECF9F7] px-3 py-1 rounded-2xl flex items-center">
-                             <span className="text-[#267666] text-sm font-semibold">انتشار عمومی</span>
-                        </div>
+                <div className="w-full p-5 bg-white rounded-2xl border border-[#DFE1E7] flex justify-between items-center shadow-sm hover:shadow-md transition-shadow">
+                    <div className="text-[#0D0D12] text-lg font-medium font-['PeydaWeb'] tracking-wide">
+                        وضعیت انتشار
+                    </div>
+                    <div className={formData.approved ? "bg-[#ECF9F7] px-4 py-2 rounded-xl flex items-center gap-2" : "bg-amber-50 px-4 py-2 rounded-xl flex items-center gap-2"}>
+                            <span className={formData.approved ? "w-2.5 h-2.5 rounded-full bg-[#267666]" : "w-2.5 h-2.5 rounded-full bg-amber-500"} />
+                            <span className={formData.approved ? "text-[#267666] text-sm font-medium font-['PeydaWeb']" : "text-amber-600 text-sm font-medium font-['PeydaWeb']"}>
+                                {formData.approved ? "انتشار عمومی" : "در انتظار تایید"}
+                            </span>
                     </div>
                 </div>
 
-                {/* Shared Forms */}
-                {/* Shared Forms */}
+                {/* Forms Area */}
                 {isLoading ? (
                     <div className="w-full flex flex-col gap-6">
-                        <Skeleton className="w-full h-[320px] rounded-xl" />
-                        <Skeleton className="w-full h-[200px] rounded-xl" />
-                        <Skeleton className="w-full h-[250px] rounded-xl" />
+                        <Skeleton className="w-full h-[320px] rounded-2xl" />
+                        <Skeleton className="w-full h-[200px] rounded-2xl" />
                     </div>
                 ) : (
-                    <>
+                    <div className="w-full flex flex-col gap-6">
                         <BasicInfoForm values={formData} onChange={handleUpdateChange} />
                         <PricingForm values={formData} onChange={handleUpdateChange} />
-                        <PriceListEditor prices={formData.prices || []} onRefresh={fetchProduct} />
+                        <PriceListEditor prices={formData.prices || []} onRefresh={fetchProduct} basePrice={formData.price} />
                         <CategoryTagsForm values={formData} onChange={handleUpdateChange} categories={fetchedCategories} />
-                        <ProductPreviewCard product={formData} />
-                    </>
+                    </div>
                 )}
-
-                {/* Final Save Button */}
-                <button 
-                    onClick={handleSave}
-                    className="w-full h-10 bg-[#FFD369] rounded-lg shadow-sm border border-[#FFD369] flex justify-center items-center gap-2 hover:opacity-90 transition-opacity"
-                >
-                     <span className="text-[#393E46] text-sm font-semibold">ذخیره محصول</span>
-                </button>
-
              </div>
 
-             {/* Bottom Navigation */}
-             <div className="fixed bottom-0 w-full z-40">
-                 <Navigation />
+             {/* Sticky Bottom Actions Bar */}
+             <div className="fixed bottom-0 w-full p-5 bg-white border-t border-[#DFE1E7] z-40 flex justify-between items-center shadow-[0_-4px_10px_rgba(0,0,0,0.03)]" dir="rtl">
+                 <div className="w-full flex items-center gap-4">
+                     <button
+                        onClick={() => router.push('/StudentDashboard/Sells')}
+                        className="flex-1 h-[52px] px-4 rounded-xl border border-[#DCE4E8] flex justify-center items-center hover:bg-gray-50 transition-colors text-[#0D0D12] font-semibold font-['PeydaWeb']"
+                     >
+                        انصراف
+                     </button>
+                    <button 
+                        onClick={handleSave}
+                        className="flex-1 h-[52px] px-12 bg-[#FDD00A] rounded-xl shadow-sm flex justify-center items-center gap-2 hover:opacity-90 transition-opacity"
+                    >
+                         <span className="text-[#1A1C1E] text-lg font-semibold font-['PeydaWeb']">ذخیره تغییرات</span>
+                    </button>
+                 </div>
              </div>
 
              {/* Preview Popup */}
-             {showPreview && (
-                <NewProductPage6 
-                    onClose={() => setShowPreview(false)}
-                    onNext={() => setShowPreview(false)}
-                    onStepClick={() => {}} 
-                    formData={formData} // Passing actual form data to preview
-                />
-             )}
+             <ProductPreviewModal 
+                isOpen={showPreview}
+                onClose={() => setShowPreview(false)}
+                product={formData}
+             />
              <ConfirmModal 
                 isOpen={showDeleteModal} 
                 onClose={() => setShowDeleteModal(false)}
