@@ -61,7 +61,19 @@ export default function LoginPage() {
 
   // --- Smart Navigation Logic ---
   const handleNextStep = (currentUserData: any = user) => {
-    console.log("🚀 [Smart Nav] Checking Flags:", currentUserData);
+    console.log("🚀 [Smart Nav] handleNextStep called with:", currentUserData);
+
+    // Save user data to localStorage for persistence across app
+    if (currentUserData) {
+        try {
+            console.log("Saving user_data to localStorage:", currentUserData);
+            localStorage.setItem('user_data', JSON.stringify(currentUserData));
+        } catch (e) {
+            console.error("Failed to save user data to localStorage", e);
+        }
+    } else {
+        console.warn("⚠️ handleNextStep: No currentUserData provided!");
+    }
 
     // If no user data, fallback
     if (!currentUserData) {

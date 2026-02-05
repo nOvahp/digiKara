@@ -71,7 +71,9 @@ export const productsService = {
 
       if (response.status === 'success' || response.code === 200) {
         // Map API data to the Product interface used by the UI
-        const mappedProducts: Product[] = (response.data || []).map((item) => ({
+        const mappedProducts: Product[] = (response.data || [])
+          .filter((item: any) => item !== null && item !== undefined)
+          .map((item) => ({
           id: Number(item.id),
           name: item.name || item.title || 'نامشخص',
           soldCount: item.sold || item.soldCount || 0,

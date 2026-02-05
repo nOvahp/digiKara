@@ -28,6 +28,17 @@ export const studentService = {
           favorites: toBool(resData.favorites),
           meta: toBool(resData.meta)
         };
+
+        // Persist user data from national code check as requested
+        if (typeof window !== 'undefined') {
+            try {
+                localStorage.setItem('user_data', JSON.stringify(userWithFlags));
+                console.log("✅ User data saved to localStorage from service");
+            } catch (e) {
+                console.error("Failed to save user data in service", e);
+            }
+        }
+
         return { success: true, user: userWithFlags };
       }
 
