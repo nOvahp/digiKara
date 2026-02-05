@@ -227,7 +227,7 @@ export default function ManageOrders() {
                         <div className="min-w-[1120px]">
                             <OrderTable 
                                 orders={currentOrders}
-                                isLoading={isLoading}
+                                loading={isLoading}
                                 showCheckboxes={true}
                                 selectedOrderIds={selectedOrderIds}
                                 onSelectRow={handleSelectRow}
