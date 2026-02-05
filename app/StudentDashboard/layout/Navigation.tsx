@@ -30,7 +30,7 @@ export function Navigation() {
         <div 
             className="w-full bg-white shadow-[0px_0px_4px_#E9B443] rounded-t-[20px] flex flex-col justify-center items-center gap-1 pb-2 pt-2"
         >
-            <div className="w-full flex justify-between items-center px-4">
+            <div className="w-full flex justify-between items-center px-4" dir="ltr">
                 
                 {/* School Project */}
                 <div className={getItemClasses(false)}>
