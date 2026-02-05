@@ -86,13 +86,29 @@ export default function ShopCategoryPage() {
              console.warn("Logo image is missing!");
              // In a real app we might show an error or require it in Step 3
         }
-
+        
         const result = await shopService.createShop(formData);
 
         if (result.success) {
             console.log("Shop Created Successfully:", result);
             if (typeof window !== 'undefined') {
                 localStorage.setItem('hojre_created', 'true');
+                // Persist new Hojre data into the user object for immediate dashboard reflection
+                const storedUser = localStorage.getItem('user_data');
+                if (storedUser) {
+                    try {
+                        const userData = JSON.parse(storedUser);
+                        // Store the new cell. If it's a student login, cell is usually on the user object.
+                        if (userData.user) {
+                             userData.user.cell = result.data;
+                        } else {
+                             userData.cell = result.data;
+                        }
+                        localStorage.setItem('user_data', JSON.stringify(userData));
+                    } catch (e) {
+                        console.error("Failed to update user_data with new cell", e);
+                    }
+                }
             }
             router.push('/StudentDashboard/hojreCreation/success'); 
         } else {

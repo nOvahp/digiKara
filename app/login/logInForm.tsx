@@ -16,7 +16,7 @@ import { Loader2, ChevronLeft } from "lucide-react";
 
 const RESEND_DELAY = 120; // 2 minutes
 
-export function LogInForm({ onNext, onExistingUser, onBack }: { onNext?: () => void; onExistingUser?: () => void; onBack?: () => void }) {
+export function LogInForm({ onNext, onExistingUser, onBack }: { onNext?: () => void; onExistingUser?: (user: any) => void; onBack?: () => void }) {
   const router = useRouter();
   const { requestOtp, verifyOtp, role } = useAuth();
   
@@ -79,7 +79,7 @@ export function LogInForm({ onNext, onExistingUser, onBack }: { onNext?: () => v
       // If we have user data, it means the user has completed onboarding/questions before.
       if (result.user) {
         if (onExistingUser) {
-           onExistingUser();
+           onExistingUser(result.user);
         } else {
            router.push("/StudentDashboard");
         }

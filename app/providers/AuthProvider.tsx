@@ -30,13 +30,23 @@ type AuthContextType = {
     const [role, setRole] = useState<'student' | 'manager' | null>('student'); // Default to student
   
     useEffect(() => {
-      // Check for token on mount
+      // Check for token and user on mount
       const storedToken = getToken();
+      const storedUser = localStorage.getItem('user_data');
+      
       if (storedToken) {
         setToken(storedToken);
         setIsAuthenticated(true);
-        // Optional: Fetch user profile here if token exists but user data is missing
       }
+      
+      if (storedUser) {
+          try {
+              setUser(JSON.parse(storedUser));
+          } catch (e) {
+              console.error("Failed to hydrate user data", e);
+          }
+      }
+      
       setIsLoading(false);
     }, []);
   

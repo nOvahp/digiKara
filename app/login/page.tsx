@@ -51,7 +51,18 @@ export default function LoginPage() {
   const { role, user } = useAuth(); // Get selected role and user
 
   // Handler for successful login (returning user)
-  const handleLoginSuccess = () => {
+  const handleLoginSuccess = (userData?: any) => {
+      if (userData) {
+          try {
+              localStorage.setItem('user_data', JSON.stringify(userData));
+              if (userData.cell) {
+                  localStorage.setItem('hojre_created', 'true');
+              }
+          } catch (e) {
+              console.error("Failed to save user data on login success", e);
+          }
+      }
+      
       if (role === 'manager') {
           setStep(Step.MANAGER_INFO);
       } else {

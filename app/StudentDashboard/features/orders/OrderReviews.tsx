@@ -30,6 +30,7 @@ export function OrderReviews() {
   const [activeTab, setActiveTab] = useState("active_orders")
   const [orders, setOrders] = useState<Order[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
@@ -150,9 +151,12 @@ export function OrderReviews() {
   useEffect(() => {
     const fetchOrders = async () => {
         setIsLoading(true);
+        setError(null);
         const response = await studentService.getOrders();
         if (response.success && response.data) {
             setOrders(response.data);
+        } else {
+            setError(response.message || "خطا در دریافت سفارشات");
         }
         setIsLoading(false);
     };
@@ -360,6 +364,12 @@ export function OrderReviews() {
                 ref={scrollContainerRef}
                 className="self-stretch w-full overflow-x-auto flex flex-col no-scrollbar"
             >
+                {error && (
+                    <div className="w-full p-4 bg-red-50 border-b border-red-100 flex items-center justify-center gap-2">
+                         <div className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                         <span className="text-red-600 text-sm font-medium">{error}</span>
+                    </div>
+                )}
                 {activeTab === 'active_orders' ? (
                     <div className="min-w-[1120px]">
                         <OrderTable 

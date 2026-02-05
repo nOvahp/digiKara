@@ -26,7 +26,7 @@ export default function ShopSuccessPage() {
                 
                 {/* Title */}
                 <div className="text-[#0D0D12] text-xl font-semibold font-['PeydaWeb'] leading-snug">
-                    افزودن تیمچه
+                    ساخت حجره
                 </div>
             </div>
 
@@ -47,7 +47,7 @@ export default function ShopSuccessPage() {
                 {/* Text */}
                 <div className="flex flex-col items-center text-center gap-3">
                     <h2 className="text-[#0A0A0A] text-lg font-semibold font-['PeydaWeb'] leading-7">
-                        با موفقیت حجره ساخت شد.
+                        با موفقیت حجره ساخته شد.
                     </h2>
                     <p className="text-[#737373] text-sm font-light font-['PeydaWeb'] leading-tight max-w-[300px]">
                         حالا که حجره با موفقیت ساخته شد، وقتشه اولین محصول رو اضافه کنی و فروشت رو شروع کنی!
@@ -55,22 +55,34 @@ export default function ShopSuccessPage() {
                 </div>
 
                 {/* Actions */}
-                <div className="flex gap-4 w-full justify-center mt-4">
-                     {/* Education */}
-                     <Button 
-                        variant="outline"
-                        className="h-10 px-6 bg-white border-[#E5E5E5] text-[#666D80] text-sm font-semibold font-['PeydaWeb'] hover:bg-gray-50 flex items-center gap-2"
-                    >
-                         <span>آموزش</span>
-                         <ArrowUpRight className="w-4 h-4 text-[#737373]" />
-                    </Button>
+                <div className="flex flex-col gap-3 w-full items-center mt-4">
+                    <div className="flex gap-4 w-full justify-center px-4">
+                         {/* Education */}
+                         <Button 
+                            variant="outline"
+                            className="h-10 px-6 bg-white border-[#E5E5E5] text-[#666D80] text-sm font-semibold font-['PeydaWeb'] hover:bg-gray-50 flex items-center gap-2"
+                        >
+                             <span>آموزش</span>
+                             <ArrowUpRight className="w-4 h-4 text-[#737373]" />
+                        </Button>
 
-                    {/* Add Product */}
+                        {/* Add Product */}
+                        <Button 
+                            onClick={() => setIsAddProductOpen(true)}
+                            className="h-10 px-6 bg-[#FDD00A] hover:bg-[#eac009] text-[#0A0A0A] text-sm font-semibold font-['PeydaWeb'] shadow-sm border-none"
+                        >
+                            افزودن محصول
+                        </Button>
+                    </div>
+
+                    {/* Go to Dashboard */}
                     <Button 
-                        onClick={() => setIsAddProductOpen(true)}
-                        className="h-10 px-6 bg-[#FDD00A] hover:bg-[#eac009] text-[#0A0A0A] text-sm font-semibold font-['PeydaWeb'] shadow-sm border-none"
+                        variant="ghost"
+                        onClick={() => router.push('/StudentDashboard')}
+                        className="text-[#666D80] text-sm font-semibold font-['PeydaWeb'] hover:bg-gray-50 flex items-center gap-2"
                     >
-                        افزودن محصول
+                        <span>بازگشت به پیشخوان</span>
+                        <ChevronRight className="w-4 h-4 text-[#666D80] rotate-180" />
                     </Button>
                 </div>
             </div>

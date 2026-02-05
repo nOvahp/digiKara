@@ -25,6 +25,7 @@ export interface UserData {
   is_info_correct?: boolean;
   favorites?: boolean;
   meta?: boolean;
+  cell?: any;
   // Add other fields as per your API response
 }
 
@@ -35,5 +36,8 @@ export const UserSchema = z.object({
     firstname: z.string().optional(),
     lastname: z.string().optional(),
     national_code: z.string().optional(),
-    // Add validation rules
+    is_info_correct: z.boolean().optional(),
+    favorites: z.boolean().optional(),
+    meta: z.boolean().optional(),
+    cell: z.any().optional(),
 });
