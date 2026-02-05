@@ -62,6 +62,7 @@ export interface Product {
     percent?: string;
     created_at?: string;
     updated_at?: string;
+    approved?: boolean;
 }
 
 export const productsService = {
@@ -98,7 +99,8 @@ export const productsService = {
           created_at: item.created_at || '',
           updated_at: item.updated_at || '',
           metadata: '',
-          prices: item.prices || []
+          prices: item.prices || [],
+          approved: item.approved
         }));
 
         return { success: true, data: mappedProducts };

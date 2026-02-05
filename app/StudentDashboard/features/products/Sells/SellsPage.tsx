@@ -6,13 +6,13 @@ import { toast } from 'sonner';
 import { ClipboardList, Plus, Package, Layers, PackageX, AlertTriangle } from 'lucide-react';
 import { DashboardNavBar } from "../../../layout/DashboardNavBar";
 import { Navigation } from "../../../layout/Navigation";
-import { ProductTable, ProductData } from "./components/ProductTable";
+import { ProductTable } from "./components/ProductTable";
 import { StatCard } from "./components/StatCard";
 import { AddProductFlow } from "./components/AddProductFlow";
 import { ConfirmModal } from '@/app/components/ConfirmModal';
 import { SuccessModal } from '@/app/components/SuccessModal'; 
 // Data
-import { Product } from "@/app/StudentDashboard/data/products";
+import { Product } from '@/app/services/products/productsService';
 import { studentProductService } from "@/app/services/studentProductService";
 
 // ...
@@ -80,12 +80,12 @@ export default function SellsPage() {
     // Form logic removed (handled in AddProductFlow)
 
     return (
-        <div className="w-full min-h-screen bg-transparent flex flex-col relative" dir="ltr">
+        <div className="w-full min-h-screen bg-transparent flex flex-col relative " dir="ltr">
             <div className="sticky top-0 z-50">
                 <DashboardNavBar />
             </div>
 
-            <div className="flex-1 w-full flex flex-col items-center gap-6 px-0 py-0 pb-24">
+            <div className="flex-1 w-full flex flex-col items-center gap-6 px-0 pt-8 pb-24">
                 {/* Page Header and Stats - No Change */}
                 <div className="w-full flex flex-col items-end gap-4">
                     <div className="text-center text-[#0D0D12] text-[20px] font-semibold leading-[27px]">
@@ -112,15 +112,33 @@ export default function SellsPage() {
                     </button>
                 </div>
 
-                <div className="w-full flex flex-col gap-3 px-0">
-                    <div className="w-full flex gap-3">
-                        <StatCard title="کل محصولات" value={productsList.length.toLocaleString('fa-IR')} trend="+۱۲.۴٪" trendType="positive" trendLabel="از ماه گذشته" icon={<Package className="w-5 h-5 text-[#393E46]" strokeWidth={1.5} />} />
-                        <StatCard title="موجودی ها" value="۹۸۰" trend="+۴۱۲ مورد" trendType="positive" trendLabel="از ماه گذشته" icon={<Layers className="w-5 h-5 text-[#393E46]" strokeWidth={1.5} />} />
-                    </div>
-                    <div className="w-full flex gap-3">
-                        <StatCard title="ناموجود ها" value="۱۸۰" trend="+۷.۳٪" trendType="negative" trendLabel="از ماه گذشته" icon={<PackageX className="w-5 h-5 text-[#393E46]" strokeWidth={1.5} />} />
-                        <StatCard title="موجودی کم" value="۸۰" trend="+۱۲.۴٪" trendType="positive" trendLabel="از ماه گذشته" icon={<AlertTriangle className="w-5 h-5 text-[#393E46]" strokeWidth={1.5} />} />
-                    </div>
+                <div className="w-full grid grid-cols-2 gap-3 px-0">
+                    <StatCard 
+                        title="کل محصولات" 
+                        value={productsList.length.toLocaleString('fa-IR')} 
+                        icon={<Package className="w-6 h-6" strokeWidth={1.5} />} 
+                        color="blue"
+                    />
+                    <StatCard 
+                        title="موجودی ها" 
+                        value={productsList.filter(p => (p.inventoryCount || 0) > 0).length.toLocaleString('fa-IR')} 
+                        icon={<Layers className="w-6 h-6" strokeWidth={1.5} />} 
+                        color="green"
+                    />
+                    <StatCard 
+                        title="ناموجود ها" 
+                        value={productsList.filter(p => (p.inventoryCount || 0) === 0).length.toLocaleString('fa-IR')} 
+                        trendType="negative"
+                        icon={<PackageX className="w-6 h-6" strokeWidth={1.5} />} 
+                        color="red"
+                    />
+                    <StatCard 
+                        title="موجودی کم" 
+                        value={productsList.filter(p => (p.inventoryCount || 0) > 0 && (p.inventoryCount || 0) < 10).length.toLocaleString('fa-IR')} 
+                        trendType="positive"
+                        icon={<AlertTriangle className="w-6 h-6" strokeWidth={1.5} />} 
+                        color="amber"
+                    />
                 </div>
 
                 <ProductTable products={productsList} loading={isLoading} onDelete={handleDeleteProduct} />

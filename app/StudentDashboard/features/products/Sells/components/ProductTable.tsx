@@ -2,21 +2,15 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { cn } from "@/lib/utils";
-import { ChevronLeft, ChevronRight, Filter, Search, MoreHorizontal, Trash2, Edit, ArrowUpDown } from "lucide-react";
+import { ChevronLeft, ChevronRight, MoreHorizontal, Trash2, Edit, Search, Filter, ArrowUpDown } from "lucide-react";
 import { useRouter } from 'next/navigation';
 import { Skeleton } from "@/app/components/Skeleton";
+// Use the interface from service which matches our updated mapping
+import { Product } from '@/app/services/products/productsService';
 
-// Types for our data
-import { Product } from '@/app/StudentDashboard/data/products';
-
-// Types from shared data
-export interface ProductData extends Product {}
-
-interface ProductTableRowProps {
-    product: ProductData;
-    index: number;
-    isChecked: boolean;
-    onToggle: (id: number | string) => void;
+interface ProductTableProps {
+    products: Product[];
+    loading?: boolean;
     onDelete?: (id: number | string) => void;
 }
 
@@ -25,19 +19,20 @@ function toFarsiNumber(n: number | string | undefined): string {
     return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
 }
 
-function ProductTableRow({ product, index, isChecked, onToggle, onDelete }: ProductTableRowProps) {
-    const router = useRouter();
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const isPositive = product.trendType === 'positive';
-    const trendBg = isPositive ? 'bg-[#ECF9F7]' : 'bg-[#FCE8EC]';
-    const trendText = isPositive ? 'text-[#267666]' : 'text-[#B21634]';
-    const containerRef = useRef<HTMLDivElement>(null);
+function formatPrice(price: string | number | undefined): string {
+    if (!price) return '۰';
+    const clean = String(price).replace(/\D/g, '');
+    return clean.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
 
-    // Close menu when clicking outside
+function ActionMenu({ onEdit, onDelete }: { onEdit: () => void, onDelete: () => void }) {
+    const [isOpen, setIsOpen] = useState(false);
+    const menuRef = useRef<HTMLDivElement>(null);
+
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
-            if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-                setIsMenuOpen(false);
+            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
             }
         }
         document.addEventListener("mousedown", handleClickOutside);
@@ -46,266 +41,82 @@ function ProductTableRow({ product, index, isChecked, onToggle, onDelete }: Prod
         };
     }, []);
 
-    const handleRowClick = () => {
-        router.push(`/StudentDashboard/EditeProducts?id=${product.id}`);
-    };
-
-    const toggleMenu = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        setIsMenuOpen(prev => !prev);
-    };
-
-    const handleDeleteClick = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        console.log("Delete clicked for id:", product.id);
-        setIsMenuOpen(false);
-        if (onDelete) {
-            onDelete(product.id);
-        } else {
-            console.error("onDelete prop is missing in ProductTableRow");
-        }
-    };
-
-    const handleEditClick = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        router.push(`/StudentDashboard/EditeProducts?id=${product.id}`);
-    };
-
     return (
-        <div 
-            onClick={handleRowClick}
-            className="flex min-w-max h-16 px-[9px] border-b border-[#DFE1E7] justify-end items-center hover:bg-gray-50 transition-colors cursor-pointer bg-white relative"
-        >
-            {/* Edit Menu */}
-            <div 
-                ref={containerRef}
-                className="h-16 px-3 border-b border-[#DFE1E7] flex justify-start items-center gap-2 relative z-20"
+        <div className="relative" ref={menuRef}>
+            <button 
+                onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); }}
+                className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors text-gray-500"
             >
-                <button 
-                    onClick={toggleMenu}
-                    className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 transition-colors"
-                >
-                    <MoreHorizontal className="w-5 h-5 text-[#666D80]" />
-                </button>
-                
-                {/* Dropdown Menu */}
-                {isMenuOpen && (
-                    <div className="absolute top-10 left-0 w-32 bg-white rounded-lg shadow-[0px_4px_16px_rgba(0,0,0,0.1)] border border-[#EFF0F2] flex flex-col overflow-hidden animate-fade-in" dir="rtl">
-                         <div 
-                            onClick={handleEditClick}
-                            className="px-3 py-2 hover:bg-gray-50 flex items-center gap-2 text-[#0D0D12] text-sm cursor-pointer"
-                         >
-                            <Edit className="w-4 h-4" />
-                            <span>ویرایش</span>
-                         </div>
-                         <div 
-                            onClick={handleDeleteClick}
-                            className="px-3 py-2 hover:bg-red-50 flex items-center gap-2 text-red-500 text-sm cursor-pointer border-t border-gray-50"
-                         >
-                            <Trash2 className="w-4 h-4" />
-                            <span>حذف</span>
-                         </div>
-                    </div>
-                )}
-            </div>
-
-            {/* Badge */}
-            <div className="w-[104px] h-16 px-3 border-b border-[#DFE1E7] flex justify-end items-center gap-1.5">
-                <div className={cn("h-5 px-2 py-[2px] rounded-2xl flex justify-start items-center", trendBg)}>
-                    <div className={cn("text-center text-xs font-num-medium leading-[18px] tracking-wide", trendText)}>
-                        {toFarsiNumber(product.trendPercentage)}
-                    </div>
+                <MoreHorizontal className="w-5 h-5" />
+            </button>
+            
+            {isOpen && (
+                <div className="absolute top-full left-0 mt-1 w-32 bg-white rounded-lg shadow-lg border border-[#EFF0F2] flex flex-col overflow-hidden z-20 animate-in fade-in zoom-in-95 duration-100 origin-top-left" dir="rtl">
+                        <div 
+                        onClick={(e) => { e.stopPropagation(); setIsOpen(false); onEdit(); }}
+                        className="px-3 py-2.5 hover:bg-gray-50 flex items-center gap-2 text-[#0D0D12] text-sm cursor-pointer transition-colors"
+                        >
+                        <Edit className="w-4 h-4" />
+                        <span>ویرایش</span>
+                        </div>
+                        <div 
+                        onClick={(e) => { e.stopPropagation(); setIsOpen(false); onDelete(); }}
+                        className="px-3 py-2.5 hover:bg-red-50 flex items-center gap-2 text-red-500 text-sm cursor-pointer border-t border-gray-50 transition-colors"
+                        >
+                        <Trash2 className="w-4 h-4" />
+                        <span>حذف</span>
+                        </div>
                 </div>
-            </div>
-
-            {/* Inventory Count */}
-            <div className="w-[127px] h-16 px-3 border-b border-[#DFE1E7] flex justify-end items-center gap-2.5">
-                <div className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium leading-[21px] tracking-wide">
-                    {toFarsiNumber(product.inventoryCount)}
-                </div>
-            </div>
-
-            {/* Revenue */}
-            <div className="w-[140px] h-16 px-3 border-b border-[#DFE1E7] flex justify-end items-center gap-2.5">
-                <div className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium leading-[21px] tracking-wide"dir="rtl">
-                    {toFarsiNumber(product.revenue)}
-                </div>
-            </div>
-
-            {/* Sold Count */}
-            <div className="w-[138px] h-16 px-3 border-b border-[#DFE1E7] flex justify-end items-center gap-2.5">
-                <div className="flex-1 text-center text-[#0D0D12] text-sm font-num-medium leading-[21px] tracking-wide">
-                    {toFarsiNumber(product.soldCount)}
-                </div>
-            </div>
-
-            {/* Product Name */}
-            <div className="w-[177px] h-16 px-3 border-b border-[#DFE1E7] flex justify-start items-center gap-2.5">
-                <div className="flex-1 text-right text-[#0D0D12] text-sm font-semibold leading-[21px] tracking-wide truncate">
-                    {product.name}
-                </div>
-            </div>
-
-            {/* Number & Checkbox */}
-            <div className="w-20 h-16 px-3 border-b border-[#DFE1E7] flex justify-start items-center gap-2.5">
-                <div className="flex-1 text-right text-[#0D0D12] text-sm font-num-medium leading-[21px] tracking-wide">
-                    {toFarsiNumber(product.id)}
-                </div>
-                <div 
-                    onClick={(e) => { e.stopPropagation(); onToggle(product.id); }}
-                    className={cn(
-                    "w-4 h-4 relative rounded border flex items-center justify-center hover:bg-gray-100",
-                    isChecked ? "bg-white border-[#DFE1E7]" : "bg-white border-[#DFE1E7]" 
-                )}>
-                   {isChecked && (
-                       <div className="w-2.5 h-2.5 bg-[#0D0D12] rounded-sm" /> 
-                   )}
-                </div>
-            </div>
+            )}
         </div>
     );
 }
 
-// Expanded Mock Data
-// Product data moved to parent
-
-
-interface ProductTableProps {
-    products: ProductData[];
-    loading?: boolean;
-    onDelete?: (id: number | string) => void;
-}
-
 export function ProductTable({ products, loading = false, onDelete }: ProductTableProps) {
+    const router = useRouter();
     const [currentPage, setCurrentPage] = useState(1);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [checkedIds, setCheckedIds] = useState<(number | string)[]>([]);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [statusFilter, setStatusFilter] = useState<'all' | 'approved' | 'pending'>('all');
+    const [sortOption, setSortOption] = useState<string>('newest');
+
     const itemsPerPage = 8; 
 
-    // Sort State
-    type SortOption = 'id' | 'created_at' | 'updated_at';
-    const [sortOption, setSortOption] = useState<SortOption>('id');
-    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
-    const [isSortOpen, setIsSortOpen] = useState(false);
-    const sortRef = useRef<HTMLDivElement>(null);
-
-    // Close sort menu
-    useEffect(() => {
-        function handleClickOutside(event: MouseEvent) {
-            if (sortRef.current && !sortRef.current.contains(event.target as Node)) {
-                setIsSortOpen(false);
-            }
-        }
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
-
-    const handleSortChange = (option: SortOption) => {
-        if (sortOption === option) {
-            setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
-        } else {
-            setSortOption(option);
-            setSortDirection('desc'); // Default to newest
-        }
-        setIsSortOpen(false);
-        setCurrentPage(1);
-    };
-
-    const getSortLabel = (option: SortOption) => {
-        switch(option) {
-            case 'id': return 'شماره محصول';
-            case 'created_at': return 'تاریخ ایجاد';
-            case 'updated_at': return 'تاریخ ویرایش';
-        }
-    };
-
-    const toggleId = (id: number | string) => {
-        setCheckedIds(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
-    };
-
     // Filter Logic
-    const [isFilterOpen, setIsFilterOpen] = useState(false);
-    const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
-    const filterRef = useRef<HTMLDivElement>(null);
+    const filteredProducts = products.filter(p => {
+        const matchesSearch = (p.name && p.name.includes(searchQuery)) || (p.code && p.code.includes(searchQuery));
+        const matchesStatus = statusFilter === 'all' 
+            ? true 
+            : statusFilter === 'approved' ? p.approved : !p.approved;
+        return matchesSearch && matchesStatus;
+    });
 
-    // Close filter when clicking outside
-    useEffect(() => {
-        function handleClickOutside(event: MouseEvent) {
-            if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
-                setIsFilterOpen(false);
-            }
+    // Sorting Logic
+    const filteredAndSortedProducts = [...filteredProducts].sort((a, b) => {
+        switch (sortOption) {
+            case 'price-asc': 
+                return parseFloat(a.price || '0') - parseFloat(b.price || '0');
+            case 'price-desc': 
+                return parseFloat(b.price || '0') - parseFloat(a.price || '0');
+            case 'sold-desc': 
+                return (b.soldCount || 0) - (a.soldCount || 0);
+            case 'oldest': 
+                return a.id - b.id;
+            case 'newest': 
+            default: 
+                return b.id - a.id;
         }
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [filterRef]);
+    });
 
-    const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-    // Default scroll to right
+    // Reset page when filters change
     useEffect(() => {
-        if (scrollContainerRef.current) {
-            scrollContainerRef.current.scrollLeft = scrollContainerRef.current.scrollWidth;
-        }
-    }, [products]); // Re-run if products change (e.g. initial load)
-
-    const handleFilterChange = (value: string) => {
-        setSelectedFilters(prev => {
-            if (prev.includes(value)) {
-                return prev.filter(f => f !== value);
-            } else {
-                return [...prev, value];
-            }
-        });
         setCurrentPage(1);
-    };
+    }, [searchQuery, statusFilter, sortOption]);
 
-    const getFilterOptions = () => [
-        { label: "موجود", value: "available" },
-        { label: "ناموجود", value: "out_of_stock" },
-        { label: "موجودی کم", value: "low_stock" },
-    ];
-
-    const filteredProducts = products.filter(product => {
-        if (selectedFilters.length === 0) return true;
-        
-        // Check availability logic
-        const count = typeof product.inventoryCount === 'string' ? parseInt(product.inventoryCount) : product.inventoryCount;
-        
-        if (selectedFilters.includes("available") && count > 10) return true;
-        if (selectedFilters.includes("low_stock") && count > 0 && count <= 10) return true;
-        if (selectedFilters.includes("out_of_stock") && count === 0) return true;
-        
-        return false;
-    });
-
-    // Sorting
-    const sortedProducts = [...filteredProducts].sort((a, b) => {
-        let valA: any = a[sortOption];
-        let valB: any = b[sortOption];
-
-        if (sortOption === 'id') {
-             valA = Number(valA);
-             valB = Number(valB);
-        } else {
-             // For dates (strings), ensure we handle empty strings
-             valA = valA || '';
-             valB = valB || '';
-        }
-
-        if (valA < valB) return sortDirection === 'asc' ? -1 : 1;
-        if (valA > valB) return sortDirection === 'asc' ? 1 : -1;
-        return 0;
-    });
-
-    // Calculate total pages based on sorted (filtered) products
-    const totalPages = Math.ceil(sortedProducts.length / itemsPerPage);
+    // Calculate total pages based on filtered products
+    const totalPages = Math.ceil(filteredAndSortedProducts.length / itemsPerPage);
 
     // Slice for current page
-    const currentProducts = sortedProducts.slice(
+    const currentProducts = filteredAndSortedProducts.slice(
         (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
     );
@@ -324,232 +135,226 @@ export function ProductTable({ products, loading = false, onDelete }: ProductTab
 
     if (loading) {
         return (
-            <div className="w-full flex-col justify-start items-center inline-flex" dir="rtl">
-                 {/* Header Mock */}
-                <div className="w-full h-[54px] px-3 bg-[#F8F9FB] border-b border-[#DFE1E7] flex justify-end items-center">
-                     <div className="w-full flex justify-end gap-2 p-2">
-                        <Skeleton className="h-4 w-24 ml-4" />
-                        <Skeleton className="h-4 w-16 ml-4" />
-                        <Skeleton className="h-4 w-16 ml-4" />
-                        <Skeleton className="h-4 w-16 ml-4" />
-                        <Skeleton className="h-4 w-32 ml-4" />
-                     </div>
+            <div className="w-full bg-white rounded-xl border border-[#DFE1E7] overflow-hidden">
+                <div className="p-4 border-b border-[#DFE1E7] bg-gray-50/50">
+                    <Skeleton className="h-6 w-32" />
                 </div>
                 {[1, 2, 3, 4, 5].map((i) => (
-                    <div key={i} className="w-full h-16 px-[9px] border-b border-[#DFE1E7] flex justify-end items-center gap-4">
-                        <div className="flex-1 flex justify-end gap-10 items-center">
-                             <Skeleton className="h-6 w-20" />
-                             <Skeleton className="h-6 w-20" />
-                             <Skeleton className="h-6 w-20" />
-                             <Skeleton className="h-6 w-20" />
-                             <Skeleton className="h-6 w-32" />
-                             <Skeleton className="h-6 w-8" />
+                    <div key={i} className="flex items-center p-4 border-b border-[#DFE1E7] gap-4">
+                        <Skeleton className="w-12 h-12 rounded-lg" />
+                        <div className="flex-1 space-y-2">
+                            <Skeleton className="h-4 w-48" />
+                            <Skeleton className="h-3 w-24" />
                         </div>
-                         <Skeleton className="h-4 w-4 rounded ml-2" />
+                        <Skeleton className="h-4 w-20" />
+                        <Skeleton className="h-4 w-20" />
                     </div>
                 ))}
             </div>
         );
     }
 
+    if (products.length === 0) {
+        return null;
+    }
+
     return (
-        <div className="w-full bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl border border-[#DFE1E7] flex flex-col justify-start items-end inline-flex mb-8">
+        <div className="w-full space-y-4" dir="rtl">
             
-            {/* Header */}
-            <div className="w-full h-16 px-5 py-2 border-b border-[#DFE1E7] flex justify-between items-center bg-white">
-                <div className="flex justify-start items-center gap-2 relative" ref={filterRef}>
-                    
-                    {/* Sort Dropdown */}
-                    <div className="relative" ref={sortRef}>
-                         <div 
-                            className={`w-8 h-8 px-0 py-0 bg-white rounded-lg border border-[#DFE1E7] flex justify-center items-center gap-2 cursor-pointer transition-colors ${isSortOpen ? 'bg-gray-100 ring-2 ring-blue-100' : 'hover:bg-gray-50'}`}
-                            onClick={() => { setIsSortOpen(!isSortOpen); setIsFilterOpen(false); }}
-                        >
-                            <ArrowUpDown className={`w-4 h-4 ${sortOption !== 'id' || sortDirection === 'asc' ? 'text-[#F7C61A]' : 'text-[#818898]'}`} />
-                        </div>
-                        {isSortOpen && (
-                            <div className="absolute top-9 left-0 z-50 w-48 bg-white rounded-xl shadow-[0px_4px_24px_rgba(0,0,0,0.08)] border border-[#EFF0F2] p-2 flex flex-col gap-1 anim-fade-in" dir="rtl">
-                                <div className="text-[#666D80] text-xs font-medium px-2 py-1 mb-1 border-b border-gray-100 text-right">
-                                    مرتب‌سازی بر اساس
-                                </div>
-                                {(['id', 'created_at', 'updated_at'] as SortOption[]).map((opt) => (
-                                    <div 
-                                        key={opt}
-                                        className="flex items-center gap-2 px-2 py-1.5 hover:bg-gray-50 rounded-lg cursor-pointer"
-                                        onClick={() => handleSortChange(opt)}
-                                    >
-                                        <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${sortOption === opt ? 'bg-[#F7C61A] border-[#F7C61A]' : 'border-[#DFE1E7] bg-white'}`}>
-                                            {sortOption === opt && (
-                                                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                                                </svg>
-                                            )}
-                                        </div>
-                                        <span className={`text-sm ${sortOption === opt ? 'text-[#0D0D12] font-semibold' : 'text-[#666D80] font-medium'}`}>
-                                            {getSortLabel(opt)} {sortOption === opt && (sortDirection === 'asc' ? '(صعودی)' : '(نزولی)')}
-                                        </span>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                    </div>
-
-                    <div 
-                        className={`w-8 h-8 px-0 py-0 bg-white rounded-lg border border-[#DFE1E7] flex justify-center items-center gap-2 cursor-pointer transition-colors ${isFilterOpen ? 'bg-gray-100 ring-2 ring-blue-100' : 'hover:bg-gray-50'}`}
-                        onClick={() => { setIsFilterOpen(!isFilterOpen); setIsSortOpen(false); }}
-                    >
-                        <Filter className={`w-4 h-4 ${selectedFilters.length > 0 ? 'text-[#F7C61A]' : 'text-[#818898]'}`} />
-                    </div>
-
-                    {/* Filter Dropdown */}
-                    {isFilterOpen && (
-                        <div className="absolute top-9 left-0 z-50 w-48 bg-white rounded-xl shadow-[0px_4px_24px_rgba(0,0,0,0.08)] border border-[#EFF0F2] p-2 flex flex-col gap-1 anim-fade-in" dir="rtl">
-                            <div className="text-[#666D80] text-xs font-medium px-2 py-1 mb-1 border-b border-gray-100 text-right">
-                                فیلتر بر اساس موجودی
-                            </div>
-                            {getFilterOptions().map((option) => (
-                                <div 
-                                    key={option.value}
-                                    className="flex items-center gap-2 px-2 py-1.5 hover:bg-gray-50 rounded-lg cursor-pointer"
-                                    onClick={() => handleFilterChange(option.value)}
-                                >
-                                    <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${selectedFilters.includes(option.value) ? 'bg-[#F7C61A] border-[#F7C61A]' : 'border-[#DFE1E7] bg-white'}`}>
-                                        {selectedFilters.includes(option.value) && (
-                                            <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                                            </svg>
-                                        )}
-                                    </div>
-                                    <span className={`text-sm ${selectedFilters.includes(option.value) ? 'text-[#0D0D12] font-semibold' : 'text-[#666D80] font-medium'}`}>
-                                        {option.label}
-                                    </span>
-                                </div>
-                            ))}
-                            {selectedFilters.length > 0 && (
-                                <div 
-                                    className="text-center text-[#B21634] text-xs font-medium py-1.5 mt-1 border-t border-gray-100 cursor-pointer hover:bg-red-50 rounded-b-lg"
-                                    onClick={() => setSelectedFilters([])}
-                                >
-                                    حذف فیلترها
-                                </div>
-                            )}
-                        </div>
-                    )}
-                    <div className="w-8 h-8 p-2 bg-white rounded-lg border border-[#DFE1E7] flex justify-center items-center gap-2 cursor-pointer hover:bg-gray-50">
-                        <Search className="w-4 h-4 text-[#818898]" />
-                    </div>
+            {/* Search and Filters */}
+            <div className="w-full flex flex-col lg:flex-row gap-4 justify-between items-center bg-white p-4 rounded-xl border border-[#DFE1E7] shadow-sm">
+                <div className="relative w-full lg:w-96">
+                    <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <input 
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="جستجو در محصولات..."
+                        className="w-full pr-10 pl-4 py-2.5 rounded-lg border border-[#DFE1E7] focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500/50 text-sm font-['PeydaWeb'] font-medium transition-all"
+                    />
                 </div>
-                <div className="text-[#0D0D12] text-base font-semibold leading-normal tracking-wide">
-                    جدول محصولات
+                <div className="flex flex-row items-center gap-3 w-full lg:w-auto">
+                    {/* Status Filter */}
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg border border-[#DFE1E7] bg-white hover:bg-gray-50 transition-colors flex-1 sm:flex-none sm:w-[180px] relative">
+                            <Filter className="w-4 h-4 text-gray-500 shrink-0" />
+                            <select 
+                                value={statusFilter}
+                                onChange={(e) => setStatusFilter(e.target.value as any)}
+                                className="bg-transparent border-none outline-none text-sm font-['PeydaWeb'] font-medium text-[#0D0D12] cursor-pointer w-full appearance-none py-0.5 z-10"
+                            >
+                                <option value="all">همه وضعیت‌ها</option>
+                                <option value="approved">تایید شده</option>
+                                <option value="pending">در انتظار تایید</option>
+                            </select>
+                            <ChevronLeft className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    </div>
+
+                    {/* Sort Filter */}
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg border border-[#DFE1E7] bg-white hover:bg-gray-50 transition-colors flex-1 sm:flex-none sm:w-[180px] relative">
+                            <ArrowUpDown className="w-4 h-4 text-gray-500 shrink-0" />
+                            <select 
+                                value={sortOption}
+                                onChange={(e) => setSortOption(e.target.value)}
+                                className="bg-transparent border-none outline-none text-sm font-['PeydaWeb'] font-medium text-[#0D0D12] cursor-pointer w-full appearance-none py-0.5 z-10"
+                            >
+                                <option value="newest">جدیدترین</option>
+                                <option value="oldest">قدیمی‌ترین</option>
+                                <option value="price-asc">ارزان‌ترین</option>
+                                <option value="price-desc">گران‌ترین</option>
+                                <option value="sold-desc">پرفروش‌ترین</option>
+                            </select>
+                            <ChevronLeft className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    </div>
                 </div>
             </div>
 
-            {/* Scrollable Container */}
-            <div 
-                ref={scrollContainerRef}
-                className="w-full overflow-x-auto flex flex-col"
-            >
-                {/* Table Column Headers */}
-                <div className="flex min-w-max px-[9px] bg-[#F6F8FA] border-b border-[#DFE1E7] justify-end items-center">
-                    {/* 1. Empty for Icon */}
-                    <div className="w-[44px] h-10 px-3 bg-[#F6F8FA]" />
+            {/* Table */}
+            <div className="w-full bg-white shadow-sm rounded-xl border border-[#DFE1E7] flex flex-col overflow-hidden mb-8">
+                
+                {/* Scrollable Table Container */}
+                <div className="w-full overflow-x-auto">
+                    <table className="w-full text-sm text-right">
+                    <thead className="bg-[#F9FAFB] border-b border-[#E5E7EB]">
+                        <tr>
+                            <th className="px-4 py-4 text-[#666D80] font-medium text-sm font-['PeydaWeb'] w-[50px] text-center">#</th>
+                            <th className="px-6 py-4 text-[#666D80] font-medium text-sm font-['PeydaWeb'] min-w-[300px]">محصول</th>
+                            <th className="px-6 py-4 text-[#666D80] font-medium text-sm font-['PeydaWeb'] text-center whitespace-nowrap">قیمت (ریال)</th>
+                            <th className="px-6 py-4 text-[#666D80] font-medium text-sm font-['PeydaWeb'] text-center whitespace-nowrap">موجودی</th>
+                            <th className="px-6 py-4 text-[#666D80] font-medium text-sm font-['PeydaWeb'] text-center whitespace-nowrap">فروش</th>
+                            <th className="px-6 py-4 text-[#666D80] font-medium text-sm font-['PeydaWeb'] text-center whitespace-nowrap">وضعیت</th>
+                            <th className="px-6 py-4 w-[60px]"></th>
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#E5E7EB]">
+                        {filteredAndSortedProducts.length === 0 ? (
+                            <tr>
+                                <td colSpan={7} className="px-6 py-12 text-center text-gray-500 font-['PeydaWeb']">
+                                    هیچ محصولی با این مشخصات یافت نشد.
+                                </td>
+                            </tr>
+                        ) : (
+                            currentProducts.map((product, index) => (
+                                <tr 
+                                    key={product.id} 
+                                    className="hover:bg-gray-50/80 transition-colors group cursor-pointer"
+                                    onClick={() => router.push(`/StudentDashboard/EditeProducts?id=${product.id}`)}
+                                >
+                                    {/* Number */}
+                                    <td className="px-4 py-4 text-center text-[#666D80] font-['PeydaFaNum'] font-medium">
+                                        {toFarsiNumber((currentPage - 1) * itemsPerPage + index + 1)}
+                                    </td>
 
-                    {/* 2. Trend */}
-                    <div className="w-[104px] h-10 px-3 bg-[#F6F8FA] flex justify-end items-center gap-2.5">
-                        <div className="flex justify-start items-center gap-1.5">
-                            <div className="text-[#666D80] text-sm font-semibold leading-[21px] tracking-wide">روند</div>
-                        </div>
-                    </div>
+                                    {/* Product */}
+                                    <td className="px-6 py-4">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-12 h-12 rounded-lg border border-gray-100 overflow-hidden flex-shrink-0 bg-gray-50">
+                                                {product.images?.[0] ? (
+                                                    <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover" />
+                                                ) : (
+                                                    <div className="w-full h-full flex items-center justify-center text-gray-300">
+                                                        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                        </svg>
+                                                    </div>
+                                                )}
+                                            </div>
+                                            <div className="flex flex-col gap-1 min-w-0">
+                                                <span className="text-[#0D0D12] font-semibold font-['PeydaWeb'] truncate" title={product.name}>
+                                                    {product.name}
+                                                </span>
+                                                <span className="text-[#666D80] text-xs font-['Geist'] bg-gray-100 px-1.5 py-0.5 rounded w-fit">
+                                                    {product.code || 'NK----'}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </td>
 
-                    {/* 3. Inventory */}
-                    <div className="w-[127px] h-10 px-3 bg-[#F6F8FA] flex justify-center items-center gap-2.5">
-                        <div className="flex justify-start items-center gap-1.5">
-                            <div className="text-center text-[#666D80] text-sm font-semibold leading-[21px] tracking-wide">موجودی</div>
-                        </div>
-                    </div>
+                                    {/* Price */}
+                                    <td className="px-6 py-4 text-center">
+                                        <span className="text-[#0D0D12] font-bold font-['PeydaFaNum'] text-sm">
+                                            {toFarsiNumber(formatPrice(product.price))}
+                                        </span>
+                                    </td>
 
-                    {/* 4. Revenue */}
-                    <div className="w-[140px] h-10 px-3 bg-[#F6F8FA] flex justify-center items-center gap-2.5">
-                    <div className="flex justify-start items-center gap-1.5">
-                            <div className="text-center text-[#666D80] text-sm font-semibold leading-[21px] tracking-wide">درآمد</div>
-                        </div>
-                    </div>
+                                    {/* Inventory */}
+                                    <td className="px-6 py-4 text-center">
+                                        <span className={cn(
+                                            "font-['PeydaFaNum'] font-medium text-sm px-2.5 py-1 rounded-full",
+                                            product.inventoryCount === 0 ? "bg-red-50 text-red-600" : 
+                                            product.inventoryCount < 10 ? "bg-amber-50 text-amber-600" : "text-[#0D0D12]"
+                                        )}>
+                                            {product.inventoryCount === 0 ? 'ناموجود' : toFarsiNumber(product.inventoryCount)}
+                                        </span>
+                                    </td>
 
-                    {/* 5. Sold */}
-                    <div className="w-[138px] h-10 px-3 bg-[#F6F8FA] flex justify-center items-center gap-2.5">
-                        <div className="flex justify-start items-center gap-1.5">
-                            <div className="text-center text-[#666D80] text-sm font-semibold leading-[21px] tracking-wide">فروخته شده</div>
-                        </div>
-                    </div>
+                                    {/* Sold */}
+                                    <td className="px-6 py-4 text-center">
+                                        <span className="text-[#666D80] font-['PeydaFaNum'] text-sm">
+                                            {toFarsiNumber(product.soldCount)}
+                                        </span>
+                                    </td>
 
-                    {/* 6. Product */}
-                    <div className="w-[177px] h-10 px-3 bg-[#F6F8FA] flex justify-end items-center gap-2.5">
-                        <div className="flex justify-start items-center gap-1.5">
-                            <div className="text-right text-[#666D80] text-sm font-semibold leading-[21px] tracking-wide">محصول</div>
-                        </div>
-                    </div>
+                                    {/* Status */}
+                                    <td className="px-6 py-4 text-center">
+                                        <span className={cn(
+                                            "px-2.5 py-1 rounded-full text-xs font-medium font-['PeydaWeb'] border whitespace-nowrap",
+                                            product.approved 
+                                                ? "bg-[#ECFdf5] text-[#10B981] border-[#D1FAE5]" 
+                                                : "bg-[#FEFCE8] text-[#EAB308] border-[#FEF9C3]"
+                                        )}>
+                                            {product.approved ? 'تایید شده' : 'در انتظار تایید'}
+                                        </span>
+                                    </td>
 
-                    {/* 7. Number & Checkbox */}
-                    <div className="w-20 h-10 px-3 bg-[#F6F8FA] flex justify-end items-center gap-2.5">
-                        <div className="flex justify-start items-center gap-1.5">
-                            <div className="text-[#666D80] text-sm font-semibold leading-[21px] tracking-wide">شماره</div>
-                        </div>
-                        <div className="w-4 h-4 bg-white rounded border border-[#DFE1E7]" />
-                    </div>
-                </div>
-
-                {/* Rows */}
-                {currentProducts.map((p, i) => (
-                    <ProductTableRow 
-                        key={p.id} 
-                        product={p} 
-                        index={i} 
-                        isChecked={checkedIds.includes(p.id)} 
-                        onToggle={toggleId}
-                        onDelete={onDelete}
-                    />
-                ))}
+                                    {/* Actions */}
+                                    <td className="px-6 py-4 text-left">
+                                        <ActionMenu 
+                                            onEdit={() => router.push(`/StudentDashboard/EditeProducts?id=${product.id}`)}
+                                            onDelete={() => onDelete?.(product.id)}
+                                        />
+                                    </td>
+                                </tr>
+                            ))
+                        )}
+                    </tbody>
+                </table>
             </div>
 
             {/* Pagination Footer */}
-            <div className="w-full px-5 py-4 flex justify-between items-center">
-                <div className="text-center text-[#0D0D12] text-sm font-num-medium leading-[21px] tracking-wide">
-                    صفحه {currentPage.toLocaleString('fa-IR')} از {totalPages.toLocaleString('fa-IR')}
-                </div>
-                <div className="flex justify-start items-center gap-2">
-                    {/* Previous Button */}
-                    <button 
-                        onClick={handlePrevPage}
-                        disabled={currentPage === 1}
-                        className={cn(
-                            "w-8 h-8 bg-white rounded-lg border border-[#DFE1E7] flex justify-center items-center gap-2 transition-colors",
-                            currentPage === 1 ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-50 bg-white"
-                        )}
-                    >
-                         <ChevronLeft className="w-5 h-5 text-[#0D0D12]" />
-                    </button>
-
-                    {/* Page Indicator */}
-                    <div className="w-[55px] h-8 rounded-lg border border-[#DFE1E7] flex flex-col justify-center items-center gap-2">
-                        <div className="flex flex-col justify-center text-[#0D0D12] text-xs font-num-medium leading-[18px] tracking-wide">
-                             {currentPage.toLocaleString('fa-IR')}/{totalPages.toLocaleString('fa-IR')}
-                        </div>
+            {products.length > 0 && (
+                <div className="w-full px-5 py-4 flex justify-between items-center border-t border-[#E5E7EB] bg-gray-50/30">
+                    <div className="text-center text-[#666D80] text-sm font-num-medium leading-[21px] tracking-wide">
+                        صفحه {toFarsiNumber(currentPage)} از {toFarsiNumber(totalPages)}
                     </div>
+                    <div className="flex justify-start items-center gap-2">
+                        <button 
+                            onClick={handlePrevPage}
+                            disabled={currentPage === 1}
+                            className={cn(
+                                "w-9 h-9 bg-white rounded-lg border border-[#DFE1E7] flex justify-center items-center transition-all",
+                                currentPage === 1 ? "opacity-50 cursor-not-allowed bg-gray-50" : "hover:bg-white hover:shadow-sm hover:border-gray-300"
+                            )}
+                        >
+                             <ChevronRight className="w-5 h-5 text-[#666D80]" />
+                        </button>
 
-                    {/* Next Button */}
-                    <button 
-                         onClick={handleNextPage}
-                         disabled={currentPage === totalPages}
-                         className={cn(
-                            "w-8 h-8 bg-white rounded-lg border border-[#DFE1E7] flex justify-center items-center gap-2 transition-colors",
-                            currentPage === totalPages ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-50 bg-white"
-                         )}
-                    >
-                         <ChevronRight className="w-5 h-5 text-[#0D0D12]" />
-                    </button>
+                        <div className="h-9 min-w-[36px] px-3 bg-white rounded-lg border border-[#DFE1E7] flex items-center justify-center text-[#0D0D12] text-sm font-['PeydaFaNum'] font-medium">
+                             {toFarsiNumber(currentPage)}
+                        </div>
+
+                        <button 
+                             onClick={handleNextPage}
+                             disabled={currentPage === totalPages}
+                             className={cn(
+                                "w-9 h-9 bg-white rounded-lg border border-[#DFE1E7] flex justify-center items-center transition-all",
+                                currentPage === totalPages ? "opacity-50 cursor-not-allowed bg-gray-50" : "hover:bg-white hover:shadow-sm hover:border-gray-300"
+                             )}
+                        >
+                             <ChevronLeft className="w-5 h-5 text-[#666D80]" />
+                        </button>
+                    </div>
                 </div>
+            )}
             </div>
-
         </div>
     );
 }
