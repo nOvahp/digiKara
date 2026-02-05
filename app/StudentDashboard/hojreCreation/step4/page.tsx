@@ -91,6 +91,9 @@ export default function ShopCategoryPage() {
 
         if (result.success) {
             console.log("Shop Created Successfully:", result);
+            if (typeof window !== 'undefined') {
+                localStorage.setItem('hojre_created', 'true');
+            }
             router.push('/StudentDashboard/hojreCreation/success'); 
         } else {
             console.error("Shop Creation Failed:", result.message);

@@ -1,14 +1,16 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { ChevronRight, ArrowUpRight } from 'lucide-react'; 
 import { useRouter } from 'next/navigation';
 import { Navigation } from '@/app/StudentDashboard/layout/Navigation';
 import { Button } from "@/components/ui/button";
+import { AddProductFlow } from '@/app/StudentDashboard/features/products/Sells/components/AddProductFlow';
 
-export default function ShopCreationSuccessPage() {
+export default function ShopSuccessPage() {
     const router = useRouter();
+    const [isAddProductOpen, setIsAddProductOpen] = useState(false);
 
     return (
         <div className="w-full min-h-screen bg-white flex flex-col items-center font-sans pb-24 relative overflow-x-hidden">
@@ -65,6 +67,7 @@ export default function ShopCreationSuccessPage() {
 
                     {/* Add Product */}
                     <Button 
+                        onClick={() => setIsAddProductOpen(true)}
                         className="h-10 px-6 bg-[#FDD00A] hover:bg-[#eac009] text-[#0A0A0A] text-sm font-semibold font-['PeydaWeb'] shadow-sm border-none"
                     >
                         افزودن محصول
@@ -74,6 +77,11 @@ export default function ShopCreationSuccessPage() {
 
             {/* Navigation Bar */}
             <Navigation />
+            
+            <AddProductFlow 
+                isOpen={isAddProductOpen} 
+                onClose={() => setIsAddProductOpen(false)}
+            />
         </div>
     );
 }

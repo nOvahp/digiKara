@@ -1,5 +1,5 @@
 import React from 'react';
-import { X } from 'lucide-react';
+import { X, Check } from 'lucide-react';
 
 interface NewProductPage7Props {
     onClose: () => void;
@@ -16,67 +16,60 @@ export function NewProductPage7({ onClose, onReset, onStepClick }: NewProductPag
                 onClick={onClose}
             />
 
-            {/* Modal Content */}
-            <div className="relative w-[375px] bg-white rounded-2xl shadow-xl flex flex-col overflow-hidden items-center">
+            {/* Modal Content - Based on User Design */}
+            <div className="relative w-[375px] h-[834px] max-h-[90vh] bg-white rounded-2xl shadow-xl flex flex-col overflow-hidden items-center">
                 
                 {/* Header */}
                 <div className="w-full px-5 py-5 border-b border-[#DFE1E7] flex justify-between items-center bg-white z-10">
-                    <div className="w-10 h-10 relative overflow-hidden rounded-full border border-[#DFE1E7] flex items-center justify-center cursor-pointer hover:bg-gray-50" onClick={onClose}>
-                        <div className="absolute w-6 h-6 overflow-hidden flex items-center justify-center">
-                             <X className="w-5 h-5 text-[#0D0D12]" />
+                    <div 
+                        className="w-10 h-10 relative overflow-hidden rounded-full border border-[#DFE1E7] flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors" 
+                        onClick={onClose}
+                    >
+                        <div className="w-6 h-6 flex items-center justify-center">
+                            <X className="w-5 h-5 text-[#0D0D12]" />
                         </div>
                     </div>
-                    <div className="text-[#0D0D12] text-lg font-semibold leading-relaxed tracking-wide">
+                    <div className="text-[#0D0D12] text-lg font-semibold font-['PeydaWeb'] leading-relaxed tracking-wide">
                         افزودن محصول جدید
                     </div>
                 </div>
 
-                {/* Scrollable Body - Aligned with previous pages (Progress Bar) */}
-                <div className="w-full">
-                    {/* Progress Steps */}
-                    <div className="w-full px-5 py-5 border-b border-[#DFE1E7] flex items-center gap-4 overflow-x-auto" dir="rtl">
-                         <StepItem number="1" label="اطلاعات پایه" state="completed" onClick={() => onStepClick('step1')} />
-                         <StepItem number="2" label="قیمت گذاری" state="completed" onClick={() => onStepClick('step3')} />
-                         <StepItem number="3" label="موجودی" state="completed" onClick={() => onStepClick('step4')} />
-                         <StepItem number="4" label="دسته بندی و برچسب ها" state="completed" onClick={() => onStepClick('step5')} />
-                         <StepItem number="5" label="تائید نهایی" state="active" onClick={() => onStepClick('step6')} />
-                    </div>
-                </div>
-
-                {/* Success Content */}
-                <div className="w-full h-[610px] flex flex-col justify-center items-center gap-6">
+                {/* Body Content */}
+                <div className="flex-1 w-full flex flex-col justify-center items-center gap-6 px-4">
                     
-                    {/* Icon Construction */}
-                    <div className="w-[120px] h-[120px] relative bg-[#FFDD89] overflow-hidden rounded-[80px]">
-                        <div className="absolute left-[22.5px] top-[22.5px] w-[75px] h-[75px] bg-[#FFB600] overflow-hidden rounded-[80px]">
-                             {/* Inner graphic elements based on provided styling */}
-                             <div className="absolute left-[18px] top-[18px] w-[64px] h-[64px]" /> 
-                             <div className="absolute left-[21.5px] top-[21.5px] w-[32px] h-[32px] overflow-hidden">
-                                 <div className="absolute w-[26.67px] h-[26.67px] left-[2.67px] top-[2.67px] border-2 border-[#0D0D12] rounded-sm"></div>
-                                 <div className="absolute w-[10.67px] h-[8px] left-[10.67px] top-[12px] border-2 border-[#0D0D12] rounded-sm"></div>
-                             </div>
+                    {/* Illustration Circle */}
+                    <div className="w-[120px] h-[120px] relative bg-[#FFDD89] rounded-full overflow-hidden flex items-center justify-center">
+                        <div className="w-[75px] h-[75px] bg-[#FFB600] rounded-full overflow-hidden relative flex items-center justify-center">
+                            {/* Graphic Elements from design (converted to tailwind/css) */}
+                            {/* The user's code had specific outlines. Using simple divs to replicate the 'Package' look */}
+                            <div className="relative w-8 h-8">
+                                {/* Outer Box */}
+                                <div className="absolute left-[3px] top-[3px] w-[26px] h-[26px] border-[2px] border-[#0D0D12] rounded-[1px]"></div>
+                                {/* Inner Mark */}
+                                <div className="absolute left-[11px] top-[12px] w-[10px] h-[8px] border-[2px] border-[#0D0D12] rounded-[1px]"></div>
+                            </div>
                         </div>
                     </div>
 
-                    {/* Message */}
-                    <div className="w-full flex flex-col items-center gap-1.5 ">
-                        <div className="text-center text-black text-[28px] font-semibold">
+                    {/* Success Message */}
+                    <div className="flex flex-col items-center gap-5 w-full">
+                        <div className="text-center text-black text-[28px] font-semibold font-['PeydaWeb']">
                             با موفقیت افزوده شد
                         </div>
-                        <div className="text-center text-black text-xs font-light w-[293px]">
-                            محصول پس از تائید مدرسه  به انتشار عمومی درخواهد آمد.
+                        <div className="text-center text-black text-xs font-light font-['PeydaWeb'] w-[293px] leading-relaxed">
+                            محصول پس از تائید مدرسه به انتشار عمومی درخواهد آمد.
                         </div>
                     </div>
 
                 </div>
 
-                {/* Footer */}
-                <div className="w-full px-5 py-5 border-t border-[#DFE1E7] bg-white flex justify-end items-center gap-3.5 mt-auto">
+                {/* Footer Button */}
+                <div className="w-full px-5 py-5 flex justify-center items-center gap-3.5 mb-5">
                      <button 
                         onClick={onReset}
-                        className="flex-1 h-10 px-4 py-2 bg-gradient-to-t from-[rgba(255,255,255,0)] to-[rgba(255,255,255,0.15)] bg-[#0A33FF] shadow-[0px_1px_2px_rgba(13,13,18,0.06)] rounded-lg border border-[#0A33FF] flex justify-center items-center gap-2 hover:opacity-90 transition-opacity"
+                        className="w-full h-14 bg-[#FDD00A] rounded-xl flex justify-center items-center gap-2 hover:opacity-90 transition-opacity active:scale-[0.98]"
                      >
-                         <span className="text-center text-white text-sm font-semibold leading-[21px] tracking-wide">
+                         <span className="text-center text-[#1A1C1E] text-lg font-semibold font-['PeydaWeb'] leading-normal">
                              افزودن محصول جدید
                          </span>
                      </button>
@@ -87,28 +80,4 @@ export function NewProductPage7({ onClose, onReset, onStepClick }: NewProductPag
     );
 }
 
-// Helpers
-
-function StepItem({ number, label, state, onClick }: { number: string, label: string, state: 'active' | 'completed' | 'inactive', onClick?: () => void }) {
-    let circleClass = 'bg-[#DFE1E7] text-white';
-    let textClass = 'text-[#818898] font-semibold';
-
-    if (state === 'active') {
-        circleClass = 'bg-[#FFD369] text-white'; 
-        textClass = 'text-[#0D0D12] font-semibold'; 
-    } else if (state === 'completed') {
-        circleClass = 'bg-[#DFE1E7] text-white'; 
-        textClass = 'text-[#818898] font-semibold'; 
-    }
-
-    return (
-        <div className="flex items-center gap-2.5 flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity" onClick={onClick}>
-            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-num-medium leading-[21px] tracking-wide ${circleClass}`}>
-                {number}
-            </div>
-            <span className={`text-sm leading-[21px] tracking-wide whitespace-nowrap ${textClass}`}>
-                {label}
-            </span>
-        </div>
-    );
-}
+// Add simple helper for illustration if needed, but inline is fine for this single use.

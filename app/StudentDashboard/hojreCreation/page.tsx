@@ -14,6 +14,15 @@ const illustrationPath = "/man bought a lot of gifts at the store.png";
 export default function DashboardEmptyPage() {
     const router = useRouter();
 
+    React.useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const isCreated = localStorage.getItem('hojre_created');
+            if (isCreated === 'true') {
+                router.replace('/StudentDashboard/hojreCreation/success');
+            }
+        }
+    }, [router]);
+
     return (
          <div className="w-full min-h-screen bg-white flex flex-col items-center overflow-hidden font-sans pb-20">
              
