@@ -35,29 +35,68 @@ type FormValues = {
   experience: number;
 };
 
+import { useShopCreation } from '../context/ShopCreationContext';
+import { shopService } from '../../../services/student/shopService';
+
+// ... (keep default imports)
+
 export default function ShopCategoryPage() {
     const router = useRouter();
     const activeStepRef = React.useRef<HTMLDivElement>(null);
+    const { state, updateState } = useShopCreation();
 
     const { register, control, handleSubmit, formState: { errors } } = useForm<FormValues>({
         resolver: zodResolver(formSchema) as any, 
         defaultValues: {
             experience: 0, 
-            workCategory: "",
-            abilities: ""
+            workCategory: state.workCategory || "",
+            abilities: state.skill || ""
         }
     });
 
     // Auto-scroll to active step on mount
     React.useEffect(() => {
-        if (activeStepRef.current) {
-            activeStepRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-        }
+        // ... (keep useEffect)
+        // Small timeout to ensure layout is calculated including the new padding/gap
+        const timer = setTimeout(() => {
+            if (activeStepRef.current) {
+                activeStepRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+        }, 100); 
+        return () => clearTimeout(timer);
     }, []);
 
-    const onSubmit = (data: FormValues) => {
-        console.log("Form Data:", data);
-        router.push('/StudentDashboard/hojreCreation/success'); 
+    const onSubmit = async (data: FormValues) => {
+        console.log("Submitting Shop Creation...", data);
+        
+        // Construct Payload
+        const formData = new FormData();
+        formData.append('name', state.name); // From Step 3
+        formData.append('description', state.description); // From Step 3
+        formData.append('skill', data.abilities); // Mapped from 'abilities'
+        formData.append('experience', data.experience.toString());
+        // Work Category is not in required API spec but we can send it or append to skill if needed
+        // For now, assuming API ignores extras or we keep it out if not requested. 
+        // User requested: experience, image, name, skill, description.
+        
+        if (state.logo) {
+            formData.append('image', state.logo);
+        } else {
+             // Handle case where logo is missing if required
+             console.warn("Logo image is missing!");
+             // In a real app we might show an error or require it in Step 3
+        }
+
+        const result = await shopService.createShop(formData);
+
+        if (result.success) {
+            console.log("Shop Created Successfully:", result);
+            router.push('/StudentDashboard/hojreCreation/success'); 
+        } else {
+            console.error("Shop Creation Failed:", result.message);
+            // Optionally show toast error here
+            alert(result.message || 'خطا در ساخت حجره');
+        }
     };
 
     return (
@@ -75,7 +114,7 @@ export default function ShopCategoryPage() {
                 </div>
 
                 {/* Steps Indicator: Step 3 Active */}
-                <div className="w-full border-b border-[#DFE1E7] py-5 flex justify-end items-center gap-3 overflow-x-auto no-scrollbar">
+                <div className="w-full border-b border-[#DFE1E7] py-5 flex items-center gap-4 overflow-x-auto no-scrollbar px-4">
                     
                     {/* Step 3 (Active - Yellow) */}
                     <div ref={activeStepRef} className="flex justify-start items-center gap-2 shrinks-0 whitespace-nowrap">

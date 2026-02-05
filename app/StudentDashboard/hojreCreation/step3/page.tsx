@@ -23,20 +23,31 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
+import { useShopCreation } from '../context/ShopCreationContext';
+
+// ... (keep imports)
+
 export default function ShopIdentityPage() {
     const router = useRouter();
-    const [logoPreview, setLogoPreview] = useState<string | null>(null);
+    const { state, updateState } = useShopCreation();
+    const [logoPreview, setLogoPreview] = useState<string | null>(state.logoPreview);
 
     const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
         resolver: zodResolver(formSchema),
+        defaultValues: {
+            shopName: state.name,
+            shopDescription: state.description
+        }
     });
 
     const onSubmit = (data: FormValues) => {
-        console.log("Form Data:", data);
-        // Navigate to next step or save data
-                            console.log("Proceeding to next step");
-                            // router.push('/StudentDashboard/hojreCreation/step4');
-                            router.push('/StudentDashboard/hojreCreation/step4'); 
+        console.log("Saving Step 3 Data:", data);
+        updateState({
+            name: data.shopName,
+            description: data.shopDescription,
+            // Logo file is already in state if uploaded, or handled via handleLogoChange
+        });
+        router.push('/StudentDashboard/hojreCreation/step4'); 
     };
 
     const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,7 +55,9 @@ export default function ShopIdentityPage() {
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setLogoPreview(reader.result as string);
+                const previewUrl = reader.result as string;
+                setLogoPreview(previewUrl);
+                updateState({ logo: file, logoPreview: previewUrl });
             };
             reader.readAsDataURL(file);
         }
