@@ -99,5 +99,90 @@ export const managerService = {
       console.error("approveStudentRequest Error:", error);
       return { success: false, message: error.message || 'خطای شبکه' };
     }
+  },
+
+  getManagerProducts: async (): Promise<{ success: boolean; data?: any[]; message?: string }> => {
+    try {
+      const response = await apiClient.get<any, any>('/manager/products');
+      
+      if (response.status === 'success' || response.code === 200) {
+        return { success: true, data: response.data };
+      }
+      return { success: false, message: response.message || 'خطا در دریافت لیست محصولات' };
+    } catch (error: any) {
+      console.error("getManagerProducts Error:", error);
+      return { success: false, message: error.message || 'خطای شبکه' };
+    }
+  },
+
+  getManagerProductById: async (id: number): Promise<{ success: boolean; data?: any; message?: string }> => {
+    try {
+      const response = await apiClient.get<any, any>(`/manager/products/${id}`);
+      
+      if (response.status === 'success' || response.code === 200) {
+        return { success: true, data: response.data };
+      }
+      return { success: false, message: response.message || 'خطا در دریافت جزئیات محصول' };
+    } catch (error: any) {
+      console.error("getManagerProductById Error:", error);
+      return { success: false, message: error.message || 'خطای شبکه' };
+    }
+  },
+
+  approveManagerProduct: async (id: number): Promise<{ success: boolean; message?: string }> => {
+    try {
+      const response = await apiClient.put<any, any>(`/manager/products/${id}`);
+      
+      if (response.status === 'success' || response.code === 200) {
+        return { success: true, message: response.message || 'محصول با موفقیت تایید شد' };
+      }
+      return { success: false, message: response.message || 'خطا در تایید محصول' };
+    } catch (error: any) {
+      console.error("approveManagerProduct Error:", error);
+      return { success: false, message: error.message || 'خطای شبکه' };
+    }
+  },
+
+  // Manager Orders
+  getManagerOrders: async (): Promise<{ success: boolean; data?: any[]; message?: string }> => {
+    try {
+      const response = await apiClient.get<any, any>('/manager/orders');
+      
+      if (response.status === 'success' || response.code === 200) {
+        return { success: true, data: response.data };
+      }
+      return { success: false, message: response.message || 'خطا در دریافت لیست سفارشات' };
+    } catch (error: any) {
+      console.error("getManagerOrders Error:", error);
+      return { success: false, message: error.message || 'خطای شبکه' };
+    }
+  },
+
+  getManagerOrderById: async (id: number | string): Promise<{ success: boolean; data?: any; message?: string }> => {
+    try {
+      const response = await apiClient.get<any, any>(`/manager/orders/${id}`);
+      
+      if (response.status === 'success' || response.code === 200) {
+        return { success: true, data: response.data };
+      }
+      return { success: false, message: response.message || 'خطا در دریافت جزئیات سفارش' };
+    } catch (error: any) {
+      console.error("getManagerOrderById Error:", error);
+      return { success: false, message: error.message || 'خطای شبکه' };
+    }
+  },
+
+  updateManagerOrder: async (id: number | string, data: any): Promise<{ success: boolean; message?: string }> => {
+    try {
+      const response = await apiClient.put<any, any>(`/manager/orders/${id}`, data);
+      
+      if (response.status === 'success' || response.code === 200) {
+        return { success: true, message: response.message || 'وضعیت سفارش با موفقیت تغییر کرد' };
+      }
+      return { success: false, message: response.message || 'خطا در تغییر وضعیت سفارش' };
+    } catch (error: any) {
+      console.error("updateManagerOrder Error:", error);
+      return { success: false, message: error.message || 'خطای شبکه' };
+    }
   }
 };
