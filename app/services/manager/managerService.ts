@@ -57,5 +57,47 @@ export const managerService = {
       console.error("reportSchoolDiscrepancy Error:", error);
       return { success: false, message: error.message || 'خطای شبکه' };
     }
+  },
+
+  getStudentRequests: async (): Promise<{ success: boolean; data?: any[]; message?: string }> => {
+    try {
+      const response = await apiClient.get<any, any>('/manager/students');
+      
+      if (response.status === 'success' || response.code === 200) {
+        return { success: true, data: response.data };
+      }
+      return { success: false, message: response.message || 'خطا در دریافت لیست درخواست‌ها' };
+    } catch (error: any) {
+      console.error("getStudentRequests Error:", error);
+      return { success: false, message: error.message || 'خطای شبکه' };
+    }
+  },
+
+  getStudentRequestById: async (id: number): Promise<{ success: boolean; data?: any; message?: string }> => {
+    try {
+      const response = await apiClient.get<any, any>(`/manager/students/${id}`);
+      
+      if (response.status === 'success' || response.code === 200) {
+        return { success: true, data: response.data };
+      }
+      return { success: false, message: response.message || 'خطا در دریافت جزئیات درخواست' };
+    } catch (error: any) {
+      console.error("getStudentRequestById Error:", error);
+      return { success: false, message: error.message || 'خطای شبکه' };
+    }
+  },
+
+  approveStudentRequest: async (id: number): Promise<{ success: boolean; message?: string }> => {
+    try {
+      const response = await apiClient.put<any, any>(`/manager/students/${id}`);
+      
+      if (response.status === 'success' || response.code === 200) {
+        return { success: true, message: response.message || 'درخواست با موفقیت تایید شد' };
+      }
+      return { success: false, message: response.message || 'خطا در تایید درخواست' };
+    } catch (error: any) {
+      console.error("approveStudentRequest Error:", error);
+      return { success: false, message: error.message || 'خطای شبکه' };
+    }
   }
 };
