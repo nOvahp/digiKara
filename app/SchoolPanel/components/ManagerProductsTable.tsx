@@ -129,7 +129,7 @@ const ManagerProductsTable = () => {
                             placeholder="جستجو در محصولات..." 
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full h-10 pr-9 pl-4 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] text-sm text-[#0D0D12] focus:outline-blue-500 transition-colors font-['PeydaWeb']"
+                            className="w-full h-10 pr-9 pl-4 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] text-sm text-[#0D0D12] focus:outline-blue-500 transition-colors font-medium"
                         />
                         <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#818898]" />
                     </div>
@@ -142,7 +142,7 @@ const ManagerProductsTable = () => {
                                  onClick={() => setIsFilterOpen(!isFilterOpen)}
                              >
                                 <Filter className={`w-4 h-4 ${filterStatus !== 'all' ? 'text-[#F7C61A]' : 'text-[#818898]'}`} />
-                                <span className="text-xs font-semibold font-['PeydaWeb'] text-[#666D80]">
+                                <span className="text-xs font-semibold  text-[#666D80]">
                                     {filterStatus === 'all' ? 'همه' : filterStatus === 'approved' ? 'تایید شده' : 'در انتظار'}
                                 </span>
                             </div>
@@ -240,7 +240,7 @@ const ManagerProductsTable = () => {
                             
                             return (
                                 <div key={product.id} onClick={() => handleProductClick(product)} className="w-full h-16 border-b border-[#DFE1E7] flex justify-end items-center px-2 hover:bg-gray-50 transition-colors cursor-pointer group">
-                                     <div className="w-16 h-16 px-3 flex justify-start items-center gap-2.5">
+                                    <div className="w-16 h-16 px-3 flex justify-start items-center gap-2.5">
                                         <span className="text-center text-[#0D0D12] text-sm font-num-medium font-semibold flex-1">{toFarsiNumber(itemIndex)}</span>
                                         <div className="w-4 h-4 bg-white rounded border border-[#DFE1E7] cursor-pointer" />
                                     </div>

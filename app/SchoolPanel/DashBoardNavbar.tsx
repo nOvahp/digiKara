@@ -9,7 +9,19 @@ import Notifications from "./Reports/Notifications";
 
 const DashBoardNavbar = () => {
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+    const [schoolInfo, setSchoolInfo] = useState<{ school: string; city: string; province: string } | null>(null);
     const router = useRouter();
+
+    React.useEffect(() => {
+        const storedInfo = localStorage.getItem('managerSchoolInfo');
+        if (storedInfo) {
+            try {
+                setSchoolInfo(JSON.parse(storedInfo));
+            } catch (e) {
+                console.error("Failed to parse school info", e);
+            }
+        }
+    }, []);
 
   return (
     <div className="w-full flex flex-col justify-start items-center inline-flex bg-white pb-3 pt-0" dir="ltr">
@@ -45,10 +57,10 @@ const DashBoardNavbar = () => {
         <div className="flex justify-start items-center gap-3">
             <div className="flex flex-col justify-start items-end gap-1 inline-flex">
                 <div className="text-right text-[#222831] text-base font-num-medium font-extrabold leading-snug break-word">
-                    مدرسه هنرهای زیبا 
+                    {schoolInfo?.school || "مدرسه هنرهای زیبا"}
                 </div>
                 <div className="text-right text-[#61656B] text-xs font-num-medium font-extrabold break-word">
-                    ابهر، زنجان
+                    {schoolInfo ? `${schoolInfo.city}، ${schoolInfo.province}` : "ابهر، زنجان"}
                 </div>
             </div>
             <div className="relative flex justify-start items-end">
@@ -61,7 +73,7 @@ const DashBoardNavbar = () => {
                       className="rounded-full absolute left-0 top-0 object-cover"
                     />
                 </div>
-                <div className="w-[13.13px] h-[13.12px] left-0 top-[26.88px] absolute bg-[#64B327] shadow-[0px_0px_4px_rgba(0,0,0,0.25)] border-2 border-[#FFD369] rounded-full" />
+                
             </div>
         </div>
 

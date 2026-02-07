@@ -109,7 +109,7 @@ const ManagerOrdersTable = () => {
                             placeholder="جستجو در سفارشات..." 
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full h-10 pr-9 pl-4 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] text-sm text-[#0D0D12] focus:outline-blue-500 transition-colors font-['PeydaWeb']"
+                            className="w-full h-10 pr-9 pl-4 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] text-sm text-[#0D0D12] focus:outline-blue-500 transition-colors font-medium"
                         />
                         <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#818898]" />
                     </div>
@@ -179,14 +179,14 @@ const ManagerOrdersTable = () => {
                     <table className="w-full min-w-[800px]">
                         <thead className="bg-[#F0F3F7] h-[48px]">
                             <tr>
-                                <th className="px-6 text-right text-[#666D80] text-xs font-semibold font-['PeydaWeb']">#</th>
-                                <th className="px-6 text-right text-[#666D80] text-xs font-semibold font-['PeydaWeb']">کد سفارش</th>
-                                <th className="px-6 text-right text-[#666D80] text-xs font-semibold font-['PeydaWeb']">نام محصول</th>
-                                <th className="px-6 text-right text-[#666D80] text-xs font-semibold font-['PeydaWeb']">مشتری</th>
-                                <th className="px-6 text-right text-[#666D80] text-xs font-semibold font-['PeydaWeb']">مبلغ کل (ریال)</th>
-                                <th className="px-6 text-right text-[#666D80] text-xs font-semibold font-['PeydaWeb']">تاریخ</th>
-                                <th className="px-6 text-right text-[#666D80] text-xs font-semibold font-['PeydaWeb']">وضعیت</th>
-                                <th className="px-6 text-center text-[#666D80] text-xs font-semibold font-['PeydaWeb']">عملیات</th>
+                                <th className="px-6 text-right text-[#666D80] text-xs font-semibold ">#</th>
+                                <th className="px-6 text-right text-[#666D80] text-xs font-semibold ">کد سفارش</th>
+                                <th className="px-6 text-right text-[#666D80] text-xs font-semibold ">نام محصول</th>
+                                <th className="px-6 text-right text-[#666D80] text-xs font-semibold ">مشتری</th>
+                                <th className="px-6 text-right text-[#666D80] text-xs font-semibold ">مبلغ کل (ریال)</th>
+                                <th className="px-6 text-right text-[#666D80] text-xs font-semibold ">تاریخ</th>
+                                <th className="px-6 text-right text-[#666D80] text-xs font-semibold ">وضعیت</th>
+                                <th className="px-6 text-center text-[#666D80] text-xs font-semibold ">عملیات</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-[#F2F4F7]">
@@ -207,7 +207,7 @@ const ManagerOrdersTable = () => {
                                         <td className="px-6 py-4 text-[#0D0D12] text-sm font-num-medium font-normal">
                                             {toFarsiNumber(order.id)}
                                         </td>
-                                        <td className="px-6 py-4 text-[#0D0D12] text-sm font-medium font-['PeydaWeb']">
+                                        <td className="px-6 py-4 text-[#0D0D12] text-sm font-medium ">
                                             <div className="flex items-center gap-2">
                                                 {order.product?.image_path && (
                                                     <img src={`https://digikara.back.adiaweb.dev/storage/${order.product.image_path}`} alt="" className="w-8 h-8 rounded object-cover" />
@@ -215,7 +215,7 @@ const ManagerOrdersTable = () => {
                                                 <span className="line-clamp-1 max-w-[150px]">{order.product?.title || 'نامشخص'}</span>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 text-[#666D80] text-sm font-normal font-['PeydaWeb']">
+                                        <td className="px-6 py-4 text-[#666D80] text-sm font-normal ">
                                             {order.user?.firstname} {order.user?.lastname}
                                         </td>
                                         <td className="px-6 py-4 text-[#0D0D12] text-sm font-num-medium font-normal">

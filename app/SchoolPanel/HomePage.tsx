@@ -33,10 +33,54 @@ const toFarsiNumber = (n: number | string | undefined): string => {
     return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
 }
 
+import { managerService } from "@/app/services/manager/managerService";
+
 const SchoolHomePage = () => {
   const [currentPage, setCurrentPage] = React.useState(1);
   const [isProductPopUpOpen, setIsProductPopUpOpen] = React.useState(false);
   const [selectedProduct, setSelectedProduct] = React.useState<Product | null>(null);
+  
+  // Dashboard Stats
+  const [stats, setStats] = React.useState({
+      totalSales: 0,
+      activeBooths: 0,
+      activeStudents: 0,
+      ordersCount: 0
+  });
+
+  React.useEffect(() => {
+      const fetchStats = async () => {
+          try {
+              const [ordersRes, requestsRes] = await Promise.all([
+                  managerService.getManagerOrders(),
+                  managerService.getStudentRequests()
+              ]);
+
+              let totalSales = 0;
+              let ordersCount = 0;
+              if (ordersRes.success && ordersRes.data) {
+                  ordersCount = ordersRes.data.length;
+                  totalSales = ordersRes.data.reduce((sum: number, order: any) => sum + (Number(order.total_price) || 0), 0);
+              }
+
+              let activeBooths = 0;
+              let activeStudents = 0;
+              
+              if (requestsRes.success && requestsRes.data) {
+                   const approved = requestsRes.data.filter((r: any) => r.status === 'approved' || r.status === 'تایید شده');
+                   activeBooths = approved.length;
+                   activeStudents = approved.length; 
+              }
+
+              setStats({ totalSales, ordersCount, activeBooths, activeStudents });
+
+          } catch (error) {
+              console.error("Failed to fetch dashboard stats", error);
+          }
+      };
+
+      fetchStats();
+  }, []);
   
   // Filter & Scroll Logic
   const [isFilterOpen, setIsFilterOpen] = React.useState(false);
@@ -133,20 +177,14 @@ const SchoolHomePage = () => {
                </div>
                <span className="text-[#818898] text-sm font-['PeydaWeb'] font-semibold">کل فروش</span>
             </div>
-            <div className="flex items-center justify-end gap-2 w-full">
-               
-                <Badge className="bg-[#DDF3EF] text-[#28806F] hover:bg-[#DDF3EF] rounded-full px-2 py-0.5 text-xs font-num-medium">
-                 {toFarsiNumber("+12.4%")}
-               </Badge>
-               <span className="text-[#0D0D12] text-2xl  font-num-medium">۱,۱۲۰,۰۴۵,۰۰۰ ریال</span>
+            <div className="flex items-center justify-end gap-2 w-full mt-2">
+               <span className="text-[#0D0D12] text-2xl font-num-medium">{stats.totalSales.toLocaleString('fa-IR')} ریال</span>
             </div>
          </div>
-         <span className="text-[#818898] text-xs font-['PeydaWeb'] font-light self-end text-left w-full">از ماه گذشته</span>
       </Card>
 
       {/* Stats Section 2: Middle Row (Booths & Students) */}
       <div className="flex gap-3 w-full">
-         {/* Active Booths */}
          {/* Active Booths */}
          <div className="flex-1 p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] -outline-offset-1 flex flex-col justify-start items-start gap-2.5 relative">
             <div className="self-stretch flex flex-col justify-start items-start gap-0.5">
@@ -156,19 +194,12 @@ const SchoolHomePage = () => {
                   </div>
                   <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide break-word">حجره های فعال</div>
                </div>
-               <div className="self-stretch flex justify-start items-center gap-2">
-                  <div className="w-full text-center text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px] break-word">{toFarsiNumber(45)}</div>
+               <div className="self-stretch flex justify-start items-center gap-2 mt-2">
+                  <div className="w-full text-center text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px] break-word">{toFarsiNumber(stats.activeBooths)}</div>
                </div>
-            </div>
-            <div className="self-stretch flex justify-start items-center gap-1">
-               <div className="flex-1 text-center text-[#818898] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">از ماه گذشته</div>
-            </div>
-            <div className="absolute left-1/2 -translate-x-1/2 -bottom-3 bg-[#DDF3EF] rounded-[36px] flex justify-center items-center px-2 py-[1px] gap-0.5">
-               <div className="text-[#28806F] text-[10px] font-num-medium font-semibold leading-[15px] tracking-wide break-word">{toFarsiNumber("+15.1%")}</div>
             </div>
          </div>
 
-         {/* Active Students */}
          {/* Active Students */}
          <div className="flex-1 p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] -outline-offset-1 flex flex-col justify-start items-start gap-2.5 relative">
             <div className="self-stretch flex flex-col justify-start items-start gap-0.5">
@@ -178,25 +209,17 @@ const SchoolHomePage = () => {
                   </div>
                   <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide break-word">دانش آموزان فعال</div>
                </div>
-               <div className="w-full text-center rtl:flex rtl:justify-center rtl:items-baseline rtl:gap-1">
-                  <span className="text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px]">{toFarsiNumber(105)}</span>
-                  <span className="text-[#818898] text-sm font-num-medium">/{toFarsiNumber(120)}</span>
+               <div className="w-full text-center rtl:flex rtl:justify-center rtl:items-baseline rtl:gap-1 mt-2">
+                  <span className="text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px]">{toFarsiNumber(stats.activeStudents)}</span>
                </div>
-            </div>
-            <div className="self-stretch flex justify-start items-center gap-1">
-               <div className="flex-1 text-center text-[#818898] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">از ماه گذشته</div>
-            </div>
-            <div className="absolute left-1/2 -translate-x-1/2 -bottom-3 bg-[#DDF3EF] rounded-[36px] flex justify-center items-center px-2 py-[1px] gap-0.5">
-               <div className="text-[#28806F] text-[10px] font-num-medium font-semibold leading-[15px] tracking-wide break-word">{toFarsiNumber("+15.1%")}</div>
             </div>
          </div>
       </div>
 
-       {/* Stats Section 3: Bottom Row (Orders & Teams) */}
+       {/* Stats Section 3: Bottom Row (Orders) */}
        <div className="flex gap-3 w-full">
          {/* Orders */}
-         {/* Orders */}
-         <div className="flex-1 p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] -outline-offset-1 flex flex-col justify-start items-start gap-2.5 relative">
+         <div className="w-full p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] -outline-offset-1 flex flex-col justify-start items-start gap-2.5 relative">
             <div className="self-stretch flex flex-col justify-start items-start gap-0.5">
                <div className="self-stretch flex justify-start items-center gap-2.5">
                   <div className="w-8 h-8 bg-[#E8F5E9] rounded-lg shadow-inner flex items-center justify-center">
@@ -204,37 +227,9 @@ const SchoolHomePage = () => {
                   </div>
                   <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide break-word">سفارشات</div>
                </div>
-               <div className="self-stretch flex justify-start items-center gap-2">
-                  <div className="w-full text-center text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px] break-word">{toFarsiNumber(340)}</div>
+               <div className="self-stretch flex justify-start items-center gap-2 mt-2">
+                  <div className="w-full text-center text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px] break-word">{toFarsiNumber(stats.ordersCount)}</div>
                </div>
-            </div>
-            <div className="self-stretch flex justify-start items-center gap-1">
-               <div className="flex-1 text-center text-[#818898] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">از ماه گذشته</div>
-            </div>
-            <div className="absolute left-1/2 -translate-x-1/2 -bottom-3 bg-[#DDF3EF] rounded-[36px] flex justify-center items-center px-2 py-[1px] gap-0.5">
-               <div className="text-[#28806F] text-[10px] font-num-medium font-semibold leading-[15px] tracking-wide break-word">{toFarsiNumber("+3.6%")}</div>
-            </div>
-         </div>
-
-         {/* Active Teams */}
-         {/* Active Teams */}
-         <div className="flex-1 p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] -outline-offset-1 flex flex-col justify-start items-start gap-2.5 relative">
-            <div className="self-stretch flex flex-col justify-start items-start gap-0.5">
-               <div className="self-stretch flex justify-start items-center gap-2.5">
-                  <div className="w-8 h-8 bg-[#F3E5F5] rounded-lg shadow-inner flex items-center justify-center">
-                      <Users className="w-5 h-5 text-[#7B1FA2]" strokeWidth={2} />
-                  </div>
-                  <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide break-word">تیمچه های فعال</div>
-               </div>
-               <div className="self-stretch flex justify-start items-center gap-2">
-                  <div className="w-full text-center text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px] break-word">{toFarsiNumber(8)}</div>
-               </div>
-            </div>
-            <div className="self-stretch flex justify-start items-center gap-1">
-               <div className="flex-1 text-center text-[#818898] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">از ماه گذشته</div>
-            </div>
-            <div className="absolute left-1/2 -translate-x-1/2 -bottom-3 bg-[#DDF3EF] rounded-[36px] flex justify-center items-center px-2 py-[1px] gap-0.5">
-               <div className="text-[#28806F] text-[10px] font-num-medium font-semibold leading-[15px] tracking-wide break-word whitespace-nowrap">1 مورد جدید</div>
             </div>
          </div>
       </div>

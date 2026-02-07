@@ -78,17 +78,27 @@ export function LogInForm({ onNext, onExistingUser, onBack }: { onNext?: () => v
     if (result.success) {
       // If we have user data, it means the user has completed onboarding/questions before.
       if (result.user) {
+        // Save Manager School Info if applicable
+        if (role === 'manager') {
+            const managerData = {
+                school: result.user.school || '',
+                province: result.user.province || '',
+                city: result.user.city || ''
+            };
+            localStorage.setItem('managerSchoolInfo', JSON.stringify(managerData));
+        }
+
         if (onExistingUser) {
            onExistingUser(result.user);
         } else {
-           router.push("/StudentDashboard");
+           router.push(role === 'manager' ? "/SchoolPanel" : "/StudentDashboard");
         }
       } else {
         // First time user (user data is null), proceed to next onboarding step
         if (onNext) {
           onNext();
         } else {
-          router.push("/StudentDashboard");
+          router.push(role === 'manager' ? "/SchoolPanel" : "/StudentDashboard");
         }
       }
     } else {

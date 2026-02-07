@@ -35,7 +35,7 @@ const Projects = () => {
                 </div>
                 
                 {/* Tabs / Controls */}
-                <div className="self-stretch flex flex-col justify-start items-center gap-3">
+                {/* <div className="self-stretch flex flex-col justify-start items-center gap-3">
                      <div onClick={() => router.push('/SchoolPanel/Timche')} className="w-full py-2 px-6 bg-[#FDD00A] rounded-xl flex justify-center items-center gap-2 cursor-pointer shadow-sm">
                         <div className="text-center text-[#1A1C1E] text-lg font-['PeydaWeb'] font-semibold leading-6">
                             مدیریت تیمچه ها
@@ -46,7 +46,7 @@ const Projects = () => {
                             مدیریت حجره ها
                         </div>
                     </div>
-                </div>
+                </div> */}
             </div>
 
             {/* Main Content Area */}
@@ -55,8 +55,8 @@ const Projects = () => {
                 {/* Cooperation Section */}
                 <div className="flex flex-col gap-4 w-full mt-2">
                     <div className="flex justify-between items-center w-full">
-                        <h2 className="text-[#0D0D12] text-xl font-['PeydaWeb'] font-semibold">مشارکت فعال با تیمچه های دیگر</h2>
-                        <span className="text-[#6C7278] text-xs font-['PeydaWeb'] font-semibold cursor-pointer">مشاهده همه</span>
+                        <h2 className="text-[#0D0D12] text-md font-semibold">مشارکت فعال با تیمچه های دیگر</h2>
+                        <span className="text-[#6C7278] text-xs font-semibold cursor-pointer">مشاهده همه</span>
                     </div>
                     
                     <div className="w-full p-3.5 rounded-xl border border-[#DCE4E8] flex flex-col justify-start items-center gap-3">
