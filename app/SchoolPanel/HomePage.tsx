@@ -44,8 +44,11 @@ const SchoolHomePage = () => {
   const [stats, setStats] = React.useState({
       totalSales: 0,
       activeBooths: 0,
+      totalBooths: 0,
       activeStudents: 0,
-      ordersCount: 0
+      totalStudents: 0,
+      ordersCount: 0,
+      completedOrders: 0
   });
 
   React.useEffect(() => {
@@ -58,21 +61,41 @@ const SchoolHomePage = () => {
 
               let totalSales = 0;
               let ordersCount = 0;
+              let completedOrders = 0;
+
               if (ordersRes.success && ordersRes.data) {
                   ordersCount = ordersRes.data.length;
+                  // Calculate total sales
                   totalSales = ordersRes.data.reduce((sum: number, order: any) => sum + (Number(order.total_price) || 0), 0);
+                  // Calculate completed orders
+                  const completed = ordersRes.data.filter((o: any) => o.status === 'sent' || o.status === 'completed' || o.status === 'تکمیل شده');
+                  completedOrders = completed.length;
               }
 
               let activeBooths = 0;
+              let totalBooths = 0;
               let activeStudents = 0;
+              let totalStudents = 0;
               
               if (requestsRes.success && requestsRes.data) {
-                   const approved = requestsRes.data.filter((r: any) => r.status === 'approved' || r.status === 'تایید شده');
+                   totalBooths = requestsRes.data.length;
+                   totalStudents = requestsRes.data.length;
+
+                   // Active means approved: true
+                   const approved = requestsRes.data.filter((r: any) => r.approved === true || r.approved === 1 || r.status === 'approved' || r.status === 'تایید شده');
                    activeBooths = approved.length;
                    activeStudents = approved.length; 
               }
 
-              setStats({ totalSales, ordersCount, activeBooths, activeStudents });
+              setStats({ 
+                  totalSales, 
+                  ordersCount, 
+                  completedOrders,
+                  activeBooths, 
+                  totalBooths,
+                  activeStudents,
+                  totalStudents
+              });
 
           } catch (error) {
               console.error("Failed to fetch dashboard stats", error);
@@ -158,6 +181,11 @@ const SchoolHomePage = () => {
     if (currentPage < totalPages) setCurrentPage(prev => prev + 1);
   };
 
+  const calculatePercent = (part: number, total: number) => {
+      if (!total || total === 0) return 0;
+      return Math.round((part / total) * 100);
+  }
+
   return (
     <div className="w-full min-h-screen bg-white pb-12 pt-5 px-0 flex flex-col gap-6" dir="rtl">
       
@@ -168,70 +196,109 @@ const SchoolHomePage = () => {
          </h1>
       </div>
 
-      {/* Stats Section 1: Top Row */}
-      <Card className="p-4 shadow-sm border border-gray-200 rounded-xl flex flex-col gap-2.5 w-full">
-         <div className="flex flex-col gap-0.5 w-full">
-            <div className="flex justify-start items-center w-full gap-2 ">
-                <div className="w-8 h-8 relative bg-[#FFD369] rounded-lg shadow-inner flex items-center justify-center">
-                  <Wallet className="w-5 h-5 text-[#393E46]" strokeWidth={2} />
-               </div>
-               <span className="text-[#818898] text-sm font-['PeydaWeb'] font-semibold">کل فروش</span>
-            </div>
-            <div className="flex items-center justify-end gap-2 w-full mt-2">
-               <span className="text-[#0D0D12] text-2xl font-num-medium">{stats.totalSales.toLocaleString('fa-IR')} ریال</span>
-            </div>
-         </div>
-      </Card>
+      {/* Stats Grid: 2x2 */}
+      <div className="flex flex-col gap-3 w-full">
+          
+          {/* Row 1: Sales & Orders */}
+          <div className="flex gap-3 w-full">
+              {/* Total Sales */}
+              <div className="flex-1 p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] -outline-offset-1 flex flex-col justify-start items-start gap-2.5 relative">
+                <div className="self-stretch flex flex-col justify-start items-start gap-0.5">
+                    <div className="self-stretch flex justify-start items-center gap-2.5">
+                        <div className="w-8 h-8 relative bg-[#FFD369] rounded-lg shadow-inner flex items-center justify-center">
+                        <Wallet className="w-5 h-5 text-[#393E46]" strokeWidth={2} />
+                    </div>
+                    <span className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide break-word">کل فروش</span>
+                    </div>
+                    <div className="self-stretch flex justify-start items-center gap-2 mt-2">
+                    <span className="w-full text-center text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px] break-word">{stats.totalSales.toLocaleString('fa-IR')} ریال</span>
+                    </div>
+                </div>
+                <div className="self-stretch flex justify-start items-center gap-1">
+                     {/* Sales Chart or Subtext - keeping empty as no historical data */}
+                     <span className="text-[#818898] text-xs font-['PeydaWeb'] font-light opacity-0">.</span> 
+                </div>
+                 {/*  No meaningful Badge for Total Sales without history */}
+              </div>
 
-      {/* Stats Section 2: Middle Row (Booths & Students) */}
-      <div className="flex gap-3 w-full">
-         {/* Active Booths */}
-         <div className="flex-1 p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] -outline-offset-1 flex flex-col justify-start items-start gap-2.5 relative">
-            <div className="self-stretch flex flex-col justify-start items-start gap-0.5">
-               <div className="self-stretch flex justify-start items-center gap-2.5">
-                  <div className="w-8 h-8 bg-[#FFD369] rounded-lg shadow-inner flex items-center justify-center">
-                      <Store className="w-5 h-5 text-[#393E46]" strokeWidth={2} />
-                  </div>
-                  <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide break-word">حجره های فعال</div>
-               </div>
-               <div className="self-stretch flex justify-start items-center gap-2 mt-2">
-                  <div className="w-full text-center text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px] break-word">{toFarsiNumber(stats.activeBooths)}</div>
-               </div>
-            </div>
-         </div>
+               {/* Orders */}
+                <div className="flex-1 p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] -outline-offset-1 flex flex-col justify-start items-start gap-2.5 relative">
+                    <div className="self-stretch flex flex-col justify-start items-start gap-0.5">
+                    <div className="self-stretch flex justify-start items-center gap-2.5">
+                        <div className="w-8 h-8 bg-[#E8F5E9] rounded-lg shadow-inner flex items-center justify-center">
+                            <ShoppingBag className="w-5 h-5 text-[#2E7D32]" strokeWidth={2} />
+                        </div>
+                        <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide break-word">سفارشات</div>
+                    </div>
+                    <div className="self-stretch flex justify-start items-center gap-2 mt-2">
+                        <div className="w-full text-center text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px] break-word">
+                            {toFarsiNumber(stats.completedOrders)} <span className="text-sm text-[#818898]">/ {toFarsiNumber(stats.ordersCount)}</span>
+                        </div>
+                    </div>
+                    </div>
+                    <div className="self-stretch flex justify-start items-center gap-1">
+                         <div className="flex-1 text-center text-[#818898] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">تکمیل شده</div>
+                    </div>
+                    <div className="absolute left-1/2 -translate-x-1/2 -bottom-3 bg-[#DDF3EF] rounded-[36px] flex justify-center items-center px-2 py-[1px] gap-0.5">
+                         <div className="text-[#28806F] text-[10px] font-num-medium font-semibold leading-[15px] tracking-wide break-word">
+                             {toFarsiNumber(calculatePercent(stats.completedOrders, stats.ordersCount))}%+
+                         </div>
+                    </div>
+                </div>
+          </div>
 
-         {/* Active Students */}
-         <div className="flex-1 p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] -outline-offset-1 flex flex-col justify-start items-start gap-2.5 relative">
-            <div className="self-stretch flex flex-col justify-start items-start gap-0.5">
-               <div className="self-stretch flex justify-start items-center gap-2.5">
-                  <div className="w-8 h-8 bg-[#E3F2FD] rounded-lg shadow-inner flex items-center justify-center">
-                      <GraduationCap className="w-5 h-5 text-[#1976D2]" strokeWidth={2} />
-                  </div>
-                  <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide break-word">دانش آموزان فعال</div>
-               </div>
-               <div className="w-full text-center rtl:flex rtl:justify-center rtl:items-baseline rtl:gap-1 mt-2">
-                  <span className="text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px]">{toFarsiNumber(stats.activeStudents)}</span>
-               </div>
-            </div>
-         </div>
-      </div>
+          {/* Row 2: Booths & Students */}
+          <div className="flex gap-3 w-full">
+               {/* Active Booths */}
+                <div className="flex-1 p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] -outline-offset-1 flex flex-col justify-start items-start gap-2.5 relative">
+                    <div className="self-stretch flex flex-col justify-start items-start gap-0.5">
+                    <div className="self-stretch flex justify-start items-center gap-2.5">
+                        <div className="w-8 h-8 bg-[#FFD369] rounded-lg shadow-inner flex items-center justify-center">
+                            <Store className="w-5 h-5 text-[#393E46]" strokeWidth={2} />
+                        </div>
+                        <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide break-word">حجره های فعال</div>
+                    </div>
+                    <div className="self-stretch flex justify-start items-center gap-2 mt-2">
+                        <div className="w-full text-center text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px] break-word">
+                            {toFarsiNumber(stats.activeBooths)} <span className="text-sm text-[#818898]">/ {toFarsiNumber(stats.totalBooths)}</span>
+                        </div>
+                    </div>
+                    </div>
+                    <div className="self-stretch flex justify-start items-center gap-1">
+                         <div className="flex-1 text-center text-[#818898] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">نرخ تایید</div>
+                    </div>
+                    <div className="absolute left-1/2 -translate-x-1/2 -bottom-3 bg-[#DDF3EF] rounded-[36px] flex justify-center items-center px-2 py-[1px] gap-0.5">
+                        <div className="text-[#28806F] text-[10px] font-num-medium font-semibold leading-[15px] tracking-wide break-word">
+                            {toFarsiNumber(calculatePercent(stats.activeBooths, stats.totalBooths))}%+
+                        </div>
+                    </div>
+                </div>
 
-       {/* Stats Section 3: Bottom Row (Orders) */}
-       <div className="flex gap-3 w-full">
-         {/* Orders */}
-         <div className="w-full p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] -outline-offset-1 flex flex-col justify-start items-start gap-2.5 relative">
-            <div className="self-stretch flex flex-col justify-start items-start gap-0.5">
-               <div className="self-stretch flex justify-start items-center gap-2.5">
-                  <div className="w-8 h-8 bg-[#E8F5E9] rounded-lg shadow-inner flex items-center justify-center">
-                      <ShoppingBag className="w-5 h-5 text-[#2E7D32]" strokeWidth={2} />
-                  </div>
-                  <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide break-word">سفارشات</div>
-               </div>
-               <div className="self-stretch flex justify-start items-center gap-2 mt-2">
-                  <div className="w-full text-center text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px] break-word">{toFarsiNumber(stats.ordersCount)}</div>
-               </div>
-            </div>
-         </div>
+                {/* Active Students */}
+                <div className="flex-1 p-4 bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] -outline-offset-1 flex flex-col justify-start items-start gap-2.5 relative">
+                    <div className="self-stretch flex flex-col justify-start items-start gap-0.5">
+                    <div className="self-stretch flex justify-start items-center gap-2.5">
+                        <div className="w-8 h-8 bg-[#E3F2FD] rounded-lg shadow-inner flex items-center justify-center">
+                            <GraduationCap className="w-5 h-5 text-[#1976D2]" strokeWidth={2} />
+                        </div>
+                        <div className="flex-1 text-center text-[#818898] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide break-word">دانش آموزان فعال</div>
+                    </div>
+                    <div className="w-full text-center rtl:flex rtl:justify-center rtl:items-baseline rtl:gap-1 mt-2">
+                         <span className="text-[#0D0D12] text-2xl font-num-medium font-semibold leading-[31.2px]">
+                             {toFarsiNumber(stats.activeStudents)} <span className="text-sm text-[#818898]">/ {toFarsiNumber(stats.totalStudents)}</span>
+                         </span>
+                    </div>
+                    </div>
+                    <div className="self-stretch flex justify-start items-center gap-1">
+                         <div className="flex-1 text-center text-[#818898] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">نرخ تایید</div>
+                    </div>
+                    <div className="absolute left-1/2 -translate-x-1/2 -bottom-3 bg-[#DDF3EF] rounded-[36px] flex justify-center items-center px-2 py-[1px] gap-0.5">
+                        <div className="text-[#28806F] text-[10px] font-num-medium font-semibold leading-[15px] tracking-wide break-word">
+                            {toFarsiNumber(calculatePercent(stats.activeStudents, stats.totalStudents))}%+
+                        </div>
+                    </div>
+                </div>
+          </div>
       </div>
 
       {/* Recent Reports Section */}
