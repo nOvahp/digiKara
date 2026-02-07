@@ -2,17 +2,47 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import headerImg from "../../public/OtpHeader.png";
-import { LoginHeader } from "./login-header";
 import { useAuth } from "@/app/providers/AuthProvider";
-import { CheckCircle2, AlertCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { 
+  User, 
+  CreditCard, 
+  MapPin, 
+  School, 
+  AlertCircle,
+  ChevronLeft,
+  Phone,
+  Map
+} from "lucide-react";
 
 interface LoginViewProps {
   onNext?: () => void;
   onReport?: () => void;
+  onBack?: () => void;
 }
 
-export function LoginViewManagerInfo({ onNext, onReport }: LoginViewProps) {
+// Reusable Info Field Component
+const InfoField = ({ label, value, icon: Icon }: { label: string, value?: string, icon: any }) => (
+  <div className="w-full">
+    {/* Label with line connector (visual style from design) */}
+    <div className="flex justify-end items-center mb-[-12px] pr-4 relative z-10">
+      <span className="bg-white px-2 text-[#ACB5BB] text-xs font-bold font-peyda">{label}</span>
+    </div>
+    
+    {/* Value Container */}
+    <div className="w-full h-14 border border-[#DCE4E8] rounded-full flex items-center justify-between px-5 bg-white relative">
+      {/* Icon */}
+      <Icon className="w-5 h-5 text-[#DCE4E8] stroke-[1.5]" />
+      
+      {/* Value */}
+      <span className="text-[#393E46] text-sm font-bold truncate flex-1 text-right" dir="auto">
+        {value || "---"}
+      </span>
+    </div>
+  </div>
+);
+
+export function LoginViewManagerInfo({ onNext, onReport, onBack }: LoginViewProps) {
   const router = useRouter();
   const { user, isAuthenticated } = useAuth();
 
@@ -37,122 +67,112 @@ export function LoginViewManagerInfo({ onNext, onReport }: LoginViewProps) {
 
   if (!isAuthenticated || !user) {
     return (
-      <div className="flex h-full w-full flex-col items-center justify-center">
-        <div className="text-center">
-          <p className="text-[#393E46] text-lg font-semibold">
-            لطفا ابتدا وارد شوید
-          </p>
+      <div className="flex h-full w-full items-center justify-center">
+        <div className="text-center space-y-4">
+          <p className="text-[#393E46] text-lg font-bold">لطفا ابتدا وارد شوید</p>
+          <Button onClick={() => onBack?.()} variant="outline">بازگشت</Button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex h-full w-full flex-col bg-[#F8FAFC]">
-      <LoginHeader imageSrc={headerImg} />
+    <div className="flex h-full w-full flex-col bg-white relative overflow-hidden">
+      
+      {/* Top Background Gradient */}
+      <div className="absolute top-0 left-0 right-0 h-[230px] bg-[linear-gradient(180deg,#F7C309_0%,white_100%)] z-0 pointer-events-none" />
 
-      {/* Header Text */}
-      <div className="absolute top-[100px] left-0 right-0 px-8 z-10 text-right">
-        <h1 className="text-3xl font-black text-[#393E46] mb-2">!خوش آمدید</h1>
-        <p className="text-[#393E46] text-sm font-bold opacity-80 leading-relaxed">
-           اطلاعات حساب مدیریتی شما شناسایی شد
-        </p>
+      {/* Header Content */}
+      <div className="relative z-10 w-full px-6 pt-6 pb-2">
+         {/* Top Bar */}
+         <div className="flex justify-between items-center mb-12">
+            
+            {/* Back Button */}
+            {onBack && (
+              <button 
+                onClick={onBack}
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-transparent hover:bg-white/20 transition-all text-[#393E46]"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+            )}
+
+            {/* Logo Text */}
+            <span className="text-[#393E46] text-xl font-black">دیجی کارا</span>
+         </div>
+
+         {/* Title Section */}
+         <div className="text-right space-y-2 mb-8">
+            <h1 className="text-[#393E46] text-3xl font-black">تایید اطلاعات مدیر</h1>
+            <p className="text-[#393E46] text-sm font-semibold opacity-90">
+                اطلاعات خود را بررسی کنید و در صورت صحت تایید کنید.
+            </p>
+         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="flex flex-col flex-1 px-6 w-full max-w-[440px] mx-auto -mt-20 z-20 pb-56">
-        
-        <div className="bg-white rounded-[2.5rem] shadow-xl shadow-black/5 p-6 sm:p-8 animate-in slide-in-from-bottom-5 fade-in duration-500 relative pt-8">
-          
-          <div className="flex flex-col gap-0 border rounded-3xl border-[#F3F4F6] overflow-hidden mb-4">
-            {/* Name */}
-            <div className="flex items-center justify-between p-5 bg-[#F9FAFB]">
-              <div className="text-right">
-                <p className="text-[#393E46] text-lg font-black">
-                  {user.firstname} {user.lastname}
-                </p>
-              </div>
-              <p className="text-[#9CA3AF] text-xs font-bold">نام و نام خانوادگی</p>
-            </div>
+      {/* Scrollable Content Area */}
+      <div className="relative z-10 flex-1 w-full max-w-[440px] mx-auto overflow-y-auto px-6 pb-32 no-scrollbar">
+          <div className="space-y-6 pt-2">
+              <InfoField 
+                label="نام کامل" 
+                value={`${user.firstname} ${user.lastname}`} 
+                icon={User} 
+              />
+              
+              <InfoField 
+                label="شماره موبایل" 
+                value={user.phone} 
+                icon={Phone} 
+              />
 
-            <div className="border-t border-[#F3F4F6]"></div>
+              <InfoField 
+                label="کدملی" 
+                value={user.national_code} 
+                icon={CreditCard} 
+              />
+              
+              <InfoField 
+                label="استان - شهر" 
+                value={`${user.province || ''} - ${user.city || ''}`} 
+                icon={MapPin} 
+              />
 
-            {/* Phone */}
-            <div className="flex items-center justify-between p-5 bg-white">
-              <p className="text-[#393E46] text-base font-bold dir-ltr">
-                  {user.phone}
-              </p>
-              <p className="text-[#9CA3AF] text-xs font-bold">شماره موبایل</p>
-            </div>
-
-            <div className="border-t border-[#F3F4F6]"></div>
-
-            {/* National Code */}
-            <div className="flex items-center justify-between p-5 bg-[#F9FAFB]">
-              <p className="text-[#393E46] text-base font-bold dir-ltr">
-                  {user.national_code}
-              </p>
-              <p className="text-[#9CA3AF] text-xs font-bold">کد ملی</p>
-            </div>
+              <InfoField 
+                label="منطقه" 
+                value={user.district} 
+                icon={Map} 
+              />
+              
+              <InfoField 
+                label="مدرسه" 
+                value={user.school} 
+                icon={School} 
+              />
           </div>
-          
-           {/* Details Grid */}
-           <div className="grid grid-cols-2 gap-3">
-              <div className="bg-[#F3F6FC] p-4 rounded-3xl text-right col-span-2">
-                  <p className="text-[#9CA3AF] text-xs font-bold mb-1">مدرسه</p>
-                  <p className="text-[#393E46] text-sm font-black truncate">{user.school}</p>
-              </div>
-              <div className="bg-[#F3F6FC] p-4 rounded-3xl text-right">
-                  <p className="text-[#9CA3AF] text-xs font-bold mb-1">شهر</p>
-                  <p className="text-[#393E46] text-sm font-black truncate">{user.city}</p>
-              </div>
-              <div className="bg-[#F3F6FC] p-4 rounded-3xl text-right">
-                  <p className="text-[#9CA3AF] text-xs font-bold mb-1">استان</p>
-                  <p className="text-[#393E46] text-sm font-black truncate">{user.province}</p>
-              </div>
-              <div className="bg-[#F3F6FC] p-4 rounded-3xl text-right">
-                  <p className="text-[#9CA3AF] text-xs font-bold mb-1">منطقه</p>
-                  <p className="text-[#393E46] text-sm font-black truncate">{user.district}</p>
-              </div>
-           </div>
-
-
-          {/* Status Badge */}
-          <div className="mt-6 bg-green-50 rounded-3xl border border-green-100 p-5 flex items-center gap-4">
-             <div className="bg-green-100 p-2.5 rounded-full shrink-0">
-               <CheckCircle2 className="w-6 h-6 text-green-600" />
-             </div>
-             <div className="text-right flex-1">
-              <p className="text-green-800 text-base font-black">
-                اطلاعات تایید شد
-              </p>
-              <p className="text-green-700 text-xs font-bold mt-1">
-                اکنون می‌توانید وارد پنل مدیریت شوید
-              </p>
-            </div>
-          </div>
-
-        </div>
-
       </div>
 
-      {/* Fixed Bottom Buttons */}
-      <div className="fixed bottom-0 left-0 right-0 w-full max-w-[440px] mx-auto p-6 bg-transparent z-50 flex flex-col gap-3">
-        <button
-          onClick={handleContinue}
-          className="w-full h-[57px] bg-[#FDD00A] rounded-2xl flex items-center justify-center gap-2 hover:bg-[#e5bc09] transition-all hover:scale-[1.02] active:scale-[0.98] text-[#1A1C1E] text-lg font-bold shadow-lg shadow-[#FDD00A]/20"
-        >
-          ادامه  
-        </button>
-        
-        <button
-          onClick={handleReport}
-          className="w-full h-[57px] bg-white border-2 border-[#E5E7EB] rounded-2xl flex items-center justify-center gap-2 hover:bg-red-50 hover:border-red-200 hover:text-red-600 transition-colors text-[#6C7278] text-base font-bold"
-        >
-          <AlertCircle className="w-5 h-5" />
-          مغایرت اطلاعات
-        </button>
+      {/* Bottom Buttons - Fixed */}
+      <div className="fixed bottom-0 left-0 right-0 p-6 bg-white/80 backdrop-blur-sm z-50 w-full max-w-[440px] mx-auto border-t border-gray-100/50">
+         <div className="flex gap-4 w-full">
+            {/* Report Button (Secondary) */}
+            <Button
+                onClick={handleReport}
+                variant="outline"
+                className="flex-[0.4] bg-white border-[#DCE4E8] text-[#98B0BC] font-bold h-14 rounded-2xl hover:bg-red-50 hover:text-red-500 hover:border-red-200"
+            >
+                گزارش خطا
+            </Button>
+
+            {/* Confirm Button (Primary) */}
+            <Button
+                onClick={handleContinue}
+                className="flex-1 bg-[#FDD00A] hover:bg-[#e5bc09] text-[#1A1C1E] font-bold h-14 rounded-2xl text-lg shadow-lg shadow-[#FDD00A]/20"
+            >
+                تایید اطلاعات
+            </Button>
+         </div>
       </div>
+
     </div>
   );
 }

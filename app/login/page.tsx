@@ -250,6 +250,18 @@ export default function LoginPage() {
             </div>
          );
       
+    case Step.MANAGER_INFO:
+      return <LoginViewManagerInfo 
+        onNext={() => router.push('/SchoolPanel')} 
+        onReport={() => setStep(Step.MANAGER_REPORT)}
+      />;
+
+    case Step.MANAGER_REPORT:
+      return <LoginViewManagerReport 
+        onLoginAgain={() => setStep(Step.MANAGER_INFO)} 
+        onNext={() => setStep(Step.MANAGER_INFO)}
+      />;
+      
     default:
       return <LoginView onNext={() => setStep(Step.INTRO_1)} />;
   }
