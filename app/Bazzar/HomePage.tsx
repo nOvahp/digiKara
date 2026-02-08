@@ -9,6 +9,8 @@ import NavBar from "./NavBar"
 import SearchBar from "../components/SearchBar"
 import { products } from "../data/product"
 
+import { bazzarService, BazzarHomeData } from "../services/bazzarService"
+
 // Helper Components
 const SectionHeader = ({ title, subtitle, moreText = "مشاهده همه" }: { title: string, subtitle?: string, moreText?: string }) => (
     <div className="w-full flex justify-between items-center mb-4">
@@ -55,7 +57,7 @@ const ProductCard = ({ id, title, price, rating, originalPrice, discount, image 
     </Link>
 );
 
-const CategoryItem = ({ title }: { title: string }) => {
+const CategoryItem = ({ title, icon }: { title: string, icon?: string | null }) => {
     const icons: Record<string, React.ElementType> = {
         "طلا و جواهر": Gem,
         "صنایع هنری": Palette,
@@ -67,8 +69,12 @@ const CategoryItem = ({ title }: { title: string }) => {
 
     return (
         <div className="w-16 flex flex-col items-center gap-2 shrink-0 cursor-pointer group">
-            <div className={`w-16 h-16 rounded-2xl bg-[#FDD00A] flex items-center justify-center transition-colors group-hover:opacity-90`}>
-                <Icon className="w-8 h-8 text-[#393E46]" strokeWidth={1.5} />
+            <div className={`w-16 h-16 rounded-2xl bg-[#FDD00A] flex items-center justify-center transition-colors group-hover:opacity-90 overflow-hidden relative`}>
+                {icon ? (
+                     <Image src={icon} alt={title} fill className="object-cover p-3" />
+                ) : (
+                    <Icon className="w-8 h-8 text-[#393E46]" strokeWidth={1.5} />
+                )}
             </div>
             <span className="text-[#1F2029] text-xs font-['PeydaWeb'] font-semibold text-center">{title}</span>
         </div>
@@ -78,12 +84,30 @@ const CategoryItem = ({ title }: { title: string }) => {
 export default function HomePage() {
     // Timer Mock
     const [timeLeft, setTimeLeft] = React.useState({ h: 12, m: 56, s: 2 });
+    const [homeData, setHomeData] = useState<BazzarHomeData | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await bazzarService.getHomePageData();
+                setHomeData(data);
+            } catch (error) {
+                console.error("Failed to fetch home data", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
 
     const specialSaleProducts = products.filter(p => p.isSpecialSale);
     const newCollectionProducts = products.filter(p => p.isNewCollection);
-    const bestSellerProducts = products.filter(p => p.isBestSeller);
+    // Fallback if API hasn't loaded yet or returns empty, though we usually prefer showing skeletons or null
+    // Here we will use homeData if available for specific sections
+    const bestSellerProducts = homeData?.most_sell || [];
     const suggestedProducts = products.filter(p => p.isSuggested);
-    const popularProducts = products.filter(p => p.isPopular);
+    const popularProducts = homeData?.most_view || [];
 
     
     return (
@@ -154,12 +178,22 @@ export default function HomePage() {
                     </div>
                     {/* Full bleed left */}
                     <div className="flex justify-between items-center overflow-x-auto gap-4 py-2 no-scrollbar pl-6 -ml-6 w-[calc(100%+24px)] pr-1">
-                         {/* 5 Categories */}
-                         <CategoryItem title="طلا و جواهر" />
-                         <CategoryItem title="صنایع هنری" />
-                         <CategoryItem title="صنایع دستی" />
-                         <CategoryItem title="پوشاک" />
-                         <CategoryItem title="صنایع چوبی" />
+                         {/* Categories from API */}
+                         {loading ? (
+                             <div className="w-full text-center text-xs text-gray-400">در حال بارگذاری...</div>
+                         ) : (
+                             homeData?.categories?.map((cat) => (
+                                 <CategoryItem key={cat.id} title={cat.title} icon={cat.icon_path} />
+                             ))
+                         )}
+                         {/* Fallback/Mock Categories if API is empty/failed (Optional, based on user request to 'use the response') */}
+                         {(!loading && (!homeData?.categories || homeData.categories.length === 0)) && (
+                            <>
+                                <CategoryItem title="طلا و جواهر" />
+                                <CategoryItem title="صنایع هنری" />
+                                <CategoryItem title="صنایع دستی" />
+                            </>
+                         )}
                     </div>
                 </div>
 
@@ -201,9 +235,18 @@ export default function HomePage() {
                  <div className="w-full flex flex-col gap-3">
                      <SectionHeader title="پرفروش" moreText="دیدن همه" />
                      <div className="flex gap-4 overflow-x-auto pb-4 pt-2 pl-6 -ml-6 w-[calc(100%+24px)] scrollbar-hide pr-1">
-                         {bestSellerProducts.map(product => (
-                             <ProductCard key={product.id} id={product.id} title={product.title} price={product.price} rating={product.rating} image={product.image} />
-                         ))}
+                         {bestSellerProducts.length > 0 ? bestSellerProducts.map(product => (
+                             <ProductCard 
+                                key={product.id} 
+                                id={product.id} 
+                                title={product.title} 
+                                price={typeof product.price === 'number' ? `${product.price.toLocaleString()} تومان` : product.price} 
+                                rating={product.rating || 0} 
+                                image={product.image || undefined} 
+                             />
+                         )) : (
+                             <div className="w-full text-center text-gray-500 text-xs py-4">محصولی یافت نشد</div>
+                         )}
                      </div>
                 </div>
 
@@ -221,11 +264,11 @@ export default function HomePage() {
                 <div className="w-full flex flex-col gap-3">
                      <SectionHeader title="پرطرفدار" moreText="مشاهده همه" />
                      <div className="w-full flex-wrap justify-end items-center gap-6 content-center pb-0 pl-0 -ml-0 pr-0 flex">
-                         {popularProducts.map(product => (
+                         {popularProducts.length > 0 ? popularProducts.map(product => (
                              <div key={product.id} className="w-[calc(50%-12px)] flex flex-col items-start gap-2 inline-flex" dir="rtl">
                                  <Link href={`/Bazzar/ProductDetails?id=${product.id}`} className="self-stretch aspect-[170/150] relative">
                                      <div className="w-full h-full left-0 top-0 absolute bg-[#F6F6F6] rounded-lg overflow-hidden">
-                                         <Image src={product.image} alt={product.title} fill className="object-cover" />
+                                         <Image src={product.image || "/ProductBazzar.png"} alt={product.title} fill className="object-cover" />
                                      </div>
                                      <div className="w-[37%] h-[3%] left-[31%] top-[80%] absolute origin-top-left rotate-1 bg-black/80 blur-[11px]" />
                                      {product.id % 3 === 0 && (
@@ -241,49 +284,41 @@ export default function HomePage() {
                                          <div className="self-stretch justify-between items-center inline-flex">
                                              <div className="text-[#1F2029] text-sm font-['PeydaWeb'] font-light text-right overflow-hidden whitespace-nowrap text-ellipsis max-w-[100px]">{product.title}</div>
                                              <div className="justify-start items-center gap-1 flex opacity-90">
-                                                 <span className="text-[#797979] text-xs font-num-medium pt-0.5">{product.rating}</span>
+                                                 <span className="text-[#797979] text-xs font-num-medium pt-0.5">{product.rating || 0}</span>
                                                  <svg width="12" height="12" viewBox="0 0 24 24" fill="#FDD00A" stroke="none" className="mb-0.5">
                                                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                                                  </svg>
                                              </div>
                                          </div>
-                                         <div className="self-stretch text-left text-[#1F2029] text-sm font-num-medium">{product.price}</div>
+                                         <div className="self-stretch text-left text-[#1F2029] text-sm font-num-medium">
+                                             {typeof product.price === 'number' ? `${product.price.toLocaleString()} تومان` : product.price}
+                                         </div>
                                      </div>
                                  </div>
                              </div>
-                         ))}
+                         )) : (
+                             <div className="w-full text-center text-gray-500 text-xs py-4">محصولی یافت نشد</div>
+                         )}
                      </div>
                  </div>
 
-                 {/* Popular Schools (Mock) - Keeping Grid as is but checking bleed */}
+                 {/* Popular Schools */}
                  <div className="w-full flex flex-col gap-3">
                      <SectionHeader title="مدارس محبوب" moreText="دیدن همه" />
-                     {/* For Grid, we just extend the container if we want full bleed, but usually grid is contained. 
-                         However, user asked for "Popular Schools" to not see left margin. 
-                         If it's a grid, it might mean the grid background or items should extend? 
-                         Or maybe it's meant to be scrollable too? The original code was a grid.
-                         If it's a grid inside the padded container, extending it is tricky without lookin weird.
-                         I'll assume they want the same 'flush left' effect. 
-                         I will apply the negative margin to the grid container wrapper.
-                     */}
                      <div className="flex gap-4 overflow-x-auto pb-4 pt-2 pl-6 -ml-[8vw] w-[calc(100%+8vw)] scrollbar-hide pr-1">
-                          {[
-                              { id: 1, name: "مدرسه دخترانه", img: "/honarestan1.png", label: "خلاقیت" },
-                              { id: 2, name: "مدرسه سوره", img: "/honarestan2.png", label: "نوآوری" },
-                              { id: 3, name: "مدرسه هنرهای زیبا", img: "/honarestan3.png", label: "استعداد" },
-                              { id: 4, name: "مدرسه کمال الملک", img: "/honarestan1.png", label: "مهارت" },
-                              { id: 5, name: "مدرسه موسیقی", img: "/honarestan2.png", label: "هنر" },
-                          ].map(school => (
-                              <div key={school.id} className="flex flex-col gap-2 shrink-0 w-[100px]">
-                                   <div className="w-[100px] h-[100px] bg-gray-100 rounded-lg relative overflow-hidden">
-                                        <Image src={school.img} alt={school.name} fill className="object-cover" />
-                                   </div>
-                                   <div className="flex flex-col items-center w-full">
-                                        <span className="text-[#1F2029] text-xs font-['PeydaWeb'] font-semibold text-center">{school.label}</span>
-                                        <span className="text-[#1F2029] text-[10px] font-['PeydaWeb'] font-light opacity-60 text-center">{school.name}</span>
-                                   </div>
-                              </div>
-                          ))}
+                          {homeData?.popular_schools.map(school => (
+                               <div key={school.id} className="flex flex-col gap-2 shrink-0 w-[100px]">
+                                    <div className="w-[100px] h-[100px] bg-gray-100 rounded-lg relative overflow-hidden">
+                                         <Image src={school.image_path || "/honarestan1.png"} alt={school.name} fill className="object-cover" />
+                                    </div>
+                                    <div className="flex flex-col items-center w-full">
+                                         <span className="text-[#1F2029] text-[10px] font-['PeydaWeb'] font-light opacity-60 text-center">{school.name}</span>
+                                    </div>
+                               </div>
+                           ))}
+                           {!loading && (!homeData?.popular_schools || homeData.popular_schools.length === 0) && (
+                                <div className="w-full text-center text-gray-400 text-xs">مدرسه‌ای یافت نشد</div>
+                           )}
                      </div>
                 </div>
 
