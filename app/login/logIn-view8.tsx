@@ -5,6 +5,7 @@ import headerImg from "../../public/OtpHeader.png";
 import Image from "next/image";
 import { LoginHeader } from "./login-header";
 import { CheckCircle2, PartyPopper, Sparkles } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface LoginViewProps {
   onNext?: () => void;
@@ -75,12 +76,12 @@ export function LoginView8({ onNext }: LoginViewProps) {
       </div>
       
       <div className="fixed bottom-0 left-0 right-0 w-full max-w-[440px] mx-auto p-6 bg-transparent z-50">
-        <button
+        <Button
           onClick={handleContinue}
            className="w-full h-[57px] bg-[#FDD00A] rounded-2xl flex items-center justify-center gap-2 hover:bg-[#e5bc09] transition-all text-[#1A1C1E] text-lg font-bold shadow-lg shadow-[#FDD00A]/20"
         >
           ادامه
-        </button>
+        </Button>
       </div>
     </div>
   );
