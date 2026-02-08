@@ -12,9 +12,10 @@ interface ActiveFiltersProps {
     };
     categories: BazzarCategory[];
     onRemove: (key: "minPrice" | "maxPrice" | "categoryId") => void;
+    onClearAll?: () => void;
 }
 
-export default function ActiveFilters({ filters, categories, onRemove }: ActiveFiltersProps) {
+export default function ActiveFilters({ filters, categories, onRemove, onClearAll }: ActiveFiltersProps) {
     const activeFilters: { key: "minPrice" | "maxPrice" | "categoryId"; label: string; value: string | number }[] = [];
 
     // Category Filter
@@ -69,9 +70,13 @@ export default function ActiveFilters({ filters, categories, onRemove }: ActiveF
             {activeFilters.length > 0 && (
                 <button 
                     onClick={() => {
-                        onRemove('minPrice');
-                        onRemove('maxPrice');
-                        onRemove('categoryId');
+                        if (onClearAll) {
+                            onClearAll();
+                        } else {
+                            onRemove('minPrice');
+                            onRemove('maxPrice');
+                            onRemove('categoryId');
+                        }
                     }}
                     className="text-[10px] text-red-500 font-medium mr-2 whitespace-nowrap"
                 >

@@ -177,6 +177,9 @@ export default function HomePage() {
                             if (key === 'categoryId') setFilters(prev => ({ ...prev, categoryId: null }));
                             else setFilters(prev => ({ ...prev, [key]: '' }));
                         }}
+                        onClearAll={() => {
+                            setFilters(prev => ({ ...prev, categoryId: null, minPrice: '', maxPrice: '' }));
+                        }}
                     />
                 </div>
 

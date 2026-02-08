@@ -43,6 +43,9 @@ function SearchContent() {
         maxPrice: searchParams.get('max_price') || '',
         categoryId: searchParams.get('category_id') ? Number(searchParams.get('category_id')) : null
     });
+    const [perPage, setPerPage] = useState<number | null>(
+        searchParams.get('perPage') ? Number(searchParams.get('perPage')) : null
+    );
 
     // Sync filters with URL params (e.g. on back button or initial load)
     useEffect(() => {
@@ -51,6 +54,7 @@ function SearchContent() {
             maxPrice: searchParams.get('max_price') || '',
             categoryId: searchParams.get('category_id') ? Number(searchParams.get('category_id')) : null
         });
+        setPerPage(searchParams.get('perPage') ? Number(searchParams.get('perPage')) : null);
     }, [searchParams]);
 
     // Fetch Categories on Mount for Filter
@@ -82,7 +86,7 @@ function SearchContent() {
                      category_id: filters.categoryId,
                      min_price: filters.minPrice ? Number(filters.minPrice) : null,
                      max_price: filters.maxPrice ? Number(filters.maxPrice) : null,
-                     perPage: 10
+                     perPage: perPage
                 });
 
                 if (response && response.data) {
@@ -93,8 +97,9 @@ function SearchContent() {
                     }
                     
                     // Simple check for "has more" - if we got less than requested, no more pages
-                    // Assuming perPage is 10
-                    if (response.data.length < 10) {
+                    // Defaulting to 10 if perPage not set
+                    const limit = perPage || 10;
+                    if (response.data.length < limit) {
                         setHasMore(false);
                     } else {
                         setHasMore(true);
@@ -117,19 +122,17 @@ function SearchContent() {
         }, 300);
 
         return () => clearTimeout(timer);
-    }, [query, page, filters]); // Re-fetch on query, page, or filter change
+    }, [query, page, filters, perPage]); // Re-fetch on query, page, or filter change
 
-    // Reset page when query/filters change
+    // Reset page when query/filters/perPage change
     useEffect(() => {
         setPage(1);
         setHasMore(true);
-    }, [query, filters]);
+    }, [query, filters, perPage]);
 
-    const handleApplyFilters = (newFilters: typeof filters) => {
-        setFilters(newFilters);
-        setShowFilters(false);
-        // Also update URL to keep state in sync and shareable
+    const updateUrl = (newFilters: typeof filters, newPerPage: number | null) => {
         const params = new URLSearchParams(searchParams.toString());
+        
         if (newFilters.categoryId) params.set('category_id', newFilters.categoryId.toString());
         else params.delete('category_id');
         
@@ -138,8 +141,22 @@ function SearchContent() {
 
         if (newFilters.maxPrice) params.set('max_price', newFilters.maxPrice);
         else params.delete('max_price');
+
+        if (newPerPage) params.set('perPage', newPerPage.toString());
+        else params.delete('perPage');
         
         router.push(`/Bazzar/Search?${params.toString()}`);
+    };
+
+    const handleApplyFilters = (newFilters: typeof filters) => {
+        setFilters(newFilters);
+        setShowFilters(false);
+        updateUrl(newFilters, perPage);
+    };
+
+    const handlePerPageChange = (val: number | null) => {
+        setPerPage(val);
+        updateUrl(filters, val);
     };
 
     // Location State
@@ -170,61 +187,67 @@ function SearchContent() {
                          <h1 className="font-bold text-lg text-gray-800">
                             {query ? `نتایج جستجو “${query}”` : "جستجو در بازار"}
                          </h1>
-                         <button onClick={() => router.back()} className="p-2 -ml-2 hover:bg-gray-100 rounded-full transition-colors shrink-0">
+                         <button onClick={() => router.push('/Bazzar')} className="p-2 -ml-2 hover:bg-gray-100 rounded-full transition-colors shrink-0">
                             <X size={24} className="text-gray-500" />
                          </button>
                      </div>
 
-                     {/* Search Input Container */}
-                     <div className="w-full relative h-12 sm:h-14 bg-gray-50 rounded-xl flex items-center px-2 border border-gray-200 focus-within:border-[#E9B443] transition-all">
-                         {/* Search Button */}
-                         <button onClick={handleSearch} className="p-2 text-gray-400 hover:text-[#E9B443] transition-colors">
-                           <SearchIcon size={22} />
+                     {/* Search Row */}
+                     <div className="w-full flex gap-3">
+                         {/* Professional Filter Button */}
+                         <button 
+                             onClick={() => setShowFilters(true)}
+                             className="shrink-0 w-12 sm:w-14 h-12 sm:h-14 bg-[#FDD00A] rounded-xl flex items-center justify-center shadow-sm hover:shadow-md transition-all active:scale-95 border border-[#E9B443]"
+                         >
+                             <Filter size={24} className="text-[#0C1415]" strokeWidth={2} />
                          </button>
 
-                         <Input
-                            className="flex-1 h-full border-none shadow-none focus-visible:ring-0 text-right bg-transparent placeholder:text-gray-400 font-medium text-[10px] sm:text-base px-2"
-                            placeholder="جستجو در محصولات..."
-                            value={localQuery}
-                            onChange={(e) => setLocalQuery(e.target.value)}
-                            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                            autoFocus={false}
-                         />
-                         
-                         {/* Filter Button (Added) */}
-                         <button onClick={() => setShowFilters(true)} className="p-2 text-gray-400 hover:text-[#E9B443] transition-colors">
-                            <Filter size={20} />
-                         </button>
+                         {/* Search Input Container */}
+                         <div className="flex-1 relative h-12 sm:h-14 bg-gray-50 rounded-xl flex items-center px-2 border border-gray-200 focus-within:border-[#E9B443] transition-all">
+                             {/* Search Button */}
+                             <button onClick={handleSearch} className="p-2 text-gray-400 hover:text-[#E9B443] transition-colors">
+                               <SearchIcon size={22} />
+                             </button>
 
-                         <div className="w-px h-6 bg-gray-300 mx-2"></div>
+                             <Input
+                                className="flex-1 h-full border-none shadow-none focus-visible:ring-0 text-right bg-transparent placeholder:text-gray-400 font-medium text-[10px] sm:text-base px-2"
+                                placeholder="جستجو در محصولات..."
+                                value={localQuery}
+                                onChange={(e) => setLocalQuery(e.target.value)}
+                                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+                                autoFocus={false}
+                             />
+                             
+                             <div className="w-px h-6 bg-gray-300 mx-2"></div>
 
-                         {/* Location */}
-                         <div className="relative">
-                           <div 
-                              className="flex items-center gap-1 cursor-pointer text-gray-600 hover:text-gray-900 px-2"
-                              onClick={() => setShowLocationMenu(!showLocationMenu)}
-                           >
-                              <span className="text-sm font-bold w-12 text-center truncate">{location}</span>
-                              <MapPin size={18} className="text-gray-500" />
-                           </div>
-                           
-                           {/* Dropdown */}
-                           {showLocationMenu && (
-                             <div className="absolute top-12 left-0 w-32 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden py-1 z-50 flex flex-col gap-1 max-h-64 overflow-y-auto">
-                               {CITIES.map((city) => (
-                                 <button
-                                   key={city}
-                                   className={`w-full text-right px-4 py-2 text-sm hover:bg-gray-50 transition-colors ${location === city ? "text-[#E9B443] font-bold" : "text-gray-600"}`}
-                                   onClick={() => {
-                                     setLocation(city);
-                                     setShowLocationMenu(false);
-                                   }}
-                                 >
-                                   {city}
-                                 </button>
-                               ))}
+                             {/* Location */}
+                             <div className="relative">
+                               <div 
+                                  className="flex items-center gap-1 cursor-pointer text-gray-600 hover:text-gray-900 px-2"
+                                  onClick={() => setShowLocationMenu(!showLocationMenu)}
+                               >
+                                  <span className="text-sm font-bold w-12 text-center truncate">{location}</span>
+                                  <MapPin size={18} className="text-gray-500" />
+                               </div>
+                               
+                               {/* Dropdown */}
+                               {showLocationMenu && (
+                                 <div className="absolute top-12 left-0 w-32 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden py-1 z-50 flex flex-col gap-1 max-h-64 overflow-y-auto">
+                                   {CITIES.map((city) => (
+                                     <button
+                                       key={city}
+                                       className={`w-full text-right px-4 py-2 text-sm hover:bg-gray-50 transition-colors ${location === city ? "text-[#E9B443] font-bold" : "text-gray-600"}`}
+                                       onClick={() => {
+                                         setLocation(city);
+                                         setShowLocationMenu(false);
+                                       }}
+                                     >
+                                       {city}
+                                     </button>
+                                   ))}
+                                 </div>
+                               )}
                              </div>
-                           )}
                          </div>
                      </div>
                      
@@ -240,7 +263,36 @@ function SearchContent() {
                                 
                                 handleApplyFilters(newFilters);
                             }}
+                            onClearAll={() => {
+                                const newFilters = { ...filters, categoryId: null, minPrice: '', maxPrice: '' };
+                                handleApplyFilters(newFilters);
+                            }}
                         />
+                     </div>
+
+                     {/* Results Meta Bar */}
+                     <div className="w-full mt-0 pt-0 border-t border-gray-50 flex justify-between items-center px-1">
+                         <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-1.5 h-[32px]">
+                             <div className="w-1.5 h-1.5 rounded-full bg-[#FDD00A]"></div>
+                             <span className="text-[#0C1415] text-xs font-['PeydaFaNum'] font-medium pt-0.5">
+                                {products.length} <span className="text-[#707F81] font-['PeydaWeb'] font-light">کالا</span>
+                             </span>
+                         </div>
+                         
+                         <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-2 py-1.5 h-[32px]">
+                            <span className="text-[#707F81] text-[10px] font-light">تعداد در صفحه:</span>
+                            <select 
+                                value={perPage || ''} 
+                                onChange={(e) => handlePerPageChange(e.target.value ? Number(e.target.value) : null)}
+                                className="bg-transparent text-[#0C1415] text-xs font-medium outline-none cursor-pointer"
+                                dir="ltr"
+                            >
+                                <option value="">پیش‌فرض</option>
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                            </select>
+                         </div>
                      </div>
                 </div>
             </div>
