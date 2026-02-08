@@ -1,12 +1,15 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { Search, MapPin, ChevronLeft, Gem, Palette, Hammer, Shirt, Armchair } from 'lucide-react'
 import Link from "next/link"
 
 import NavBar from "./NavBar"
 import SearchBar from "../components/SearchBar"
+import FilterModal from "../components/FilterModal"
+import ActiveFilters from "../components/ActiveFilters"
 import { products } from "../data/product"
 
 import { bazzarService, BazzarHomeData } from "../services/bazzarService"
@@ -82,10 +85,19 @@ const CategoryItem = ({ title, icon }: { title: string, icon?: string | null }) 
 };
 
 export default function HomePage() {
+    const router = useRouter();
     // Timer Mock
     const [timeLeft, setTimeLeft] = React.useState({ h: 12, m: 56, s: 2 });
     const [homeData, setHomeData] = useState<BazzarHomeData | null>(null);
     const [loading, setLoading] = useState(true);
+    
+    // Filter State
+    const [showFilters, setShowFilters] = useState(false);
+    const [filters, setFilters] = useState({
+        minPrice: '',
+        maxPrice: '',
+        categoryId: null as number | null
+    });
 
     useEffect(() => {
         const fetchData = async () => {
@@ -139,8 +151,45 @@ export default function HomePage() {
                     
                 </div>
 
-                {/* Search Bar */}
-                <SearchBar />
+                {/* Search & Filters Group */}
+                <div className="w-full flex flex-col gap-2">
+                    <SearchBar 
+                        onFilterClick={() => setShowFilters(true)}
+                        extraParams={{
+                            category_id: filters.categoryId,
+                            min_price: filters.minPrice,
+                            max_price: filters.maxPrice
+                        }}
+                        onInputClick={() => {
+                            const params = new URLSearchParams();
+                            if (filters.categoryId) params.append('category_id', filters.categoryId.toString());
+                            if (filters.minPrice) params.append('min_price', filters.minPrice);
+                            if (filters.maxPrice) params.append('max_price', filters.maxPrice);
+                            router.push(`/Bazzar/Search?${params.toString()}`);
+                        }}
+                        readOnly={true}
+                    />
+                    
+                    <ActiveFilters 
+                        filters={filters}
+                        categories={homeData?.categories || []}
+                        onRemove={(key) => {
+                            if (key === 'categoryId') setFilters(prev => ({ ...prev, categoryId: null }));
+                            else setFilters(prev => ({ ...prev, [key]: '' }));
+                        }}
+                    />
+                </div>
+
+                <FilterModal 
+                    isOpen={showFilters}
+                    onClose={() => setShowFilters(false)}
+                    categories={homeData?.categories || []}
+                    initialFilters={filters}
+                    onApply={(newFilters) => {
+                        setFilters(newFilters);
+                        setShowFilters(false);
+                    }}
+                />
 
                 {/* Hero Banner (Image Background + Text Overlay) */}
                 <div className="w-full relative rounded-lg overflow-hidden group cursor-pointer h-[300px]" dir="ltr">

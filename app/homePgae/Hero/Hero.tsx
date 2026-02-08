@@ -11,7 +11,7 @@ const Hero = () => {
 
   // Navigate to dedicated search page
   const handleInputClick = () => {
-     router.push('/search-start');
+     router.push('/Bazzar/Search');
   };
 
   return (
