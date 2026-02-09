@@ -163,7 +163,7 @@ export default function ProductDetails() {
                                 <Skeleton className="h-4 w-2/3" />
                             </>
                         ) : (
-                            <p className="text-[#707F81] text-sm font-['PeydaWeb'] font-light leading-6 text-justify">
+                            <p className="text-[#707F81] text-sm font-['PeydaWeb'] font-light leading-6 text-justify break-words">
                                 {product?.description || "توضیحاتی برای این محصول ثبت نشده است."}
                             </p>
                         )}

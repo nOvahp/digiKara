@@ -315,7 +315,7 @@ export default function HomePage() {
                 {/* Popular (Custom Grid) */}
                 <div className="w-full flex flex-col gap-3">
                      <SectionHeader title="پرطرفدار" moreText="مشاهده همه" />
-                     <div className="w-full flex-wrap justify-end items-center gap-6 content-center pb-0 pl-0 -ml-0 pr-0 flex">
+                     <div className="w-full flex-wrap justify-start items-center gap-6 content-center pb-0 pl-0 -ml-0 pr-0 flex">
                          {popularProducts.length > 0 ? popularProducts.map(product => (
                              <div key={product.id} className="w-[calc(50%-12px)] flex flex-col items-start gap-2 inline-flex" dir="rtl">
                                  <Link href={`/Bazzar/ProductDetails?id=${product.id}`} className="self-stretch aspect-[170/150] relative">
