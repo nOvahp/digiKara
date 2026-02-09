@@ -312,7 +312,7 @@ export default function HomePage() {
                      </div>
                 </div>
 
-                {/* Popular (Custom Grid)1 */}
+                {/* Popular (Custom Grid) */}
                 <div className="w-full flex flex-col gap-3">
                      <SectionHeader title="پرطرفدار" moreText="مشاهده همه" />
                      <div className="w-full flex-wrap justify-start items-center gap-6 content-center pb-0 pl-0 -ml-0 pr-0 flex">
