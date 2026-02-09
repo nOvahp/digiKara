@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { Navigation } from '@/app/StudentDashboard/layout/Navigation';
+
 import { DashboardNavBar } from '@/app/StudentDashboard/layout/DashboardNavBar';
 import { Button } from "@/components/ui/button"; 
 import { ArrowUpRight } from 'lucide-react';
@@ -75,7 +75,7 @@ export default function DashboardEmptyPage() {
             </div>
 
             {/* Navigation */}
-            <Navigation />
+
          </div>
     );
 }

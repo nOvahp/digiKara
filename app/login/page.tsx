@@ -119,13 +119,62 @@ export default function LoginPage() {
     handleFinalRedirect();
   };
 
-  const handleFinalRedirect = () => {
+
+  const handleFinalRedirect = async () => {
       // Direct redirect based on role
       if (role === 'manager') {
           router.push('/SchoolPanel');
-      } else {
-          router.push('/StudentDashboard');
-      }
+          return;
+      } 
+      
+      // For student, check if hojre exists
+      // First check local user object (fastest)
+      // We need to access the current 'user' state which might be stale in closure, 
+      // but 'user' from useAuth or the one passed in handleNextStep is best.
+      // However, handleFinalRedirect is called without args here.
+      // Let's rely on localStorage as a reliable fallback for the latest data 
+      // or the 'user' from context if available.
+      
+      let currentUser = user;
+      try {
+          const stored = localStorage.getItem('user_data');
+          if (stored) currentUser = JSON.parse(stored);
+      } catch(e) {}
+
+      // Logic to check cell existence
+      const checkHojre = async () => {
+          // 1. Check in user object
+          const actualUser = (currentUser as any)?.user || currentUser;
+          const hasCellInUser = Array.isArray(actualUser?.cell) 
+              ? actualUser.cell.length > 0 
+              : !!actualUser?.cell;
+
+          if (hasCellInUser) {
+              localStorage.setItem('hojre_created', 'true');
+              router.push('/StudentDashboard');
+              return;
+          }
+
+          // 2. If not in user object, double check with API (to be sure)
+          // Import dynamically to avoid cycle if any, or just use imported service
+          const { shopService } = await import('@/app/services/student/shopService');
+          const result = await shopService.getShop();
+
+          if (result.success && result.hasShop) {
+              // Update local storage to avoid future checks
+              localStorage.setItem('hojre_created', 'true');
+              
+              // Optionally update user_data in local storage with the new cell info if possible
+              // but for now just redirect
+              router.push('/StudentDashboard');
+          } else {
+              // No shop found -> Creation Flow
+              localStorage.removeItem('hojre_created');
+              router.push('/StudentDashboard/hojreCreation');
+          }
+      };
+
+      checkHojre();
   };
 
   // Wrapper for LoginViewNationalID which passes userData directly

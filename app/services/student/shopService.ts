@@ -26,5 +26,25 @@ export const shopService = {
       console.error("Create Shop Error:", error);
       return { success: false, message: error.message || 'خطای شبکه' };
     }
+  },
+
+  getShop: async (): Promise<{ success: boolean; hasShop: boolean; data?: any; message?: string }> => {
+    try {
+      const response = await apiClient.get<any, any>('/student/cells');
+      
+      if (response.status === 'success' || response.code === 200 || response.success) {
+        const data = response.data;
+        const hasShop = Array.isArray(data) ? data.length > 0 : !!data;
+        return { success: true, hasShop, data };
+      }
+      return { success: false, hasShop: false, message: response.message };
+    } catch (error: any) {
+      // 404 might mean no shop, or just error. Assuming 404 = no shop safely.
+      if (error?.response?.status === 404) {
+          return { success: true, hasShop: false };
+      }
+      console.error("Get Shop Error:", error);
+      return { success: false, hasShop: false, message: error.message || 'خطای شبکه' };
+    }
   }
 };
