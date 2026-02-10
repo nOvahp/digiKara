@@ -1,44 +1,47 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, MapPin, Plus, Circle, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+import { bazzarService } from "@/app/services/bazzarService";
 
 interface Address {
     id: string;
     label: string;
     address: string;
-    city: string; // Extracted from design text for better structure if needed, or just keep full string
+    city: string; 
 }
 
 export default function AddressPage() {
     const router = useRouter();
-    const [selectedId, setSelectedId] = useState<string>("1");
+    const [selectedId, setSelectedId] = useState<string>("");
+    const [addresses, setAddresses] = useState<Address[]>([]);
 
-    // Hardcoded data based on design
-    const addresses = [
-        {
-            id: "1",
-            label: "خانه",
-            address: "تهران، خیابان ولیعصر، کوچه گلها، پلاک 12، واحد 5"
-        },
-        {
-            id: "2",
-            label: "دفتر کار",
-            address: "اصفهان، خیابان شیخ بهایی، کوچه اردیبهشت، پلاک 7، واحد 2"
-        },
-        {
-            id: "3",
-            label: "منزل والدین",
-            address: "شیراز، خیابان زند، کوچه نیلوفر، پلاک 3، واحد 1"
-        },
-        {
-            id: "4",
-            label: "خانه دوست",
-            address: "مشهد، بلوار سجاد، کوچه یاس، پلاک 9، واحد 4"
-        }
-    ];
+    useEffect(() => {
+        const fetchAddresses = async () => {
+            try {
+                const response = await bazzarService.getAddresses();
+                if (response && response.data) {
+                    const mappedAddresses = response.data.map((item: any) => ({
+                        id: String(item.id),
+                        label: item.title || item.city || "آدرس", // Fallback label
+                        address: item.address,
+                        city: item.city || ""
+                    }));
+                    setAddresses(mappedAddresses);
+                    if (mappedAddresses.length > 0) {
+                         setSelectedId(String(mappedAddresses[0].id));
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to fetch addresses:", error);
+            }
+        };
+
+        fetchAddresses();
+    }, []);
 
     return (
         <div className="w-full min-h-screen bg-white flex flex-col items-center relative" dir="rtl">
@@ -105,7 +108,10 @@ export default function AddressPage() {
                 </div>
 
                 {/* Add New Address Button */}
-                <button className="w-full h-[57px] rounded-xl border border-[rgba(0,0,0,0.10)] flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors mt-4">
+                <button 
+                    onClick={() => router.push('/Bazzar/DigiKaraCart/Address/Add')}
+                    className="w-full h-[57px] rounded-xl border border-[rgba(0,0,0,0.10)] flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors mt-4"
+                >
                     <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-medium">
                         افزودن آدرس جدید
                     </span>

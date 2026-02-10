@@ -22,6 +22,7 @@ interface CartContextType {
     finalPrice: number;
     shippingCost: number;
     discount: number;
+    setCartItems: (items: CartItem[]) => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -76,6 +77,10 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         });
     };
 
+    const setCartItems = (newItems: CartItem[]) => {
+        setItems(newItems);
+    };
+
     const totalPrice = items.reduce((sum, item) => sum + item.price * item.count, 0);
     const shippingCost = items.length > 0 ? 15000000 : 0; // Mock fixed shipping if cart has items
     const discount = items.length > 0 ? 5000000 : 0; // Mock fixed discount
@@ -93,6 +98,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
                 finalPrice,
                 shippingCost,
                 discount,
+                setCartItems,
             }}
         >
             {children}

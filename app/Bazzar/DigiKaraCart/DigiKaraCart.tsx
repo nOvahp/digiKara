@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { ArrowLeft, Trash2, Plus, Minus, Tag, Check, ShoppingBag } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useCart } from "../CartContext";
+
+import { bazzarService } from "@/app/services/bazzarService";
 
 export default function DigiKaraCart() {
     const router = useRouter();
@@ -17,13 +19,64 @@ export default function DigiKaraCart() {
         totalPrice, 
         finalPrice, 
         shippingCost, 
-        discount 
+        discount,
+        setCartItems
     } = useCart();
     
     const [couponCode, setCouponCode] = useState("");
 
+    useEffect(() => {
+        const fetchOrders = async () => {
+            try {
+                const response = await bazzarService.getOrders();
+                console.log("Orders response:", response);
+                // Assuming the response structure based on common patterns. 
+                // Adjust mapping based on actual API response.
+                if (response) {
+                     // If response is the array directly or inside data
+                    const validData = Array.isArray(response) ? response : (Array.isArray(response.data) ? response.data : []);
+                    
+                    const mappedItems = validData.map((item: any) => ({
+                        id: item.id || Math.random(), // Ensure ID
+                        name: item.title || item.product?.title || item.name || "محصول",
+                        shopName: item.shop_name || "فروشگاه",
+                        price: Number(item.price || item.product?.price || 0),
+                        count: Number(item.count || item.quantity || 1),
+                        image: item.image_path || item.product?.image_path || item.image || "",
+                    }));
+
+                    if (mappedItems.length > 0) {
+                        setCartItems(mappedItems);
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to fetch orders:", error);
+            }
+        };
+
+        fetchOrders();
+    }, []);
+
     const formatPrice = (price: number) => {
         return price.toLocaleString('fa-IR') + " ریال";
+    };
+
+    const handleIncrement = async (item: any) => {
+        try {
+            await bazzarService.incrementOrderItem(item.id);
+            incrementItem(item.id);
+        } catch (error) {
+            console.error("Failed to increment item:", error);
+        }
+    };
+
+    const handleDecrement = async (item: any) => {
+        try {
+            await bazzarService.decrementOrderItem(item.id);
+            decrementItem(item.id);
+        } catch (error) {
+            console.error("Failed to decrement item:", error);
+        }
     };
 
     return (
@@ -100,14 +153,14 @@ export default function DigiKaraCart() {
                                         <div className="w-[70px] h-[27.10px] rounded-lg flex items-center justify-between">
                                             {item.count === 1 ? (
                                                 <button 
-                                                    onClick={() => removeItem(item.id)}
+                                                    onClick={() => handleDecrement(item)}
                                                     className="w-6 h-6 bg-[#F6F6F6] rounded-[6px] flex items-center justify-center text-[#0C1415] hover:bg-gray-200"
                                                 >
                                                     <Trash2 className="w-3.5 h-3.5" />
                                                 </button>
                                             ) : (
                                                 <button 
-                                                    onClick={() => decrementItem(item.id)}
+                                                    onClick={() => handleDecrement(item)}
                                                     className="w-6 h-6 bg-[#F6F6F6] rounded-[6px] flex items-center justify-center text-[#0C1415] hover:bg-gray-200"
                                                 >
                                                     <Minus className="w-3.5 h-3.5" />
@@ -119,7 +172,7 @@ export default function DigiKaraCart() {
                                             </span>
                                             
                                             <button 
-                                                onClick={() => incrementItem(item.id)}
+                                                onClick={() => handleIncrement(item)}
                                                 className="w-6 h-6 bg-[#FDD00A] rounded-[6px] flex items-center justify-center text-[#0C1415] hover:bg-[#e5bc09]"
                                             >
                                                 <Plus className="w-3.5 h-3.5" />

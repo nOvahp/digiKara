@@ -110,6 +110,41 @@ export const bazzarService = {
         const payload = priceId ? { prices: [priceId] } : {};
         const response = await apiClient.post(`/customers/orders/store/product/${productId}`, payload);
         return response;
+    },
+
+    getOrders: async (): Promise<any> => {
+        const response = await apiClient.get('/customers/orders/index');
+        return response;
+    },
+
+    incrementOrderItem: async (orderDetailId: number): Promise<any> => {
+        const response = await apiClient.put(`/customers/orders/increment/orderDetail/${orderDetailId}`, {});
+        return response;
+    },
+
+    decrementOrderItem: async (orderDetailId: number): Promise<any> => {
+        const response = await apiClient.put(`/customers/orders/decrement/orderDetail/${orderDetailId}`, {});
+        return response;
+    },
+
+    getAddresses: async (): Promise<any> => {
+        const response = await apiClient.get('/customers/addresses');
+        return response;
+    },
+
+    getProvinces: async (): Promise<any> => {
+        const response = await apiClient.get('/provinces');
+        return response;
+    },
+
+    getCities: async (provinceId: number): Promise<any> => {
+        const response = await apiClient.get(`/cities?province_id=${provinceId}`);
+        return response;
+    },
+
+    createAddress: async (data: any): Promise<any> => {
+        const response = await apiClient.post('/customers/addresses', data);
+        return response;
     }
 };
 
