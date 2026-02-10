@@ -265,7 +265,7 @@ const HojreRequestsTable = () => {
                             <div className="flex-[2] min-w-[200px] h-16 px-3 flex justify-start items-center gap-3">
                                 <div className="w-10 h-10 relative bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
                                     {req.model_data.logo ? (
-                                        <Image src={`https://digikara.back.adiaweb.dev/storage/${req.model_data.logo}`} alt={req.model_data.name} fill className="object-cover" />
+                                        <Image src={`https://digikara.back.adiaweb.dev/storage/${req.model_data.logo}`} alt={req.model_data.name} fill className="object-cover" unoptimized />
                                     ) : (
                                         <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">Logo</div>
                                     )}

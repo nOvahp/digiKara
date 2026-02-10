@@ -98,6 +98,7 @@ export default function ProductDetails() {
                             fill 
                             className="object-cover"
                             priority
+                            unoptimized
                          />
                      ) : (
                          <div className="w-full h-full flex items-center justify-center bg-gray-200 animate-pulse">
@@ -294,6 +295,7 @@ export default function ProductDetails() {
                                                     alt={simProduct.title} 
                                                     fill 
                                                     className="object-cover"
+                                                    unoptimized
                                                 />
                                             </div>
                                             <div className="w-full flex flex-col items-start gap-1">
@@ -335,25 +337,41 @@ export default function ProductDetails() {
 
                          {/* Add to Cart Button */}
                          <button 
-                            disabled={showPlaceholder || (currentInventory !== undefined && currentInventory <= 0)}
-                            onClick={() => {
+                            disabled={showPlaceholder || (currentInventory !== undefined && currentInventory <= 0) || loading}
+                            onClick={async () => {
                                 if (!product) return;
-                                const priceVal = currentPrice || 0;
+                                
+                                try {
+                                    setLoading(true);
+                                    // Step 1: Call API
+                                    await bazzarService.addToCart(product.id, selectedPriceId || undefined);
                                     
-                                addItem({
-                                    id: product.id, 
-                                    name: product.title + (selectedVariant ? ` - ${selectedVariant.title}` : ""),
-                                    shopName: "فروشنده نمونه", 
-                                    price: priceVal,
-                                    image: productImage
-                                });
+                                    // Step 2: Update Local Cart (Optional/Visual)
+                                    const priceVal = currentPrice || 0;
+                                        
+                                    addItem({
+                                        id: product.id, 
+                                        name: product.title + (selectedVariant ? ` - ${selectedVariant.title}` : ""),
+                                        shopName: "فروشنده نمونه", 
+                                        price: priceVal,
+                                        image: productImage
+                                    });
+
+                                    // Feedback
+                                    alert("محصول با موفقیت به سبد خرید اضافه شد"); // Using alert for now, should use toast in real app
+                                } catch (error) {
+                                    console.error("Add to cart failed", error);
+                                    alert("خطا در افزودن به سبد خرید");
+                                } finally {
+                                    setLoading(false);
+                                }
                             }}
-                            className={`flex-1 bg-[#FDD00A] h-12 rounded-xl flex items-center justify-center gap-2 transition-colors ${showPlaceholder || (currentInventory !== undefined && currentInventory <= 0) ? 'opacity-50 cursor-not-allowed bg-gray-300' : 'hover:bg-[#EAC009]'}`}
+                            className={`flex-1 bg-[#FDD00A] h-12 rounded-xl flex items-center justify-center gap-2 transition-colors ${showPlaceholder || (currentInventory !== undefined && currentInventory <= 0) || loading ? 'opacity-50 cursor-not-allowed bg-gray-300' : 'hover:bg-[#EAC009]'}`}
                          >
                              <span className="text-[#1A1C1E] text-base font-['PeydaWeb'] font-semibold">
-                                 {currentInventory !== undefined && currentInventory <= 0 ? "ناموجود" : "افزودن به سبد خرید"}
+                                 {loading ? "در حال انجام..." : (currentInventory !== undefined && currentInventory <= 0 ? "ناموجود" : "افزودن به سبد خرید")}
                              </span>
-                             <ShoppingBag className="w-5 h-5 text-[#0A0A0A]" />
+                             {!loading && <ShoppingBag className="w-5 h-5 text-[#0A0A0A]" />}
                          </button>
                      </div>
                      

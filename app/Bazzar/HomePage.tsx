@@ -33,6 +33,7 @@ const ProductCard = ({ id, title, price, rating, originalPrice, discount, image 
                 alt={title} 
                 fill 
                 className="object-cover"
+                unoptimized
             />
              {/* Shadow Effect from design */}
              <div className="absolute w-[64px] h-[5px] left-[53px] top-[121px] rotate-1 bg-black/80 blur-[11px]" />
@@ -74,7 +75,7 @@ const CategoryItem = ({ title, icon }: { title: string, icon?: string | null }) 
         <div className="w-16 flex flex-col items-center gap-2 shrink-0 cursor-pointer group">
             <div className={`w-16 h-16 rounded-2xl bg-[#FDD00A] flex items-center justify-center transition-colors group-hover:opacity-90 overflow-hidden relative`}>
                 {icon ? (
-                     <Image src={icon} alt={title} fill className="object-cover p-3" />
+                     <Image src={icon} alt={title} fill className="object-cover p-3" unoptimized />
                 ) : (
                     <Icon className="w-8 h-8 text-[#393E46]" strokeWidth={1.5} />
                 )}
@@ -320,7 +321,7 @@ export default function HomePage() {
                              <div key={product.id} className="w-[calc(50%-12px)] flex flex-col items-start gap-2 inline-flex" dir="rtl">
                                  <Link href={`/Bazzar/ProductDetails?id=${product.id}`} className="self-stretch aspect-[170/150] relative">
                                      <div className="w-full h-full left-0 top-0 absolute bg-[#F6F6F6] rounded-lg overflow-hidden">
-                                         <Image src={product.image || "/ProductBazzar.png"} alt={product.title} fill className="object-cover" />
+                                         <Image src={product.image || "/ProductBazzar.png"} alt={product.title} fill className="object-cover" unoptimized />
                                      </div>
                                      <div className="w-[37%] h-[3%] left-[31%] top-[80%] absolute origin-top-left rotate-1 bg-black/80 blur-[11px]" />
                                      {product.id % 3 === 0 && (
@@ -361,7 +362,7 @@ export default function HomePage() {
                           {homeData?.popular_schools.map(school => (
                                <div key={school.id} className="flex flex-col gap-2 shrink-0 w-[100px]">
                                     <div className="w-[100px] h-[100px] bg-gray-100 rounded-lg relative overflow-hidden">
-                                         <Image src={school.image_path || "/honarestan1.png"} alt={school.name} fill className="object-cover" />
+                                         <Image src={school.image_path || "/honarestan1.png"} alt={school.name} fill className="object-cover" unoptimized />
                                     </div>
                                     <div className="flex flex-col items-center w-full">
                                          <span className="text-[#1F2029] text-[10px] font-['PeydaWeb'] font-light opacity-60 text-center">{school.name}</span>

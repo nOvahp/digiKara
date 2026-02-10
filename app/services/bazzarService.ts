@@ -86,7 +86,7 @@ export const bazzarService = {
     },
 
     getProductDetails: async (id: number): Promise<BazzarProductDetailsResponse> => {
-        const response = await apiClient.get<{ data: BazzarProductDetailsResponse }>(`/${id}`);
+        const response = await apiClient.get<{ data: BazzarProductDetailsResponse }>(`/product/${id}`);
         const result = response as unknown as { data: BazzarProductDetailsResponse };
         return result.data;
     },
@@ -102,6 +102,14 @@ export const bazzarService = {
 
         const response = await apiClient.get<any>(`/products?${queryParams.toString()}`);
         return response as unknown as BazzarSearchResponse; 
+    },
+
+    addToCart: async (productId: number, priceId?: number): Promise<any> => {
+        // Endpoint: /customers/orders/store/product/{product_id}
+        // Sending prices array in body as required by backend (validation error received)
+        const payload = priceId ? { prices: [priceId] } : {};
+        const response = await apiClient.post(`/customers/orders/store/product/${productId}`, payload);
+        return response;
     }
 };
 

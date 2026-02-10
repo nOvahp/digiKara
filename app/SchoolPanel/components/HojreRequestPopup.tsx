@@ -118,7 +118,7 @@ const HojreRequestPopup = ({ requestId, onClose, onApprove }: HojreRequestPopupP
                         <div className="flex flex-col items-center gap-3">
                             <div className="w-20 h-20 relative bg-white rounded-2xl shadow-lg border-2 border-white overflow-hidden shrink-0">
                                 {data.model_data.logo ? (
-                                    <Image src={`https://digikara.back.adiaweb.dev/storage/${data.model_data.logo}`} alt={data.model_data.name} fill className="object-cover" />
+                                    <Image src={`https://digikara.back.adiaweb.dev/storage/${data.model_data.logo}`} alt={data.model_data.name} fill className="object-cover" unoptimized />
                                 ) : (
                                     <div className="w-full h-full flex items-center justify-center text-gray-300">
                                         <School className="w-8 h-8" />
