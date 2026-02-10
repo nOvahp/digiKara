@@ -294,7 +294,7 @@ export default function HomePage() {
                                 title={product.title} 
                                 price={typeof product.price === 'number' ? `${product.price.toLocaleString()} تومان` : product.price} 
                                 rating={product.rating || 0} 
-                                image={product.image || undefined} 
+                                image={product.image || product.image_path || undefined} 
                              />
                          )) : (
                              <div className="w-full text-center text-gray-500 text-xs py-4">محصولی یافت نشد</div>

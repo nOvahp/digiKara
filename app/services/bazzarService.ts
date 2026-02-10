@@ -13,12 +13,59 @@ export interface BazzarSchool {
     image_path: string | null;
 }
 
+// Updated interfaces based on API Response
+export interface BazzarPriceVariant {
+    id: number;
+    title: string;
+    amount: number;
+    type: number;
+    discount_percent: string;
+    inventory: number;
+    warn_inventory: number;
+    type_inventory: number;
+}
+
+export interface BazzarProductDetail {
+    id: number;
+    title: string;
+    description: string;
+    image_path: string | null;
+    category_id: number;
+    tag_path: string | null;
+    code: string;
+    inventory: number;
+    warn_inventory: number;
+    sold_count: number;
+    view_count: number;
+    like_count: number;
+    price: number;
+    type_inventory: number;
+    cell_id: number;
+    approved: boolean;
+    prices: BazzarPriceVariant[];
+    // Optional UI placeholders for reviews (not in API yet)
+    rating?: number; 
+    discount?: number | string; // Added to fix lint and support product-level discount
+    reviews_count?: number;
+    rating_distribution?: Record<number, number>;
+    reviews?: any[];
+}
+
+export interface BazzarProductDetailsResponse {
+    product: BazzarProductDetail;
+    similar_products: BazzarProduct[];
+}
+
+// BazzarProduct is used in similar_products and home lists
+// Update if similar_products inside detail has diff structure, 
+// User JSON shows similar_products items have: id, title, image_path, category_id, tag_path, price
 export interface BazzarProduct {
     id: number;
     title: string;
-    price: number | string; // API might return number or formatted string
-    image: string | null;
-    rating?: number; // Optional as not in sample but used in UI
+    price: number | string;
+    image?: string | null; // For home page compatibility (it used 'image') - or align to image_path
+    image_path?: string | null; // For detail similar_products
+    rating?: number;
     discount?: number;
     originalPrice?: number | string;
 }
@@ -33,13 +80,7 @@ export interface BazzarHomeData {
 export const bazzarService = {
     getHomePageData: async (): Promise<BazzarHomeData> => {
         const response = await apiClient.get<{ data: BazzarHomeData }>('/index');
-        // The apiClient interceptor returns response.data directly, which is the full object including 'data', 'status', etc.
-        // Based on apiClient.ts: return response.data;
-        // The API response structure is: { status, message, data: { ... }, code }
-        // So the return value of apiClient.get is that whole object.
-        // We need to access .data from that.
-        
-        // Let's cast the response to allow access
+        // Handle response mapping if needed
         const result = response as unknown as { data: BazzarHomeData };
         return result.data; 
     },
@@ -75,38 +116,11 @@ export interface BazzarSearchParams {
 
 export interface BazzarSearchResponse {
     status: string;
-    data: BazzarProduct[]; // Assuming data is an array of products
-    // Add pagination meta if available in response, e.g.:
-    // meta?: { current_page: number; last_page: number; total: number; per_page: number; }; 
-    // For now we will rely on data length or if user provided specific meta structure.
-    // Given the user description "image we have 1000 result... we get page 1", 
-    // valid pagination usually brings meta data. I'll add a generic meta placeholder for now.
+    data: BazzarProduct[];
     meta?: {
         current_page: number;
         last_page: number;
         total: number;
         per_page: number;
     };
-}
-
-export interface BazzarProductDetail {
-    id: number;
-    title: string;
-    price: number | string;
-    description?: string;
-    images?: string[]; // Array of image URLs
-    category?: string;
-    rating?: number;
-    reviews_count?: number;
-    // Potentially other fields matching the UI:
-    colors?: { name: string; hex: string; id: string }[];
-    sizes?: string[];
-    specs?: Record<string, string>;
-    reviews?: any[]; // Define specific review type if needed
-    rating_distribution?: Record<number, number>;
-}
-
-export interface BazzarProductDetailsResponse {
-    product: BazzarProductDetail;
-    similar_products: BazzarProduct[];
 }
