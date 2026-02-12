@@ -34,7 +34,7 @@ export default function ActiveFilters({ filters, categories, onRemove, onClearAl
     if (filters.minPrice) {
         activeFilters.push({
             key: 'minPrice',
-            label: `از ${Number(filters.minPrice).toLocaleString()} تومان`,
+            label: `از ${Number(filters.minPrice).toLocaleString()} ریال`,
             value: filters.minPrice
         });
     }
@@ -43,7 +43,7 @@ export default function ActiveFilters({ filters, categories, onRemove, onClearAl
     if (filters.maxPrice) {
         activeFilters.push({
             key: 'maxPrice',
-            label: `تا ${Number(filters.maxPrice).toLocaleString()} تومان`,
+            label: `تا ${Number(filters.maxPrice).toLocaleString()} ریال`,
             value: filters.maxPrice
         });
     }

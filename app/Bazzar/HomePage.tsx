@@ -293,7 +293,7 @@ export default function HomePage() {
                                 key={product.id} 
                                 id={product.id} 
                                 title={product.title} 
-                                price={typeof product.price === 'number' ? `${product.price.toLocaleString()} تومان` : product.price} 
+                                price={typeof product.price === 'number' ? `${product.price.toLocaleString()} ریال` : product.price} 
                                 rating={product.rating || 0} 
                                 image={product.image || product.image_path || undefined} 
                              />
@@ -344,7 +344,7 @@ export default function HomePage() {
                                              </div>
                                          </div>
                                          <div className="self-stretch text-left text-[#1F2029] text-sm font-num-medium">
-                                             {typeof product.price === 'number' ? `${product.price.toLocaleString()} تومان` : product.price}
+                                             {typeof product.price === 'number' ? `${product.price.toLocaleString()} ریال` : product.price}
                                          </div>
                                      </div>
                                  </div>

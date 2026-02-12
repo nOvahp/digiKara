@@ -323,7 +323,7 @@ export function PriceListEditor({ prices, onRefresh, basePrice }: PriceListEdito
                             {/* Row 2: Price and Discount */}
                             <div className="flex gap-2">
                                 <div className="flex-1 flex flex-col gap-1">
-                                    <label className="text-xs text-gray-500 font-medium font-['PeydaWeb']">قیمت (تومان)</label>
+                                    <label className="text-xs text-gray-500 font-medium font-['PeydaWeb']">قیمت (ریال)</label>
                                     <input 
                                         className="w-full h-[52px] px-3 rounded-xl border border-[#DFE1E7] text-right font-num-medium font-['PeydaFaNum'] text-sm outline-none focus:border-[#FDD00A]"
                                         value={current.amount ? parseInt(current.amount).toLocaleString() : ''}

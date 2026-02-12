@@ -56,7 +56,7 @@ export default function OrderTrackingPage() {
                                     <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] line-clamp-1 text-right">{item.name}</span>
                                     <span className="text-[#707F81] text-xs font-['PeydaFaNum'] text-right">{item.shopName || "فروشگاه"}</span>
                                     <span className="text-[#0C1415] text-sm font-num-medium mt-1 text-right">
-                                        {(item.price * item.count).toLocaleString()} تومان
+                                        {(item.price * item.count).toLocaleString()} ریال
                                     </span>
                                 </div>
                             </div>

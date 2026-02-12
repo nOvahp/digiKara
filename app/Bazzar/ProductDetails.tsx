@@ -75,7 +75,7 @@ export default function ProductDetails() {
     // Fallback logic for display values
     const currencyFormatter = (val: number | string | undefined) => {
         if (val === undefined || val === null) return "-";
-        if (typeof val === 'number') return `${val.toLocaleString()} تومان`;
+        if (typeof val === 'number') return `${val.toLocaleString()} ریال`;
         return val.toString(); // API might send string formatted
     };
 

@@ -308,7 +308,7 @@ function SearchContent() {
                              <div className="relative w-full aspect-[170/150] bg-[#F6F6F6] rounded-lg overflow-hidden">
                                  {/* Image */}
                                  <Image 
-                                    src={product.image || "/ProductBazzar.png"} 
+                                    src={product.image_path || product.image || "/ProductBazzar.png"} 
                                     alt={product.title}
                                     fill
                                     className="object-cover transition-transform group-hover:scale-105"
@@ -338,7 +338,7 @@ function SearchContent() {
                                      </div>
                                  </div>
                                  <div className="text-[#1F2029] text-sm font-num-medium text-left w-full">
-                                    {typeof product.price === 'number' ? `${product.price.toLocaleString()} تومان` : product.price}
+                                    {typeof product.price === 'number' ? `${product.price.toLocaleString()} ریال` : product.price}
                                  </div>
                              </div>
                         </Link>
