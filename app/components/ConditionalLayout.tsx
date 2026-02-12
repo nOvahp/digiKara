@@ -9,15 +9,17 @@ export default function ConditionalLayout() {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname?.startsWith("/login")) {
-      document.body.classList.add("full-width");
+    const isLandingPage = pathname === "/" || pathname?.startsWith("/homePgae");
+
+    if (isLandingPage) {
+      document.body.classList.add("landing-page");
     } else {
-      document.body.classList.remove("full-width");
+      document.body.classList.remove("landing-page");
     }
     
     // Cleanup on unmount
     return () => {
-      document.body.classList.remove("full-width");
+      document.body.classList.remove("landing-page");
     };
   }, [pathname]);
   

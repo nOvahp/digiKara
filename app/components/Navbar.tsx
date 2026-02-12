@@ -13,7 +13,7 @@ const Navbar = () => {
   if (pathname?.startsWith("/StudentDashboard") || pathname?.startsWith("/Bazzar")) return null;
 
   return (
-    <div className="w-full hidden lg:flex justify-between items-center bg-transparent">
+    <div id="desktop-navbar" className="w-full hidden lg:flex justify-between items-center bg-transparent">
       <ChamferedButton className="h-auto 2xl:h-[60px]">
         <Link
           href="/login"

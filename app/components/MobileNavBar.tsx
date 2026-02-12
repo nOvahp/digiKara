@@ -18,7 +18,7 @@ const MobileNavBar = () => {
   if (pathname?.startsWith("/StudentDashboard") || pathname?.startsWith("/Bazzar")) return null;
 
   return (
-    <div className="w-full flex lg:hidden justify-between items-center bg-transparent relative z-50">
+    <div id="mobile-navbar" className="w-full flex lg:hidden justify-between items-center bg-transparent relative z-50">
       <div className="flex items-center gap-4">
         <Link href="/">
           <Image

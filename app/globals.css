@@ -267,8 +267,38 @@ html {
 
 body {
   overflow-x: hidden;
-  max-width: 1440px;
+  max-width: 425px; /* Default Systemic Constraint */
   margin: 0 auto;
+}
+
+body.landing-page {
+  max-width: 1440px; /* Landing Page Exception */
+}
+
+/* SYSTEMIC MOBILE LAYOUT FORCE (for non-landing pages on Desktop) */
+@media (min-width: 426px) {
+  /* Hide Desktop Nav */
+  body:not(.landing-page) #desktop-navbar {
+    display: none !important;
+  }
+  
+  /* Show Mobile Nav */
+  body:not(.landing-page) #mobile-navbar {
+    display: flex !important;
+  }
+
+  /* Force Single Column Grids to prevent cutting content */
+  body:not(.landing-page) .grid {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+  }
+
+  /* Constrain Fixed Elements (Bottom Nav, etc) */
+  body:not(.landing-page) .fixed {
+    max-width: 425px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 100% !important;
+  }
 }
 
 html {

@@ -16,7 +16,7 @@ export function LoginHeader({
   onBack
 }: LoginHeaderProps) {
   return (
-    <div className="relative w-screen h-auto ml-[calc(50%-50vw)] -mt-20 z-0 mb-16">
+    <div className="relative w-full h-auto -mt-20 z-0 mb-16">
       <Image
         src={imageSrc}
         alt="Login Header"
