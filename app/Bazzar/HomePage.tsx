@@ -321,7 +321,7 @@ export default function HomePage() {
                              <div key={product.id} className="w-[calc(50%-12px)] flex flex-col items-start gap-2 inline-flex" dir="rtl">
                                  <Link href={`/Bazzar/ProductDetails?id=${product.id}`} className="self-stretch aspect-[170/150] relative">
                                      <div className="w-full h-full left-0 top-0 absolute bg-[#F6F6F6] rounded-lg overflow-hidden">
-                                         <Image src={product.image || "/ProductBazzar.png"} alt={product.title} fill className="object-cover" unoptimized />
+                                         <Image src={product.image || product.image_path || "/ProductBazzar.png"} alt={product.title} fill className="object-cover" unoptimized />
                                      </div>
                                      <div className="w-[37%] h-[3%] left-[31%] top-[80%] absolute origin-top-left rotate-1 bg-black/80 blur-[11px]" />
                                      {product.id % 3 === 0 && (
