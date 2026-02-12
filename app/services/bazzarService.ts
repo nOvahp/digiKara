@@ -1,4 +1,5 @@
 import apiClient from './common/apiClient';
+import { provinces, cities } from '../data/iran_locations';
 
 export interface BazzarCategory {
     id: number;
@@ -77,6 +78,26 @@ export interface BazzarHomeData {
     popular_schools: BazzarSchool[];
 }
 
+export interface CartItem {
+    id: number;
+    product_id: number;
+    quantity: number;
+    price: number;
+    discount: number;
+    is_updated: boolean;
+    status: string;
+    title: string;
+    image: string;
+    shop_name?: string; // Optional as it's missing in new JSON but used in UI
+}
+
+export interface CartResponse {
+    status: string;
+    message: string;
+    data: CartItem[];
+    code: number;
+}
+
 export const bazzarService = {
     getHomePageData: async (): Promise<BazzarHomeData> => {
         const response = await apiClient.get<{ data: BazzarHomeData }>('/index');
@@ -112,9 +133,9 @@ export const bazzarService = {
         return response;
     },
 
-    getOrders: async (): Promise<any> => {
+    getOrders: async (): Promise<CartResponse> => {
         const response = await apiClient.get('/customers/orders/index');
-        return response;
+        return response as unknown as CartResponse;
     },
 
     incrementOrderItem: async (orderDetailId: number): Promise<any> => {
@@ -133,13 +154,14 @@ export const bazzarService = {
     },
 
     getProvinces: async (): Promise<any> => {
-        const response = await apiClient.get('/provinces');
-        return response;
+        // Fallback to static data as API endpoint is missing
+        return { data: provinces };
     },
 
     getCities: async (provinceId: number): Promise<any> => {
-        const response = await apiClient.get(`/cities?province_id=${provinceId}`);
-        return response;
+        // Fallback to static data as API endpoint is missing
+        const cityList = cities[provinceId] || [];
+        return { data: cityList };
     },
 
     createAddress: async (data: any): Promise<any> => {

@@ -48,7 +48,7 @@ export function Login({ onNext, onBack }: { onNext?: () => void; onBack?: () => 
         </Button>
         */}
 
-        <div className="flex items-center gap-4 mt-8 mb-2 opacity-80 grayscale hover:grayscale-0 transition-all duration-500">
+        <div className="flex items-center gap-7 mt-8 mb-2 opacity-80  hover:grayscale-0 transition-all duration-500">
           <Image src={Logo} alt="Logo" width={50} height={50} />
           <Image src={Asset1} alt="Amuzesh Logo" width={50} height={50} />
           <Image src={AmuzeshLogo} alt="Amuzesh Logo" width={80} height={80} />

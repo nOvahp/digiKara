@@ -30,23 +30,22 @@ export default function DigiKaraCart() {
             try {
                 const response = await bazzarService.getOrders();
                 console.log("Orders response:", response);
-                // Assuming the response structure based on common patterns. 
-                // Adjust mapping based on actual API response.
-                if (response) {
-                     // If response is the array directly or inside data
-                    const validData = Array.isArray(response) ? response : (Array.isArray(response.data) ? response.data : []);
-                    
-                    const mappedItems = validData.map((item: any) => ({
-                        id: item.id || Math.random(), // Ensure ID
-                        name: item.title || item.product?.title || item.name || "محصول",
+                
+                if (response && response.data) {
+                    const mappedItems = response.data.map((item) => ({
+                        id: item.id, // Cart Item ID (order detail id)
+                        product_id: item.product_id,
+                        name: item.title,
                         shopName: item.shop_name || "فروشگاه",
-                        price: Number(item.price || item.product?.price || 0),
-                        count: Number(item.count || item.quantity || 1),
-                        image: item.image_path || item.product?.image_path || item.image || "",
+                        price: Number(item.price),
+                        count: Number(item.quantity),
+                        image: item.image,
                     }));
 
                     if (mappedItems.length > 0) {
                         setCartItems(mappedItems);
+                    } else {
+                        setCartItems([]);
                     }
                 }
             } catch (error) {
@@ -138,10 +137,10 @@ export default function DigiKaraCart() {
                                 
                                 {/* Content Container */}
                                 <div className="flex-1 flex flex-col items-end gap-[5px] pr-4">
-                                    <h3 className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-normal text-right w-full truncate">
+                                    <h3 className="text-[#0C1415] text-sm  font-normal text-right w-full truncate">
                                         {item.name}
                                     </h3>
-                                    <span className="text-[#707F81] text-xs font-['PeydaFaNum'] font-normal text-right w-full truncate">
+                                    <span className="text-[#707F81] text-xs font-normal text-right w-full truncate">
                                         {item.shopName}
                                     </span>
                                     
