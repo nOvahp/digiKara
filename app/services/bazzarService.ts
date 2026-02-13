@@ -1,5 +1,5 @@
 import apiClient from './common/apiClient';
-import { provinces, cities } from '../data/iran_locations';
+
 
 export interface BazzarCategory {
     id: number;
@@ -154,18 +154,36 @@ export const bazzarService = {
     },
 
     getProvinces: async (): Promise<any> => {
-        // Fallback to static data as API endpoint is missing
-        return { data: provinces };
+        const response = await apiClient.get('/customers/addresses/provinces');
+        return response;
     },
 
     getCities: async (provinceId: number): Promise<any> => {
-        // Fallback to static data as API endpoint is missing
-        const cityList = cities[provinceId] || [];
-        return { data: cityList };
+        if (!provinceId || isNaN(provinceId) || provinceId <= 0) {
+            console.warn("Invalid provinceId passed to getCities:", provinceId);
+            return { data: [] }; // Prevent API call
+        }
+        const response = await apiClient.get(`/customers/addresses/province/${provinceId}/city`);
+        return response;
     },
 
     createAddress: async (data: any): Promise<any> => {
         const response = await apiClient.post('/customers/addresses', data);
+        return response;
+    },
+
+    updateAddress: async (addressId: number, data: any): Promise<any> => {
+        const response = await apiClient.put(`/customers/addresses/${addressId}`, data);
+        return response;
+    },
+
+    deleteAddress: async (addressId: number): Promise<any> => {
+        const response = await apiClient.delete(`/customers/addresses/${addressId}`);
+        return response;
+    },
+
+    getUserProfile: async (): Promise<any> => {
+        const response = await apiClient.get('/customers/users');
         return response;
     }
 };

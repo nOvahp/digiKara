@@ -1,14 +1,18 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { useRouter, useParams } from "next/navigation";
+import { ArrowLeft, Loader2, Trash2 } from "lucide-react";
 import { bazzarService } from "@/app/services/bazzarService";
 import { toast } from "sonner";
 
-export default function AddAddressPage() {
+export default function EditAddressPage() {
     const router = useRouter();
+    const params = useParams();
+    const addressId = Number(params.id);
+
     const [isLoading, setIsLoading] = useState(false);
+    const [isFetching, setIsFetching] = useState(true);
     const [provinces, setProvinces] = useState<any[]>([]);
     const [cities, setCities] = useState<any[]>([]);
     
@@ -28,69 +32,94 @@ export default function AddAddressPage() {
         city_id: ""
     });
 
+    // Initial Data Load
     useEffect(() => {
         let isMounted = true;
-        const fetchProvinces = async () => {
+        
+        const fetchData = async () => {
             try {
-                const response = await bazzarService.getProvinces();
-                if (isMounted && response && response.data) {
-                     setProvinces(response.data);
+                // 1. Fetch Provinces
+                const provincesRes = await bazzarService.getProvinces();
+                if (!isMounted) return;
+                
+                if (provincesRes && provincesRes.data) {
+                    setProvinces(provincesRes.data);
                 }
-            } catch (error) {
-                console.error("Failed to fetch provinces:", error);
-            }
-        };
-        fetchProvinces();
-        return () => { isMounted = false; };
-    }, []);
 
-    useEffect(() => {
-        let isMounted = true;
-        
-        // Paranoid validation for province_id
-        const rawId = formData.province_id;
-        
-        if (Array.isArray(rawId)) {
-            console.error("Province ID is an array, which is invalid:", rawId);
-            setCities([]);
-            return;
-        }
+                // 2. Fetch specific address (via list)
+                const addressesRes = await bazzarService.getAddresses();
+                if (!isMounted) return;
 
-        const pId = typeof rawId === 'string' ? parseInt(rawId, 10) : Number(rawId);
-        
-        // Check if pId is a valid positive integer
-        if (!rawId || isNaN(pId) || pId <= 0) {
-            setCities([]);
-            return;
-        }
+                if (addressesRes && addressesRes.data) {
+                    const targetAddress = addressesRes.data.find((a: any) => Number(a.id) === addressId);
+                    
+                    if (targetAddress) {
+                        // 3. Set basic form data
+                        setFormData({
+                            title: targetAddress.title || "",
+                            address: targetAddress.address || "",
+                            postal_code: targetAddress.postal_code || "",
+                            province_id: Number(targetAddress.province_id) || "",
+                            city_id: Number(targetAddress.city_id) || "" // We'll set this, but might need to wait for cities
+                        });
 
-        const fetchCities = async () => {
-             try {
-                const response = await bazzarService.getCities(pId);
-                if (isMounted) {
-                    if (response && response.data) {
-                        setCities(response.data);
+                        // 4. Fetch cities for this province immediately if present
+                        if (targetAddress.province_id) {
+                            const citiesRes = await bazzarService.getCities(Number(targetAddress.province_id));
+                            if (isMounted && citiesRes && citiesRes.data) {
+                                setCities(citiesRes.data);
+                            }
+                        }
                     } else {
-                        setCities([]);
+                        toast.error("آدرس مورد نظر یافت نشد");
+                        router.back();
                     }
                 }
             } catch (error) {
-                if (isMounted) {
-                    console.error("Failed to fetch cities:", error);
-                    setCities([]);
-                }
+                console.error("Failed to load initial data:", error);
+                toast.error("خطا در بارگذاری اطلاعات");
+            } finally {
+                if (isMounted) setIsFetching(false);
             }
         };
-        fetchCities();
+
+        if (addressId) {
+            fetchData();
+        }
+        
         return () => { isMounted = false; };
-    }, [formData.province_id]);
+    }, [addressId, router]);
+
+
+    // Handle Province Change (Separate from initial load to avoid overwriting)
+    const handleProvinceChange = async (newProvinceId: number) => {
+        // Clear city when province changes manually
+        setFormData(prev => ({ ...prev, province_id: newProvinceId, city_id: "" }));
+        setCities([]);
+
+        if (newProvinceId && newProvinceId > 0) {
+            try {
+                const response = await bazzarService.getCities(newProvinceId);
+                if (response && response.data) {
+                    setCities(response.data);
+                }
+            } catch (error) {
+                console.error("Failed to fetch cities:", error);
+            }
+        }
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         
+        if (name === "province_id") {
+            handleProvinceChange(Number(value));
+            return;
+        }
+
         setFormData(prev => ({ 
             ...prev, 
-            [name]: (name === "province_id" || name === "city_id") 
+            [name]: (name === "city_id") 
                     ? (value === "" ? "" : Number(value)) 
                     : value 
         }));
@@ -104,25 +133,33 @@ export default function AddAddressPage() {
 
         setIsLoading(true);
         try {
-            const response = await bazzarService.createAddress(formData);
-             if (response) { // Add stricter check if needed based on API response structure
-                toast.success("آدرس با موفقیت ثبت شد");
+            const response = await bazzarService.updateAddress(addressId, formData);
+             if (response) {
+                toast.success("آدرس با موفقیت ویرایش شد");
                 router.back();
             }
         } catch (error) {
-            toast.error("خطا در ثبت آدرس");
+            toast.error("خطا در ویرایش آدرس");
             console.error(error);
         } finally {
             setIsLoading(false);
         }
     };
 
+    if (isFetching) {
+        return (
+            <div className="w-full min-h-screen bg-white flex items-center justify-center">
+                <Loader2 className="w-8 h-8 animate-spin text-[#FDD00A]" />
+            </div>
+        );
+    }
+
     return (
         <div className="w-full min-h-screen bg-white flex flex-col items-center relative" dir="rtl">
             {/* Header */}
             <div className="w-full max-w-[440px] flex justify-between items-center px-0 py-4 shrink-0">
                  <div className="flex items-center justify-between w-full relative">
-                     <span className="text-[#0C1415] text-base font-['PeydaWeb'] font-semibold">افزودن آدرس جدید</span>
+                     <span className="text-[#0C1415] text-base font-['PeydaWeb'] font-semibold">ویرایش آدرس</span>
                      <button 
                         onClick={() => router.back()}
                         className="absolute left-0 w-10 h-10 rounded-full border border-[rgba(0,0,0,0.10)] flex items-center justify-center hover:bg-gray-50 transition-colors"
@@ -213,7 +250,7 @@ export default function AddAddressPage() {
                         <Loader2 className="w-6 h-6 animate-spin text-[#1A1C1E]" />
                     ) : (
                         <span className="text-[#1A1C1E] text-[17px] font-['PeydaWeb'] font-semibold">
-                            ثبت آدرس
+                            ویرایش آدرس
                         </span>
                     )}
                 </button>

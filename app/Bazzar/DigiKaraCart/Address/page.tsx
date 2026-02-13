@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, MapPin, Plus, Circle, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, MapPin, Plus, Circle, CheckCircle2, Pencil, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 import { bazzarService } from "@/app/services/bazzarService";
@@ -60,10 +60,23 @@ export default function AddressPage() {
             </div>
 
             {/* List Container */}
-            <div className="w-full max-w-[440px] flex flex-col gap-0 px-0 pb-24 flex-1 overflow-y-auto no-scrollbar">
+            <div className="w-full max-w-[440px] flex flex-col gap-0 px-0 pb-48 flex-1 overflow-y-auto no-scrollbar">
                 
                 <div className="w-full flex flex-col gap-6 py-6">
-                    {addresses.map((item, index) => (
+                    {addresses.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center py-20 gap-4 opacity-70">
+                            <MapPin className="w-16 h-16 text-gray-300" strokeWidth={1} />
+                            <p className="text-gray-500 font-['PeydaWeb'] text-lg">هنوز آدرسی ثبت نکرده‌اید</p>
+                            <button 
+                                onClick={() => router.push('/Bazzar/DigiKaraCart/Address/Add')}
+                                className="mt-4 px-6 py-3 bg-[#FDD00A] rounded-xl flex items-center gap-2 hover:bg-[#e5bc09] transition-colors shadow-sm"
+                            >
+                                <span className="text-[#1A1C1E] font-['PeydaWeb'] font-semibold">افزودن اولین آدرس</span>
+                                <Plus className="w-5 h-5" />
+                            </button>
+                        </div>
+                    ) : (
+                        addresses.map((item, index) => (
                         <React.Fragment key={item.id}>
                             <div 
                                 onClick={() => setSelectedId(item.id)}
@@ -84,8 +97,41 @@ export default function AddressPage() {
                                     </div>
                                 </div>
 
-                                {/* Radio Icon */}
-                                <div className="mr-4 shrink-0">
+                                {/* Action Buttons */}
+                                <div className="flex items-center gap-2 mr-4 shrink-0">
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            // Ideally show a confirmation dialog here
+                                            if (window.confirm("آیا از حذف این آدرس اطمینان دارید؟")) {
+                                                const handleDelete = async () => {
+                                                    try {
+                                                        await bazzarService.deleteAddress(Number(item.id));
+                                                        setAddresses(prev => prev.filter(a => a.id !== item.id));
+                                                        // toast.success("آدرس حذف شد"); // If you have toast
+                                                    } catch (error) {
+                                                        console.error("Failed to delete address:", error);
+                                                        // toast.error("خطا در حذف آدرس");
+                                                    }
+                                                };
+                                                handleDelete();
+                                            }
+                                        }}
+                                        className="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center transition-colors text-red-500"
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                    </button>
+
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            router.push(`/Bazzar/DigiKaraCart/Address/Edit/${item.id}`);
+                                        }}
+                                        className="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center transition-colors text-[#707F81]"
+                                    >
+                                        <Pencil className="w-4 h-4" />
+                                    </button>
+
                                     {selectedId === item.id ? (
                                         <div className="relative">
                                             <Circle className="w-6 h-6 text-[#0C1415]" strokeWidth={1.5} />
@@ -104,27 +150,30 @@ export default function AddressPage() {
                                 <div className="w-full h-px bg-[rgba(0,0,0,0.10)]"></div>
                             )}
                         </React.Fragment>
-                    ))}
+                    ))
+                    )}
                 </div>
 
-                {/* Add New Address Button */}
-                <button 
-                    onClick={() => router.push('/Bazzar/DigiKaraCart/Address/Add')}
-                    className="w-full h-[57px] rounded-xl border border-[rgba(0,0,0,0.10)] flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors mt-4"
-                >
-                    <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-medium">
-                        افزودن آدرس جدید
-                    </span>
-                    <div className="w-6 h-6 bg-transparent border-2 border-[#0C1415] rounded-md flex items-center justify-center p-0.5">
-                        <Plus className="w-4 h-4 text-[#0C1415]" strokeWidth={2.5} />
-                    </div>
-                </button>
+                {/* Add New Address Button (Only show if list is not empty to avoid duplicate buttons) */}
+                {addresses.length > 0 && (
+                    <button 
+                        onClick={() => router.push('/Bazzar/DigiKaraCart/Address/Add')}
+                        className="w-full h-[57px] rounded-xl border border-[rgba(0,0,0,0.10)] flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors mt-4"
+                    >
+                        <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] font-medium">
+                            افزودن آدرس جدید
+                        </span>
+                        <div className="w-6 h-6 bg-transparent border-2 border-[#0C1415] rounded-md flex items-center justify-center p-0.5">
+                            <Plus className="w-4 h-4 text-[#0C1415]" strokeWidth={2.5} />
+                        </div>
+                    </button>
+                )}
 
             </div>
 
             {/* Bottom Bar */}
-             <div className="fixed bottom-0 left-0 right-0 z-40 w-full max-w-[440px] mx-auto p-6 bg-transparent">
-                 <div className="w-full  rounded-2xl  p-3">
+             <div className="fixed bottom-[85px] left-0 right-0 z-40 w-full max-w-[440px] mx-auto p-6 bg-gradient-to-t from-white to-transparent pointer-events-none">
+                 <div className="w-full rounded-2xl p-3 pointer-events-auto">
                     <button 
                         onClick={() => router.back()} // Go back to confirm selection
                         className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-3 hover:bg-[#e5bc09] transition-colors shadow-sm"

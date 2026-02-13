@@ -28,6 +28,9 @@ export function NavBar() {
   
   const getIconColor = (active: boolean) => active ? "text-[#F7C61A]" : "text-[#605F5F]";
   
+  // Hide on ProductDetails
+  if (pathname?.startsWith('/Bazzar/ProductDetails')) return null;
+
   return (
     <div className="w-full fixed bottom-0 left-0 right-0 z-50 flex flex-col items-center pointer-events-none">
       <div className="relative w-full max-w-[440px] pointer-events-auto">
@@ -37,9 +40,9 @@ export function NavBar() {
             <div className="w-full flex justify-between items-center px-4">
                 
                 {/* Profile */}
-                <Link href="/Bazzar/Profile" className={getItemClasses(isActive('/Bazzar/Profile'))}>
-                    <User className={cn("w-6 h-6", getIconColor(isActive('/Bazzar/Profile')))} strokeWidth={1.5} />
-                    <div className={getTextClasses(isActive('/Bazzar/Profile'))}>حساب کاربری</div>
+                <Link href="/Bazzar/UserProfile" className={getItemClasses(isActive('/Bazzar/UserProfile'))}>
+                    <User className={cn("w-6 h-6", getIconColor(isActive('/Bazzar/UserProfile')))} strokeWidth={1.5} />
+                    <div className={getTextClasses(isActive('/Bazzar/UserProfile'))}>حساب کاربری</div>
                 </Link>
 
                 {/* Cart */}

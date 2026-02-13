@@ -6,7 +6,6 @@ import Image from "next/image"
 import { Search, MapPin, ChevronLeft, Gem, Palette, Hammer, Shirt, Armchair } from 'lucide-react'
 import Link from "next/link"
 
-import NavBar from "./NavBar"
 import SearchBar from "../components/SearchBar"
 import FilterModal from "../components/FilterModal"
 import ActiveFilters from "../components/ActiveFilters"
@@ -378,7 +377,8 @@ export default function HomePage() {
             </div>
 
              {/* Bottom Navigation */}
-             <NavBar />
+             {/* Bottom Navigation - Moved to Layout */}
+             {/* <NavBar /> */}
         </div>
     );
 }

@@ -95,35 +95,18 @@ export default function DigiKaraCart() {
                  </button>
             </div>
 
-            {/* Cart Items List */}
-            <div className="w-full flex-1 overflow-y-auto no-scrollbar">
+            {/* Cart Items List & Summary */}
+            <div className="w-full flex-1 overflow-y-auto no-scrollbar pb-48">
             {items.length === 0 ? (
                 <div className="flex flex-col items-center justify-center pt-20 gap-4 opacity-50">
                     <ShoppingBag className="w-16 h-16 text-gray-400" />
                     <span className="text-gray-500 font-['PeydaWeb']">سبد خرید خالی است</span>
                 </div>
             ) : (
-                <div className="w-full flex flex-col items-center gap-0 px-0 pb-[360px] relative z-0">
+                <div className="w-full flex flex-col items-center gap-0 px-0 relative z-0">
                     {items.map((item, index) => (
                         <div key={item.id} className="w-full flex flex-col">
                             <div className="w-full max-w-[364px] h-auto flex flex-row justify-between items-center relative py-4">
-                                {/* Image - Right side (in this flex-row-reverse context actually Left in UI but user used flex-end) */}
-                                {/* Wait, the design shows Image on Right side? No. User code: justifyContent: 'flex-end', flex: '1 1 0' has text content. img is separate. */}
-                                {/* In Flex row (default LTR): [Text Content] [Image] if justify-end? No. */}
-                                {/* User Design: 
-                                    Container: width 364, inline-flex, justify-end, items-center, gap 16.
-                                    Children:
-                                    1. Div (flex 1 col end): Text content.
-                                    2. Img (w 84).
-                                    So in LTR: [Text] <gap> [Time] -> Justify End means they stick to right?
-                                    Wait, app is `dir="rtl"`.
-                                    If RTL:
-                                    [Image] [Text] ? 
-                                    Let's stick to the visual provided in image.
-                                    Image is on Right. Text is on Left (Price), Title aligned Right.
-                                    So: [Price/Title] .... [Image]
-                                    So essentially: Flex Row.
-                                */}
                                 
                                 {/* Image Container */}
                                 <div className="w-[80px] h-[80px] relative bg-[#F6F6F6] rounded-lg shrink-0 overflow-hidden">
@@ -191,58 +174,62 @@ export default function DigiKaraCart() {
                             )}
                         </div>
                     ))}
+
+                    {/* Summary Section - Now part of scrolalble content */}
+                    <div className="w-full max-w-[440px] px-6 pt-6 pb-4 flex flex-col gap-6 mt-4 border-t border-[rgba(0,0,0,0.05)]">
+                        
+                        {/* Coupon Input */}
+                        <div className="w-full bg-[#F6F6F6] rounded-lg p-0 flex items-center justify-between px-1.5">
+                            <button className="bg-[#FDD00A] text-[#1A1C1E] text-base font-['PeydaWeb'] font-semibold py-2 px-4 rounded-lg hover:bg-[#e5bc09] transition-colors">
+                                اعمال
+                            </button>
+                            <input 
+                                type="text" 
+                                placeholder="کد تخفیف" 
+                                value={couponCode}
+                                onChange={(e) => setCouponCode(e.target.value)}
+                                className="bg-transparent text-right text-[#707F81] text-sm font-['PeydaWeb'] font-light outline-none placeholder:text-[#707F81]"
+                            />
+                        </div>
+
+                        {/* Price Breakdown */}
+                        <div className="flex flex-col gap-3 w-full">
+                            <div className="flex justify-between items-center w-full">
+                                <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-light">جمع کل</span>
+                                <span className="text-[#0C1415] text-sm font-num-medium">{formatPrice(totalPrice)}</span>
+                            </div>
+                            <div className="flex justify-between items-center w-full">
+                                    <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-light">هزینه ارسال</span>
+                                    <span className="text-[#0C1415] text-sm font-num-medium">{formatPrice(shippingCost)}</span>
+                            </div>
+                            <div className="flex justify-between items-center w-full">
+                                    <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-light">تخفیف</span>
+                                    <span className="text-[#0C1415] text-sm font-num-medium">{formatPrice(discount)}</span>
+                            </div>
+                        </div>
+
+                        {/* Divider */}
+                        <div className="w-full h-px bg-[rgba(0,0,0,0.10)]"></div>
+
+                        {/* Final Price */}
+                            <div className="flex justify-between items-center w-full">
+                            <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-light">هزینه نهایی</span>
+                            <span className="text-[#0C1415] text-sm font-num-medium">{formatPrice(finalPrice)}</span>
+                        </div>
+
+                    </div>
+
                 </div>
             )}
             </div>
 
-            {/* Bottom Sheet / Summary */}
-             <div className="fixed bottom-0 left-0 right-0 z-40 w-full max-w-[440px] mx-auto">
-                 {/* Shadow/Handle Container */}
-                <div className="w-full bg-white rounded-t-2xl shadow-[0px_-4px_20px_rgba(0,0,0,0.05)] border-t border-[rgba(0,0,0,0.10)] p-6 pb-4 flex flex-col gap-6">
-                    
-                    {/* Coupon Input */}
-                    <div className="w-full bg-[#F6F6F6] rounded-lg p-0 flex items-center justify-between px-1.5">
-                        <button className="bg-[#FDD00A] text-[#1A1C1E] text-base font-['PeydaWeb'] font-semibold py-2 px-4 rounded-lg hover:bg-[#e5bc09] transition-colors">
-                            اعمال
-                        </button>
-                        <input 
-                            type="text" 
-                            placeholder="کد تخفیف" 
-                            value={couponCode}
-                            onChange={(e) => setCouponCode(e.target.value)}
-                            className="bg-transparent text-right text-[#707F81] text-sm font-['PeydaWeb'] font-light outline-none placeholder:text-[#707F81]"
-                        />
-                    </div>
-
-                    {/* Price Breakdown */}
-                    <div className="flex flex-col gap-3 w-full">
-                        <div className="flex justify-between items-center w-full">
-                            <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-light">جمع کل</span>
-                            <span className="text-[#0C1415] text-sm font-num-medium">{formatPrice(totalPrice)}</span>
-                        </div>
-                        <div className="flex justify-between items-center w-full">
-                             <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-light">هزینه ارسال</span>
-                             <span className="text-[#0C1415] text-sm font-num-medium">{formatPrice(shippingCost)}</span>
-                        </div>
-                        <div className="flex justify-between items-center w-full">
-                             <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-light">تخفیف</span>
-                             <span className="text-[#0C1415] text-sm font-num-medium">{formatPrice(discount)}</span>
-                        </div>
-                    </div>
-
-                    {/* Divider */}
-                    <div className="w-full h-px bg-[rgba(0,0,0,0.10)]"></div>
-
-                    {/* Final Price */}
-                     <div className="flex justify-between items-center w-full">
-                        <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-light">هزینه نهایی</span>
-                        <span className="text-[#0C1415] text-sm font-num-medium">{formatPrice(finalPrice)}</span>
-                    </div>
-
-                    {/* Submit Button */}
+            {/* Floating Navigation Buttons */}
+             <div className="fixed bottom-[85px] left-0 right-0 z-40 w-full max-w-[440px] mx-auto p-6 pointer-events-none">
+                <div className="w-full pointer-events-auto">
+                    {/* Next Button */}
                     <button 
                         onClick={() => router.push('/Bazzar/DigiKaraCart/FinalCheck')}
-                        className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-2 hover:bg-[#e5bc09] transition-colors"
+                        className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-2 hover:bg-[#e5bc09] transition-colors shadow-sm"
                     >
                         <ShoppingBag className="w-5 h-5 text-[#1A1C1E]" />
                         <span className="text-[#1A1C1E] text-lg font-['PeydaWeb'] font-semibold">

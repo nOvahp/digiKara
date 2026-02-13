@@ -12,7 +12,7 @@ export default function PaymentMethodPage() {
     const [selectedBank, setSelectedBank] = useState<string>("saman");
 
     return (
-        <div className="w-full min-h-screen bg-white flex flex-col items-center relative" dir="rtl">
+        <div className="w-full h-[100dvh] bg-white flex flex-col items-center relative overflow-hidden" dir="rtl">
             
             {/* Header */}
             <div className="w-full max-w-[440px] flex justify-between items-center px-0 py-4 shrink-0">
@@ -27,7 +27,7 @@ export default function PaymentMethodPage() {
                  </div>
             </div>
 
-            <div className="w-full max-w-[440px] flex flex-col gap-6 px-0 pb-24 flex-1 overflow-y-auto no-scrollbar">
+            <div className="w-full max-w-[440px] flex flex-col gap-6 px-0 pb-48 flex-1 overflow-y-auto no-scrollbar">
                 
                 {/* Cost Summary */}
                 <div className="w-full bg-white rounded-lg border border-[#DFE1E7] p-5 flex flex-col gap-5 mt-4">
@@ -192,9 +192,10 @@ export default function PaymentMethodPage() {
 
             </div>
 
-            {/* Bottom Bar */}
-             <div className="fixed bottom-0 left-0 right-0 z-40 w-full max-w-[440px] mx-auto p-6 bg-transparent">
-                 <div className="w-full  rounded-2xl  p-3">
+             {/* Floating Navigation Buttons */}
+             <div className="fixed bottom-[85px] left-0 right-0 z-40 w-full max-w-[440px] mx-auto p-6 pointer-events-none">
+                 <div className="w-full pointer-events-auto">
+                    {/* Pay Button */}
                     <button 
                         onClick={() => router.push('/Bazzar/DigiKaraCart/Transition')}
                         className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-3 hover:bg-[#e5bc09] transition-colors shadow-sm"
