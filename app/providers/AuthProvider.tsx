@@ -9,15 +9,17 @@ type AuthContextType = {
   isLoading: boolean;
   user: UserData | null;
   token: string | null;
-  requestOtp: (phoneNumber: string) => Promise<{ success: boolean; message?: string }>;
+  requestOtp: (phoneNumber: string) => Promise<{ success: boolean; message?: string; status?: number }>;
   verifyOtp: (phoneNumber: string, code: string) => Promise<{ success: boolean; message?: string; user?: UserData | null; token?: string }>;
   verifyNationalId: (nationalId: string) => Promise<{ success: boolean; message?: string }>;
   signIn: (phoneNumber: string, password: string) => Promise<{ success: boolean; message?: string }>;
+  registerCustomer: (formData: FormData) => Promise<{ success: boolean; message?: string }>;
+  loginCustomer: (data: { phone: string; password: string }) => Promise<{ success: boolean; token?: string; message?: string }>;
   reportIssue: (data: any) => Promise<{ success: boolean; message?: string }>;
   saveStudentData: (data: { meta: any; training_course: boolean }) => Promise<{ success: boolean; message?: string }>;
     signOut: () => Promise<void>;
-    role: 'student' | 'manager' | null;
-    setRole: (role: 'student' | 'manager') => void;
+    role: 'student' | 'manager' | 'customer' | null;
+    setRole: (role: 'student' | 'manager' | 'customer') => void;
   };
   
   const AuthContext = createContext<AuthContextType | null>(null);
@@ -27,7 +29,7 @@ type AuthContextType = {
     const [isLoading, setIsLoading] = useState(true);
     const [user, setUser] = useState<UserData | null>(null);
     const [token, setToken] = useState<string | null>(null);
-    const [role, setRole] = useState<'student' | 'manager' | null>('student'); // Default to student
+    const [role, setRole] = useState<'student' | 'manager' | 'customer' | null>('student'); // Default to student
   
     useEffect(() => {
       // Check for token and user on mount
@@ -96,6 +98,19 @@ type AuthContextType = {
   
       return { success: result.success, message: result.message };
     };
+
+    const registerCustomer = async (formData: FormData) => {
+        return await authService.registerCustomer(formData);
+    };
+
+    const loginCustomer = async (data: { phone: string; password: string }) => {
+        const result = await authService.loginCustomer(data);
+        if (result.success && result.token) {
+            setToken(result.token);
+            setIsAuthenticated(true);
+        }
+        return result;
+    };
   
     const reportIssue = async (data: any) => {
       return await authService.reportIssue(data);
@@ -123,6 +138,8 @@ type AuthContextType = {
       verifyOtp,
       verifyNationalId,
       signIn,
+      registerCustomer,
+      loginCustomer,
       reportIssue,
       saveStudentData,
       signOut,

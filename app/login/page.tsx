@@ -20,6 +20,8 @@ import { LogInForm } from "./logInForm";
 import { useAuth } from "@/app/providers/AuthProvider";
 import { LoginViewManagerInfo } from "./LoginViewManagerInfo";
 import { LoginViewManagerReport } from "./LoginViewManagerReport";
+import { LoginViewCustomerRegister } from "./login-view-customer-register";
+import { LoginViewCustomerLogin } from "./login-view-customer-login";
 
 // Define step constants
 enum Step {
@@ -42,11 +44,16 @@ enum Step {
   
   // Manager Flows
   MANAGER_INFO = 11,
-  MANAGER_REPORT = 12
+  MANAGER_REPORT = 12,
+  
+  // Customer Flows
+  CUSTOMER_REGISTER = 13,
+  CUSTOMER_LOGIN = 14
 }
 
 export default function LoginPage() {
   const [step, setStep] = React.useState<number>(Step.INTRO_1);
+  const [phone, setPhone] = React.useState<string>(""); // Store phone for multi-step flows
   const router = useRouter();
   const { role, user } = useAuth(); // Get selected role and user
 
@@ -124,6 +131,11 @@ export default function LoginPage() {
       // Direct redirect based on role
       if (role === 'manager') {
           router.push('/SchoolPanel');
+          return;
+      }
+      
+      if (role === 'customer') {
+          router.push('/Bazzar');
           return;
       } 
       
@@ -254,6 +266,8 @@ export default function LoginPage() {
                 onNext={() => role === 'manager' ? setStep(Step.MANAGER_INFO) : setStep(Step.NATIONAL_ID)} 
                 onExistingUser={handleLoginSuccess}
                 onBack={() => setStep(Step.LOGIN_LANDING)}
+                onCustomerRegister={(ph) => { setPhone(ph); setStep(Step.CUSTOMER_REGISTER); }}
+                onCustomerLogin={(ph) => { setPhone(ph); setStep(Step.CUSTOMER_LOGIN); }}
              />;
     
     // Student Post-Login
@@ -309,6 +323,17 @@ export default function LoginPage() {
       return <LoginViewManagerReport 
         onLoginAgain={() => setStep(Step.MANAGER_INFO)} 
         onNext={() => setStep(Step.MANAGER_INFO)}
+      />;
+
+    case Step.CUSTOMER_REGISTER:
+      return <LoginViewCustomerRegister 
+          phone={phone}
+          onNext={() => setStep(Step.CUSTOMER_LOGIN)} 
+      />;
+
+    case Step.CUSTOMER_LOGIN:
+      return <LoginViewCustomerLogin 
+          phone={phone}
       />;
       
     default:

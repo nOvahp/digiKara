@@ -15,7 +15,7 @@ export function Login({ onNext, onBack }: { onNext?: () => void; onBack?: () => 
   const router = useRouter();
   const { setRole } = useAuth();
 
-  const handleRoleSelect = (role: 'student' | 'manager') => {
+  const handleRoleSelect = (role: 'student' | 'manager' | 'customer') => {
       setRole(role);
       if (onNext) onNext();
   }
@@ -29,7 +29,7 @@ export function Login({ onNext, onBack }: { onNext?: () => void; onBack?: () => 
             <h2 className="text-xl font-black text-[#393E46]">خوش آمدید</h2>
             <p className="text-[#6C7278] text-sm mt-1">لطفا نقش خود را انتخاب کنید</p>
         </div>
-<Button onClick={() => router.push('/Bazzar')} variant="outline"  className="w-full border-2 border-[#DCE4E8] text-[#393E46] font-bold py-8 text-lg rounded-2xl hover:bg-gray-50 hover:border-gray-300">
+        <Button onClick={() => handleRoleSelect('customer')} variant="outline"  className="w-full border-2 border-[#DCE4E8] text-[#393E46] font-bold py-8 text-lg rounded-2xl hover:bg-gray-50 hover:border-gray-300">
           ورود به بازارچه
         </Button>
         <Button onClick={() => handleRoleSelect('student')} className="w-full bg-[#F3F6FC] hover:bg-[#FDD00A] hover:text-[#1A1C1E] text-[#393E46] font-bold py-8 text-lg rounded-2xl transition-all shadow-sm border border-transparent hover:border-[#FDD00A]">

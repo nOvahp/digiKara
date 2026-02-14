@@ -16,7 +16,13 @@ import { Loader2, ChevronLeft } from "lucide-react";
 
 const RESEND_DELAY = 120; // 2 minutes
 
-export function LogInForm({ onNext, onExistingUser, onBack }: { onNext?: () => void; onExistingUser?: (user: any) => void; onBack?: () => void }) {
+export function LogInForm({ onNext, onExistingUser, onBack, onCustomerRegister, onCustomerLogin }: { 
+    onNext?: () => void; 
+    onExistingUser?: (user: any) => void; 
+    onBack?: () => void;
+    onCustomerRegister?: (phone: string) => void;
+    onCustomerLogin?: (phone: string) => void;
+}) {
   const router = useRouter();
   const { requestOtp, verifyOtp, role } = useAuth();
   
@@ -24,6 +30,7 @@ export function LogInForm({ onNext, onExistingUser, onBack }: { onNext?: () => v
   const [stage, setStage] = useState<"PHONE_ENTRY" | "OTP_ENTRY">("PHONE_ENTRY");
   const [serverError, setServerError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [customerStatus, setCustomerStatus] = useState<number | null>(null);
 
   // Timer Logic
   const [timeLeft, setTimeLeft] = useState(0);
@@ -56,6 +63,7 @@ export function LogInForm({ onNext, onExistingUser, onBack }: { onNext?: () => v
     if (result.success) {
       setStage("OTP_ENTRY");
       setTimeLeft(RESEND_DELAY);
+      if (result.status) setCustomerStatus(result.status);
     } else {
       setServerError(result.message || "خطا در ارسال کد");
     }
@@ -91,11 +99,29 @@ export function LogInForm({ onNext, onExistingUser, onBack }: { onNext?: () => v
         if (onExistingUser) {
            onExistingUser(result.user);
         } else {
-           router.push(role === 'manager' ? "/SchoolPanel" : "/StudentDashboard");
+           if (role === 'customer') {
+               router.push("/Bazzar");
+           } else {
+               router.push(role === 'manager' ? "/SchoolPanel" : "/StudentDashboard");
+           }
         }
       } else {
         // First time user (user data is null), proceed to next onboarding step
-        if (onNext) {
+        if (role === 'customer') {
+            // Check captured status
+            if (customerStatus === 1) {
+                // New User -> Register
+                onCustomerRegister?.(phone);
+            } else if (customerStatus === 2 || customerStatus === 3 || !customerStatus) {
+                if (result.token) {
+                      router.push("/Bazzar");
+                } else {
+                      onCustomerLogin?.(phone);
+                }
+            } else {
+                 router.push("/Bazzar");
+            }
+        } else if (onNext) {
           onNext();
         } else {
           router.push(role === 'manager' ? "/SchoolPanel" : "/StudentDashboard");
@@ -122,7 +148,9 @@ export function LogInForm({ onNext, onExistingUser, onBack }: { onNext?: () => v
   // Determine title based on role
   const getTitle = () => {
       if (stage === "OTP_ENTRY") return "کد تایید";
-      return role === 'manager' ? "ورود مدیر مدرسه" : "ورود دانش آموز";
+      if (role === 'manager') return "ورود مدیر مدرسه";
+      if (role === 'customer') return "ورود به بازارچه";
+      return "ورود دانش آموز";
   };
 
   return (

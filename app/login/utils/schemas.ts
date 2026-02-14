@@ -19,3 +19,22 @@ export const otpSchema = z.object({
 
 export type PhoneNumberFormValues = z.infer<typeof phoneNumberSchema>;
 export type OtpFormValues = z.infer<typeof otpSchema>;
+
+// Customer Registration Schema
+export const customerRegisterSchema = z.object({
+  firstname: z.string().min(2, "نام باید حداقل ۲ حرف باشد"),
+  lastname: z.string().min(2, "نام خانوادگی باید حداقل ۲ حرف باشد"),
+  gender: z.string().or(z.number()), // UI might use string '1'/'2', schema says number
+  birthday: z.string().min(1, "تاریخ تولد الزامی است"),
+  password: z.string().min(6, "رمز عبور باید حداقل ۶ کاراکتر باشد"),
+  // avatar validation is tricky with Zod on client for File objects, usually handled separately or via custom refine
+});
+
+export type CustomerRegisterValues = z.infer<typeof customerRegisterSchema>;
+
+// Customer Login Schema
+export const customerLoginSchema = z.object({
+  password: z.string().min(1, "رمز عبور الزامی است"),
+});
+
+export type CustomerLoginValues = z.infer<typeof customerLoginSchema>;
