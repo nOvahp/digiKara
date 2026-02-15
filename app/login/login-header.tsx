@@ -16,11 +16,11 @@ export function LoginHeader({
   onBack
 }: LoginHeaderProps) {
   return (
-    <div className="relative w-full h-auto -mt-20 z-0 mb-16">
+    <div className="relative w-full h-auto z-0 mb-16">
       <Image
         src={imageSrc}
         alt="Login Header"
-        className="w-full h-auto object-contain"
+        className="w-full h-auto object-cover"
         priority
       />
       {/* Overlay Image */}

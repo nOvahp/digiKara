@@ -11,9 +11,12 @@
 
 /* Peyda Variable Font (Maintained as fallback or specific use) */
 @font-face {
-  font-family: 'PeydaWebVF';
-  src: url('/02 Web Font/Variable Webfont/PeydaWebVF.woff2') format('woff2-variations'),
-       url('/02 Web Font/Variable Webfont/PeydaWebVF.woff') format('woff-variations');
+  font-family: "PeydaWebVF";
+  src:
+    url("/02 Web Font/Variable Webfont/PeydaWebVF.woff2")
+      format("woff2-variations"),
+    url("/02 Web Font/Variable Webfont/PeydaWebVF.woff")
+      format("woff-variations");
   font-weight: 100 950;
   font-style: normal;
   font-display: swap;
@@ -21,81 +24,111 @@
 
 /* Farsi Numerals - Specific Weights */
 @font-face {
-  font-family: 'num-thin';
-  src: url('/02 Web Font/Farsi Numerals WebFont/woff2/PeydaFaNumWeb-Thin.woff2') format('woff2'),
-       url('/02 Web Font/Farsi Numerals WebFont/woff/PeydaFaNumWeb-Thin.woff') format('woff');
+  font-family: "num-thin";
+  src:
+    url("/02 Web Font/Farsi Numerals WebFont/woff2/PeydaFaNumWeb-Thin.woff2")
+      format("woff2"),
+    url("/02 Web Font/Farsi Numerals WebFont/woff/PeydaFaNumWeb-Thin.woff")
+      format("woff");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'num-extralight';
-  src: url('/02 Web Font/Farsi Numerals WebFont/woff2/PeydaFaNumWeb-ExtraLight.woff2') format('woff2'),
-       url('/02 Web Font/Farsi Numerals WebFont/woff/PeydaFaNumWeb-ExtraLight.woff') format('woff');
+  font-family: "num-extralight";
+  src:
+    url("/02 Web Font/Farsi Numerals WebFont/woff2/PeydaFaNumWeb-ExtraLight.woff2")
+      format("woff2"),
+    url("/02 Web Font/Farsi Numerals WebFont/woff/PeydaFaNumWeb-ExtraLight.woff")
+      format("woff");
   font-weight: 200;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'num-light';
-  src: url('/02 Web Font/Farsi Numerals WebFont/woff2/PeydaFaNumWeb-Light.woff2') format('woff2'),
-       url('/02 Web Font/Farsi Numerals WebFont/woff/PeydaFaNumWeb-Light.woff') format('woff');
+  font-family: "num-light";
+  src:
+    url("/02 Web Font/Farsi Numerals WebFont/woff2/PeydaFaNumWeb-Light.woff2")
+      format("woff2"),
+    url("/02 Web Font/Farsi Numerals WebFont/woff/PeydaFaNumWeb-Light.woff")
+      format("woff");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'num-regular';
-  src: url('/02 Web Font/Farsi Numerals WebFont/woff2/PeydaFaNumWeb-Regular.woff2') format('woff2'),
-       url('/02 Web Font/Farsi Numerals WebFont/woff/PeydaFaNumWeb-Regular.woff') format('woff');
+  font-family: "num-regular";
+  src:
+    url("/02 Web Font/Farsi Numerals WebFont/woff2/PeydaFaNumWeb-Regular.woff2")
+      format("woff2"),
+    url("/02 Web Font/Farsi Numerals WebFont/woff/PeydaFaNumWeb-Regular.woff")
+      format("woff");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'num-medium';
-  src: url('/02 Web Font/Farsi Numerals WebFont/woff2/PeydaFaNumWeb-Medium.woff2') format('woff2'),
-       url('/02 Web Font/Farsi Numerals WebFont/woff/PeydaFaNumWeb-Medium.woff') format('woff');
+  font-family: "num-medium";
+  src:
+    url("/02 Web Font/Farsi Numerals WebFont/woff2/PeydaFaNumWeb-Medium.woff2")
+      format("woff2"),
+    url("/02 Web Font/Farsi Numerals WebFont/woff/PeydaFaNumWeb-Medium.woff")
+      format("woff");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'num-semibold';
-  src: url('/02 Web Font/Farsi Numerals WebFont/woff2/PeydaFaNumWeb-SemiBold.woff2') format('woff2'),
-       url('/02 Web Font/Farsi Numerals WebFont/woff/PeydaFaNumWeb-SemiBold.woff') format('woff');
+  font-family: "num-semibold";
+  src:
+    url("/02 Web Font/Farsi Numerals WebFont/woff2/PeydaFaNumWeb-SemiBold.woff2")
+      format("woff2"),
+    url("/02 Web Font/Farsi Numerals WebFont/woff/PeydaFaNumWeb-SemiBold.woff")
+      format("woff");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'num-bold';
-  src: url('/02 Web Font/Farsi Numerals WebFont/woff2/PeydaFaNumWeb-Bold.woff2') format('woff2'),
-       url('/02 Web Font/Farsi Numerals WebFont/woff/PeydaFaNumWeb-Bold.woff') format('woff');
+  font-family: "num-bold";
+  src:
+    url("/02 Web Font/Farsi Numerals WebFont/woff2/PeydaFaNumWeb-Bold.woff2")
+      format("woff2"),
+    url("/02 Web Font/Farsi Numerals WebFont/woff/PeydaFaNumWeb-Bold.woff")
+      format("woff");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'num-extrabold';
-  src: url('/02 Web Font/Farsi Numerals WebFont/woff2/PeydaFaNumWeb-ExtraBold.woff2') format('woff2'),
-       url('/02 Web Font/Farsi Numerals WebFont/woff/PeydaFaNumWeb-ExtraBold.woff') format('woff');
+  font-family: "num-extrabold";
+  src:
+    url("/02 Web Font/Farsi Numerals WebFont/woff2/PeydaFaNumWeb-ExtraBold.woff2")
+      format("woff2"),
+    url("/02 Web Font/Farsi Numerals WebFont/woff/PeydaFaNumWeb-ExtraBold.woff")
+      format("woff");
   font-weight: 800;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'num-black';
-  src: url('/02 Web Font/Farsi Numerals WebFont/woff2/PeydaFaNumWeb-Black.woff2') format('woff2'),
-       url('/02 Web Font/Farsi Numerals WebFont/woff/PeydaFaNumWeb-Black.woff') format('woff');
+  font-family: "num-black";
+  src:
+    url("/02 Web Font/Farsi Numerals WebFont/woff2/PeydaFaNumWeb-Black.woff2")
+      format("woff2"),
+    url("/02 Web Font/Farsi Numerals WebFont/woff/PeydaFaNumWeb-Black.woff")
+      format("woff");
   font-weight: 900;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'num-extrablack';
-  src: url('/02 Web Font/Farsi Numerals WebFont/woff2/PeydaFaNumWeb-ExtraBlack.woff2') format('woff2'),
-       url('/02 Web Font/Farsi Numerals WebFont/woff/PeydaFaNumWeb-ExtraBlack.woff') format('woff');
+  font-family: "num-extrablack";
+  src:
+    url("/02 Web Font/Farsi Numerals WebFont/woff2/PeydaFaNumWeb-ExtraBlack.woff2")
+      format("woff2"),
+    url("/02 Web Font/Farsi Numerals WebFont/woff/PeydaFaNumWeb-ExtraBlack.woff")
+      format("woff");
   font-weight: 950;
   font-style: normal;
   font-display: swap;
@@ -103,81 +136,111 @@
 
 /* Peyda Web Font - Specific Weights */
 @font-face {
-  font-family: 'thin';
-  src: url('/02 Web Font/Font Family WebFont/woff2/PeydaWeb-Thin.woff2') format('woff2'),
-       url('/02 Web Font/Font Family WebFont/woff/PeydaWeb-Thin.woff') format('woff');
+  font-family: "thin";
+  src:
+    url("/02 Web Font/Font Family WebFont/woff2/PeydaWeb-Thin.woff2")
+      format("woff2"),
+    url("/02 Web Font/Font Family WebFont/woff/PeydaWeb-Thin.woff")
+      format("woff");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'extralight';
-  src: url('/02 Web Font/Font Family WebFont/woff2/PeydaWeb-ExtraLight.woff2') format('woff2'),
-       url('/02 Web Font/Font Family WebFont/woff/PeydaWeb-ExtraLight.woff') format('woff');
+  font-family: "extralight";
+  src:
+    url("/02 Web Font/Font Family WebFont/woff2/PeydaWeb-ExtraLight.woff2")
+      format("woff2"),
+    url("/02 Web Font/Font Family WebFont/woff/PeydaWeb-ExtraLight.woff")
+      format("woff");
   font-weight: 200;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'light';
-  src: url('/02 Web Font/Font Family WebFont/woff2/PeydaWeb-Light.woff2') format('woff2'),
-       url('/02 Web Font/Font Family WebFont/woff/PeydaWeb-Light.woff') format('woff');
+  font-family: "light";
+  src:
+    url("/02 Web Font/Font Family WebFont/woff2/PeydaWeb-Light.woff2")
+      format("woff2"),
+    url("/02 Web Font/Font Family WebFont/woff/PeydaWeb-Light.woff")
+      format("woff");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'regular';
-  src: url('/02 Web Font/Font Family WebFont/woff2/PeydaWeb-Regular.woff2') format('woff2'),
-       url('/02 Web Font/Font Family WebFont/woff/PeydaWeb-Regular.woff') format('woff');
+  font-family: "regular";
+  src:
+    url("/02 Web Font/Font Family WebFont/woff2/PeydaWeb-Regular.woff2")
+      format("woff2"),
+    url("/02 Web Font/Font Family WebFont/woff/PeydaWeb-Regular.woff")
+      format("woff");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'medium';
-  src: url('/02 Web Font/Font Family WebFont/woff2/PeydaWeb-Medium.woff2') format('woff2'),
-       url('/02 Web Font/Font Family WebFont/woff/PeydaWeb-Medium.woff') format('woff');
+  font-family: "medium";
+  src:
+    url("/02 Web Font/Font Family WebFont/woff2/PeydaWeb-Medium.woff2")
+      format("woff2"),
+    url("/02 Web Font/Font Family WebFont/woff/PeydaWeb-Medium.woff")
+      format("woff");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'semibold';
-  src: url('/02 Web Font/Font Family WebFont/woff2/PeydaWeb-SemiBold.woff2') format('woff2'),
-       url('/02 Web Font/Font Family WebFont/woff/PeydaWeb-SemiBold.woff') format('woff');
+  font-family: "semibold";
+  src:
+    url("/02 Web Font/Font Family WebFont/woff2/PeydaWeb-SemiBold.woff2")
+      format("woff2"),
+    url("/02 Web Font/Font Family WebFont/woff/PeydaWeb-SemiBold.woff")
+      format("woff");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'bold';
-  src: url('/02 Web Font/Font Family WebFont/woff2/PeydaWeb-Bold.woff2') format('woff2'),
-       url('/02 Web Font/Font Family WebFont/woff/PeydaWeb-Bold.woff') format('woff');
+  font-family: "bold";
+  src:
+    url("/02 Web Font/Font Family WebFont/woff2/PeydaWeb-Bold.woff2")
+      format("woff2"),
+    url("/02 Web Font/Font Family WebFont/woff/PeydaWeb-Bold.woff")
+      format("woff");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'extrabold';
-  src: url('/02 Web Font/Font Family WebFont/woff2/PeydaWeb-ExtraBold.woff2') format('woff2'),
-       url('/02 Web Font/Font Family WebFont/woff/PeydaWeb-ExtraBold.woff') format('woff');
+  font-family: "extrabold";
+  src:
+    url("/02 Web Font/Font Family WebFont/woff2/PeydaWeb-ExtraBold.woff2")
+      format("woff2"),
+    url("/02 Web Font/Font Family WebFont/woff/PeydaWeb-ExtraBold.woff")
+      format("woff");
   font-weight: 800;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'black';
-  src: url('/02 Web Font/Font Family WebFont/woff2/PeydaWeb-Black.woff2') format('woff2'),
-       url('/02 Web Font/Farsi Numerals WebFont/woff/PeydaWeb-Black.woff') format('woff');
+  font-family: "black";
+  src:
+    url("/02 Web Font/Font Family WebFont/woff2/PeydaWeb-Black.woff2")
+      format("woff2"),
+    url("/02 Web Font/Farsi Numerals WebFont/woff/PeydaWeb-Black.woff")
+      format("woff");
   font-weight: 900;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'extrablack';
-  src: url('/02 Web Font/Font Family WebFont/woff2/PeydaWeb-ExtraBlack.woff2') format('woff2'),
-       url('/02 Web Font/Font Family WebFont/woff/PeydaWeb-ExtraBlack.woff') format('woff');
+  font-family: "extrablack";
+  src:
+    url("/02 Web Font/Font Family WebFont/woff2/PeydaWeb-ExtraBlack.woff2")
+      format("woff2"),
+    url("/02 Web Font/Font Family WebFont/woff/PeydaWeb-ExtraBlack.woff")
+      format("woff");
   font-weight: 950;
   font-style: normal;
   font-display: swap;
@@ -185,9 +248,12 @@
 
 /* Peyda Non English Web Font - Specific Weights (Optional/Fallback) */
 @font-face {
-  font-family: 'noen-thin';
-  src: url('/02 Web Font/Non English WebFont/woff2/PeydaNoEnWeb-Thin.woff2') format('woff2'),
-       url('/02 Web Font/Non English WebFont/woff/PeydaNoEnWeb-Thin.woff') format('woff');
+  font-family: "noen-thin";
+  src:
+    url("/02 Web Font/Non English WebFont/woff2/PeydaNoEnWeb-Thin.woff2")
+      format("woff2"),
+    url("/02 Web Font/Non English WebFont/woff/PeydaNoEnWeb-Thin.woff")
+      format("woff");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
@@ -211,7 +277,7 @@
   --font-extrabold: "extrabold", sans-serif;
   --font-black: "black", sans-serif;
   --font-extrablack: "extrablack", sans-serif;
-  
+
   /* Number Weights */
   --font-num-thin: "num-thin", sans-serif;
   --font-num-extralight: "num-extralight", sans-serif;
@@ -257,7 +323,7 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  
+
   --breakpoint-2xl: 1400px;
 }
 
@@ -281,7 +347,7 @@ body.landing-page {
   body:not(.landing-page) #desktop-navbar {
     display: none !important;
   }
-  
+
   /* Show Mobile Nav */
   body:not(.landing-page) #mobile-navbar {
     display: flex !important;
@@ -306,16 +372,18 @@ html {
   width: 100%;
 }
 
-body {
+body:not(.full-width) {
   padding-left: 3%;
   padding-right: 3%;
   padding-top: 3%;
   padding-bottom: 0%;
   margin-left: auto;
   margin-right: auto;
-  background-color: var(--background);
 }
 
+body {
+  background-color: var(--background);
+}
 
 body.full-width {
   padding: 0 !important;
@@ -397,19 +465,15 @@ body.full-width {
   }
   body {
     @apply bg-background text-foreground;
-  }   
-
-
-
-  
-@layer utilities {
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
   }
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+
+  @layer utilities {
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
   }
 }
- }
-

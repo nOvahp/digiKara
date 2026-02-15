@@ -141,13 +141,13 @@ export function LoginViewCustomerRegister({ onNext, phone }: LoginViewCustomerRe
 
                 <div className="space-y-2">
                     <Label htmlFor="password" className="text-xs font-bold mr-1">رمز عبور</Label>
-                    <Input {...form.register("password")} type="password" placeholder="******" className="rounded-xl border-[#DCE4E8] bg-[#F3F6FC]" dir="ltr" />
+                    <Input {...form.register("password")} type="password" placeholder="******" className="rounded-xl border-[#DCE4E8] bg-[#F3F6FC] text-left" dir="ltr" />
                      {form.formState.errors.password && <p className="text-red-500 text-xs">{form.formState.errors.password.message}</p>}
                 </div>
 
                 <div className="space-y-2">
                     <Label htmlFor="password_confirmation" className="text-xs font-bold mr-1">تکرار رمز عبور</Label>
-                    <Input {...form.register("password_confirmation")} type="password" placeholder="******" className="rounded-xl border-[#DCE4E8] bg-[#F3F6FC]" dir="ltr" />
+                    <Input {...form.register("password_confirmation")} type="password" placeholder="******" className="rounded-xl border-[#DCE4E8] bg-[#F3F6FC] text-left" dir="ltr" />
                      {form.formState.errors.password_confirmation && <p className="text-red-500 text-xs">{form.formState.errors.password_confirmation.message}</p>}
                 </div>
 

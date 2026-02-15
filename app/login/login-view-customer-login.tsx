@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/app/providers/AuthProvider";
-import { Loader2 } from "lucide-react";
+import { Loader2, ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 interface LoginViewCustomerLoginProps {
@@ -41,9 +41,6 @@ export function LoginViewCustomerLogin({ phone, onBack }: LoginViewCustomerLogin
     setIsLoading(false);
 
     if (result.success) {
-      // success means token is already saved by authService
-      // We can also save user data if returned (authService.loginCustomer might need update to return user)
-      // For now, redirect.
       router.push("/Bazzar");
     } else {
       setServerError(result.message || "اطلاعات ورود نادرست است");
@@ -51,13 +48,29 @@ export function LoginViewCustomerLogin({ phone, onBack }: LoginViewCustomerLogin
   };
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-white items-center relative" dir="rtl">
-        {/* Header Background */}
-         <div className="absolute top-0 left-0 right-0 h-[250px] bg-[linear-gradient(180deg,#F7C309_0%,white_100%)] z-0 pointer-events-none" />
+     <div className="flex min-h-screen w-full flex-col bg-white items-center relative overflow-hidden" dir="rtl">
+        {/* Background Gradient Effect */}
+      <div className="absolute top-0 left-0 right-0 h-[300px] bg-[linear-gradient(180deg,#F7C309_0%,white_100%)] z-0 pointer-events-none" />
 
-         <div className="w-full h-full flex flex-col items-center p-6 z-10 max-w-md mt-16">
+         <div className="w-full h-full flex flex-col items-center z-10">
+            {/* Top Header / Logo Area */}
+            <div className="w-full max-w-md flex justify-between items-center py-6 px-6">
+                <div className="flex items-center gap-2">
+                    <span className="text-[#393E46] text-xl font-black">دیجی کارا</span>
+                </div>
+                
+                {/* Back Button (Top Left) */}
+                <button 
+                  onClick={() => onBack ? onBack() : router.push('/login')} 
+                  className="w-10 h-10 flex items-center justify-center rounded-full bg-transparent hover:bg-gray-100/50 transition-all text-[#393E46]"
+                >
+                  <ChevronLeft className="w-6 h-6" />
+                </button>
+            </div>
+
+            <div className="flex flex-col flex-1 w-full max-w-md mt-10 px-6">
             
-            <div className="w-full text-right mb-10">
+            <div className="w-full text-right mb-20">
                 <h1 className="text-[#393E46] text-4xl font-black mb-2 leading-tight">ورود به بازارچه</h1>
                 <p className="text-[#6C7278] text-sm font-semibold">لطفا رمز عبور خود را وارد کنید</p>
             </div>
@@ -70,12 +83,12 @@ export function LoginViewCustomerLogin({ phone, onBack }: LoginViewCustomerLogin
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="password" className="text-xs font-bold mr-1">رمز عبور</Label>
+                    <Label htmlFor="password" className="text-xs font-bold mb-3 block px-1">رمز عبور</Label>
                     <Input 
                         {...form.register("password")} 
                         type="password" 
-                        placeholder="******" 
-                        className="rounded-xl border-[#DCE4E8] bg-white h-14 text-lg dir-ltr px-4" 
+                        placeholder="***********" 
+                        className="rounded-xl border-[#DCE4E8] bg-white h-14 text-lg px-4 text-left " 
                         autoFocus
                     />
                      {form.formState.errors.password && <p className="text-red-500 text-xs">{form.formState.errors.password.message}</p>}
@@ -107,6 +120,7 @@ export function LoginViewCustomerLogin({ phone, onBack }: LoginViewCustomerLogin
                 </div>
 
             </form>
+            </div>
          </div>
     </div>
   );

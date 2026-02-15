@@ -21,9 +21,9 @@ export function Login({ onNext, onBack }: { onNext?: () => void; onBack?: () => 
   }
 
   return (
-    <div className="flex h-full w-full flex-col p-4">
+    <div className="flex h-full w-full flex-col p-0">
       <LoginHeader imageSrc={headerImg} onBack={onBack} />
-      <div className="flex flex-col items-center justify-start bg-background rounded-t-3xl z-10 p-0 pt-0 gap-4">
+      <div className="flex flex-col items-center justify-start bg-background rounded-t-3xl z-10 px-6 pt-0 gap-4">
         
         <div className="w-full text-right mb-2">
             <h2 className="text-xl font-black text-[#393E46]">خوش آمدید</h2>

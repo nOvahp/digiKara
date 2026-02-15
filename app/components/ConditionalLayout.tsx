@@ -10,16 +10,24 @@ export default function ConditionalLayout() {
 
   useEffect(() => {
     const isLandingPage = pathname === "/" || pathname?.startsWith("/homePgae");
+    const isLoginPage = pathname?.startsWith("/login");
 
     if (isLandingPage) {
       document.body.classList.add("landing-page");
     } else {
       document.body.classList.remove("landing-page");
     }
+
+    if (isLoginPage) {
+        document.body.classList.add("full-width");
+    } else {
+        document.body.classList.remove("full-width");
+    }
     
     // Cleanup on unmount
     return () => {
       document.body.classList.remove("landing-page");
+      document.body.classList.remove("full-width");
     };
   }, [pathname]);
   
