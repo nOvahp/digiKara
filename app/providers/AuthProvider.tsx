@@ -15,6 +15,7 @@ type AuthContextType = {
   signIn: (phoneNumber: string, password: string) => Promise<{ success: boolean; message?: string }>;
   registerCustomer: (formData: FormData) => Promise<{ success: boolean; message?: string }>;
   loginCustomer: (data: { phone: string; password: string }) => Promise<{ success: boolean; token?: string; message?: string }>;
+  logoutCustomer: () => Promise<{ success: boolean; message?: string }>;
   reportIssue: (data: any) => Promise<{ success: boolean; message?: string }>;
   saveStudentData: (data: { meta: any; training_course: boolean }) => Promise<{ success: boolean; message?: string }>;
     signOut: () => Promise<void>;
@@ -143,6 +144,16 @@ type AuthContextType = {
       reportIssue,
       saveStudentData,
       signOut,
+      logoutCustomer: async () => {
+          const result = await authService.logoutCustomer();
+          if (result.success) {
+              setIsAuthenticated(false);
+              setUser(null);
+              setToken(null);
+              removeToken();
+          }
+          return result;
+      }
     };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

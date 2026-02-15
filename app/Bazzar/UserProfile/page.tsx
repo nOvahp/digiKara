@@ -5,9 +5,11 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, User, Phone, Mail, FileText, Calendar, LogOut, CheckCircle2, ChevronLeft, MapPin, School, GraduationCap, BadgeCheck } from "lucide-react";
 import { bazzarService } from "@/app/services/bazzarService";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/app/providers/AuthProvider";
 
 export default function UserProfilePage() {
     const router = useRouter();
+    const { logoutCustomer } = useAuth();
     const [user, setUser] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
@@ -255,7 +257,15 @@ export default function UserProfilePage() {
                     </SectionCard>
 
                     {/* Logout Button */}
-                    <button className="w-full mt-4 group bg-red-50 hover:bg-red-100/80 active:bg-red-100 border border-red-100 text-red-600 h-[56px] rounded-2xl flex items-center justify-center gap-3 transition-all duration-200">
+                    <button 
+                        onClick={async () => {
+                            const res = await logoutCustomer();
+                            if (res.success) {
+                                router.push(`/login?role=customer&phone=${user?.phone || ''}`);
+                            }
+                        }}
+                        className="w-full mt-4 group bg-red-50 hover:bg-red-100/80 active:bg-red-100 border border-red-100 text-red-600 h-[56px] rounded-2xl flex items-center justify-center gap-3 transition-all duration-200"
+                    >
                         <LogOut className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
                         <span className="font-['PeydaWeb'] font-bold text-[15px]">خروج از حساب کاربری</span>
                     </button>

@@ -13,9 +13,10 @@ import { useRouter } from "next/navigation";
 
 interface LoginViewCustomerLoginProps {
   phone: string;
+  onBack?: () => void;
 }
 
-export function LoginViewCustomerLogin({ phone }: LoginViewCustomerLoginProps) {
+export function LoginViewCustomerLogin({ phone, onBack }: LoginViewCustomerLoginProps) {
   const { loginCustomer } = useAuth();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -98,6 +99,11 @@ export function LoginViewCustomerLogin({ phone }: LoginViewCustomerLoginProps) {
                     <button type="button" className="text-[#9CA3AF] text-xs font-bold hover:text-[#393E46] transition-colors">
                         رمز عبور را فراموش کرده‌اید؟
                     </button>
+                    <div className="mt-4">
+                        <button type="button" onClick={() => onBack ? onBack() : router.push('/login')} className="text-[#393E46] text-sm font-bold hover:underline transition-colors">
+                            حساب کاربری ندارید؟
+                        </button>
+                    </div>
                 </div>
 
             </form>

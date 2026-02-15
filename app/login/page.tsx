@@ -14,7 +14,7 @@ import { LoginView8 } from "./logIn-view8";
 import { LoginViewNationalID } from "./login-view-nationalID";
 import { LoginViewReport } from "./login-view-report";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { LogInForm } from "./logInForm";
 
 import { useAuth } from "@/app/providers/AuthProvider";
@@ -55,7 +55,16 @@ export default function LoginPage() {
   const [step, setStep] = React.useState<number>(Step.INTRO_1);
   const [phone, setPhone] = React.useState<string>(""); // Store phone for multi-step flows
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { role, user } = useAuth(); // Get selected role and user
+
+  React.useEffect(() => {
+    const phoneParam = searchParams.get('phone');
+    if (phoneParam) {
+        setPhone(phoneParam);
+        setStep(Step.CUSTOMER_LOGIN);
+    }
+  }, [searchParams]);
 
   // Handler for successful login (returning user)
   const handleLoginSuccess = (userData?: any) => {
@@ -334,6 +343,7 @@ export default function LoginPage() {
     case Step.CUSTOMER_LOGIN:
       return <LoginViewCustomerLogin 
           phone={phone}
+          onBack={() => setStep(Step.LOGIN_LANDING)}
       />;
       
     default:

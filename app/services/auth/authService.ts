@@ -147,5 +147,17 @@ export const authService = {
       } catch (error: any) {
           return { success: false, message: error.message || 'Login failed' };
       }
+  },
+
+  logoutCustomer: async (): Promise<{ success: boolean; message?: string }> => {
+      try {
+          const response = await apiClient.post<any, any>('/customers/logout', {});
+          if (response.status === 'success' || response.code === 200) {
+              return { success: true, message: response.message };
+          }
+          return { success: false, message: response.message || 'Logout failed' };
+      } catch (error: any) {
+          return { success: false, message: error.message || 'Logout failed' };
+      }
   }
 };
