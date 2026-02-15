@@ -27,7 +27,10 @@ export const customerRegisterSchema = z.object({
   gender: z.string().or(z.number()), // UI might use string '1'/'2', schema says number
   birthday: z.string().min(1, "تاریخ تولد الزامی است"),
   password: z.string().min(6, "رمز عبور باید حداقل ۶ کاراکتر باشد"),
-  // avatar validation is tricky with Zod on client for File objects, usually handled separately or via custom refine
+  password_confirmation: z.string().min(1, "تکرار رمز عبور الزامی است"),
+}).refine((data) => data.password === data.password_confirmation, {
+  message: "رمز عبور و تکرار آن مطابقت ندارند",
+  path: ["password_confirmation"],
 });
 
 export type CustomerRegisterValues = z.infer<typeof customerRegisterSchema>;

@@ -61,6 +61,10 @@ export function LogInForm({ onNext, onExistingUser, onBack, onCustomerRegister, 
     setIsLoading(false);
 
     if (result.success) {
+      if (role === 'customer' && result.status === 3) {
+          onCustomerLogin?.(data.phoneNumber);
+          return;
+      }
       setStage("OTP_ENTRY");
       setTimeLeft(RESEND_DELAY);
       if (result.status) setCustomerStatus(result.status);

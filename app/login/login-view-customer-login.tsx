@@ -40,6 +40,9 @@ export function LoginViewCustomerLogin({ phone }: LoginViewCustomerLoginProps) {
     setIsLoading(false);
 
     if (result.success) {
+      // success means token is already saved by authService
+      // We can also save user data if returned (authService.loginCustomer might need update to return user)
+      // For now, redirect.
       router.push("/Bazzar");
     } else {
       setServerError(result.message || "اطلاعات ورود نادرست است");

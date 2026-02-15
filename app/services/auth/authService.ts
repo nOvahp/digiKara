@@ -137,8 +137,8 @@ export const authService = {
           
           const response = await apiClient.post<any, any>('/customers/login', payload);
 
-          if (response && (response.access_token || response.token || response.data?.token)) {
-              const token = response.access_token || response.token || response.data?.token;
+          if (response && (response.data?.token || response.access_token || response.token)) {
+              const token = response.data?.token || response.access_token || response.token;
               saveToken(token);
               return { success: true, token };
           }
