@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { FormLabel } from './FormLabel';
 import { Plus, X, Image as ImageIcon } from 'lucide-react';
 import { toast } from 'sonner';
+import Image from 'next/image';
 
 const toFarsiNumber = (n: number | string | undefined): string => {
   if (n === undefined || n === null) return '';
@@ -35,18 +36,6 @@ export function BasicInfoForm({ defaultValues = {}, values, onChange }: BasicInf
   const [expandedImage, setExpandedImage] = useState<string | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleScroll = () => {
-    if (scrollContainerRef.current) {
-      const scrollLeft = Math.abs(scrollContainerRef.current.scrollLeft);
-      const width = scrollContainerRef.current.offsetWidth;
-      const calculatedIndex = Math.round(scrollLeft / width) + 1;
-
-      if (calculatedIndex !== activeImage) {
-        setActiveImage(calculatedIndex);
-      }
-    }
-  };
 
   const val = (field: string): string => {
     const value = values ? (values as Record<string, unknown>)[field] : (defaultValues as Record<string, unknown>)[field];
@@ -213,7 +202,7 @@ export function BasicInfoForm({ defaultValues = {}, values, onChange }: BasicInf
                     key={i}
                     className="w-full h-full flex-shrink-0 relative snap-center bg-gray-50 flex items-center justify-center"
                   >
-                    <img
+                    <Image
                       src={img}
                       alt={`product-${i}`}
                       className="w-full h-full object-cover transition-transform duration-500 hover:scale-105 cursor-zoom-in"
@@ -306,7 +295,7 @@ export function BasicInfoForm({ defaultValues = {}, values, onChange }: BasicInf
           >
             <X className="w-6 h-6" />
           </button>
-          <img
+          <Image
             src={expandedImage}
             className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl scale-100 animate-in zoom-in-95 duration-300"
             onClick={(e) => e.stopPropagation()}

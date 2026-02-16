@@ -58,7 +58,7 @@ export function LogInForm({
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [timeLeft > 0]);
+  }, [timeLeft]);
 
   const handleResend = () => {
     if (timeLeft === 0 && phoneForm.getValues('phoneNumber')) {

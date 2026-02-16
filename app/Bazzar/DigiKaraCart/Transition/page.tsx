@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 
@@ -28,8 +29,13 @@ export default function TransitionPage() {
       <div className="w-full max-w-[440px] flex flex-col items-center justify-center gap-6 px-0 flex-1 -mt-20">
         {/* Image */}
         <div className="w-[126px] h-[126px] relative">
-          {/* Assuming the image is in public/tick-circle.png as requested */}
-          <img src="/tick-circle.png" alt="Success" className="w-full h-full object-contain" />
+          <Image
+            src="/tick-circle.png"
+            alt="Success"
+            width={126}
+            height={126}
+            className="object-contain"
+          />
         </div>
 
         {/* Text */}

@@ -134,7 +134,7 @@ const NewProject3 = () => {
                 errors.estimatedCost ? 'border-red-500' : 'border-[#DFE1E7]',
               )}
             >
-              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+              { }
               <span className="text-[#818898] text-base font-semibold  ml-2">
                 ریال
               </span>

@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { ArrowLeft, Loader2, Trash2 } from 'lucide-react';
-import { bazzarService } from '@/app/services/bazzarService';
+import { ArrowLeft, Loader2 } from 'lucide-react';
+import { bazzarService, Province, City } from '@/app/services/bazzarService';
 import { toast } from 'sonner';
 
 export default function EditAddressPage() {
@@ -13,8 +13,8 @@ export default function EditAddressPage() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
-  const [provinces, setProvinces] = useState<Record<string, unknown>[]>([]);
-  const [cities, setCities] = useState<Record<string, unknown>[]>([]);
+  const [provinces, setProvinces] = useState<Province[]>([]);
+  const [cities, setCities] = useState<City[]>([]);
 
   interface AddressFormData {
     title: string;

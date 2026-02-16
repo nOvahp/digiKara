@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getAvailableUsers, User as StorageUser } from '../TimcheStorage';
 import { useNewTimche } from './NewTimcheContext';
-import { ChevronLeft, Check, Plus, User, Wallet, ShoppingBag, Shield, X } from 'lucide-react';
+import { ChevronLeft, Check, Plus, User, Shield, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const NewTimche3 = () => {

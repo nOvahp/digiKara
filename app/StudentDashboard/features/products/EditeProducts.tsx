@@ -3,11 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { DashboardNavBar } from '../../layout/DashboardNavBar';
-import { Navigation } from '../../layout/Navigation';
 import { BasicInfoForm } from './Sells/components/shared/BasicInfoForm';
 import { PricingForm } from './Sells/components/shared/PricingForm';
 import { CategoryTagsForm } from './Sells/components/shared/CategoryTagsForm';
-import { ProductPreviewCard } from './Sells/components/shared/ProductPreviewCard';
 import { Product } from '@/app/services/products/productsService';
 import { studentProductService } from '@/app/services/studentProductService';
 import { Skeleton } from '@/app/components/Skeleton';
@@ -49,18 +47,38 @@ export function EditeProducts() {
     setIsLoading(false);
   };
 
-  const fetchCategories = async () => {
-    const { success, data } = await studentProductService.getCategories();
-    if (success && data) {
-      setFetchedCategories(data);
-    }
-  };
-
   useEffect(() => {
+    let cancelled = false;
+    const loadData = async () => {
+        if (!productId) return;
+        
+        try {
+            // Parallel fetch
+            const [prodRes, catRes] = await Promise.all([
+                studentProductService.getProductById(productId as string),
+                studentProductService.getCategories()
+            ]);
+
+            if (!cancelled) {
+                if (prodRes.success && prodRes.data) {
+                    setFormData({ ...prodRes.data, prices: (prodRes.data.prices as Price[]) || [] });
+                }
+                if (catRes.success && catRes.data) {
+                    setFetchedCategories(catRes.data);
+                }
+                setIsLoading(false);
+            }
+        } catch (error) {
+            console.error(error);
+            if (!cancelled) setIsLoading(false);
+        }
+    };
+
     if (productId) {
-      fetchProduct();
-      fetchCategories();
+        loadData();
     }
+    
+    return () => { cancelled = true; };
   }, [productId]);
 
   const handleUpdateChange = (updates: Partial<Product>) => {
@@ -267,21 +285,39 @@ export function EditeProducts() {
           </div>
         ) : (
           <div className="w-full flex flex-col gap-6">
-            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             <BasicInfoForm
-              values={formData as any}
+              values={{
+                name: formData.name || '',
+                description: formData.description || '',
+                id: String(formData.id || ''),
+                images: formData.images,
+                image: formData.image,
+                imageFile: formData.imageFile,
+              }}
               onChange={handleBasicInfoChange}
             />
-            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-            <PricingForm values={formData as any} onChange={handleUpdateChange} />
+            <PricingForm
+              values={{
+                price: formData.price || '',
+                fee: formData.fee || '',
+                receive: formData.receive || '',
+                discount: formData.discount || '',
+                code: formData.code || '',
+                percent: formData.percent || '',
+              }}
+              onChange={handleUpdateChange}
+            />
             <PriceListEditor
               prices={formData.prices || []}
               onRefresh={fetchProduct}
               basePrice={formData.price}
             />
-            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             <CategoryTagsForm
-              values={formData as any}
+              values={{
+                category: formData.category || '',
+                tags: formData.tags || [],
+                metadata: formData.metadata || '',
+              }}
               onChange={handleUpdateChange}
               categories={fetchedCategories}
             />
@@ -327,7 +363,6 @@ export function EditeProducts() {
         isLoading={isDeleting}
       />
 
-      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
       <SuccessModal
         isOpen={showSuccessModal}
         onClose={handleSuccessClose}

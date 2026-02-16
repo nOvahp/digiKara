@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Loader2, CheckCircle2 } from 'lucide-react';
+import { ChevronLeft, Loader2, CheckCircle2 } from 'lucide-react';
 import { useAuth } from '@/app/providers/AuthProvider';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';

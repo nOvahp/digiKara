@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { studentProductService } from '@/app/services/studentProductService';
 import { AddProductFormState } from '../types';
@@ -27,34 +27,48 @@ export function AddProductFlow({
   onSuccess,
   initialStep = 'step1',
 }: AddProductFlowProps) {
-  const [activePopup, setActivePopup] = useState<Step>('none');
-
-  // Sync with external open state
+  // Derive activePopup from isOpen prop and local navigation state
+  const [activePopup, setActivePopup] = useState<Step>(() => isOpen ? initialStep : 'none');
+  
+  // Sync with external open state using async pattern to avoid synchronous setState
   useEffect(() => {
-    if (isOpen) {
-      setActivePopup(initialStep);
-    } else {
-      setActivePopup('none');
-    }
+    let cancelled = false;
+    (async () => {
+      await Promise.resolve(); // Make state update asynchronous
+      if (!cancelled) {
+        if (isOpen) {
+          setActivePopup(initialStep);
+        } else {
+          setActivePopup('none');
+        }
+      }
+    })();
+    return () => { cancelled = true; };
   }, [isOpen, initialStep]);
 
-  // Handle internal closing
+  // Generate product code once per component instance using lazy initializer
+  const [initialProductCode] = useState(() => 
+    `NK-PRD-${Math.floor(100000 + Math.random() * 900000)}`
+  );
+
+  // Handle internal closing - reset form when closing
   const handleClose = () => {
     setActivePopup('none');
+    // Reset form with new product code for next open
+    setFormData((prev) => ({
+      ...prev,
+      id: parseInt(`NK-PRD-${Math.floor(100000 + Math.random() * 900000)}`.replace(/\D/g, '')) || 0,
+    }));
     onClose();
   };
 
-  const generateProductCode = () => {
-    return `NK-PRD-${Math.floor(100000 + Math.random() * 900000)}`;
-  };
-
-  const [formData, setFormData] = useState<AddProductFormState>({
+  const [formData, setFormData] = useState<AddProductFormState>(() => ({
     name: '',
     description: '',
     images: [],
     category: '',
     tags: [],
-    id: parseInt(generateProductCode().replace(/\D/g, '')) || 0,
+    id: parseInt(initialProductCode.replace(/\D/g, '')) || 0,
     price: '',
     fee: '',
     receive: '',
@@ -73,14 +87,7 @@ export function AddProductFlow({
       packaging: [],
     },
     variantFeatures: [],
-  });
-
-  // Reset form when flow opens
-  useEffect(() => {
-    if (isOpen) {
-      setFormData((prev) => ({ ...prev, id: generateProductCode() }));
-    }
-  }, [isOpen]);
+  }));
 
   const updateFormData = (data: Partial<typeof formData>) => {
     setFormData((prev) => ({ ...prev, ...data }));
@@ -96,7 +103,7 @@ export function AddProductFlow({
     data.append('category_id', categoryId);
 
     // code (max 100 chars)
-    data.append('code', String(formData.id || generateProductCode()));
+    data.append('code', String(formData.id || parseInt(`NK-PRD-${Math.floor(100000 + Math.random() * 900000)}`.replace(/\D/g, '')) || 0));
 
     // image (Required, Must be an image)
     // We use the first uploaded file as the main image
@@ -155,14 +162,13 @@ export function AddProductFlow({
         // discount_percent (string | null)
         if (
           price.discount_percent !== null &&
-          price.discount_percent !== undefined &&
-          price.discount_percent !== ''
+          price.discount_percent !== undefined
         ) {
           data.append(`prices[${index}][discount_percent]`, String(price.discount_percent));
         }
 
         // inventory (string | null per spec, but logically a count)
-        if (price.inventory !== null && price.inventory !== undefined && price.inventory !== '') {
+        if (price.inventory !== null && price.inventory !== undefined) {
           data.append(`prices[${index}][inventory]`, String(price.inventory));
         }
 
@@ -172,8 +178,7 @@ export function AddProductFlow({
         // warn_inventory (string | null)
         if (
           price.warn_inventory !== null &&
-          price.warn_inventory !== undefined &&
-          price.warn_inventory !== ''
+          price.warn_inventory !== undefined
         ) {
           data.append(`prices[${index}][warn_inventory]`, String(price.warn_inventory));
         }
@@ -205,7 +210,7 @@ export function AddProductFlow({
       images: [],
       category: '',
       tags: [],
-      id: generateProductCode(),
+      id: parseInt(`NK-PRD-${Math.floor(100000 + Math.random() * 900000)}`.replace(/\D/g, '')) || 0,
       price: '',
       fee: '',
       receive: '',
@@ -231,7 +236,7 @@ export function AddProductFlow({
         <NewProduct
           onClose={handleClose}
           onNext={() => setActivePopup('step2')}
-          onStepClick={(step) => setActivePopup(step as any)}
+          onStepClick={(step) => setActivePopup(step as Step)}
           formData={formData}
           updateFormData={updateFormData}
           // categories handled internally by NewProduct or passed if we had them
@@ -241,7 +246,7 @@ export function AddProductFlow({
         <NewProductPage2
           onClose={handleClose}
           onNext={() => setActivePopup('step3')}
-          onStepClick={(step) => setActivePopup(step as any)}
+          onStepClick={(step) => setActivePopup(step as Step)}
           formData={formData}
           updateFormData={updateFormData}
         />
@@ -250,7 +255,7 @@ export function AddProductFlow({
         <NewProductPage3
           onClose={handleClose}
           onNext={() => setActivePopup('step4')}
-          onStepClick={(step) => setActivePopup(step as any)}
+          onStepClick={(step) => setActivePopup(step as Step)}
           formData={formData}
           updateFormData={updateFormData}
         />
@@ -259,7 +264,7 @@ export function AddProductFlow({
         <NewProductPage4
           onClose={handleClose}
           onNext={() => setActivePopup('step5')}
-          onStepClick={(step) => setActivePopup(step as any)}
+          onStepClick={(step) => setActivePopup(step as Step)}
           formData={formData}
           updateFormData={updateFormData}
         />
@@ -268,7 +273,7 @@ export function AddProductFlow({
         <NewProductPage5
           onClose={handleClose}
           onNext={() => setActivePopup('step6')}
-          onStepClick={(step) => setActivePopup(step as any)}
+          onStepClick={(step) => setActivePopup(step as Step)}
           formData={formData}
           updateFormData={updateFormData}
         />
@@ -277,7 +282,7 @@ export function AddProductFlow({
         <NewProductPage6
           onClose={handleClose}
           onNext={handleSubmitProduct} // Trigger submission
-          onStepClick={(step) => setActivePopup(step as any)}
+          onStepClick={(step) => setActivePopup(step as Step)}
           formData={formData}
         />
       )}
@@ -285,7 +290,7 @@ export function AddProductFlow({
         <NewProductPage7
           onClose={handleClose}
           onReset={handleReset}
-          onStepClick={(step) => setActivePopup(step as any)}
+          onStepClick={(step) => setActivePopup(step as Step)}
         />
       )}
     </>

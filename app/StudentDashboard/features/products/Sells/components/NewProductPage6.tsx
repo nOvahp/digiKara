@@ -142,7 +142,7 @@ const StepItem = React.forwardRef<
     isCompleted?: boolean;
     onClick?: () => void;
   }
->(({ step, label, isActive, isCompleted, onClick }, ref) => {
+>(({ step, label, isActive, onClick }, ref) => {
   return (
     <div
       ref={ref}

@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useRef, useEffect, useState } from 'react';
-import { X, CheckCircle, AlertCircle, Info, Clock, User, Phone, MapPin } from 'lucide-react';
-import { managerService } from '@/app/services/manager/managerService';
+import { X, Info, Clock, User, MapPin } from 'lucide-react';
+import { managerService, Order } from '@/app/services/manager/managerService';
+import Image from 'next/image';
 
 interface ManagerOrderPopupProps {
   onClose: () => void;
@@ -15,14 +16,14 @@ const toFarsiNumber = (n: number | string | undefined): string => {
   return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
 };
 
-const formatPrice = (price: string | number) => {
+const formatPrice = (price: string | number | undefined) => {
   if (!price) return '۰';
   return toFarsiNumber(price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
 };
 
 const ManagerOrderPopup = ({ onClose, orderId, onUpdate }: ManagerOrderPopupProps) => {
   const modalRef = useRef<HTMLDivElement>(null);
-  const [order, setOrder] = useState<any>(null);
+  const [order, setOrder] = useState<Order | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
 
@@ -70,7 +71,7 @@ const ManagerOrderPopup = ({ onClose, orderId, onUpdate }: ManagerOrderPopupProp
         status: newStatus,
       });
       if (response.success) {
-        setOrder((prev: Record<string, unknown> | null) => prev ? ({ ...prev, status: newStatus }) : null);
+        setOrder((prev: Order | null) => prev ? ({ ...prev, status: newStatus }) : null);
         if (onUpdate) onUpdate();
       }
     } catch (error) {
@@ -82,7 +83,7 @@ const ManagerOrderPopup = ({ onClose, orderId, onUpdate }: ManagerOrderPopupProp
 
   if (!order && !isLoading) return null;
 
-  const { product, user, address, status, quantity, total_price, created_at } = order || {};
+  const { product, user, address, status, quantity, total_price } = order || {};
 
   return (
     <div
@@ -120,9 +121,9 @@ const ManagerOrderPopup = ({ onClose, orderId, onUpdate }: ManagerOrderPopupProp
             {/* Product Info */}
             <div className="w-full p-4 rounded-xl border border-[#DFE1E7] flex justify-start items-start gap-4">
               {product?.image_path ? (
-                <img
+                <Image
                   src={`https://digikara.back.adiaweb.dev/storage/${product.image_path}`}
-                  alt={product.title}
+                  alt={product.title || 'محصول'}
                   className="w-20 h-20 rounded-lg object-cover border border-[#DFE1E7]"
                 />
               ) : (

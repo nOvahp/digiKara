@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button';
-import { loginContent } from './login-data';
 
 interface LoginDescriptionProps {
   title?: string;

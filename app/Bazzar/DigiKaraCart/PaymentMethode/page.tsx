@@ -6,10 +6,7 @@ import {
   ArrowLeft,
   Wallet,
   CreditCard,
-  ChevronDown,
-  ChevronUp,
   Circle,
-  CheckCircle2,
   Landmark,
 } from 'lucide-react';
 import { useCart } from '@/app/Bazzar/CartContext';

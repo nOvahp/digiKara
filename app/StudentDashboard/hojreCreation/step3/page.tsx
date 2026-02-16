@@ -24,6 +24,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 import { useShopCreation } from '../context/ShopCreationContext';
+import Image from 'next/image';
 
 // ... (keep imports)
 
@@ -143,7 +144,7 @@ export default function ShopIdentityPage() {
               }}
             >
               <div className="relative">
-                <img
+                <Image
                   style={{ width: 126.21, height: 126.21, borderRadius: 63.11 }}
                   src={logoPreview}
                   alt="Shop Logo"

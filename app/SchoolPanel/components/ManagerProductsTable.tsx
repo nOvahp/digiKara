@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { MoreHorizontal, ChevronLeft, ChevronRight, Search, Filter } from 'lucide-react';
-import { managerService } from '@/app/services/manager/managerService';
+import { managerService, ManagerProduct } from '@/app/services/manager/managerService';
 import ManagerProductPopup from './ManagerProductPopup';
+import Image from 'next/image';
 
 const toFarsiNumber = (n: number | string | undefined): string => {
   if (n === undefined || n === null) return '';
@@ -11,10 +12,10 @@ const toFarsiNumber = (n: number | string | undefined): string => {
 };
 
 const ManagerProductsTable = () => {
-  const [products, setProducts] = useState<Record<string, unknown>[]>([]);
+  const [products, setProducts] = useState<ManagerProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<ManagerProduct | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   // Filter State
@@ -30,7 +31,7 @@ const ManagerProductsTable = () => {
     try {
       const response = await managerService.getManagerProducts();
       if (response.success && response.data) {
-        setProducts(response.data);
+        setProducts(response.data as ManagerProduct[]);
       }
     } catch (error) {
       console.error('Failed to load products', error);
@@ -82,7 +83,7 @@ const ManagerProductsTable = () => {
     if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
   };
 
-  const handleProductClick = (product: Record<string, unknown>) => {
+  const handleProductClick = (product: ManagerProduct) => {
     setSelectedProduct(product);
     setIsPopupOpen(true);
   };
@@ -296,8 +297,8 @@ const ManagerProductsTable = () => {
                       <div className="w-4 h-4 bg-white rounded border border-[#DFE1E7] cursor-pointer" />
                     </div>
                     <div className="w-[80px] h-16 px-3 flex justify-center items-center">
-                      {product.model_data.image_path ? (
-                        <img
+                      {product.model_data?.image_path ? (
+                        <Image
                           src={`https://digikara.back.adiaweb.dev/storage/${product.model_data.image_path}`}
                           alt="product"
                           className="w-10 h-10 rounded-lg object-cover border border-gray-200"
@@ -311,17 +312,17 @@ const ManagerProductsTable = () => {
                         className="text-center text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold truncate w-full"
                         dir="auto"
                       >
-                        {product.model_data.title}
+                        {product.model_data?.title}
                       </span>
                     </div>
                     <div className="w-[100px] h-16 px-3 flex justify-center items-center">
                       <span className="text-center text-[#0D0D12] text-sm font-num-medium font-semibold">
-                        {toFarsiNumber(product.model_data.inventory)}
+                        {toFarsiNumber(product.model_data?.inventory)}
                       </span>
                     </div>
                     <div className="w-[120px] h-16 px-3 flex justify-center items-center">
                       <span className="text-center text-[#0D0D12] text-sm font-num-medium font-semibold">
-                        {toFarsiNumber(product.model_data.price)}
+                        {toFarsiNumber(product.model_data?.price)}
                       </span>
                     </div>
                     <div className="w-[180px] h-16 px-3 flex justify-center items-center">

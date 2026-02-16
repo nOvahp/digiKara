@@ -5,12 +5,10 @@ import { LoginView } from './login-view';
 import { LoginView2 } from './login-view2';
 import { LoginView3 } from './login-view3';
 import { LoginView35 } from './login-view3.5';
-import { LoginView4 } from './logIn-view4';
 import { Login } from './logIn';
 import { LoginView5 } from './logIn-view5';
 import { LoginView6 } from './logIn-view6';
 import { LoginView7 } from './logIn-view7';
-import { LoginView8 } from './logIn-view8';
 import { LoginViewNationalID } from './login-view-nationalID';
 import { LoginViewReport } from './login-view-report';
 
@@ -142,7 +140,7 @@ export default function LoginPage() {
     handleFinalRedirect();
   };
 
-  const handleFinalRedirect = async () => {
+  const handleFinalRedirect = React.useCallback(async () => {
     // Direct redirect based on role
     if (role === 'manager') {
       router.push('/SchoolPanel');
@@ -159,7 +157,7 @@ export default function LoginPage() {
     try {
       const stored = localStorage.getItem('user_data');
       if (stored) currentUser = JSON.parse(stored) as UserData;
-    } catch (e) {
+    } catch {
       // ignore json parse error
     }
 
@@ -202,7 +200,7 @@ export default function LoginPage() {
     };
 
     checkHojre();
-  };
+  }, [role, router, user]);
 
   // Wrapper for LoginViewNationalID which passes userData directly
   const handleNationalIdNext = (userData: UserData) => {
@@ -252,7 +250,7 @@ export default function LoginPage() {
     if (step === Step.FINAL || step === Step.VIEW_8) {
       handleFinalRedirect();
     }
-  }, [step]);
+  }, [handleFinalRedirect, step]);
 
   // Simple Router based on Step
   switch (step) {

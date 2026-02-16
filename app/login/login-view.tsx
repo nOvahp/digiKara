@@ -5,7 +5,7 @@ import { LoadingScreen } from './loading-screen';
 import { LoginHeader } from './login-header';
 // import { LoginForm } from "./login-form"
 import { LoginDescription } from './login-description';
-import { loginContent, loginContent2 } from './login-data';
+import { loginContent } from './login-data';
 
 interface LoginViewProps {
   onNext?: () => void;

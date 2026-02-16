@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useRef, useEffect, useState } from 'react';
-import { X, CheckCircle, AlertCircle, Info, Star, ListCheck } from 'lucide-react';
-import { managerService } from '@/app/services/manager/managerService';
+import { X, CheckCircle, AlertCircle, Info, ListCheck } from 'lucide-react';
+import { managerService, ManagerProduct } from '@/app/services/manager/managerService';
+import Image from 'next/image';
 
 interface ManagerProductPopupProps {
   onClose: () => void;
-  product: Record<string, unknown>;
+  product: ManagerProduct;
   onApprove?: () => void;
 }
 
@@ -53,8 +54,8 @@ const ManagerProductPopup = ({
   onApprove,
 }: ManagerProductPopupProps) => {
   const modalRef = useRef<HTMLDivElement>(null);
-  const [product, setProduct] = useState(initialProduct);
-  const [isLoading, setIsLoading] = useState(true);
+  const [product, setProduct] = useState<ManagerProduct>(initialProduct);
+  const [isLoading, setIsLoading] = useState(false);
   const [isApproving, setIsApproving] = useState(false);
 
   // Fetch detailed product data
@@ -78,8 +79,8 @@ const ManagerProductPopup = ({
   }, [initialProduct?.id]);
 
   // Variant Logic
-  const { model_data: model_data_raw } = product || {};
-  const model_data = model_data_raw as { price?: string | number; prices?: unknown[]; image_path?: string; title?: string; description?: string; inventory?: number; features?: Record<string, unknown[]> } | undefined;
+  const { model_data } = product || {};
+  
   const [selectedVariants, setSelectedVariants] = useState<Record<string, string>>({});
   const [currentPrice, setCurrentPrice] = useState<string | number>(model_data?.price || 0);
 
@@ -87,8 +88,8 @@ const ManagerProductPopup = ({
   const displayFeatures = React.useMemo(() => {
     if (model_data?.prices && model_data.prices.length > 0) {
       const groups: Record<string, Set<string>> = {};
-      model_data.prices.forEach((p: unknown) => {
-        const price = p as { type?: number; title?: string };
+      model_data.prices.forEach((p) => {
+        const price = p;
         let effectiveType = Number(price.type);
         let value = price.title || '';
 
@@ -130,8 +131,8 @@ const ManagerProductPopup = ({
   useEffect(() => {
     if (displayFeatures && displayFeatures.length > 0) {
       const defaults: Record<string, string> = {};
-      displayFeatures.forEach((f: unknown) => {
-        const feature = f as { values?: string[]; title?: string };
+      displayFeatures.forEach((f) => {
+        const feature = f;
         if (feature.values && feature.values.length > 0) {
           defaults[feature.title || ''] = feature.values[0];
         }
@@ -147,8 +148,8 @@ const ManagerProductPopup = ({
 
     if (model_data?.prices && model_data.prices.length > 0) {
       Object.entries(selectedVariants).forEach(([label, value]) => {
-        const priceItem = model_data.prices.find((p: unknown) => {
-          const price = p as { type?: number; title?: string };
+        const priceItem = model_data.prices?.find((p) => {
+          const price = p;
           let effectiveType = Number(price.type);
           let rawTitle = price.title || '';
 
@@ -177,7 +178,7 @@ const ManagerProductPopup = ({
         });
 
         if (priceItem) {
-          const variantAmount = parseInt((priceItem as { amount?: string | number }).amount?.toString().replace(/\D/g, '') || '0');
+          const variantAmount = parseInt(priceItem.amount?.toString().replace(/\D/g, '') || '0');
           const difference = variantAmount - basePrice;
           calculatedPrice += difference;
         }
@@ -245,9 +246,11 @@ const ManagerProductPopup = ({
           <span className="text-[#0D0D12] text-lg font-semibold font-['PeydaWeb'] leading-relaxed tracking-wide">
             {model_data?.title || '...'}
           </span>
-          <span className="text-[#666D80] text-sm">
-            توسط: {product.firstname} {product.lastname}
-          </span>
+          {product.firstname && product.lastname && (
+            <span className="text-[#666D80] text-sm">
+              توسط: {product.firstname} {product.lastname}
+            </span>
+          )}
         </div>
 
         {isLoading ? (
@@ -257,12 +260,12 @@ const ManagerProductPopup = ({
         ) : (
           <div className="self-stretch flex-col justify-start items-end gap-4 flex w-full flex-1 overflow-y-auto no-scrollbar pb-20">
             {/* Image Section */}
-            {model_data.image_path ? (
+            {model_data?.image_path ? (
               <div className="self-stretch flex-col justify-start items-start gap-3 flex w-full shrink-0">
-                <img
+                <Image
                   className="self-stretch h-[200px] w-full object-cover rounded-xl border border-[#DFE1E7]"
                   src={`https://digikara.back.adiaweb.dev/storage/${model_data.image_path}`}
-                  alt={model_data.title}
+                  alt={model_data.title || 'محصول'}
                 />
               </div>
             ) : (
@@ -280,7 +283,7 @@ const ManagerProductPopup = ({
                   {formatPrice(currentPrice)} ریال
                 </div>
               </div>
-              {model_data.prices && model_data.prices.length > 0 && (
+              {model_data?.prices && model_data.prices.length > 0 && (
                 <span className="text-xs text-amber-600 bg-amber-50 px-2 py-1 rounded-lg">
                   چند قیمتی
                 </span>
@@ -290,8 +293,8 @@ const ManagerProductPopup = ({
             {/* Dynamic Variant Selectors */}
             {displayFeatures && displayFeatures.length > 0 && (
               <div className="self-stretch flex flex-col gap-3 w-full border-t border-[#DFE1E7] pt-3">
-                {displayFeatures.map((feature: unknown) => {
-                  const f = feature as { title: string; values: string[] };
+                {displayFeatures.map((feature) => {
+                  const f = feature;
                   return (
                   <div key={f.title} className="flex flex-col gap-2">
                     <div className="text-right text-[#0D0D12] text-sm font-medium font-['PeydaWeb']">
@@ -356,7 +359,7 @@ const ManagerProductPopup = ({
                   </div>
                 </div>
                 <div className="flex-1 text-[#818898] text-base font-medium leading-relaxed tracking-wide text-left">
-                  {toFarsiNumber(model_data.inventory)} عدد
+                  {toFarsiNumber(model_data?.inventory)} عدد
                 </div>
               </div>
 
@@ -399,14 +402,14 @@ const ManagerProductPopup = ({
               </div>
               <div className="self-stretch px-3 py-2.5 bg-white rounded-xl border border-[#DFE1E7] overflow-hidden flex flex-col justify-start items-start min-h-[100px]">
                 <div className="self-stretch flex-1 text-right text-[#0D0D12] text-sm font-light font-['PeydaWeb'] leading-relaxed tracking-wide whitespace-pre-wrap break-all">
-                  {model_data.description}
+                  {model_data?.description || 'توضیحات ندارد'}
                 </div>
               </div>
             </div>
 
             {/* Features Read Only */}
-            {model_data.features &&
-              Object.values(model_data.features).some((arr: unknown) => Array.isArray(arr) && arr.length > 0) && (
+            {model_data?.features &&
+              Object.values(model_data.features).some((arr) => Array.isArray(arr) && arr.length > 0) && (
                 <div
                   className="flex flex-col gap-3 border-t border-[#DFE1E7] pt-4 w-full"
                   dir="rtl"
@@ -422,7 +425,7 @@ const ManagerProductPopup = ({
                     'ویژگی‌های بسته بندی': model_data.features.packaging,
                     شناسه: model_data.features.id,
                   }).map(
-                    ([label, items]: [string, any]) =>
+                    ([label, items]) =>
                       items &&
                       items.length > 0 && (
                         <div
@@ -430,7 +433,7 @@ const ManagerProductPopup = ({
                           className="flex flex-col gap-2 bg-gray-50 p-3 rounded-lg border border-[#DFE1E7]"
                         >
                           <div className="text-xs font-semibold text-gray-500 mb-1">{label}</div>
-                          {(items as Array<{ key: string; value: string }>).map((item, idx) => (
+                          {items.map((item, idx) => (
                             <div
                               key={idx}
                               className="flex justify-between items-center text-sm border-b border-gray-200 last:border-0 pb-1 last:pb-0"

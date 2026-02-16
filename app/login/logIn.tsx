@@ -4,15 +4,12 @@ import Image from 'next/image';
 import headerImg from '../../public/Header2.png';
 import { LoginHeader } from './login-header';
 import { useAuth } from '@/app/providers/AuthProvider';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import Logo from '../../public/Logo11.svg';
 import AmuzeshLogo from '../../public/amuzeshLogo.svg';
 import Asset1 from '../../public/Asset 1 1.png';
 
 export function Login({ onNext, onBack }: { onNext?: () => void; onBack?: () => void }) {
-  const router = useRouter();
   const { setRole } = useAuth();
 
   const handleRoleSelect = (role: 'student' | 'manager' | 'customer') => {

@@ -10,9 +10,7 @@ import {
   Search,
   Filter,
   Clock,
-  Store,
   User,
-  Users,
   Check,
   X,
   Plus,
@@ -41,15 +39,14 @@ const ProjectManagment = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isProductPopUpOpen, setIsProductPopUpOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [allProducts, setAllProducts] = useState<Product[]>(products);
-
-  useEffect(() => {
-    // Load local projects and merge with mock data
-    const localProjects = JSON.parse(localStorage.getItem('digikara_projects') || '[]');
-    if (localProjects.length > 0) {
-      setAllProducts([...localProjects, ...products]);
-    }
-  }, []);
+  
+  // Initialize allProducts with merged data from localStorage using lazy initializer
+  const [allProducts] = useState<Product[]>(() => {
+    const localProjects = typeof window !== 'undefined' 
+      ? JSON.parse(localStorage.getItem('digikara_projects') || '[]')
+      : [];
+    return localProjects.length > 0 ? [...localProjects, ...products] : products;
+  });
 
   // Filter & Scroll Logic
   const [isFilterOpen, setIsFilterOpen] = useState(false);

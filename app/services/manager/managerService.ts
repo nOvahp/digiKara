@@ -6,14 +6,45 @@ export interface Order {
   user?: {
     firstname?: string;
     lastname?: string;
+    phone?: string;
   };
   product?: {
     image_path?: string;
     title?: string;
   };
+  address?: string;
+  quantity?: number | string;
+  created_at?: string;
   total_price: string | number;
   jalali_date?: string;
   status: string;
+}
+
+export interface ManagerProduct {
+  id: number;
+  firstname?: string;
+  lastname?: string;
+  school_name?: string;
+  approved?: boolean;
+  status?: string;
+  model_data?: {
+    title?: string;
+    description?: string;
+    price?: string | number;
+    inventory?: number;
+    image_path?: string;
+    prices?: {
+      type?: number;
+      title?: string;
+      amount?: string | number;
+    }[];
+    features?: {
+      visual?: { key: string; value: string }[];
+      production?: { key: string; value: string }[];
+      packaging?: { key: string; value: string }[];
+      id?: { key: string; value: string }[];
+    };
+  };
 }
 
 export const managerService = {
@@ -197,9 +228,9 @@ export const managerService = {
 
   getManagerProductById: async (
     id: number,
-  ): Promise<{ success: boolean; data?: unknown; message?: string }> => {
+  ): Promise<{ success: boolean; data?: ManagerProduct; message?: string }> => {
     try {
-      const response = await apiClient.get<ApiResponse<unknown>>(`/manager/products/${id}`);
+      const response = await apiClient.get<ApiResponse<ManagerProduct>>(`/manager/products/${id}`);
 
       if (response.status === 'success' || response.code === 200) {
         return { success: true, data: response.data };

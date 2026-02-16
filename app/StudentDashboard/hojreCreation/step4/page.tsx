@@ -46,7 +46,7 @@ import { shopService } from '../../../services/student/shopService';
 export default function ShopCategoryPage() {
   const router = useRouter();
   const activeStepRef = React.useRef<HTMLDivElement>(null);
-  const { state, updateState } = useShopCreation();
+  const { state } = useShopCreation();
 
   const {
     register,

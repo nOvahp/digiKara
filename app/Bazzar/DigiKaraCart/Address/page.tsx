@@ -2,8 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, MapPin, Plus, Circle, CheckCircle2, Pencil, Trash2 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { ArrowLeft, MapPin, Plus, Circle, Pencil, Trash2 } from 'lucide-react';
 
 import { bazzarService } from '@/app/services/bazzarService';
 

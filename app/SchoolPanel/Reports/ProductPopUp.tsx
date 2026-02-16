@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useRef, useEffect } from 'react';
-import { X, ChevronLeft } from 'lucide-react';
+import { X } from 'lucide-react';
 import { Product } from './product';
+import Image from 'next/image';
 
 interface ProductPopUpProps {
   onClose: () => void;
@@ -64,7 +65,7 @@ const ProductPopUp = ({ onClose, product }: ProductPopUpProps) => {
         <div className="self-stretch flex-col justify-start items-end gap-4 flex w-full">
           {/* Image Section */}
           <div className="self-stretch flex-col justify-start items-start gap-3 flex w-full">
-            <img
+            <Image
               className="self-stretch h-[118px] w-full object-cover rounded-xl border border-[#DFE1E7] p-2.5"
               src={product.image}
               alt={product.productName}

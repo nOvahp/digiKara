@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Box, Check, ChevronLeft, MapPin, Truck, ShoppingBag } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { ArrowLeft, Check, MapPin, Truck, ShoppingBag } from 'lucide-react';
 import { useCart } from '@/app/Bazzar/CartContext';
 import { bazzarService, Address } from '@/app/services/bazzarService';
 
@@ -142,7 +142,14 @@ export default function FinalCheckPage() {
             items.map((item, index) => (
               <div key={item.id} className="flex gap-4 items-center justify-start w-full">
                 <div className="w-[84px] h-[84px] bg-[#F6F6F6] rounded-lg shrink-0 overflow-hidden relative group">
-                  <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    fill
+                    sizes="84px"
+                    className="object-cover"
+                    unoptimized
+                  />
                   {/* Shadow effect only on first item or if needed, let's keep it simple or strictly per design */}
                   {index === 0 && (
                     <div className="absolute -bottom-2 -left-2 w-full h-4 bg-black/80 blur-lg opacity-20 rotate-1"></div>

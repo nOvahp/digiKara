@@ -10,7 +10,6 @@ import {
   bazzarService,
   BazzarProductDetail,
   BazzarProduct,
-  BazzarPriceVariant,
 } from '../services/bazzarService';
 
 const PRODUCT_IMAGE_PLACEHOLDER = '/ProductDetails.png';

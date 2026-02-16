@@ -2,16 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import {
-  MoreHorizontal,
-  ChevronLeft,
-  ChevronRight,
-  Search,
-  Filter,
-  Briefcase,
-  List,
-} from 'lucide-react';
+import { Briefcase, List } from 'lucide-react';
 import ManagerProductsTable from '../components/ManagerProductsTable';
 import ManagerOrdersTable from '../components/ManagerOrdersTable';
 
@@ -21,7 +12,6 @@ const toFarsiNumber = (n: number | string | undefined): string => {
 };
 
 const Projects = () => {
-  const router = useRouter();
   // Tab State
   const [activeTab, setActiveTab] = useState<'products' | 'orders'>('products');
 

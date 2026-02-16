@@ -2,8 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { ArrowLeft, Trash2, Plus, Minus, Tag, Check, ShoppingBag } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { ArrowLeft, Trash2, Plus, Minus, ShoppingBag } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '../CartContext';
 
@@ -13,7 +12,6 @@ export default function DigiKaraCart() {
   const router = useRouter();
   const {
     items,
-    removeItem,
     incrementItem,
     decrementItem,
     totalPrice,
@@ -54,7 +52,7 @@ export default function DigiKaraCart() {
     };
 
     fetchOrders();
-  }, []);
+  }, [setCartItems]);
 
   const formatPrice = (price: number) => {
     return price.toLocaleString('fa-IR') + ' ریال';
@@ -108,8 +106,14 @@ export default function DigiKaraCart() {
                 <div className="w-full max-w-[364px] h-auto flex flex-row justify-between items-center relative py-4">
                   {/* Image Container */}
                   <div className="w-[80px] h-[80px] relative bg-[#F6F6F6] rounded-lg shrink-0 overflow-hidden">
-                    {/* Using standard img tag to ensure visibility if Next Image fails */}
-                    <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      fill
+                      sizes="80px"
+                      className="object-cover"
+                      unoptimized
+                    />
                   </div>
 
                   {/* Content Container */}

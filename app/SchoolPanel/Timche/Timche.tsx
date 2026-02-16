@@ -13,7 +13,7 @@ import {
   Star,
   Wallet,
   Plus,
-  TrendingUp,
+  
 } from 'lucide-react';
 
 import { getTimches, TimcheItem } from './TimcheStorage';
@@ -37,7 +37,6 @@ const filterTabs = [
 const Timche = () => {
   const router = useRouter();
   const [activeFilter, setActiveFilter] = useState('all');
-  const [searchQuery, setSearchQuery] = useState('');
   const [timcheData, setTimcheData] = useState<TimcheItem[]>([]);
 
   React.useEffect(() => {

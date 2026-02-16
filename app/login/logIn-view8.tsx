@@ -1,10 +1,10 @@
 'use client';
 
-import React from 'react';
+
 import headerImg from '../../public/OtpHeader.png';
-import Image from 'next/image';
+
 import { LoginHeader } from './login-header';
-import { CheckCircle2, PartyPopper, Sparkles } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 
 interface LoginViewProps {

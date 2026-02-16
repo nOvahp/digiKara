@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import {
   Gem,
   Palette,
-  Utensils,
   Shirt,
   Armchair,
   Sofa,
@@ -14,7 +13,6 @@ import {
   BedDouble, // Bed
   Library, // Bookshelf
   Briefcase, // Office (Chair)
-  RockingChair, // Rocking Chair - lucide might not have it, use generic
   Flower2, // Vase/Plant
   Layers, // Mattress
   ArrowRight,

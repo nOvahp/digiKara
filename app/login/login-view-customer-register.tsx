@@ -11,6 +11,7 @@ import { useAuth } from '@/app/providers/AuthProvider';
 import { Loader2, Camera, User, ChevronLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toEnglishDigits } from '@/lib/number';
+import Image from 'next/image';
 // import DatePicker if available, or use simple input for now.
 // Assuming string input for birthday based on prompt "Type: string".
 
@@ -116,7 +117,7 @@ export function LoginViewCustomerRegister({
               {/* Main Avatar Circle */}
               <div className="w-24 h-24 rounded-full bg-gray-50 border-4 border-white shadow-lg flex items-center justify-center overflow-hidden">
                 {avatarPreview ? (
-                  <img src={avatarPreview} alt="Avatar" className="w-full h-full object-cover" />
+                  <Image src={avatarPreview} alt="Avatar" className="w-full h-full object-cover" />
                 ) : (
                   <User className="w-10 h-10 text-gray-300" />
                 )}

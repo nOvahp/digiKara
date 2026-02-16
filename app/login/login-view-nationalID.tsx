@@ -2,8 +2,6 @@
 
 import React, { useState } from 'react';
 
-import { useRouter } from 'next/navigation';
-
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -23,7 +21,6 @@ interface LoginViewProps {
 }
 
 export function LoginViewNationalID({ onNext, onBack }: LoginViewProps) {
-  const router = useRouter();
   const { verifyNationalId } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [serverError, setServerError] = useState('');

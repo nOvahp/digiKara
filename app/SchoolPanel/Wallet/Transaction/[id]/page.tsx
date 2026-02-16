@@ -3,9 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import {
-  ChevronRight,
-  Share2,
-  MoreHorizontal,
+  
   Store,
   Wallet,
   Download,
@@ -13,14 +11,14 @@ import {
   ChevronLeft,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { cn } from '../../../../../lib/utils';
+
 
 const toFarsiNumber = (n: number | string | undefined): string => {
   if (n === undefined || n === null) return '';
   return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
 };
 
-export default function TransactionDetailsPage({ params }: { params: { id: string } }) {
+export default function TransactionDetailsPage() {
   const router = useRouter();
 
   return (

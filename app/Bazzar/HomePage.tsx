@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { Search, MapPin, ChevronLeft, Gem, Palette, Hammer, Shirt, Armchair } from 'lucide-react';
+import { MapPin, Gem, Palette, Hammer, Shirt, Armchair } from 'lucide-react';
 import Link from 'next/link';
 
 import SearchBar from '../components/SearchBar';
@@ -41,16 +41,12 @@ const ProductCard = ({
   title,
   price,
   rating,
-  originalPrice,
-  discount,
   image,
 }: {
   id: number;
   title: string;
   price: string;
   rating: number;
-  originalPrice?: string;
-  discount?: string;
   image?: string;
 }) => (
   <Link
@@ -135,7 +131,7 @@ const CategoryItem = ({ title, icon }: { title: string; icon?: string | null }) 
 export default function HomePage() {
   const router = useRouter();
   // Timer Mock
-  const [timeLeft, setTimeLeft] = React.useState({ h: 12, m: 56, s: 2 });
+  const timeLeft = { h: 12, m: 56, s: 2 };
   const [homeData, setHomeData] = useState<BazzarHomeData | null>(null);
   const [loading, setLoading] = useState(true);
 

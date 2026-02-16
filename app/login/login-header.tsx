@@ -1,5 +1,4 @@
 import Image, { StaticImageData } from 'next/image';
-import headerImg from '../../public/logInNew1.png';
 import { ChevronLeft } from 'lucide-react';
 
 interface LoginHeaderProps {

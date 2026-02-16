@@ -4,27 +4,17 @@ import React from 'react';
 import Image from 'next/image';
 import {
   ChevronLeft,
-  ChevronRight,
   Wallet,
   Store,
-  Users,
   ShoppingBag,
-  Briefcase,
   FileText,
-  MoreHorizontal,
   Lightbulb,
-  CheckCircle2,
-  List,
   Download,
   GraduationCap,
-  Filter,
-  Search,
   ArrowLeft,
 } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { products, Product } from './Reports/product';
+import { Product } from './Reports/product';
 import ProductPopUp from './Reports/ProductPopUp';
 import HojreRequestsTable from './components/HojreRequestsTable';
 
@@ -36,7 +26,6 @@ const toFarsiNumber = (n: number | string | undefined): string => {
 import { managerService } from '@/app/services/manager/managerService';
 
 const SchoolHomePage = () => {
-  const [currentPage, setCurrentPage] = React.useState(1);
   const [isProductPopUpOpen, setIsProductPopUpOpen] = React.useState(false);
   const [selectedProduct, setSelectedProduct] = React.useState<Product | null>(null);
 
@@ -114,82 +103,6 @@ const SchoolHomePage = () => {
 
     fetchStats();
   }, []);
-
-  // Filter & Scroll Logic
-  const [isFilterOpen, setIsFilterOpen] = React.useState(false);
-  const [selectedFilters, setSelectedFilters] = React.useState<string[]>([]);
-  const [activeTab, setActiveTab] = React.useState<'hojreh' | 'timche'>('hojreh');
-  const filterRef = React.useRef<HTMLDivElement>(null);
-  const scrollContainerRef = React.useRef<HTMLDivElement>(null);
-
-  // Close filter when clicking outside
-  React.useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
-        setIsFilterOpen(false);
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
-  // Default scroll to right
-  React.useEffect(() => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollLeft = scrollContainerRef.current.scrollWidth;
-    }
-  }, [products]);
-
-  const handleFilterChange = (value: string) => {
-    setSelectedFilters((prev) => {
-      if (prev.includes(value)) {
-        return prev.filter((f) => f !== value);
-      } else {
-        return [...prev, value];
-      }
-    });
-    setCurrentPage(1);
-  };
-
-  const getFilterOptions = () => [
-    { label: 'ارسال شده', value: 'ارسال شده' },
-    { label: 'ارسال نشده', value: 'ارسال نشده' },
-    { label: 'تحویل به مدرسه ', value: 'تحویل به مدرسه ' },
-    { label: 'لغو شده', value: 'لغو شده' },
-  ];
-
-  const filteredProductsList = products.filter((product) => {
-    // Filter by tab
-    const isHojrehProject = product.id % 2 !== 0;
-    if (activeTab === 'hojreh' && !isHojrehProject) return false;
-    if (activeTab === 'timche' && isHojrehProject) return false;
-
-    // Filter by status dropdown
-    if (selectedFilters.length === 0) return true;
-    return selectedFilters.includes(product.statusLabel);
-  });
-
-  const itemsPerPage = 10;
-  const totalPages = Math.ceil(filteredProductsList.length / itemsPerPage);
-
-  const indexOfLastProduct = currentPage * itemsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
-  const currentProducts = filteredProductsList.slice(indexOfFirstProduct, indexOfLastProduct);
-
-  const handleProductClick = (product: Product) => {
-    setSelectedProduct(product);
-    setIsProductPopUpOpen(true);
-  };
-
-  const handlePrevPage = () => {
-    if (currentPage > 1) setCurrentPage((prev) => prev - 1);
-  };
-
-  const handleNextPage = () => {
-    if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
-  };
 
   const calculatePercent = (part: number, total: number) => {
     if (!total || total === 0) return 0;

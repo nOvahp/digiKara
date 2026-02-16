@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Check } from 'lucide-react';
+import { X } from 'lucide-react';
 
 interface NewProductPage7Props {
   onClose: () => void;
@@ -7,7 +7,7 @@ interface NewProductPage7Props {
   onStepClick: (step: string) => void;
 }
 
-export function NewProductPage7({ onClose, onReset, onStepClick }: NewProductPage7Props) {
+export function NewProductPage7({ onClose, onReset }: NewProductPage7Props) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}

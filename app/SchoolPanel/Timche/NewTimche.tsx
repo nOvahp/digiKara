@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
-import Image from 'next/image';
+import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useNewTimche } from './New/NewTimcheContext';
-import { ChevronRight, User, Box, LayoutGrid, Check, ChevronLeft, Sparkles } from 'lucide-react';
+import { User, Box, LayoutGrid, ChevronLeft, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { z } from 'zod';
 import { useForm, Controller } from 'react-hook-form';
@@ -14,7 +13,7 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
+  
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
@@ -40,12 +39,8 @@ const NewTimche = () => {
   const router = useRouter();
   const { saveStep1, step1Data } = useNewTimche();
 
-  // Hardcoded step 1 for this page
-  const step = 1;
-
   const {
     register,
-    handleSubmit,
     setValue,
     watch,
     control,
@@ -67,6 +62,7 @@ const NewTimche = () => {
   const onContinue = async () => {
     const isValid = await trigger();
     if (isValid) {
+      // eslint-disable-next-line react-hooks/incompatible-library
       const data = watch();
       saveStep1(data);
       router.push('/SchoolPanel/Timche/New/Step2');

@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { useRouter } from 'next/navigation';
 import { useAuth } from '@/app/providers/AuthProvider';
 import { Button } from '@/components/ui/button';
 import {
@@ -9,7 +8,6 @@ import {
   CreditCard,
   MapPin,
   School,
-  AlertCircle,
   ChevronLeft,
   Phone,
   Map,
@@ -43,7 +41,6 @@ const InfoField = ({ label, value, icon: Icon }: { label: string; value?: string
 );
 
 export function LoginViewManagerInfo({ onNext, onReport, onBack }: LoginViewProps) {
-  const router = useRouter();
   const { user, isAuthenticated } = useAuth();
 
   const handleContinue = async () => {

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { ChevronLeft, ChevronDown, Sparkles } from 'lucide-react';
+import { ChevronLeft, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { z } from 'zod';
 import { useForm, Controller } from 'react-hook-form';
@@ -50,8 +50,10 @@ const NewProject2 = () => {
     },
   });
 
+  /* eslint-disable react-hooks/incompatible-library */
   const equipmentValue = watch('equipment');
   const consumablesValue = watch('consumables');
+  /* eslint-enable react-hooks/incompatible-library */
 
   const onSubmit = (data: Step2FormValues) => {
     updateProjectData(data);

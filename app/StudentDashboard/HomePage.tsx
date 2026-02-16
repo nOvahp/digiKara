@@ -11,7 +11,7 @@ import { Navigation } from './layout/Navigation';
 import DashboardEmptyPage from './hojreCreation/page';
 
 export function HomePage() {
-  const [user, setUser] = React.useState<any>(null);
+  const [user, setUser] = React.useState<Record<string, unknown> | null>(null);
   const [hasHojre, setHasHojre] = React.useState<boolean | null>(null);
 
   React.useEffect(() => {

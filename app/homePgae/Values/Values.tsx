@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 import ValuesCard from './ValuesCard';
 import { valuesData } from './valuesData';
 import ValuesTitle from './ValuesTitle';

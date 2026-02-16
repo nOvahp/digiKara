@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React from 'react';
 
 interface QuotesCardProps {
@@ -28,7 +29,7 @@ const QuotesCard: React.FC<QuotesCardProps> = ({
           </div>
         </div>
         <div className="w-16 h-16 relative">
-          <img
+          <Image
             className="w-16 h-16 left-0 top-0 absolute rounded-full object-cover"
             src={imageSrc}
             alt={name}

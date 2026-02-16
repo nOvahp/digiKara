@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Plus, Minus, X, User, Users, Store, Search } from 'lucide-react';
+import { Plus, Minus, X, User, Store, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { z } from 'zod';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 
@@ -71,7 +71,6 @@ const AddSharePopup = ({ isOpen, onClose, onAdd }: AddSharePopupProps) => {
   const [searchResults, setSearchResults] = useState<typeof MOCK_USERS>([]);
 
   const {
-    control,
     handleSubmit,
     setValue,
     watch,
@@ -86,9 +85,11 @@ const AddSharePopup = ({ isOpen, onClose, onAdd }: AddSharePopupProps) => {
     },
   });
 
+  /* eslint-disable react-hooks/incompatible-library */
   const userType = watch('userType');
   const selectedUser = watch('selectedUser');
   const sharePercent = watch('sharePercent');
+  /* eslint-enable react-hooks/incompatible-library */
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);

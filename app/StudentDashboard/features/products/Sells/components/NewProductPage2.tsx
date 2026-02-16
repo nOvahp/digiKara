@@ -1,5 +1,5 @@
 // ... imports
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronRight, ChevronLeft, Info, X, Plus, Trash2, Check } from 'lucide-react';
 
 // ... interfaces
@@ -27,7 +27,7 @@ interface FeatureItem {
   value: string;
 }
 
-import { AddProductFormState, VariantFeature } from '../types';
+import { AddProductFormState } from '../types';
 
 interface NewProductPage2Props {
   onClose: () => void;
@@ -52,7 +52,7 @@ export function NewProductPage2({
     if (!formData.variantFeatures) {
       updateFormData({ variantFeatures: [] });
     }
-  }, []);
+  }, [formData.variantFeatures, updateFormData]);
 
   const toggleSection = (section: string) => {
     setOpenSection(openSection === section ? null : section);
@@ -390,13 +390,11 @@ function StepItem({
   step,
   label,
   isActive,
-  isCompleted,
   onClick,
 }: {
   step: string;
   label: string;
   isActive: boolean;
-  isCompleted?: boolean;
   onClick?: () => void;
 }) {
   return (

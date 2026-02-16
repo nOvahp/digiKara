@@ -85,7 +85,7 @@ export const authService = {
           status?: number;
         };
         return { ...res, status: Number(res.status || 0) };
-      } catch (e) {
+      } catch {
         console.warn('Mock service not found');
       }
     }
@@ -141,7 +141,7 @@ export const authService = {
           user?: UserData;
           message?: string;
         }>;
-      } catch (e) {
+      } catch {
         console.warn('Mock service not found');
       }
     }

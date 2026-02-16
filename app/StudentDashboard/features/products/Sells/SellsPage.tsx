@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { toast } from 'sonner';
 import { ClipboardList, Plus, Package, Layers, PackageX, AlertTriangle } from 'lucide-react';
 import { DashboardNavBar } from '../../../layout/DashboardNavBar';
 import { Navigation } from '../../../layout/Navigation';
@@ -21,13 +20,18 @@ export default function SellsPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   // Simplified state, we only trigger 'step1' to open the flow
-  const [activePopup, setActivePopup] = useState<'none' | 'step1'>('none');
+  // Simplified state, we only trigger 'step1' to open the flow
+  const [activePopup, setActivePopup] = useState<'none' | 'step1'>(() => 
+    searchParams.get('new') === 'true' ? 'step1' : 'none'
+  );
 
   useEffect(() => {
-    if (searchParams.get('new') === 'true') {
+    // Only update if changed, prevents redundant updates
+    const shouldBeOpen = searchParams.get('new') === 'true';
+    if (shouldBeOpen && activePopup !== 'step1') {
       setActivePopup('step1');
     }
-  }, [searchParams]);
+  }, [searchParams, activePopup]);
 
   const [productsList, setProductsList] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -50,7 +54,23 @@ export default function SellsPage() {
   };
 
   useEffect(() => {
-    fetchProducts();
+    let cancelled = false;
+    const loadData = async () => {
+        // We can set loading true here if not already true, 
+        // but it is true by default in useState.
+        try {
+            const { success, data } = await studentProductService.getProducts();
+            if (!cancelled && success && data) {
+                setProductsList(data);
+            }
+        } catch (err) {
+            console.error(err);
+        } finally {
+            if (!cancelled) setIsLoading(false);
+        }
+    };
+    loadData();
+    return () => { cancelled = true; };
   }, []);
 
   // Triggered by Table

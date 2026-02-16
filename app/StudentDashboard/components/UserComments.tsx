@@ -6,7 +6,6 @@ import {
   MoreHorizontal,
   ChevronRight,
   ChevronLeft,
-  Check,
   Search,
   Filter,
 } from 'lucide-react';
@@ -443,7 +442,7 @@ export default function UserComments() {
 
               {/* Table Rows */}
               <div>
-                {currentData.map((comment, index) => {
+                {currentData.map((comment) => {
                   const styles = getStatusStyles(comment.status);
                   return (
                     <div

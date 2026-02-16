@@ -3,7 +3,12 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, Wrench, Package, Tag, Cpu, Palette, Check } from 'lucide-react';
-import { useAuth } from '@/app/providers/AuthProvider';
+
+interface Interest {
+  id: number;
+  title: string;
+  sub_title?: string;
+}
 
 interface LoginViewProps {
   onNext?: () => void;
@@ -51,7 +56,7 @@ const INTEREST_STYLES = [
 
 export function LoginView6({ onNext, onBack }: LoginViewProps) {
   const [selectedInterests, setSelectedInterests] = useState<number[]>([]);
-  const [interests, setInterests] = useState<Record<string, unknown>[]>([]);
+  const [interests, setInterests] = useState<Interest[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -60,7 +65,7 @@ export function LoginView6({ onNext, onBack }: LoginViewProps) {
         const { studentService } = await import('@/app/services/student/studentService');
         const result = await studentService.getInterests();
         if (result.success && result.data) {
-          setInterests(result.data);
+          setInterests(result.data as Interest[]);
         }
       } catch (error) {
         console.error('Failed to fetch interests', error);

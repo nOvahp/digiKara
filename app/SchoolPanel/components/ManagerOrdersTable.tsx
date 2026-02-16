@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Search, Filter, ChevronLeft, ChevronRight, MoreHorizontal, Eye } from 'lucide-react';
+import { Search, Filter, ChevronLeft, ChevronRight, Eye } from 'lucide-react';
 import { managerService, Order } from '@/app/services/manager/managerService';
 import ManagerOrderPopup from './ManagerOrderPopup';
+import Image from 'next/image';
 
 const toFarsiNumber = (n: number | string | undefined): string => {
   if (n === undefined || n === null) return '';
@@ -19,7 +20,7 @@ const ManagerOrdersTable = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedOrder, setSelectedOrder] = useState<any>(null);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -27,6 +28,7 @@ const ManagerOrdersTable = () => {
   const filterRef = React.useRef<HTMLDivElement>(null);
   const itemsPerPage = 7;
 
+  // Manual fetch for updates
   const fetchOrders = async () => {
     setLoading(true);
     const response = await managerService.getManagerOrders();
@@ -39,7 +41,31 @@ const ManagerOrdersTable = () => {
   };
 
   useEffect(() => {
-    fetchOrders();
+    let cancelled = false;
+    const loadInitialOrders = async () => {
+      // Avoid setting loading here if it triggers cascade, but we need it.
+      // Ideally, start with loading=true in useState (already done).
+      try {
+        const response = await managerService.getManagerOrders();
+        if (!cancelled) {
+            if (response.success && response.data) {
+                setOrders(response.data);
+            } else {
+                console.error(response.message);
+            }
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+
+    loadInitialOrders();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   // Filter Logic
@@ -261,7 +287,7 @@ const ManagerOrdersTable = () => {
                       <td className="px-6 py-4 text-[#0D0D12] text-sm font-medium ">
                         <div className="flex items-center gap-2">
                           {order.product?.image_path && (
-                            <img
+                            <Image
                               src={`https://digikara.back.adiaweb.dev/storage/${order.product.image_path}`}
                               alt=""
                               className="w-8 h-8 rounded object-cover"

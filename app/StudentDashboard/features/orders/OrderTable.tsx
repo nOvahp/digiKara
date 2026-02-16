@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { ChevronLeft, ChevronRight, Search, Filter, ArrowUpDown, Eye } from 'lucide-react';
 import { Order } from '@/app/services/studentService';
 import { toFarsiNumber } from '@/app/services/common/utils';
 import { Skeleton } from '@/app/components/Skeleton';
+import Image from 'next/image';
 
 export interface OrderTableProps {
   orders: Order[];
@@ -289,7 +290,7 @@ export function OrderTable({
                               className={`w-4 h-4 rounded border flex items-center justify-center cursor-pointer transition-colors ${isSelected ? 'bg-[#F7C61A] border-[#F7C61A]' : 'bg-white border-[#DFE1E7]'}`}
                               onClick={(e) => {
                                 e.stopPropagation();
-                                onSelectRow && onSelectRow(order.id);
+                                onSelectRow?.(order.id);
                               }}
                             >
                               {isSelected && (
@@ -322,9 +323,9 @@ export function OrderTable({
                         <div className="flex items-center gap-3">
                           <div className="w-12 h-12 rounded-lg border border-gray-100 overflow-hidden flex-shrink-0 bg-gray-50">
                             {order.productImage ? (
-                              <img
+                              <Image
                                 src={order.productImage}
-                                alt={order.productName}
+                                alt={order.productName || 'محصول'}
                                 className="w-full h-full object-cover"
                               />
                             ) : (

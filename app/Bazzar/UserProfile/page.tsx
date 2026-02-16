@@ -1,17 +1,15 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import {
   ArrowLeft,
   User,
   Phone,
-  Mail,
   FileText,
-  Calendar,
   LogOut,
   CheckCircle2,
-  ChevronLeft,
   MapPin,
   School,
   GraduationCap,
@@ -191,10 +189,13 @@ export default function UserProfilePage() {
             <div className="w-28 h-28 rounded-full p-[3px] bg-gradient-to-tr from-[#FDD00A] to-[#ffeaa7] shadow-lg shadow-[#FDD00A]/20">
               <div className="w-full h-full rounded-full bg-white p-1 flex items-center justify-center overflow-hidden relative">
                 {user.image ? (
-                  <img
+                  <Image
                     src={user.image}
                     alt="User"
-                    className="w-full h-full object-cover rounded-full"
+                    fill
+                    sizes="112px"
+                    className="object-cover rounded-full"
+                    unoptimized
                   />
                 ) : (
                   <div className="w-full h-full bg-gray-50 flex items-center justify-center rounded-full">

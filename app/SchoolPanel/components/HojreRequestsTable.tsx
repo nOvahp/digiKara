@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
-import { MoreHorizontal, Search, Filter, ChevronRight, ChevronLeft } from 'lucide-react';
+import { Search, Filter, ChevronRight, ChevronLeft } from 'lucide-react';
 import { managerService } from '@/app/services/manager/managerService';
 import HojreRequestPopup from './HojreRequestPopup';
 

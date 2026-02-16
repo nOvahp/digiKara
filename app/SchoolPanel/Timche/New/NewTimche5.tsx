@@ -3,7 +3,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { ChevronLeft, Check } from 'lucide-react';
-import { cn } from '@/lib/utils';
+
 
 const NewTimche5 = () => {
   const router = useRouter();

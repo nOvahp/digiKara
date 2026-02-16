@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/app/providers/AuthProvider';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { ChevronLeft, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 
 interface LoginViewProps {
@@ -46,7 +45,7 @@ const PillInput = ({
   </div>
 );
 
-export function LoginViewManagerReport({ onNext, onLoginAgain, onBack }: LoginViewProps) {
+export function LoginViewManagerReport({ onLoginAgain, onBack }: LoginViewProps) {
   const router = useRouter();
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);

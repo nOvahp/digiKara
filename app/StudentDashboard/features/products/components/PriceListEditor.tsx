@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { Check, X, Trash2, Plus, ChevronDown, Minus } from 'lucide-react';
+import { X, Trash2, Plus, ChevronDown, Minus } from 'lucide-react';
 import { toast } from 'sonner';
 import { studentProductService } from '@/app/services/studentProductService';
 import { Price } from '@/app/StudentDashboard/data/products';
@@ -38,25 +38,25 @@ export function PriceListEditor({ prices, onRefresh, basePrice }: PriceListEdito
     warn_inventory: '',
   });
 
-  // Calculate Final Price Automaticlly
-  useEffect(() => {
-    if (!basePrice) return;
+  // Calculate final price as a derived value instead of storing in state
+  const calculatedAmount = useMemo(() => {
+    if (!basePrice) return '0';
     const base = parseInt(String(basePrice).replace(/\D/g, '') || '0');
     const diff = parseInt(priceDifference.replace(/\D/g, '') || '0');
     const final = isAddition ? base + diff : base - diff;
-    setNewPrice((prev) => ({ ...prev, amount: String(Math.max(0, final)) }));
+    return String(Math.max(0, final));
   }, [priceDifference, isAddition, basePrice]);
 
   const handleAddPrice = async () => {
     if (!productId) return;
-    if (!newPrice.title || !newPrice.amount) {
+    if (!newPrice.title || !calculatedAmount) {
       toast.error('عنوان و قیمت الزامی است');
       return;
     }
 
     const payload = {
       title: newPrice.title,
-      amount: parseInt(newPrice.amount.replace(/\D/g, '') || '0'),
+      amount: parseInt(calculatedAmount.replace(/\D/g, '') || '0'),
       type: parseInt(newPrice.type || '1'),
       discount_percent: newPrice.discount_percent ? parseInt(newPrice.discount_percent) : null,
       inventory: newPrice.inventory ? parseInt(newPrice.inventory) : null,
@@ -261,7 +261,7 @@ export function PriceListEditor({ prices, onRefresh, basePrice }: PriceListEdito
             </div>
 
             <div className="text-right text-xs text-[#666D80] font-medium font-['PeydaFaNum'] mt-1">
-              قیمت نهایی: {newPrice.amount ? parseInt(newPrice.amount).toLocaleString() : '0'} ریال
+              قیمت نهایی: {calculatedAmount ? parseInt(calculatedAmount).toLocaleString() : '0'} ریال
             </div>
           </div>
 

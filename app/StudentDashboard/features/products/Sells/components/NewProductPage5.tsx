@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { toast } from 'sonner';
-import axios from 'axios';
+
 import { ChevronRight, X, ChevronDown } from 'lucide-react';
-import { z } from 'zod';
+
 import { AddProductFormState } from '../types';
 
 const toFarsiNumber = (n: number | string | undefined): string => {
@@ -284,7 +283,7 @@ const StepItem = React.forwardRef<
     isCompleted?: boolean;
     onClick?: () => void;
   }
->(({ step, label, isActive, isCompleted, onClick }, ref) => {
+>(({ step, label, isActive, onClick }, ref) => {
   return (
     <div
       ref={ref}

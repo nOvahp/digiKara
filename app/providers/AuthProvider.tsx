@@ -1,8 +1,8 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { authService, UserData } from '../services/authService';
-import { getToken, saveToken, removeToken } from '../services/tokenService';
+import { getToken, removeToken } from '../services/tokenService';
 
 type AuthContextType = {
   isAuthenticated: boolean;
@@ -36,7 +36,7 @@ type AuthContextType = {
   logoutCustomer: () => Promise<{ success: boolean; message?: string }>;
   reportIssue: (data: Record<string, unknown>) => Promise<{ success: boolean; message?: string }>;
   saveStudentData: (data: {
-    meta: Record<string, unknown>;
+    meta: unknown;
     training_course: boolean;
   }) => Promise<{ success: boolean; message?: string }>;
   signOut: () => Promise<void>;
@@ -75,7 +75,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return false;
   });
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
   const [role, setRole] = useState<'student' | 'manager' | 'customer' | null>('student'); // Default to student
 
   const requestOtp = async (phoneNumber: string) => {
@@ -147,7 +147,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return await authService.reportIssue(data);
   };
 
-  const saveStudentData = async (data: { meta: Record<string, unknown>; training_course: boolean }) => {
+  const saveStudentData = async (data: { meta: unknown; training_course: boolean }) => {
     return await authService.saveStudentData(data);
   };
 

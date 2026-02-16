@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Filter, Search, MoreHorizontal, ChevronRight, ChevronLeft, Check } from 'lucide-react';
+import { Filter, Search, ChevronRight, ChevronLeft } from 'lucide-react';
 import { DashboardNavBar } from '../../../layout/DashboardNavBar';
 import { Navigation } from '../../../layout/Navigation';
 import { SmartSuggestions } from '../../overview/SmartSuggestions';

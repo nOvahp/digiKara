@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
-import { ChevronLeft, ChevronDown, Calendar, Plus } from 'lucide-react';
+import { ChevronLeft, Calendar } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { z } from 'zod';
 import { useForm, Controller } from 'react-hook-form';
@@ -70,8 +70,10 @@ const NewProject1 = () => {
     },
   });
 
+  /* eslint-disable react-hooks/incompatible-library */
   const needsSupport = watch('needsSupport');
   const selectedProjectType = watch('projectType');
+  /* eslint-enable react-hooks/incompatible-library */
 
   const onSubmit = (data: Step1FormValues) => {
     updateProjectData(data);

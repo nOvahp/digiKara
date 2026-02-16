@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Check, ClipboardList, Package, Truck, CheckCircle2 } from 'lucide-react';
 import { useCart } from '@/app/Bazzar/CartContext';
@@ -44,7 +45,14 @@ export default function OrderTrackingPage() {
             <React.Fragment key={item.id}>
               <div className="flex gap-4 items-center justify-start w-full">
                 <div className="w-[84px] h-[84px] bg-[#F6F6F6] rounded-lg shrink-0 overflow-hidden relative">
-                  <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    fill
+                    sizes="84px"
+                    className="object-cover"
+                    unoptimized
+                  />
                   {/* Design effect for first item */}
                   {index === 0 && (
                     <div className="absolute -bottom-2 -left-2 w-full h-4 bg-black/80 blur-lg opacity-20 rotate-1"></div>

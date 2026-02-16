@@ -16,6 +16,7 @@ import { useRouter } from 'next/navigation';
 import { Skeleton } from '@/app/components/Skeleton';
 // Use the interface from service which matches our updated mapping
 import { Product } from '@/app/services/products/productsService';
+import Image from 'next/image';
 
 interface ProductTableProps {
   products: Product[];
@@ -130,10 +131,7 @@ export function ProductTable({ products, loading = false, onDelete }: ProductTab
     }
   });
 
-  // Reset page when filters change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery, statusFilter, sortOption]);
+
 
   // Calculate total pages based on filtered products
   const totalPages = Math.ceil(filteredAndSortedProducts.length / itemsPerPage);
@@ -187,9 +185,12 @@ export function ProductTable({ products, loading = false, onDelete }: ProductTab
       <div className="w-full flex flex-col lg:flex-row gap-4 justify-between items-center bg-white p-4 rounded-xl border border-[#DFE1E7] shadow-sm">
         <div className="relative w-full lg:w-96">
           <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-          <input
+            <input
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setCurrentPage(1);
+            }}
             placeholder="جستجو در محصولات..."
             className="w-full pr-10 pl-4 py-2.5 rounded-lg border border-[#DFE1E7] focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500/50 text-sm font-['PeydaWeb'] font-medium transition-all"
           />
@@ -200,7 +201,10 @@ export function ProductTable({ products, loading = false, onDelete }: ProductTab
             <Filter className="w-4 h-4 text-gray-500 shrink-0" />
             <select
               value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value as any)}
+              onChange={(e) => {
+                setStatusFilter(e.target.value as 'all' | 'approved' | 'pending');
+                setCurrentPage(1);
+              }}
               className="bg-transparent border-none outline-none text-sm font-['PeydaWeb'] font-medium text-[#0D0D12] cursor-pointer w-full appearance-none py-0.5 z-10"
             >
               <option value="all">همه وضعیت‌ها</option>
@@ -215,7 +219,10 @@ export function ProductTable({ products, loading = false, onDelete }: ProductTab
             <ArrowUpDown className="w-4 h-4 text-gray-500 shrink-0" />
             <select
               value={sortOption}
-              onChange={(e) => setSortOption(e.target.value)}
+              onChange={(e) => {
+                setSortOption(e.target.value);
+                setCurrentPage(1);
+              }}
               className="bg-transparent border-none outline-none text-sm font-['PeydaWeb'] font-medium text-[#0D0D12] cursor-pointer w-full appearance-none py-0.5 z-10"
             >
               <option value="newest">جدیدترین</option>
@@ -284,7 +291,7 @@ export function ProductTable({ products, loading = false, onDelete }: ProductTab
                       <div className="flex items-center gap-3">
                         <div className="w-12 h-12 rounded-lg border border-gray-100 overflow-hidden flex-shrink-0 bg-gray-50">
                           {product.images?.[0] ? (
-                            <img
+                            <Image
                               src={product.images[0]}
                               alt={product.name}
                               className="w-full h-full object-cover"

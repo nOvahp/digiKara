@@ -1,20 +1,15 @@
 'use client';
 
 import React from 'react';
-import { Badge } from '@/components/ui/badge';
 import {
   Wallet,
   Lightbulb,
   MoreHorizontal,
   ChevronRight,
   ChevronLeft,
-  Check,
   Search,
   Filter,
   Calendar,
-  Sparkles,
-  Star,
-  FileText,
 } from 'lucide-react';
 import { products, Product } from './product';
 import ProductPopUp from './ProductPopUp';
@@ -102,7 +97,7 @@ const ReportsPage = () => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollLeft = scrollContainerRef.current.scrollWidth;
     }
-  }, [products]);
+  }, []);
 
   const handleFilterChange = (value: string) => {
     setSelectedFilters((prev) => {
@@ -712,7 +707,6 @@ const ReportsPage = () => {
               {/* Table Body - Rows */}
               {currentProducts.map((product, idx) => {
                 const itemIndex = indexOfFirstProduct + idx + 1;
-                const isEven = itemIndex % 2 === 0;
                 const statusBg =
                   product.statusLabel === 'ارسال شده' || product.statusLabel === 'تحویل به مدرسه '
                     ? '#ECF9F7'

@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ChevronLeft, Trash2, Plus, Minus } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import AddSharePopup from './AddSharePopup';
 import { toast } from 'sonner'; // Assuming sonner is available for toasts
@@ -54,7 +53,7 @@ interface ShareMember {
 
 const NewProject4Content = () => {
   const router = useRouter();
-  const { updateProjectData, projectData, saveProject, resetProjectData } = useNewProject();
+  const { updateProjectData, projectData, resetProjectData } = useNewProject();
 
   // Initialize state from context if available, else default
   const [schoolShare, setSchoolShare] = useState(projectData.schoolShare || 20);

@@ -1,24 +1,21 @@
 'use client';
 
 import React, { useState } from 'react';
-import Image from 'next/image';
+
 import {
-  Wallet,
+  
   ArrowUpFromLine,
   ArrowDownToLine,
-  MoreHorizontal,
-  User,
+ 
+  
   School,
   Users,
   LayoutGrid,
   Briefcase,
-  Store,
-  CreditCard,
+  
   ChevronLeft,
   ChevronRight,
-  Search,
-  Filter,
-  Receipt,
+ 
 } from 'lucide-react';
 import { cn } from '../../../lib/utils';
 import { transactionsData } from './wallet-data';

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Truck, Zap, Package, Clock, Circle } from 'lucide-react';
+import { ArrowLeft, Truck, Zap, Package, Circle } from 'lucide-react';
 
 export default function SendTypePage() {
   const router = useRouter();

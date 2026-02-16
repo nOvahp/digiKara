@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Bell, Mail, Wallet } from 'lucide-react';
+import { Bell, Mail } from 'lucide-react';
 import Image from 'next/image';
 
 import { PopUpStudent } from '../features/products/PopUpStudent';

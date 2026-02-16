@@ -38,8 +38,9 @@ const PRICE_TYPE_LABELS: Record<number, string> = {
   6: 'وزن',
 };
 
-import { AddProductFormState, VariantFeature, VariantPrice } from '../../types';
+import { VariantFeature, VariantPrice } from '../../types';
 import { Product } from '@/app/services/products/productsService';
+import Image from 'next/image';
 
 // Define a unified type for preview
 type PreviewProduct = Omit<Partial<Product>, 'id'> & {
@@ -68,7 +69,6 @@ export interface ProductPreviewProps {
 export function ProductPreviewCard({ product }: ProductPreviewProps) {
   const [activeImage, setActiveImage] = useState<string | null>(null);
   const [selectedVariants, setSelectedVariants] = useState<Record<string, string>>({});
-  const [currentPrice, setCurrentPrice] = useState<string | number>(product.price || 0);
 
   // Initialize images
   const images =
@@ -132,21 +132,29 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
     return [];
   }, [product, isEditMode, isWizardMode]);
 
-  // Initialize default selections
+  // Initialize default selections using async pattern to avoid synchronous setState
   useEffect(() => {
-    if (displayFeatures && displayFeatures.length > 0) {
-      const defaults: Record<string, string> = {};
-      displayFeatures.forEach((f) => {
-        if (f.values && f.values.length > 0) {
-          defaults[f.title] = f.values[0];
-        }
-      });
-      setSelectedVariants(defaults);
-    }
+    let cancelled = false;
+    (async () => {
+      await Promise.resolve(); // Make state update asynchronous
+      if (!cancelled && displayFeatures && displayFeatures.length > 0) {
+        const defaults: Record<string, string> = {};
+        displayFeatures.forEach((f) => {
+          if (f.values && f.values.length > 0) {
+            defaults[f.title] = f.values[0];
+          }
+        });
+        setSelectedVariants((prev) => {
+          const isSame = JSON.stringify(prev) === JSON.stringify(defaults);
+          return isSame ? prev : defaults;
+        });
+      }
+    })();
+    return () => { cancelled = true; };
   }, [displayFeatures]);
 
   // Update price when selections change
-  useEffect(() => {
+  const currentPrice = React.useMemo(() => {
     const basePrice = parseInt(product.price?.toString().replace(/\D/g, '') || '0');
     let calculatedPrice = basePrice;
 
@@ -186,13 +194,13 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
         });
 
         if (priceItem) {
-          const variantAmount = parseInt((priceItem as any).amount?.toString().replace(/\D/g, '') || '0');
+          // Cast safely if possible, or use unknown
+          const variantAmount = parseInt((priceItem as unknown as { amount: string | number }).amount?.toString().replace(/\D/g, '') || '0');
           const difference = variantAmount - basePrice;
           calculatedPrice += difference;
         }
       });
-      setCurrentPrice(calculatedPrice);
-      return;
+      return calculatedPrice;
     }
 
     // 2. Logic for "Wizard"
@@ -209,12 +217,11 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
           calculatedPrice += difference;
         }
       }
-      setCurrentPrice(calculatedPrice);
-      return;
+      return calculatedPrice;
     }
 
     // Fallback
-    setCurrentPrice(basePrice);
+    return basePrice;
   }, [selectedVariants, product, isEditMode]);
 
   const handleSelect = (title: string, value: string) => {
@@ -230,7 +237,7 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
 
       <div className="flex flex-col gap-3">
         {mainImage ? (
-          <img
+          <Image
             src={mainImage}
             alt="Product Preview"
             className="w-full h-[305px] object-cover rounded-xl border border-[#DFE1E7]"
@@ -244,7 +251,7 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
         {images.length > 1 && (
           <div className="flex gap-3 overflow-x-auto pb-2 px-1" dir="rtl">
             {images.map((img: string, idx: number) => (
-              <img
+              <Image
                 key={idx}
                 src={img}
                 alt={`Thumbnail ${idx}`}
@@ -375,7 +382,7 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
             'ویژگی‌های بسته بندی': product.features.packaging,
             شناسه: product.features.id,
           }).map(
-            ([label, items]: [string, any]) =>
+            ([label, items]: [string, { key: string; value: string }[]]) =>
               items &&
               items.length > 0 && (
                 <div key={label} className="flex flex-col gap-2 bg-gray-50 p-3 rounded-lg">
