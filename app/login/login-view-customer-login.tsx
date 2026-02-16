@@ -50,7 +50,7 @@ export function LoginViewCustomerLogin({ phone, onBack }: LoginViewCustomerLogin
 
   return (
     <div
-      className="flex min-h-screen w-full flex-col bg-white items-center relative overflow-hidden mb-4"
+      className="flex min-h-screen w-full flex-col bg-white items-center relative overflow-hidden mb-10"
       dir="rtl"
     >
       {/* Background Gradient Effect */}
