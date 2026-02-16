@@ -54,6 +54,9 @@ export function QuickAccess() {
           <div className="text-right text-[#0F172A] text-sm font-['Meem'] font-medium leading-[21.70px] break-words">
             ویرایش اطلاعات حجره
           </div>
+          <span className="text-[10px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full font-bold ml-auto">
+            به زودی
+          </span>
         </div>
 
         {/* Update Skill Profile */}

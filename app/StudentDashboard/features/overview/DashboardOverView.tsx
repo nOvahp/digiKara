@@ -8,6 +8,26 @@ import earningBg from '../../../../public/Earnings.png';
 import { cn } from '@/lib/utils';
 import { toFarsiNumber } from '@/app/services/common/utils';
 import { dashboardService, DashboardStats } from '@/app/services/dashboard/dashboardService';
+import moment from 'jalali-moment';
+
+// Persian Solar Calendar Component
+function PersianDate() {
+  const [persianDate, setPersianDate] = useState('');
+
+  useEffect(() => {
+    const updateDate = () => {
+      const formatted = moment().locale('fa').format('jDD jMMMM jYYYY');
+      setPersianDate(formatted);
+    };
+
+    updateDate();
+    const interval = setInterval(updateDate, 60000); // Update every minute
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return <div className="text-[#61656B] text-xs font-medium">{persianDate}</div>;
+}
 
 export function DashboardOverview({ isApproved: propIsApproved }: { isApproved?: boolean }) {
   const [stats, setStats] = useState<DashboardStats | null>(null);
@@ -52,7 +72,7 @@ export function DashboardOverview({ isApproved: propIsApproved }: { isApproved?:
         <div className="text-[#222831] text-lg font-semibold leading-relaxed">
           عملکرد این ماهت عالیه!
         </div>
-        <div className="text-[#61656B] text-xs font-medium">10 مهر 1404</div>
+        <PersianDate />
       </div>
 
       {/* Error Message */}
