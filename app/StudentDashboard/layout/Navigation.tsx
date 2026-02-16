@@ -75,7 +75,7 @@ export function Navigation() {
                 className={cn('w-6 h-6', getIconColor(isActive('/StudentDashboard/Sells')))}
                 strokeWidth={1.5}
               />
-              <div className={getTextClasses(isActive('/StudentDashboard/Sells'))}>فروش</div>
+              <div className={getTextClasses(isActive('/StudentDashboard/Sells'))}>عرضه تولیدات</div>
             </Link>
 
             {/* Education */}
