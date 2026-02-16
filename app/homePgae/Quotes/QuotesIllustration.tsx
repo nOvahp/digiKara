@@ -6,7 +6,9 @@ const QuotesIllustration = () => (
     <Image
       src="/woman received many notification letters.png"
       alt="Quotes Illustration"
-      className="w-full h-full object-contain"
+      className="object-contain"
+      fill
+      sizes="312px"
     />
   </div>
 );

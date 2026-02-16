@@ -30,9 +30,11 @@ const QuotesCard: React.FC<QuotesCardProps> = ({
         </div>
         <div className="w-16 h-16 relative">
           <Image
-            className="w-16 h-16 left-0 top-0 absolute rounded-full object-cover"
+            className="rounded-full object-cover"
             src={imageSrc}
             alt={name}
+            fill
+            sizes="64px"
           />
         </div>
       </div>
