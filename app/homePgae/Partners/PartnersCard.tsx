@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import React from 'react';
+import { Card, CardContent } from '@/components/ui/card';
 
 interface PartnersCardProps {
   category?: string;
@@ -11,10 +11,10 @@ interface PartnersCardProps {
 }
 
 const PartnersCard = ({
-  category = "حامیان دولتی",
-  title = "سازمان ها و نهادهای آموزش مهارتی",
-  color = "#007AFF",
-  bgColor = "rgba(203.51, 228.14, 255, 0.20)",
+  category = 'حامیان دولتی',
+  title = 'سازمان ها و نهادهای آموزش مهارتی',
+  color = '#007AFF',
+  bgColor = 'rgba(203.51, 228.14, 255, 0.20)',
 }: PartnersCardProps) => {
   return (
     <Card className="w-full bg-white border border-[#CACACA] rounded-[24px] shadow-sm">
@@ -23,10 +23,7 @@ const PartnersCard = ({
           className="px-0 py-0 rounded-[119px] inline-flex justify-start items-start gap-2.5"
           style={{ backgroundColor: bgColor }}
         >
-          <div
-            className="text-[10px] p-2 font-extrabold"
-            style={{ color: color }}
-          >
+          <div className="text-[10px] p-2 font-extrabold" style={{ color: color }}>
             {category}
           </div>
         </div>

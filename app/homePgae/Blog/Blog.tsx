@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import React from "react";
-import Image from "next/image";
-import BlogCard from "./BlogCard";
-import { blogData } from "./blogData";
-import BlogButton from "./BlogButton";
+import React from 'react';
+import Image from 'next/image';
+import BlogCard from './BlogCard';
+import { blogData } from './blogData';
+import BlogButton from './BlogButton';
 
 const Blog = () => {
   return (
@@ -25,7 +25,7 @@ const Blog = () => {
           alt="Blog Illustration"
           width={600}
           height={600}
-          className="object-contain  w-[600px] h-[600px] 2xl:w-[800px] 2xl:h-[800px]" 
+          className="object-contain  w-[600px] h-[600px] 2xl:w-[800px] 2xl:h-[800px]"
         />
       </div>
 

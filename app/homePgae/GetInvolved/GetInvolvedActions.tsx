@@ -1,5 +1,5 @@
-import React from "react";
-import ChamferedButton from "@/app/components/ChamferedButton";
+import React from 'react';
+import ChamferedButton from '@/app/components/ChamferedButton';
 
 const GetInvolvedActions = () => {
   return (

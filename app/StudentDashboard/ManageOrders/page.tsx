@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import ManageOrders from "@/app/StudentDashboard/features/orders/ManageOrders/ManageOrders";
+import ManageOrders from '@/app/StudentDashboard/features/orders/ManageOrders/ManageOrders';
 
 export default function Page() {
   return (

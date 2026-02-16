@@ -1,6 +1,6 @@
-import React from "react";
-import Image from "next/image";
-import { Linkedin, Twitter, Facebook } from "lucide-react";
+import React from 'react';
+import Image from 'next/image';
+import { Linkedin, Twitter, Facebook } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -12,12 +12,7 @@ const Footer = () => {
         <div className="w-full flex flex-col lg:flex-row justify-between items-center lg:items-start gap-8 lg:gap-0">
           <div className="flex justify-end items-center gap-4">
             <div className="relative w-[50px] h-[50px] lg:w-[69px] lg:h-[69px] 2xl:w-[90px] 2xl:h-[90px]">
-              <Image
-                src="/Logo11.svg"
-                alt="DigiKara Logo"
-                fill
-                className="object-contain"
-              />
+              <Image src="/Logo11.svg" alt="DigiKara Logo" fill className="object-contain" />
             </div>
             <div className="text-center text-white text-[30px] lg:text-[36.8px] 2xl:text-[48px] font-medium leading-[55.2px] 2xl:leading-[70px]">
               دیجی کارا
@@ -25,27 +20,23 @@ const Footer = () => {
           </div>
 
           <div className="flex flex-col lg:flex-row justify-start items-center lg:items-start gap-6 lg:gap-12 2xl:gap-20 w-full lg:w-auto">
-            {[
-              "پرسش‌های متداول",
-              "حریم خصوصی",
-              "اسناد و قوانین",
-              "ارتباط با ما",
-              "درباره ما",
-            ].map((text) => (
-              <div
-                key={text}
-                className="text-center lg:text-right text-[#DDDDDD] text-base 2xl:text-xl font-extrabold cursor-pointer hover:text-white transition-colors"
-              >
-                {text}
-              </div>
-            ))}
+            {['پرسش‌های متداول', 'حریم خصوصی', 'اسناد و قوانین', 'ارتباط با ما', 'درباره ما'].map(
+              (text) => (
+                <div
+                  key={text}
+                  className="text-center lg:text-right text-[#DDDDDD] text-base 2xl:text-xl font-extrabold cursor-pointer hover:text-white transition-colors"
+                >
+                  {text}
+                </div>
+              ),
+            )}
           </div>
         </div>
 
         <div className="w-full flex flex-col lg:flex-row justify-between items-center lg:items-center gap-8 lg:gap-0">
           <div className="lg:w-[468px] 2xl:w-[600px] w-full text-center lg:text-right text-[#7B7B7B] text-base lg:text-lg 2xl:text-2xl font-medium leading-[27.9px] 2xl:leading-[40px]">
-            ما در کنار شما هستیم تا با هم، آینده ای روشن تر و پربارتر برای مدارس
-            ها و دانش آموزان این مرز و بوم رقم بزنیم.
+            ما در کنار شما هستیم تا با هم، آینده ای روشن تر و پربارتر برای مدارس ها و دانش آموزان
+            این مرز و بوم رقم بزنیم.
           </div>
 
           <div className="flex flex-col justify-center items-center lg:items-start gap-4">

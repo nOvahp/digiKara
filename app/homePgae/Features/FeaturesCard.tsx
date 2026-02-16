@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React from "react";
-import Image, { StaticImageData } from "next/image";
-import { ChevronLeft } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import React from 'react';
+import Image, { StaticImageData } from 'next/image';
+import { ChevronLeft } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface FeaturesCardProps {
   title: string;

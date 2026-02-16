@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import Link from "next/link";
-import { Menu, X } from "lucide-react";
-import { usePathname } from "next/navigation";
+import React, { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Menu, X } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 const MobileNavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,19 +15,16 @@ const MobileNavBar = () => {
     setIsOpen(!isOpen);
   };
 
-  if (pathname?.startsWith("/StudentDashboard") || pathname?.startsWith("/Bazzar")) return null;
+  if (pathname?.startsWith('/StudentDashboard') || pathname?.startsWith('/Bazzar')) return null;
 
   return (
-    <div id="mobile-navbar" className="w-full flex lg:hidden justify-between items-center bg-transparent relative z-50">
+    <div
+      id="mobile-navbar"
+      className="w-full flex lg:hidden justify-between items-center bg-transparent relative z-50"
+    >
       <div className="flex items-center gap-4">
         <Link href="/">
-          <Image
-            src="/Logo.svg"
-            alt="DigiKara Logo"
-            width={40}
-            height={40}
-            className="w-10 h-10"
-          />
+          <Image src="/Logo.svg" alt="DigiKara Logo" width={40} height={40} className="w-10 h-10" />
         </Link>
       </div>
 
@@ -43,66 +40,32 @@ const MobileNavBar = () => {
       {isOpen && (
         <div className="absolute top-full left-0 w-full bg-white shadow-lg flex flex-col items-center gap-4 py-6 border-t border-gray-100">
           <Link href="/" onClick={toggleMenu} className="w-full text-center">
-            <Button
-              variant="ghost"
-              className="w-full text-[#222325] font-medium text-base"
-            >
+            <Button variant="ghost" className="w-full text-[#222325] font-medium text-base">
               صفحه اصلی
             </Button>
           </Link>
-          <Link
-            href="/about"
-            onClick={toggleMenu}
-            className="w-full text-center"
-          >
-            <Button
-              variant="ghost"
-              className="w-full text-[#222325] font-medium text-base"
-            >
+          <Link href="/about" onClick={toggleMenu} className="w-full text-center">
+            <Button variant="ghost" className="w-full text-[#222325] font-medium text-base">
               درباره
             </Button>
           </Link>
-          <Link
-            href="/achievements"
-            onClick={toggleMenu}
-            className="w-full text-center"
-          >
-            <Button
-              variant="ghost"
-              className="w-full text-[#222325] font-medium text-base"
-            >
+          <Link href="/achievements" onClick={toggleMenu} className="w-full text-center">
+            <Button variant="ghost" className="w-full text-[#222325] font-medium text-base">
               دستاوردها
             </Button>
           </Link>
-          <Link
-            href="/contact"
-            onClick={toggleMenu}
-            className="w-full text-center"
-          >
-            <Button
-              variant="ghost"
-              className="w-full text-[#222325] font-medium text-base"
-            >
+          <Link href="/contact" onClick={toggleMenu} className="w-full text-center">
+            <Button variant="ghost" className="w-full text-[#222325] font-medium text-base">
               تماس با ما
             </Button>
           </Link>
           <Link href="/faq" onClick={toggleMenu} className="w-full text-center">
-            <Button
-              variant="ghost"
-              className="w-full text-[#222325] font-medium text-base"
-            >
+            <Button variant="ghost" className="w-full text-[#222325] font-medium text-base">
               سوالات متداول
             </Button>
           </Link>
-          <Link
-            href="/login"
-            onClick={toggleMenu}
-            className="w-full text-center"
-          >
-            <Button
-              variant="ghost"
-              className="w-full text-[#222325] font-bold text-base"
-            >
+          <Link href="/login" onClick={toggleMenu} className="w-full text-center">
+            <Button variant="ghost" className="w-full text-[#222325] font-bold text-base">
               ورود به پلتفــــــــــرم
             </Button>
           </Link>

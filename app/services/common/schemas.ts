@@ -1,5 +1,4 @@
-
-import { z } from "zod";
+import { z } from 'zod';
 
 // --- API Response Types ---
 export interface ApiResponse<T> {
@@ -31,19 +30,19 @@ export interface UserData {
 
 // --- Zod Schemas ---
 export const UserSchema = z.object({
-    id: z.number(),
-    phone: z.string(),
-    firstname: z.string().optional(),
-    lastname: z.string().optional(),
-    national_code: z.string().optional(),
-    school: z.string().optional(),
-    grade: z.string().optional(),
-    field: z.string().optional(),
-    province: z.string().optional(),
-    city: z.string().optional(),
-    district: z.string().optional(),
-    is_info_correct: z.boolean().optional(),
-    favorites: z.boolean().optional(),
-    meta: z.boolean().optional(),
-    cell: z.any().optional(),
+  id: z.number(),
+  phone: z.string(),
+  firstname: z.string().optional(),
+  lastname: z.string().optional(),
+  national_code: z.string().optional(),
+  school: z.string().optional(),
+  grade: z.string().optional(),
+  field: z.string().optional(),
+  province: z.string().optional(),
+  city: z.string().optional(),
+  district: z.string().optional(),
+  is_info_correct: z.boolean().optional(),
+  favorites: z.boolean().optional(),
+  meta: z.boolean().optional(),
+  cell: z.any().optional(),
 });

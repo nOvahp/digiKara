@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React from "react";
-import Image from "next/image";
-import { ChevronLeft } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import React from 'react';
+import Image from 'next/image';
+import { ChevronLeft } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface ServiceCardProps {
   title?: string;
@@ -12,19 +12,14 @@ interface ServiceCardProps {
 }
 
 const ServiceCard = ({
-  title = "عکاسی",
-  description = "عکاسی\nتصویربرداری حرفه‌ای مراسم، رویدادها و تبلیغات\nثبت لحظات ماندگار با تجهیزات پیشرفته",
-  image = "/services1.png",
+  title = 'عکاسی',
+  description = 'عکاسی\nتصویربرداری حرفه‌ای مراسم، رویدادها و تبلیغات\nثبت لحظات ماندگار با تجهیزات پیشرفته',
+  image = '/services1.png',
 }: ServiceCardProps) => {
   return (
     <Card className="w-full min-h-[280px] rounded-[24px] border-[#CACACA] shadow-none hover:shadow-[0px_20px_32px_rgba(0,0,0,0.25)] transition-all duration-300 relative bg-white border group cursor-pointer flex flex-col h-full">
       <div className="absolute left-0 top-0 w-[180px] h-[180px] md:w-[200px] md:h-[200px] pointer-events-none opacity-90 z-0">
-        <Image
-          src={image}
-          alt="Service Illustration"
-          fill
-          className="object-contain object-top"
-        />
+        <Image src={image} alt="Service Illustration" fill className="object-contain object-top" />
       </div>
 
       <CardHeader className="text-right pt-[24px] pr-[32px] pl-[32px] pb-0 relative z-10">

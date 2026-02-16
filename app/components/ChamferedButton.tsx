@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 interface ChamferedButtonProps {
   children: React.ReactNode;
@@ -9,27 +9,26 @@ interface ChamferedButtonProps {
   borderColor?: string;
   backgroundColor?: string;
   hoverColor?: string;
-  cutSide?: "left" | "right";
+  cutSide?: 'left' | 'right';
 }
 
 const ChamferedButton: React.FC<ChamferedButtonProps> = ({
   children,
-  className = "",
+  className = '',
   onClick,
-  borderColor = "#5E6B7E",
-  backgroundColor = "white",
-  hoverColor = "#e2e3e3",
-  cutSide = "right",
+  borderColor = '#5E6B7E',
+  backgroundColor = 'white',
+  hoverColor = '#e2e3e3',
+  cutSide = 'right',
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const maskGradient =
-    cutSide === "left"
-      ? "linear-gradient(135deg, transparent 10px, black 10px)"
-      : "linear-gradient(225deg, transparent 10px, black 10px)";
+    cutSide === 'left'
+      ? 'linear-gradient(135deg, transparent 10px, black 10px)'
+      : 'linear-gradient(225deg, transparent 10px, black 10px)';
 
-  const borderRadius =
-    cutSide === "left" ? "0px 6px 6px 6px" : "6px 0px 6px 6px";
+  const borderRadius = cutSide === 'left' ? '0px 6px 6px 6px' : '6px 0px 6px 6px';
 
   return (
     <div
@@ -47,7 +46,7 @@ const ChamferedButton: React.FC<ChamferedButtonProps> = ({
       <div
         className="w-full h-full flex items-center justify-center transition-colors duration-200"
         style={{
-          borderRadius: "4px",
+          borderRadius: '4px',
           background: isHovered ? hoverColor : backgroundColor,
           WebkitMask: maskGradient,
           mask: maskGradient,

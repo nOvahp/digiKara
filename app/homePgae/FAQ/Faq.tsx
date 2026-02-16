@@ -1,14 +1,14 @@
-"use client";
-import React, { useState } from "react";
-import FaqCard from "./faqCard";
-import { faqData } from "./faqData";
+'use client';
+import React, { useState } from 'react';
+import FaqCard from './faqCard';
+import { faqData } from './faqData';
 
 const Faq = () => {
   const [openIndices, setOpenIndices] = useState<number[]>([]);
 
   const toggleFaq = (index: number) => {
     setOpenIndices((prev) =>
-      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],
     );
   };
 
@@ -26,9 +26,7 @@ const Faq = () => {
               isOpen={openIndices.includes(index)}
               onClick={() => toggleFaq(index)}
             />
-            {index < faqData.length - 1 && (
-              <div className="self-stretch h-px bg-[#222325]" />
-            )}
+            {index < faqData.length - 1 && <div className="self-stretch h-px bg-[#222325]" />}
           </React.Fragment>
         ))}
       </div>

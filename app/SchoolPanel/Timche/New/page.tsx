@@ -1,5 +1,5 @@
-import NewTimche from "../NewTimche";
+import NewTimche from '../NewTimche';
 
 export default function NewTimchePage() {
-    return <NewTimche />;
+  return <NewTimche />;
 }

@@ -1,7 +1,7 @@
-import React from "react";
-import QuotesCard from "./QuotesCard";
-import QuotesIllustration from "./QuotesIllustration";
-import { quotesData } from "./quotesData";
+import React from 'react';
+import QuotesCard from './QuotesCard';
+import QuotesIllustration from './QuotesIllustration';
+import { quotesData } from './quotesData';
 
 const Quotes = () => {
   return (

@@ -2,228 +2,228 @@ export type TransactionType = 'deposit' | 'withdrawal';
 export type TransactionCategory = 'school' | 'student' | 'teacher';
 
 export interface Transaction {
-    id: string;
-    amount: string;
-    type: TransactionType;
-    category: TransactionCategory;
-    storeName?: string;
-    description: string;
-    sharePercent?: string;
-    code?: string;
-    codeLabel?: string; // "محصول" or "خدمت"
-    status?: string;
-    date?: string;
+  id: string;
+  amount: string;
+  type: TransactionType;
+  category: TransactionCategory;
+  storeName?: string;
+  description: string;
+  sharePercent?: string;
+  code?: string;
+  codeLabel?: string; // "محصول" or "خدمت"
+  status?: string;
+  date?: string;
 }
 
 export const transactionsData: Transaction[] = [
-    {
-        id: "1",
-        amount: "43,000,000",
-        type: "deposit",
-        category: "student",
-        storeName: "حجره چرم مصباح",
-        description: "واریز به کیف پول مدرسه",
-        sharePercent: "20",
-        code: "NK40Y001",
-        codeLabel: "محصول"
-    },
-    {
-        id: "2",
-        amount: "58,000,000",
-        type: "deposit",
-        category: "student",
-        storeName: "حجره چرم دانش",
-        description: "واریز به کیف پول مدرسه",
-        sharePercent: "15",
-        code: "AB12C345",
-        codeLabel: "محصول"
-    },
-    {
-        id: "3",
-        amount: "700,000,000",
-        type: "withdrawal",
-        category: "school",
-        description: "برداشت از کیف پول مدرسه",
-        status: "تکمیل شده",
-        date: "1402/10/05"
-    },
-    {
-        id: "4",
-        amount: "67,000,000",
-        type: "deposit",
-        category: "teacher",
-        storeName: "تیمچه لقمان",
-        description: "واریز به حساب مدرسه",
-        sharePercent: "20",
-        code: "CD45E678",
-        codeLabel: "خدمت"
-    },
-    {
-        id: "5",
-        amount: "32,500,000",
-        type: "deposit",
-        category: "student",
-        storeName: "گالری هنری وحدت",
-        description: "واریز به کیف پول مدرسه",
-        sharePercent: "10",
-        code: "GH90K123",
-        codeLabel: "محصول"
-    },
-    {
-        id: "6",
-        amount: "150,000,000",
-        type: "withdrawal",
-        category: "school",
-        description: "برداشت از کیف پول مدرسه",
-        status: "تکمیل شده",
-        date: "1402/10/02"
-    },
-    {
-        id: "7",
-        amount: "85,000,000",
-        type: "deposit",
-        category: "teacher",
-        storeName: "کارگاه سفالگری",
-        description: "واریز به حساب مدرسه",
-        sharePercent: "25",
-        code: "PO76L987",
-        codeLabel: "خدمت"
-    },
-    {
-        id: "8",
-        amount: "45,000,000",
-        type: "deposit",
-        category: "student",
-        storeName: "فروشگاه لوازم هنری",
-        description: "واریز به کیف پول مدرسه",
-        sharePercent: "18",
-        code: "MN45B231",
-        codeLabel: "محصول"
-    },
-    {
-        id: "9",
-        amount: "92,000,000",
-        type: "deposit",
-        category: "teacher",
-        storeName: "تیمچه فرش",
-        description: "واریز به کیف پول مدرسه",
-        sharePercent: "30",
-        code: "TR32W567",
-        codeLabel: "خدمت"
-    },
-    {
-        id: "10",
-        amount: "210,000,000",
-        type: "withdrawal",
-        category: "school",
-        description: "برداشت از کیف پول مدرسه",
-        status: "تکمیل شده",
-        date: "1402/09/28"
-    },
-    {
-        id: "11",
-        amount: "28,000,000",
-        type: "deposit",
-        category: "student",
-        storeName: "نگارخانه شهر",
-        description: "واریز به حساب مدرسه",
-        sharePercent: "12",
-        code: "VC98H123",
-        codeLabel: "محصول"
-    },
-    {
-        id: "12",
-        amount: "12,000,000",
-        type: "deposit",
-        category: "student",
-        storeName: "کتابفروشی هنر",
-        description: "واریز به کیف پول مدرسه",
-        sharePercent: "8",
-        code: "BK45J789",
-        codeLabel: "محصول"
-    },
-    {
-        id: "13",
-        amount: "500,000,000",
-        type: "withdrawal",
-        category: "school",
-        description: "برداشت از کیف پول مدرسه",
-        status: "تکمیل شده",
-        date: "1402/09/15"
-    },
-    {
-        id: "14",
-        amount: "76,000,000",
-        type: "deposit",
-        category: "teacher",
-        storeName: "کارگاه فلزکاری",
-        description: "واریز به کیف پول مدرسه",
-        sharePercent: "22",
-        code: "MT65K432",
-        codeLabel: "خدمت"
-    },
-    {
-        id: "15",
-        amount: "63,000,000",
-        type: "deposit",
-        category: "student",
-        storeName: "گالری نقاشی",
-        description: "واریز به حساب مدرسه",
-        sharePercent: "15",
-        code: "PT88L111",
-        codeLabel: "محصول"
-    },
-    {
-        id: "16",
-        amount: "115,000,000",
-        type: "deposit",
-        category: "teacher",
-        storeName: "تیمچه صنایع دستی",
-        description: "واریز به کیف پول مدرسه",
-        sharePercent: "28",
-        code: "HC44M555",
-        codeLabel: "محصول"
-    },
-    {
-        id: "17",
-        amount: "1,200,000,000",
-        type: "withdrawal",
-        category: "school",
-        description: "برداشت از کیف پول مدرسه",
-        status: "تکمیل شده",
-        date: "1402/09/01"
-    },
-    {
-        id: "18",
-        amount: "35,000,000",
-        type: "deposit",
-        category: "student",
-        storeName: "فروشگاه ابزار",
-        description: "واریز به کیف پول مدرسه",
-        sharePercent: "10",
-        code: "TL22N333",
-        codeLabel: "محصول"
-    },
-    {
-        id: "19",
-        amount: "98,000,000",
-        type: "deposit",
-        category: "teacher",
-        storeName: "کارگاه چاپ",
-        description: "واریز به حساب مدرسه",
-        sharePercent: "20",
-        code: "PR99O777",
-        codeLabel: "خدمت"
-    },
-    {
-        id: "20",
-        amount: "55,000,000",
-        type: "deposit",
-        category: "student",
-        storeName: "خانه عکاسی",
-        description: "واریز به کیف پول مدرسه",
-        sharePercent: "14",
-        code: "PH66O888",
-        codeLabel: "محصول"
-    }
+  {
+    id: '1',
+    amount: '43,000,000',
+    type: 'deposit',
+    category: 'student',
+    storeName: 'حجره چرم مصباح',
+    description: 'واریز به کیف پول مدرسه',
+    sharePercent: '20',
+    code: 'NK40Y001',
+    codeLabel: 'محصول',
+  },
+  {
+    id: '2',
+    amount: '58,000,000',
+    type: 'deposit',
+    category: 'student',
+    storeName: 'حجره چرم دانش',
+    description: 'واریز به کیف پول مدرسه',
+    sharePercent: '15',
+    code: 'AB12C345',
+    codeLabel: 'محصول',
+  },
+  {
+    id: '3',
+    amount: '700,000,000',
+    type: 'withdrawal',
+    category: 'school',
+    description: 'برداشت از کیف پول مدرسه',
+    status: 'تکمیل شده',
+    date: '1402/10/05',
+  },
+  {
+    id: '4',
+    amount: '67,000,000',
+    type: 'deposit',
+    category: 'teacher',
+    storeName: 'تیمچه لقمان',
+    description: 'واریز به حساب مدرسه',
+    sharePercent: '20',
+    code: 'CD45E678',
+    codeLabel: 'خدمت',
+  },
+  {
+    id: '5',
+    amount: '32,500,000',
+    type: 'deposit',
+    category: 'student',
+    storeName: 'گالری هنری وحدت',
+    description: 'واریز به کیف پول مدرسه',
+    sharePercent: '10',
+    code: 'GH90K123',
+    codeLabel: 'محصول',
+  },
+  {
+    id: '6',
+    amount: '150,000,000',
+    type: 'withdrawal',
+    category: 'school',
+    description: 'برداشت از کیف پول مدرسه',
+    status: 'تکمیل شده',
+    date: '1402/10/02',
+  },
+  {
+    id: '7',
+    amount: '85,000,000',
+    type: 'deposit',
+    category: 'teacher',
+    storeName: 'کارگاه سفالگری',
+    description: 'واریز به حساب مدرسه',
+    sharePercent: '25',
+    code: 'PO76L987',
+    codeLabel: 'خدمت',
+  },
+  {
+    id: '8',
+    amount: '45,000,000',
+    type: 'deposit',
+    category: 'student',
+    storeName: 'فروشگاه لوازم هنری',
+    description: 'واریز به کیف پول مدرسه',
+    sharePercent: '18',
+    code: 'MN45B231',
+    codeLabel: 'محصول',
+  },
+  {
+    id: '9',
+    amount: '92,000,000',
+    type: 'deposit',
+    category: 'teacher',
+    storeName: 'تیمچه فرش',
+    description: 'واریز به کیف پول مدرسه',
+    sharePercent: '30',
+    code: 'TR32W567',
+    codeLabel: 'خدمت',
+  },
+  {
+    id: '10',
+    amount: '210,000,000',
+    type: 'withdrawal',
+    category: 'school',
+    description: 'برداشت از کیف پول مدرسه',
+    status: 'تکمیل شده',
+    date: '1402/09/28',
+  },
+  {
+    id: '11',
+    amount: '28,000,000',
+    type: 'deposit',
+    category: 'student',
+    storeName: 'نگارخانه شهر',
+    description: 'واریز به حساب مدرسه',
+    sharePercent: '12',
+    code: 'VC98H123',
+    codeLabel: 'محصول',
+  },
+  {
+    id: '12',
+    amount: '12,000,000',
+    type: 'deposit',
+    category: 'student',
+    storeName: 'کتابفروشی هنر',
+    description: 'واریز به کیف پول مدرسه',
+    sharePercent: '8',
+    code: 'BK45J789',
+    codeLabel: 'محصول',
+  },
+  {
+    id: '13',
+    amount: '500,000,000',
+    type: 'withdrawal',
+    category: 'school',
+    description: 'برداشت از کیف پول مدرسه',
+    status: 'تکمیل شده',
+    date: '1402/09/15',
+  },
+  {
+    id: '14',
+    amount: '76,000,000',
+    type: 'deposit',
+    category: 'teacher',
+    storeName: 'کارگاه فلزکاری',
+    description: 'واریز به کیف پول مدرسه',
+    sharePercent: '22',
+    code: 'MT65K432',
+    codeLabel: 'خدمت',
+  },
+  {
+    id: '15',
+    amount: '63,000,000',
+    type: 'deposit',
+    category: 'student',
+    storeName: 'گالری نقاشی',
+    description: 'واریز به حساب مدرسه',
+    sharePercent: '15',
+    code: 'PT88L111',
+    codeLabel: 'محصول',
+  },
+  {
+    id: '16',
+    amount: '115,000,000',
+    type: 'deposit',
+    category: 'teacher',
+    storeName: 'تیمچه صنایع دستی',
+    description: 'واریز به کیف پول مدرسه',
+    sharePercent: '28',
+    code: 'HC44M555',
+    codeLabel: 'محصول',
+  },
+  {
+    id: '17',
+    amount: '1,200,000,000',
+    type: 'withdrawal',
+    category: 'school',
+    description: 'برداشت از کیف پول مدرسه',
+    status: 'تکمیل شده',
+    date: '1402/09/01',
+  },
+  {
+    id: '18',
+    amount: '35,000,000',
+    type: 'deposit',
+    category: 'student',
+    storeName: 'فروشگاه ابزار',
+    description: 'واریز به کیف پول مدرسه',
+    sharePercent: '10',
+    code: 'TL22N333',
+    codeLabel: 'محصول',
+  },
+  {
+    id: '19',
+    amount: '98,000,000',
+    type: 'deposit',
+    category: 'teacher',
+    storeName: 'کارگاه چاپ',
+    description: 'واریز به حساب مدرسه',
+    sharePercent: '20',
+    code: 'PR99O777',
+    codeLabel: 'خدمت',
+  },
+  {
+    id: '20',
+    amount: '55,000,000',
+    type: 'deposit',
+    category: 'student',
+    storeName: 'خانه عکاسی',
+    description: 'واریز به کیف پول مدرسه',
+    sharePercent: '14',
+    code: 'PH66O888',
+    codeLabel: 'محصول',
+  },
 ];

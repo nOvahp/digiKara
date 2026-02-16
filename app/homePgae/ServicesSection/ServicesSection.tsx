@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import React from "react";
-import ServicesTitle from "./ServicesTitle";
-import ServicesGrid from "./ServicesGrid";
-import ServicesButton from "./ServicesButton";
-import ServicesIllustration from "./ServicesIllustration";
+import React from 'react';
+import ServicesTitle from './ServicesTitle';
+import ServicesGrid from './ServicesGrid';
+import ServicesButton from './ServicesButton';
+import ServicesIllustration from './ServicesIllustration';
 
 const ServicesSection = () => {
   return (

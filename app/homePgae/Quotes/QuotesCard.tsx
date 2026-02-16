@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface QuotesCardProps {
   quote: string;
@@ -11,7 +11,7 @@ const QuotesCard: React.FC<QuotesCardProps> = ({
   quote,
   name,
   role,
-  imageSrc = "https://placehold.co/64x64",
+  imageSrc = 'https://placehold.co/64x64',
 }) => {
   return (
     <div className="flex-1 flex flex-col justify-start items-start gap-6 ">

@@ -1,4 +1,3 @@
-
 // Main Auth Logic
 // Main Auth Logic
 // export { authService } from './auth/auth.service'; // Removed to avoid duplicate export
@@ -12,7 +11,7 @@ export * from './common/schemas';
 import { studentService } from './student/studentService';
 import { reportService } from './reportService'; // Haven't moved yet, assuming it stays or moves to common
 
-// We extend the authService with these methods for backward compatibility if needed, 
+// We extend the authService with these methods for backward compatibility if needed,
 // OR we just assume consumers import 'authService' and call .requestOtp, and import 'studentService' separately.
 
 // Based on original file, authService OBJECT had these methods directly on it.
@@ -22,14 +21,14 @@ import { reportService } from './reportService'; // Haven't moved yet, assuming 
 import { authService as coreAuth } from './auth/authService';
 
 export const authServiceLegacy = {
-    ...coreAuth,
-    verifyNationalId: studentService.verifyNationalId,
-    getInterests: studentService.getInterests,
-    confirmInfo: studentService.confirmInfo,
-    addFavorites: studentService.addFavorites,
-    reportIssue: reportService.reportIssue,
-    changeStudentInfo: studentService.changeStudentInfo,
-    saveStudentData: studentService.saveStudentData,
+  ...coreAuth,
+  verifyNationalId: studentService.verifyNationalId,
+  getInterests: studentService.getInterests,
+  confirmInfo: studentService.confirmInfo,
+  addFavorites: studentService.addFavorites,
+  reportIssue: reportService.reportIssue,
+  changeStudentInfo: studentService.changeStudentInfo,
+  saveStudentData: studentService.saveStudentData,
 };
 
 // If consumers use `import { authService } from ...`, we should export the legacy mixed one for now.

@@ -1,7 +1,6 @@
-
-import React from "react";
-import DigiKaraCart from "./DigiKaraCart";
+import React from 'react';
+import DigiKaraCart from './DigiKaraCart';
 
 export default function Page() {
-    return <DigiKaraCart />;
+  return <DigiKaraCart />;
 }

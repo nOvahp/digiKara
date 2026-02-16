@@ -1,4 +1,3 @@
-
 const TOKEN_KEY = 'auth_token';
 
 export const saveToken = (token: string) => {

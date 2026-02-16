@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import React from "react";
+import React from 'react';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
-} from "@/components/ui/carousel";
-import FeaturesCard from "./FeaturesCard";
-import { featuresData } from "./featuresData";
+} from '@/components/ui/carousel';
+import FeaturesCard from './FeaturesCard';
+import { featuresData } from './featuresData';
 
 const Features = () => {
   return (
@@ -19,8 +19,8 @@ const Features = () => {
       </div>
       <Carousel
         opts={{
-          align: "start",
-          direction: "rtl",
+          align: 'start',
+          direction: 'rtl',
           loop: true,
         }}
         className="w-full"

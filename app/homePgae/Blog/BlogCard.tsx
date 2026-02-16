@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React from "react";
-import Image from "next/image";
-import { ChevronLeft } from "lucide-react";
-import { Card } from "@/components/ui/card";
+import React from 'react';
+import Image from 'next/image';
+import { ChevronLeft } from 'lucide-react';
+import { Card } from '@/components/ui/card';
 
 interface BlogCardProps {
   image: string;
@@ -13,20 +13,15 @@ interface BlogCardProps {
 }
 
 const BlogCard = ({
-  image = "/blog1.png",
-  title = "صنایع دستی",
-  description = "سفال، چوب، بافت و هنرهای سنتی",
-  count = "5412",
+  image = '/blog1.png',
+  title = 'صنایع دستی',
+  description = 'سفال، چوب، بافت و هنرهای سنتی',
+  count = '5412',
 }: Partial<BlogCardProps>) => {
   return (
     <Card className="w-full md:w-[90%] lg:w-[700px] mx-auto lg:mx-0 group relative overflow-hidden rounded-[16px] md:rounded-[24px] border border-[#CACACA] bg-white shadow-none transition-all duration-300 hover:shadow-lg h-[160px] md:h-[180px] lg:h-[200px]">
       <div className="absolute left-0 top-0 h-full w-[140px] md:w-[240px] lg:w-[330px] z-0">
-        <Image
-          src={image}
-          alt={title}
-          fill
-          className="object-cover object-center"
-        />
+        <Image src={image} alt={title} fill className="object-cover object-center" />
 
         <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/50 to-white" />
       </div>

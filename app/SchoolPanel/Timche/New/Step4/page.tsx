@@ -1,5 +1,5 @@
-import NewTimche4 from "../NewTimche4";
+import NewTimche4 from '../NewTimche4';
 
 export default function Step4Page() {
-    return <NewTimche4 />;
+  return <NewTimche4 />;
 }

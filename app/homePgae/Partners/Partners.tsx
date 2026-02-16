@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import React from "react";
-import Image from "next/image";
-import PartnersCard from "./PartnersCard";
-import PartnersTitle from "./PartnersTitle";
-import PartnerButton from "./PartnerButton";
-import { partnersData } from "./partnersData";
+import React from 'react';
+import Image from 'next/image';
+import PartnersCard from './PartnersCard';
+import PartnersTitle from './PartnersTitle';
+import PartnerButton from './PartnerButton';
+import { partnersData } from './partnersData';
 
 const Partners = () => {
   return (

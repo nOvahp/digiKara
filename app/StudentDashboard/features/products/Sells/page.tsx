@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import SellsPage from "./SellsPage";
+import SellsPage from './SellsPage';
 
 export default function Page() {
   return (

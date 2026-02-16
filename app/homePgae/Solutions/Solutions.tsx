@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import React from "react";
-import SolutionItem from "./SolutionItem";
-import ChamferedButton from "@/app/components/ChamferedButton";
-import SolutionsImage from "./SolutionsImage";
-import { solutionsData } from "./solutionsData";
+import React from 'react';
+import SolutionItem from './SolutionItem';
+import ChamferedButton from '@/app/components/ChamferedButton';
+import SolutionsImage from './SolutionsImage';
+import { solutionsData } from './solutionsData';
 
-import Link from "next/link";
+import Link from 'next/link';
 
 const Solutions = () => {
   return (

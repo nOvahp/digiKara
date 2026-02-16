@@ -1,5 +1,5 @@
-import Image from "next/image";
-import HomePage from "./homePgae/page";
+import Image from 'next/image';
+import HomePage from './homePgae/page';
 
 export default function Home() {
   return (

@@ -1,5 +1,5 @@
-import Timche from "./Timche";
+import Timche from './Timche';
 
 export default function TimchePage() {
-    return <Timche />;
+  return <Timche />;
 }

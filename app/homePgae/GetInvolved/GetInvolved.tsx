@@ -1,7 +1,7 @@
-import React from "react";
-import GetInvolvedContent from "./GetInvolvedContent";
-import GetInvolvedActions from "./GetInvolvedActions";
-import GetInvolvedImage from "./GetInvolvedImage";
+import React from 'react';
+import GetInvolvedContent from './GetInvolvedContent';
+import GetInvolvedActions from './GetInvolvedActions';
+import GetInvolvedImage from './GetInvolvedImage';
 
 const GetInvolved = () => {
   return (

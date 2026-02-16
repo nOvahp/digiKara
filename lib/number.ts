@@ -4,14 +4,14 @@
  * @returns The string with all Persian/Arabic digits replaced by English digits.
  */
 export function toEnglishDigits(input: string | number | null | undefined): string {
-  if (input === null || input === undefined) return "";
-  
+  if (input === null || input === undefined) return '';
+
   const str = String(input);
-  if (!str) return "";
+  if (!str) return '';
 
   return str
-    .replace(/[۰-۹]/g, (d) => String("۰۱۲۳۴۵۶۷۸۹".indexOf(d)))
-    .replace(/[٠-٩]/g, (d) => String("٠١٢٣٤٥٦٧٨٩".indexOf(d)));
+    .replace(/[۰-۹]/g, (d) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)))
+    .replace(/[٠-٩]/g, (d) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d)));
 }
 
 /**
@@ -21,12 +21,12 @@ export function toEnglishDigits(input: string | number | null | undefined): stri
  * @returns The normalized data with English digits.
  */
 export function normalizeRequestData(data: any): any {
-  if (typeof data === "string") {
+  if (typeof data === 'string') {
     return toEnglishDigits(data);
   }
-  
+
   // Skip null, undefined, boolean, number
-  if (data === null || data === undefined || typeof data !== "object") {
+  if (data === null || data === undefined || typeof data !== 'object') {
     return data;
   }
 
@@ -36,7 +36,7 @@ export function normalizeRequestData(data: any): any {
   }
 
   // Handle FormData (skip or implement if needed - usually risky to recreate)
-  if (typeof FormData !== "undefined" && data instanceof FormData) {
+  if (typeof FormData !== 'undefined' && data instanceof FormData) {
     // For now, we skip FormData to avoid breaking file uploads/complexity
     // If strict requirement, we would need to iterate entries and create new FormData
     return data;
@@ -45,12 +45,12 @@ export function normalizeRequestData(data: any): any {
   if (Array.isArray(data)) {
     return data.map(normalizeRequestData);
   }
-  
+
   // Handle Plain Objects
   const newData: any = {};
   for (const key in data) {
     if (Object.prototype.hasOwnProperty.call(data, key)) {
-       newData[key] = normalizeRequestData(data[key]);
+      newData[key] = normalizeRequestData(data[key]);
     }
   }
   return newData;

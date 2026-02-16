@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React from "react";
-import ServiceCard from "./ServiceCard";
-import { servicesData } from "./servicesData";
+import React from 'react';
+import ServiceCard from './ServiceCard';
+import { servicesData } from './servicesData';
 
 const ServicesGrid = () => {
   return (

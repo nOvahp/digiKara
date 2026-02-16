@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface FaqCardProps {
   question: string;
@@ -7,12 +7,7 @@ interface FaqCardProps {
   onClick: () => void;
 }
 
-const FaqCard: React.FC<FaqCardProps> = ({
-  question,
-  answer,
-  isOpen,
-  onClick,
-}) => {
+const FaqCard: React.FC<FaqCardProps> = ({ question, answer, isOpen, onClick }) => {
   return (
     <div className="w-full flex flex-col justify-start items-start gap-2">
       <div
@@ -24,7 +19,7 @@ const FaqCard: React.FC<FaqCardProps> = ({
         </div>
         <div
           className={`w-10 h-10 relative shrink-0 border-2 border-[#5e6b7e] rounded-[2px] flex items-center justify-center transition-colors ${
-            isOpen ? "bg-transparent" : "bg-transparent"
+            isOpen ? 'bg-transparent' : 'bg-transparent'
           }`}
         >
           {!isOpen ? (

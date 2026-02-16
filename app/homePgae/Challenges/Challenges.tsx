@@ -1,20 +1,17 @@
-"use client";
+'use client';
 
-import React from "react";
-import Image from "next/image";
-import ChallengeItem from "./ChallengeItem";
-import ChamferedButton from "@/app/components/ChamferedButton";
+import React from 'react';
+import Image from 'next/image';
+import ChallengeItem from './ChallengeItem';
+import ChamferedButton from '@/app/components/ChamferedButton';
 
-import { challengesData } from "./challengesData";
+import { challengesData } from './challengesData';
 
-import Link from "next/link";
+import Link from 'next/link';
 
 const Challenges = () => {
   return (
-    <div
-      className="w-full flex justify-between items-start mb-[10%] "
-      dir="rtl"
-    >
+    <div className="w-full flex justify-between items-start mb-[10%] " dir="rtl">
       <div className="w-full lg:w-[643px] 2xl:w-[800px] flex flex-col justify-start items-start  lg:gap-[56px] 2xl:gap-[70px]">
         <div className="w-full flex flex-col justify-start items-start gap-[32px]">
           <div className="w-full text-center lg:text-right text-[#222325] text-[24px] lg:text-[48px] 2xl:text-[64px] font-black leading-[36px] lg:leading-[60px] 2xl:leading-[80px] ">

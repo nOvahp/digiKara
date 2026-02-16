@@ -1,10 +1,8 @@
-'use client'
-import React from 'react'
+'use client';
+import React from 'react';
 
 const ErrorPage = () => {
-  return (
-    <div>ErrorPage</div>
-  )
-}
+  return <div>ErrorPage</div>;
+};
 
-export default ErrorPage
+export default ErrorPage;

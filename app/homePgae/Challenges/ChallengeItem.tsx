@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface ChallengeItemProps {
   title: string;
@@ -14,7 +14,7 @@ const ChallengeItem = ({ title, desc }: ChallengeItemProps) => {
       </div>
       <div className="flex-1 text-right">
         <span className="text-black text-[14px] lg:text-[16px] 2xl:text-[20px] font-semibold leading-[24px] 2xl:leading-[32px] tracking-wide wrap-break-word">
-          {title}{" "}
+          {title}{' '}
         </span>
         <span className="text-black text-[14px] lg:text-[16px] 2xl:text-[20px] font-['num-regular'] font-normal leading-[24px] 2xl:leading-[32px] tracking-wide wrap-break-word">
           {desc}

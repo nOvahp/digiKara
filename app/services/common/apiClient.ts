@@ -1,9 +1,8 @@
-
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { getToken, removeToken } from '../auth/tokenService';
 import { normalizeRequestData } from '@/lib/number';
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://digikara.back.adiaweb.dev/api";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://digikara.back.adiaweb.dev/api';
 
 const apiClient = axios.create({
   baseURL: BASE_URL,
@@ -25,30 +24,30 @@ apiClient.interceptors.request.use(
     if (config.params) {
       config.params = normalizeRequestData(config.params);
     }
-    
+
     if (config.data) {
       config.data = normalizeRequestData(config.data);
     }
 
     console.group(`🚀 API Request: [${config.method?.toUpperCase()}] ${config.url}`);
-    console.log("Headers:", config.headers);
-    console.log("Payload:", config.data);
-    console.log("Params:", config.params);
+    console.log('Headers:', config.headers);
+    console.log('Payload:', config.data);
+    console.log('Params:', config.params);
     console.groupEnd();
 
     return config;
   },
   (error) => {
-    console.error("❌ API Request Error:", error);
+    console.error('❌ API Request Error:', error);
     return Promise.reject(error);
-  }
+  },
 );
 
 // Response Interceptor: Global Error Handling & Log Response
 apiClient.interceptors.response.use(
   (response) => {
     console.group(`✅ API Response: [${response.status}] ${response.config.url}`);
-    console.log("Data:", response.data);
+    console.log('Data:', response.data);
     console.groupEnd();
     return response.data; // Return direct data to simplify calls
   },
@@ -58,25 +57,28 @@ apiClient.interceptors.response.use(
       removeToken();
       if (typeof window !== 'undefined') {
         // Redirect to login on 401 Unauthorized
-        window.location.href = '/login'; 
+        window.location.href = '/login';
       }
     }
-    
+
     // Normalize error message
-    const message = (error.response?.data as any)?.message || error.message || 'An unexpected error occurred';
-    
-    console.group(`​​​​​🔴 API Error: [${error.response?.status || 'Unknown'}] ${error.config?.url}`);
-    console.error("Message:", message);
-    console.error("Full Error Response:", error.response?.data);
+    const message =
+      (error.response?.data as any)?.message || error.message || 'An unexpected error occurred';
+
+    console.group(
+      `​​​​​🔴 API Error: [${error.response?.status || 'Unknown'}] ${error.config?.url}`,
+    );
+    console.error('Message:', message);
+    console.error('Full Error Response:', error.response?.data);
     console.groupEnd();
-    
-    return Promise.reject({ 
-      success: false, 
-      message, 
+
+    return Promise.reject({
+      success: false,
+      message,
       status: error.response?.status,
-      originalError: error 
+      originalError: error,
     });
-  }
+  },
 );
 
 export default apiClient;

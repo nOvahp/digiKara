@@ -1,24 +1,24 @@
-"use client";
+'use client';
 
-import React from "react";
-import { usePathname } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import ChamferedButton from "./ChamferedButton";
-import Image from "next/image";
-import Link from "next/link";
+import React from 'react';
+import { usePathname } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import ChamferedButton from './ChamferedButton';
+import Image from 'next/image';
+import Link from 'next/link';
 
 const Navbar = () => {
   const pathname = usePathname();
 
-  if (pathname?.startsWith("/StudentDashboard") || pathname?.startsWith("/Bazzar")) return null;
+  if (pathname?.startsWith('/StudentDashboard') || pathname?.startsWith('/Bazzar')) return null;
 
   return (
-    <div id="desktop-navbar" className="w-full hidden lg:flex justify-between items-center bg-transparent">
+    <div
+      id="desktop-navbar"
+      className="w-full hidden lg:flex justify-between items-center bg-transparent"
+    >
       <ChamferedButton className="h-auto 2xl:h-[60px]">
-        <Link
-          href="/login"
-          className="w-full h-full flex items-center px-4 py-2"
-        >
+        <Link href="/login" className="w-full h-full flex items-center px-4 py-2">
           <span className="font-extrabold text-[#222325] text-sm md:text-base lg:text-sm xl:text-base 2xl:text-xl">
             ورود به پلتفــــــــــرم
           </span>

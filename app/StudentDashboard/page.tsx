@@ -1,5 +1,5 @@
-import { HomePage } from "./HomePage"
+import { HomePage } from './HomePage';
 
 export default function StudentDashboardPage() {
-  return <HomePage />
+  return <HomePage />;
 }

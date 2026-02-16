@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import ProjectManagment from "../ProjectManagment";
+import ProjectManagment from '../ProjectManagment';
 
 export default function ProjectManagmentPage() {
-    return <ProjectManagment />;
+  return <ProjectManagment />;
 }

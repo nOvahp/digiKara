@@ -1,5 +1,5 @@
-import { EditeProducts } from "./EditeProducts";
+import { EditeProducts } from './EditeProducts';
 
 export default function Page() {
-    return <EditeProducts />;
+  return <EditeProducts />;
 }

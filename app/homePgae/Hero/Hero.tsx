@@ -1,21 +1,20 @@
-"use client";
+'use client';
 
-import React from "react";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { Search, MapPin } from "lucide-react";
-import ChamferedButton from "@/app/components/ChamferedButton";
+import React from 'react';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { Search, MapPin } from 'lucide-react';
+import ChamferedButton from '@/app/components/ChamferedButton';
 
 const Hero = () => {
   const router = useRouter();
 
   // Navigate to dedicated search page
   const handleInputClick = () => {
-     router.push('/Bazzar/Search');
+    router.push('/Bazzar/Search');
   };
 
   return (
-
     <section className="relative flex flex-col lg:flex-row items-center justify-between h-[750px] sm:h-[800px] md:h-[950px] lg:h-[550px] xl:h-[650px] 2xl:h-[850px] overflow-hidden bg-white lg:pl-10 xl:pl-20 2xl:pl-32 lg:pr-0 lg:py-0 mb-[5%] ">
       <div className="absolute z-0 left-0 top-[370px] min-[375px]:top-[330px] sm:top-[300px] sm:left-[20px] md:top-[37%] md:left-[40] lg:left-0 lg:top-[-5%] xl:left-0 xl:top-[-3%] opacity-80">
         <Image
@@ -49,41 +48,38 @@ const Hero = () => {
             className="text-[#222325] text-[12px] sm:text-[13px] md:text-[14px] lg:text-[16px] xl:text-[18px] 2xl:text-[22px] font-normal leading-5 lg:leading-normal max-w-[650px] 2xl:max-w-[800px] mt-4 text-justify"
             dir="rtl"
           >
-            دیجی‌کارا سامانه‌ای است که به مدارس‌های فنی‌حرفه‌ای و کاردانش کمک
-            می‌کند تا محصولات و خدمات تولیدی خود را به‌صورت آنلاین عرضه کنند،
-            درآمدزایی کنند و دانش آموزان را با مهارت‌های واقعی به دنیای کار وصل
-            نمایند.
+            دیجی‌کارا سامانه‌ای است که به مدارس‌های فنی‌حرفه‌ای و کاردانش کمک می‌کند تا محصولات و
+            خدمات تولیدی خود را به‌صورت آنلاین عرضه کنند، درآمدزایی کنند و دانش آموزان را با
+            مهارت‌های واقعی به دنیای کار وصل نمایند.
           </p>
           <div className="w-full max-w-[450px] 2xl:max-w-[600px] mt-4 mb-0 z-30 flex flex-col gap-2">
             <span className="text-[#222325] text-sm sm:text-base 2xl:text-xl font-bold text-right w-full px-1">
-             محصول مورد نظرت رو پیدا کن
+              محصول مورد نظرت رو پیدا کن
             </span>
-            <div 
-               className="w-full relative h-12 sm:h-14 bg-gray-50 rounded-xl flex items-center px-2 border border-[#E9B443] transition-all"
-               onClick={handleInputClick}
+            <div
+              className="w-full relative h-12 sm:h-14 bg-gray-50 rounded-xl flex items-center px-2 border border-[#E9B443] transition-all"
+              onClick={handleInputClick}
             >
-               <div className="absolute -inset-1  rounded-2xl blur opacity-30 animate-pulse -z-10"></div>
-               
-               {/* Location (Visual only) */}
-               <div className="flex items-center gap-1.5 px-3 text-gray-600 transition-colors shrink-0">
-                  <span className="text-xs sm:text-sm font-bold">تهران</span>
-                  <MapPin size={16} className="text-gray-500" />
-               </div>
-               
-               {/* Divider */}
-               <div className="w-px h-6 bg-gray-200 mx-1"></div>
-               
-               {/* ReadOnly Input */}
-               <div className="flex-1 h-full flex items-center justify-end px-2">
-                   <span className="text-gray-400 text-[12px] sm:text-sm">جستجو در محصولات...</span>
-               </div>
-               
-               {/* Search Button (Icon) */}
-               <button
-                  className="p-2 text-gray-400 hover:text-[#E9B443] transition-colors"
-               >
-                 <Search size={20} className="stroke-[2.5px]" />
-               </button>
+              <div className="absolute -inset-1  rounded-2xl blur opacity-30 animate-pulse -z-10"></div>
+
+              {/* Location (Visual only) */}
+              <div className="flex items-center gap-1.5 px-3 text-gray-600 transition-colors shrink-0">
+                <span className="text-xs sm:text-sm font-bold">تهران</span>
+                <MapPin size={16} className="text-gray-500" />
+              </div>
+
+              {/* Divider */}
+              <div className="w-px h-6 bg-gray-200 mx-1"></div>
+
+              {/* ReadOnly Input */}
+              <div className="flex-1 h-full flex items-center justify-end px-2">
+                <span className="text-gray-400 text-[12px] sm:text-sm">جستجو در محصولات...</span>
+              </div>
+
+              {/* Search Button (Icon) */}
+              <button className="p-2 text-gray-400 hover:text-[#E9B443] transition-colors">
+                <Search size={20} className="stroke-[2.5px]" />
+              </button>
             </div>
           </div>
         </div>
@@ -125,9 +121,7 @@ const Hero = () => {
         />
       </div>
     </section>
-
   );
 };
-
 
 export default Hero;

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import React from "react";
-import ChamferedButton from "@/app/components/ChamferedButton";
+import React from 'react';
+import ChamferedButton from '@/app/components/ChamferedButton';
 
 const PartnerButton = () => {
   return (
