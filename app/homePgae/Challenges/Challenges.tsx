@@ -36,7 +36,7 @@ const Challenges = () => {
           ))}
         </div>
 
-        <div className="w-full flex justify-end items-center gap-[32px] mt-[40px] lg:mt-0">
+        <div className="w-full flex justify-center items-center gap-[32px] mt-[40px] lg:mt-0">
           <div className="text-[#808080] text-[14px] lg:text-[18px] 2xl:text-[22px] font-normal leading-[27px] cursor-pointer hover:text-black transition-colors">
             مطالعه بیشتر
           </div>

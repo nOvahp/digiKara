@@ -18,7 +18,7 @@ const PartnersCard = ({
 }: PartnersCardProps) => {
   return (
     <Card className="w-full bg-white border border-[#CACACA] rounded-[24px] shadow-sm">
-      <CardContent className="px-8 flex flex-col items-start gap-4">
+      <CardContent className="px-8 flex flex-col items-end gap-4" dir="rtl">
         <div
           className="px-0 py-0 rounded-[119px] inline-flex justify-start items-start gap-2.5"
           style={{ backgroundColor: bgColor }}
