@@ -3,14 +3,14 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Loader2 } from 'lucide-react';
-import { bazzarService } from '@/app/services/bazzarService';
+import { bazzarService, Province, City } from '@/app/services/bazzarService';
 import { toast } from 'sonner';
 
 export default function AddAddressPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [provinces, setProvinces] = useState<Record<string, unknown>[]>([]);
-  const [cities, setCities] = useState<Record<string, unknown>[]>([]);
+  const [provinces, setProvinces] = useState<Province[]>([]);
+  const [cities, setCities] = useState<City[]>([]);
 
   interface AddressFormData {
     title: string;
