@@ -1,6 +1,7 @@
 
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { getToken, removeToken } from '../auth/tokenService';
+import { normalizeRequestData } from '@/lib/number';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://digikara.back.adiaweb.dev/api";
 
@@ -18,6 +19,15 @@ apiClient.interceptors.request.use(
     const token = getToken();
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    // Normalize params and data (convert Persian/Arabic digits to English)
+    if (config.params) {
+      config.params = normalizeRequestData(config.params);
+    }
+    
+    if (config.data) {
+      config.data = normalizeRequestData(config.data);
     }
 
     console.group(`🚀 API Request: [${config.method?.toUpperCase()}] ${config.url}`);

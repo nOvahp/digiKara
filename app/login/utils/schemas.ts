@@ -40,4 +40,15 @@ export const customerLoginSchema = z.object({
   password: z.string().min(1, "رمز عبور الزامی است"),
 });
 
+
+export const nationalIdSchema = z.object({
+  nationalId: z
+    .string()
+    .min(10, "شماره ملی باید ۱۰ رقم باشد")
+    .max(10, "شماره ملی باید ۱۰ رقم باشد")
+    .regex(/^\d+$/, "شماره ملی تنها باید شامل اعداد باشد"),
+});
+
+export type NationalIdFormValues = z.infer<typeof nationalIdSchema>;
+
 export type CustomerLoginValues = z.infer<typeof customerLoginSchema>;

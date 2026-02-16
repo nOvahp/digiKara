@@ -10,6 +10,11 @@ import { Label } from "@/components/ui/label";
 import { Loader2, ChevronLeft } from "lucide-react";
 import { useAuth } from "@/app/providers/AuthProvider";
 
+import { useForm, SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { nationalIdSchema, NationalIdFormValues } from "./utils/schemas";
+import { toEnglishDigits } from "@/lib/number";
+
 interface LoginViewProps {
   onNext?: (user: any) => void;
   onBack?: () => void;
@@ -18,34 +23,22 @@ interface LoginViewProps {
 export function LoginViewNationalID({ onNext, onBack }: LoginViewProps) {
   const router = useRouter();
   const { verifyNationalId } = useAuth();
-  const [nationalId, setNationalId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [serverError, setServerError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
+  const form = useForm<NationalIdFormValues>({
+    resolver: zodResolver(nationalIdSchema),
+    defaultValues: {
+      nationalId: "",
+    },
+  });
 
-    // Validation
-    if (!nationalId.trim()) {
-      setError("لطفا شماره ملی خود را وارد کنید");
-      return;
-    }
-
-    if (nationalId.length < 10 || nationalId.length > 10) {
-      setError("شماره ملی باید 10 رقم باشد");
-      return;
-    }
-
-    if (!/^\d+$/.test(nationalId)) {
-      setError("شماره ملی تنها باید شامل اعداد باشد");
-      return;
-    }
-
+  const onSubmit: SubmitHandler<NationalIdFormValues> = async (data) => {
     setIsLoading(true);
+    setServerError("");
 
     try {
-      const result = await verifyNationalId(nationalId);
+      const result = await verifyNationalId(toEnglishDigits(data.nationalId));
       
       setIsLoading(false);
 
@@ -55,17 +48,15 @@ export function LoginViewNationalID({ onNext, onBack }: LoginViewProps) {
           onNext(result.user);
         }
       } else {
-        setError(result.message || "خطا در تایید شماره ملی");
+        setServerError(result.message || "خطا در تایید شماره ملی");
       }
 
     } catch (err) {
       setIsLoading(false);
-      setError("خطای شبکه");
+      setServerError("خطای شبکه");
       console.error("National ID submit error:", err);
     }
   };
-
-
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-white items-center relative overflow-hidden" dir="rtl">
@@ -84,6 +75,7 @@ export function LoginViewNationalID({ onNext, onBack }: LoginViewProps) {
 
              {/* Back Button (Top Left) */}
              <button 
+                type="button"
                 onClick={onBack}
                 className="w-10 h-10 flex items-center justify-center rounded-full bg-transparent hover:bg-gray-100/50 transition-all text-[#393E46]"
              >
@@ -103,7 +95,7 @@ export function LoginViewNationalID({ onNext, onBack }: LoginViewProps) {
                 </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
                 
                 <div className="space-y-2">
                     <Label htmlFor="national-id" className="text-[#ACB5BB] text-xs font-bold block px-2">شماره ملی</Label>
@@ -111,38 +103,40 @@ export function LoginViewNationalID({ onNext, onBack }: LoginViewProps) {
                     {/* Input Container - Pill Shape */}
                     <div className="relative flex items-center bg-white rounded-full border border-[#DCE4E8] p-2 hover:border-[#FDD00A] transition-colors shadow-sm h-14">
                         <Input
+                          {...form.register("nationalId")}
                           id="national-id"
                           type="tel"
                           inputMode="numeric"
                           placeholder="1234567890"
-                          value={nationalId}
-                          onChange={(e) => {
-                            const value = e.target.value.replace(/\D/g, "");
-                            setNationalId(value);
-                          }}
                           maxLength={10}
                           className="flex-1 border-none shadow-none focus-visible:ring-0 bg-transparent text-center text-lg font-bold placeholder:text-gray-300 h-full"
-                          disabled={isLoading}
                           autoFocus
+                          onChange={(e) => {
+                              // Custom onChange to handle English digit conversion immediately if desired or rely on submit
+                              // Let's use standard register + manual digit cleaning on change to be nice
+                              const val = toEnglishDigits(e.target.value.replace(/\D/g, '')); 
+                              form.setValue("nationalId", val);
+                          }}
                         />
                     </div>
+                     {form.formState.errors.nationalId && (
+                        <p className="text-red-500 text-xs font-medium px-2 text-center mt-2">{form.formState.errors.nationalId.message}</p>
+                    )}
                 </div>
 
-                {error && (
+                {serverError && (
                    <div className="bg-red-50 text-red-600 text-xs font-bold p-3 rounded-xl text-center border border-red-100">
-                      {error}
+                      {serverError}
                    </div>
                 )}
 
                  <Button 
                     type="submit" 
                     className="w-full bg-[#FDD00A] hover:bg-[#e5bc09] text-[#1A1C1E] font-bold py-7 text-lg rounded-xl mt-4 shadow-[#FDD00A]/20 transition-all"
-                    disabled={isLoading || !nationalId}
+                    disabled={isLoading}
                 >
                    {isLoading ? <Loader2 className="animate-spin w-5 h-5 text-[#1A1C1E]" /> : "تایید و ادامه"}
                 </Button>
-
-
 
             </form>
           </div>

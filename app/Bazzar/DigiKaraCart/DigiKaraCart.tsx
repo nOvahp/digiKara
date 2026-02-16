@@ -100,7 +100,7 @@ export default function DigiKaraCart() {
             {items.length === 0 ? (
                 <div className="flex flex-col items-center justify-center pt-20 gap-4 opacity-50">
                     <ShoppingBag className="w-16 h-16 text-gray-400" />
-                    <span className="text-gray-500 font-['PeydaWeb']">سبد خرید خالی است</span>
+                    <span className="text-gray-500 font-medium">سبد خرید خالی است</span>
                 </div>
             ) : (
                 <div className="w-full flex flex-col items-center gap-0 px-0 relative z-0">

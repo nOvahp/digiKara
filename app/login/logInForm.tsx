@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toEnglishDigits } from "@/lib/number";
 
 
 import { useAuth } from "@/app/providers/AuthProvider";
@@ -229,6 +230,10 @@ export function LogInForm({ onNext, onExistingUser, onBack, onCustomerRegister, 
                             placeholder="09123456789"
                             className="flex-1 border-none shadow-none focus-visible:ring-0 bg-transparent text-left text-lg font-bold placeholder:text-gray-300 h-full"
                             autoFocus
+                            onChange={(e) => {
+                                const val = toEnglishDigits(e.target.value);
+                                phoneForm.setValue("phoneNumber", val, { shouldValidate: true });
+                            }}
                         />
                     </div>
                     {phoneForm.formState.errors.phoneNumber && (
@@ -282,6 +287,10 @@ export function LogInForm({ onNext, onExistingUser, onBack, onCustomerRegister, 
                     autoComplete="one-time-code"
                     inputMode="numeric"
                     autoFocus
+                    onChange={(e) => {
+                        const val = toEnglishDigits(e.target.value);
+                        otpForm.setValue("otp", val, { shouldValidate: true });
+                    }}
                   />
               </div>
                {otpForm.formState.errors.otp && (

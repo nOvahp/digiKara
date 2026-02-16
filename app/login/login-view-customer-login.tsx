@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/app/providers/AuthProvider";
 import { Loader2, ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { toEnglishDigits } from "@/lib/number";
 
 interface LoginViewCustomerLoginProps {
   phone: string;
@@ -90,6 +91,10 @@ export function LoginViewCustomerLogin({ phone, onBack }: LoginViewCustomerLogin
                         placeholder="***********" 
                         className="rounded-xl border-[#DCE4E8] bg-white h-14 text-lg px-4 text-left " 
                         autoFocus
+                        onChange={(e) => {
+                            const val = toEnglishDigits(e.target.value);
+                            form.setValue("password", val, { shouldValidate: true });
+                        }}
                     />
                      {form.formState.errors.password && <p className="text-red-500 text-xs">{form.formState.errors.password.message}</p>}
                 </div>
