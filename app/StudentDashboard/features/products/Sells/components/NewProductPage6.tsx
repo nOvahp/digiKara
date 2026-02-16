@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { X, ChevronRight } from 'lucide-react';
 import { ProductPreviewCard } from './shared/ProductPreviewCard';
+import { ProductStepper } from './shared/ProductStepper';
 import { AddProductFormState } from '../types';
 
 const toFarsiNumber = (n: number | string | undefined): string => {
@@ -13,22 +14,11 @@ interface NewProductPage6Props {
   onNext: () => void;
   onStepClick: (step: string) => void;
   formData: AddProductFormState;
+  maxStep: number;
 }
 
-export function NewProductPage6({ onClose, onNext, onStepClick, formData }: NewProductPage6Props) {
-  const progressBarRef = useRef<HTMLDivElement>(null);
-  const activeStepRef = useRef<HTMLDivElement>(null);
+export function NewProductPage6({ onClose, onNext, onStepClick, formData, maxStep }: NewProductPage6Props) {
 
-  // Auto-scroll active step to center on mount
-  useEffect(() => {
-    if (progressBarRef.current && activeStepRef.current) {
-      const progressBar = progressBarRef.current;
-      const activeStep = activeStepRef.current;
-      const scrollLeft =
-        activeStep.offsetLeft - progressBar.clientWidth / 2 + activeStep.clientWidth / 2;
-      progressBar.scrollTo({ left: scrollLeft, behavior: 'smooth' });
-    }
-  }, []);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -51,54 +41,7 @@ export function NewProductPage6({ onClose, onNext, onStepClick, formData }: NewP
         </div>
 
         {/* Progress Bar */}
-        <div
-          ref={progressBarRef}
-          className="w-full px-5 py-5 border-b border-[#DFE1E7] flex justify-end items-center gap-3 overflow-x-auto no-scrollbar"
-          dir="ltr"
-        >
-          <StepItem
-            step="6"
-            label="تائید نهایی"
-            isActive={true}
-            onClick={() => {}}
-            ref={activeStepRef}
-          />
-          <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
-          <StepItem
-            step="5"
-            label="دسته بندی و برچسب ها"
-            isActive={false}
-            onClick={() => onStepClick('step5')}
-          />
-          <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
-          <StepItem
-            step="4"
-            label="موجودی"
-            isActive={false}
-            onClick={() => onStepClick('step4')}
-          />
-          <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
-          <StepItem
-            step="3"
-            label="قیمت گذاری"
-            isActive={false}
-            onClick={() => onStepClick('step3')}
-          />
-          <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
-          <StepItem
-            step="2"
-            label="ویژگی ها"
-            isActive={false}
-            onClick={() => onStepClick('step2')}
-          />
-          <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
-          <StepItem
-            step="1"
-            label="اطلاعات پایه"
-            isActive={false}
-            onClick={() => onStepClick('step1')}
-          />
-        </div>
+        <ProductStepper currentStep="step6" onStepClick={onStepClick} maxStep={maxStep} />
 
         {/* Scrollable Body */}
         <div className="flex-1 overflow-y-auto w-full px-5 py-5 flex flex-col gap-4">
@@ -128,34 +71,4 @@ export function NewProductPage6({ onClose, onNext, onStepClick, formData }: NewP
 }
 
 // Helpers
-const StepItem = React.forwardRef<
-  HTMLDivElement,
-  {
-    step: string;
-    label: string;
-    isActive: boolean;
-    isCompleted?: boolean;
-    onClick?: () => void;
-  }
->(({ step, label, isActive, onClick }, ref) => {
-  return (
-    <div
-      ref={ref}
-      className="flex items-center gap-2.5 flex-shrink-0 cursor-pointer"
-      onClick={onClick}
-    >
-      <span
-        className={`text-sm font-medium font-['PeydaWeb'] leading-[21px] tracking-wide whitespace-nowrap ${isActive ? 'text-[#0D0D12]' : 'text-[#818898]'}`}
-      >
-        {label}
-      </span>
-      <div
-        className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold font-['PeydaFaNum'] leading-[21px] tracking-wide ${isActive ? 'bg-[#FFD369] text-white' : 'bg-[#DFE1E7] text-white'}`}
-      >
-        {toFarsiNumber(step)}
-      </div>
-    </div>
-  );
-});
 
-StepItem.displayName = 'StepItem';

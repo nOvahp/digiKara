@@ -93,6 +93,17 @@ export function AddProductFlow({
     setFormData((prev) => ({ ...prev, ...data }));
   };
 
+  const [maxStepReached, setMaxStepReached] = useState(1);
+
+  useEffect(() => {
+    if (activePopup !== 'none') {
+      const stepNum = parseInt(activePopup.replace('step', ''));
+      if (!isNaN(stepNum)) {
+        setMaxStepReached((prev) => Math.max(prev, stepNum));
+      }
+    }
+  }, [activePopup]);
+
   const handleSubmitProduct = async () => {
     const data = new FormData();
 
@@ -239,6 +250,7 @@ export function AddProductFlow({
           onStepClick={(step) => setActivePopup(step as Step)}
           formData={formData}
           updateFormData={updateFormData}
+          maxStep={maxStepReached}
           // categories handled internally by NewProduct or passed if we had them
         />
       )}
@@ -249,6 +261,7 @@ export function AddProductFlow({
           onStepClick={(step) => setActivePopup(step as Step)}
           formData={formData}
           updateFormData={updateFormData}
+          maxStep={maxStepReached}
         />
       )}
       {activePopup === 'step3' && (
@@ -258,6 +271,7 @@ export function AddProductFlow({
           onStepClick={(step) => setActivePopup(step as Step)}
           formData={formData}
           updateFormData={updateFormData}
+          maxStep={maxStepReached}
         />
       )}
       {activePopup === 'step4' && (
@@ -267,6 +281,7 @@ export function AddProductFlow({
           onStepClick={(step) => setActivePopup(step as Step)}
           formData={formData}
           updateFormData={updateFormData}
+          maxStep={maxStepReached}
         />
       )}
       {activePopup === 'step5' && (
@@ -276,6 +291,7 @@ export function AddProductFlow({
           onStepClick={(step) => setActivePopup(step as Step)}
           formData={formData}
           updateFormData={updateFormData}
+          maxStep={maxStepReached}
         />
       )}
       {activePopup === 'step6' && (
@@ -284,6 +300,7 @@ export function AddProductFlow({
           onNext={handleSubmitProduct} // Trigger submission
           onStepClick={(step) => setActivePopup(step as Step)}
           formData={formData}
+          maxStep={maxStepReached}
         />
       )}
       {activePopup === 'step7' && (

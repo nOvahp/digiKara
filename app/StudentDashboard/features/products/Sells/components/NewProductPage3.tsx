@@ -4,6 +4,8 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 import { ServiceFeeModal } from './ServiceFeeModal';
 import { AddProductFormState, VariantPrice } from '../types';
+import { Input } from '@/components/ui/input';
+import { ProductStepper } from './shared/ProductStepper';
 
 interface NewProductPage3Props {
   onClose: () => void;
@@ -11,6 +13,7 @@ interface NewProductPage3Props {
   onStepClick: (step: string) => void;
   formData: AddProductFormState;
   updateFormData: (data: Partial<AddProductFormState>) => void;
+  maxStep: number;
 }
 
 // Zod validation schema
@@ -20,13 +23,13 @@ const variantPriceSchema = z.object({
     .array(
       z.object({
         variantLabel: z.string(),
-        amount: z.number().min(0),
-        title: z.string().max(255),
+        amount: z.number().min(0, 'مبلغ نمی‌تواند منفی باشد'),
+        title: z.string().max(255, 'عنوان طولانی است'),
         type: z.number(),
-        discount_percent: z.number().min(0).max(100).nullable(),
-        inventory: z.number().min(0).nullable(),
+        discount_percent: z.number().min(0, 'تخفیف نمی‌تواند کمتر از ۰ باشد').max(100, 'تخفیف نمی‌تواند بیشتر از ۱۰۰ باشد').nullable(),
+        inventory: z.number().min(0, 'موجودی نمی‌تواند منفی باشد').nullable(),
         type_inventory: z.number().nullable(),
-        warn_inventory: z.number().min(0).nullable(),
+        warn_inventory: z.number().min(0, 'هشدار موجودی نمی‌تواند منفی باشد').nullable(),
       }),
     )
     .min(1, 'حداقل یک ویژگی باید اضافه شود'),
@@ -38,12 +41,9 @@ export function NewProductPage3({
   onStepClick,
   formData,
   updateFormData,
+  maxStep
 }: NewProductPage3Props) {
   const isMultiPrice = formData.isMultiPrice ?? false;
-
-  // Refs for auto-scrolling
-  const progressBarRef = useRef<HTMLDivElement>(null);
-  const activeStepRef = useRef<HTMLDivElement>(null);
 
   // State for multi-price variant management
   const [selectedVariant, setSelectedVariant] = useState('');
@@ -57,18 +57,9 @@ export function NewProductPage3({
 
   // State for service fee modal
   const [showServiceFeeModal, setShowServiceFeeModal] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  // Auto-scroll active step to center on mount
-  useEffect(() => {
-    if (progressBarRef.current && activeStepRef.current) {
-      const progressBar = progressBarRef.current;
-      const activeStep = activeStepRef.current;
 
-      const scrollLeft =
-        activeStep.offsetLeft - progressBar.clientWidth / 2 + activeStep.clientWidth / 2;
-      progressBar.scrollTo({ left: scrollLeft, behavior: 'smooth' });
-    }
-  }, []);
 
   // Get unique feature types from Step 2
   const getFeatureTypes = (): string[] => {
@@ -245,49 +236,7 @@ export function NewProductPage3({
         </div>
 
         {/* Progress Bar */}
-        <div
-          ref={progressBarRef}
-          className="w-full px-5 py-5 border-b border-[#DFE1E7] flex justify-end items-center gap-3 overflow-x-auto no-scrollbar"
-          dir="ltr"
-        >
-          <StepItem
-            step="6"
-            label="تائید نهایی"
-            isActive={false}
-            onClick={() => onStepClick('step6')}
-          />
-          <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
-          <StepItem
-            step="5"
-            label="دسته بندی و برچسب ها"
-            isActive={false}
-            onClick={() => onStepClick('step5')}
-          />
-          <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
-          <StepItem step="4" label="موجودی" isActive={false} onClick={() => onStepClick('step4')} />
-          <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
-          <StepItem
-            step="3"
-            label="قیمت گذاری"
-            isActive={true}
-            onClick={() => {}}
-            ref={activeStepRef}
-          />
-          <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
-          <StepItem
-            step="2"
-            label="ویژگی ها"
-            isActive={false}
-            onClick={() => onStepClick('step2')}
-          />
-          <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
-          <StepItem
-            step="1"
-            label="اطلاعات پایه"
-            isActive={false}
-            onClick={() => onStepClick('step1')}
-          />
-        </div>
+        <ProductStepper currentStep="step3" onStepClick={onStepClick} maxStep={maxStep} />
 
         {/* Scrollable Body */}
         <div className="flex-1 overflow-y-auto w-full px-5 py-5" dir="rtl">
@@ -357,9 +306,9 @@ export function NewProductPage3({
           <div className="w-full flex flex-col gap-2 mb-4">
             <div className="text-right text-[#666D80] text-sm font-semibold">قیمت پایه</div>
             <div className="w-full h-[52px] px-3 bg-white rounded-xl border border-[#DFE1E7] flex items-center gap-2">
-              <input
+              <Input
                 type="text"
-                className="flex-1 h-full outline-none text-left text-[#0D0D12] text-base font-num-semibold  placeholder:text-[#DFE1E7]"
+                className="flex-1 h-full outline-none text-left text-[#0D0D12] text-base font-num-semibold  placeholder:text-[#DFE1E7] border-none shadow-none focus-visible:ring-0 px-0"
                 placeholder="2.300.000"
                 value={
                   formData.price ? parseInt(formData.price.replace(/\D/g, '')).toLocaleString() : ''
@@ -380,23 +329,40 @@ export function NewProductPage3({
               <div className="text-right text-[#666D80] text-sm font-semibold">ویژگی ها</div>
 
               {/* Variant Dropdown */}
+              {/* Variant Dropdown (Custom implementation for scrolling) */}
               <div className="relative w-full">
-                <select
-                  className="w-full h-[52px] px-3 bg-white rounded-xl border border-[#DFE1E7] text-right text-base font-semibold font-['PeydaWeb'] outline-none appearance-none cursor-pointer"
-                  value={selectedVariant}
-                  onChange={(e) => setSelectedVariant(e.target.value)}
-                  style={{ color: selectedVariant ? '#0D0D12' : '#DFE1E7' }}
+                <div
+                  className="w-full h-[52px] px-3 bg-white rounded-xl border border-[#DFE1E7] flex items-center justify-between cursor-pointer"
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
-                  <option value="" disabled>
-                    وزن، نوع محصول و ...
-                  </option>
-                  {variantOptions.map((option, idx) => (
-                    <option key={idx} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDown className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#818898] pointer-events-none" />
+                  <span className={`text-base font-semibold font-['PeydaWeb'] ${selectedVariant ? 'text-[#0D0D12]' : 'text-[#DFE1E7]'}`}>
+                    {selectedVariant || 'وزن، نوع محصول و ...'}
+                  </span>
+                  <ChevronDown className="w-5 h-5 text-[#818898]" />
+                </div>
+                
+                {isDropdownOpen && (
+                  <div className="absolute z-50 top-full left-0 right-0 mt-1 max-h-60 overflow-y-auto bg-white border border-[#DFE1E7] rounded-xl shadow-lg">
+                    {variantOptions.length > 0 ? (
+                      variantOptions.map((option, idx) => (
+                        <div
+                          key={idx}
+                          className="px-4 py-3 text-[#0D0D12] text-sm font-medium hover:bg-gray-50 cursor-pointer border-b border-gray-50 last:border-none"
+                          onClick={() => {
+                            setSelectedVariant(option);
+                            setIsDropdownOpen(false);
+                          }}
+                        >
+                          {option}
+                        </div>
+                      ))
+                    ) : (
+                      <div className="px-4 py-3 text-gray-400 text-sm text-center">
+                        هیچ ویژگی‌ای یافت نشد
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* Variant Amount (Price) Input with Plus/Minus */}
@@ -423,9 +389,9 @@ export function NewProductPage3({
                     </button>
                   </div>
                   <div className="flex-1 h-[52px] px-3 bg-white rounded-xl border border-[#DFE1E7] flex items-center gap-2">
-                    <input
+                    <Input
                       type="text"
-                      className="flex-1 h-full outline-none text-left text-[#0D0D12] text-base font-num-semibold placeholder:text-[#DFE1E7]"
+                      className="flex-1 h-full outline-none text-left text-[#0D0D12] text-base font-num-semibold placeholder:text-[#DFE1E7] border-none shadow-none focus-visible:ring-0 px-0"
                       placeholder="2.300.000"
                       value={
                         variantAmount
@@ -446,9 +412,9 @@ export function NewProductPage3({
               {/* Variant Type Input */}
               <div className="w-full flex flex-col gap-2">
                 <div className="text-right text-[#666D80] text-sm font-semibold">نوع ویژگی</div>
-                <input
+                <Input
                   type="number"
-                  className="w-full h-[52px] px-3 bg-white rounded-xl border border-[#DFE1E7] text-right outline-none text-[#0D0D12] text-base font-num-semibold placeholder:text-[#DFE1E7]"
+                  className="w-full h-[52px] px-3 bg-white rounded-xl border border-[#DFE1E7] text-right outline-none text-[#0D0D12] text-base font-num-semibold placeholder:text-[#DFE1E7] focus:border-[#FDD00A] focus-visible:ring-0"
                   placeholder="1"
                   value={variantType}
                   onChange={(e) => setVariantType(e.target.value)}
@@ -460,9 +426,9 @@ export function NewProductPage3({
                 {/* Discount Percent */}
                 <div className="flex flex-col gap-2">
                   <div className="text-right text-[#666D80] text-sm font-semibold">تخفیف (%)</div>
-                  <input
+                  <Input
                     type="number"
-                    className="w-full h-[52px] px-3 bg-white rounded-xl border border-[#DFE1E7] text-right outline-none text-[#0D0D12] text-base font-num-semibold placeholder:text-[#DFE1E7]"
+                    className="w-full h-[52px] px-3 bg-white rounded-xl border border-[#DFE1E7] text-right outline-none text-[#0D0D12] text-base font-num-semibold placeholder:text-[#DFE1E7] focus:border-[#FDD00A] focus-visible:ring-0"
                     placeholder="0-100"
                     min="0"
                     max="100"
@@ -480,9 +446,9 @@ export function NewProductPage3({
                 {/* Inventory */}
                 <div className="flex flex-col gap-2">
                   <div className="text-right text-[#666D80] text-sm font-semibold">موجودی</div>
-                  <input
+                  <Input
                     type="text"
-                    className="w-full h-[52px] px-3 bg-white rounded-xl border border-[#DFE1E7] text-right outline-none text-[#0D0D12] text-base font-num-semibold placeholder:text-[#DFE1E7]"
+                    className="w-full h-[52px] px-3 bg-white rounded-xl border border-[#DFE1E7] text-right outline-none text-[#0D0D12] text-base font-num-semibold placeholder:text-[#DFE1E7] focus:border-[#FDD00A] focus-visible:ring-0"
                     placeholder="100"
                     value={
                       variantInventory
@@ -500,9 +466,9 @@ export function NewProductPage3({
               {/* Optional Field: Warn Inventory */}
               <div className="w-full flex flex-col gap-2">
                 <div className="text-right text-[#666D80] text-sm font-semibold">هشدار موجودی</div>
-                <input
+                <Input
                   type="text"
-                  className="w-full h-[52px] px-3 bg-white rounded-xl border border-[#DFE1E7] text-right outline-none text-[#0D0D12] text-base font-num-semibold placeholder:text-[#DFE1E7]"
+                  className="w-full h-[52px] px-3 bg-white rounded-xl border border-[#DFE1E7] text-right outline-none text-[#0D0D12] text-base font-num-semibold placeholder:text-[#DFE1E7] focus:border-[#FDD00A] focus-visible:ring-0"
                   placeholder="10"
                   value={
                     variantWarnInventory
@@ -620,34 +586,4 @@ export function NewProductPage3({
   );
 }
 
-// Helpers
-const StepItem = React.forwardRef<
-  HTMLDivElement,
-  {
-    step: string;
-    label: string;
-    isActive: boolean;
-    onClick?: () => void;
-  }
->(({ step, label, isActive, onClick }, ref) => {
-  return (
-    <div
-      ref={ref}
-      className="flex items-center gap-2.5 flex-shrink-0 cursor-pointer"
-      onClick={onClick}
-    >
-      <span
-        className={`text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide whitespace-nowrap ${isActive ? 'text-[#0D0D12]' : 'text-[#818898]'}`}
-      >
-        {label}
-      </span>
-      <div
-        className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold font-['PeydaFaNum'] leading-[21px] tracking-wide ${isActive ? 'bg-[#FFD369] text-white' : 'bg-[#DFE1E7] text-white'}`}
-      >
-        {step}
-      </div>
-    </div>
-  );
-});
 
-StepItem.displayName = 'StepItem';

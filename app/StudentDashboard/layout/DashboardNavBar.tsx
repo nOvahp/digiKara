@@ -42,6 +42,8 @@ export function DashboardNavBar() {
     return `${field} - ${school}`;
   };
 
+  const notificationCount = 0;
+
   return (
     <>
       <div className="w-full max-w-md px-4 pt-6 flex justify-between items-center" dir="rtl">
@@ -85,7 +87,9 @@ export function DashboardNavBar() {
             onClick={() => setShowNotifications(true)}
           >
             <Bell className="w-6 h-6 text-[#393E46]" />
-            <div className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full border border-white"></div>
+            {notificationCount > 0 && (
+              <div className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full border border-white"></div>
+            )}
           </div>
         </div>
       </div>

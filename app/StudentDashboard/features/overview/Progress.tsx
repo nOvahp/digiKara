@@ -22,10 +22,10 @@ export function Progress() {
               <span className="text-[#0F172A] text-sm font-['Meem'] font-medium leading-[21.70px]">
                 سطح{' '}
               </span>
-              <span className="text-[#0F172A] text-sm font-num-medium leading-[21.70px]">5</span>
+              <span className="text-[#0F172A] text-sm font-num-medium leading-[21.70px]">1</span>
               <span className="text-[#0F172A] text-sm font-['Meem'] font-medium leading-[21.70px]">
                 {' '}
-                : فروشنده ماهر
+                : فروشنده تازه کار
               </span>
             </div>
           </div>
@@ -34,7 +34,7 @@ export function Progress() {
           <div className="self-stretch flex justify-center items-center gap-1.5">
             <div className="flex justify-start items-center gap-1.5">
               <div className="text-right text-[#888B90] text-[10px] font-num-medium leading-[15.50px]">
-                500/750 امتیاز
+                0/100 امتیاز
               </div>
             </div>
             {/* Bar Track */}
@@ -42,15 +42,15 @@ export function Progress() {
               className="flex-1 h-2 bg-[#E0E0E0] rounded-[64px] overflow-hidden flex justify-start items-center relative"
               dir="ltr"
             >
-              {/* Bar Fill (Calculated width approx 66%) */}
-              <div className="h-full bg-[#F1C21B] rounded-[64px]" style={{ width: '66%' }} />
+              {/* Bar Fill (Calculated width 0%) */}
+              <div className="h-full bg-[#F1C21B] rounded-[64px]" style={{ width: '0%' }} />
             </div>
           </div>
 
           {/* Badges Row */}
           <div className="self-stretch pt-4 flex justify-between items-start gap-1.5">
-            {/* Top Seller (Yellow) */}
-            <div className="w-[50px] flex flex-col justify-start items-center gap-1.5">
+            {/* Top Seller (Gray) */}
+            <div className="w-[50px] flex flex-col justify-start items-center gap-1.5 opacity-50 grayscale">
               <div className="w-[38px] h-[38px] relative bg-[#FDF9C3] rounded-full flex justify-center items-center">
                 <Medal className="w-5 h-5 text-[#0A0A0A]" strokeWidth={1.5} />
               </div>
@@ -59,8 +59,8 @@ export function Progress() {
               </div>
             </div>
 
-            {/* 100 Orders (Red) */}
-            <div className="w-[50px] flex flex-col justify-start items-center gap-1.5">
+            {/* 100 Orders (Gray) */}
+            <div className="w-[50px] flex flex-col justify-start items-center gap-1.5 opacity-50 grayscale">
               <div className="w-[38px] h-[38px] relative bg-[#FDC3C3] rounded-full flex justify-center items-center">
                 <ShoppingBag className="w-5 h-5 text-[#0A0A0A]" strokeWidth={1.5} />
               </div>
@@ -69,8 +69,8 @@ export function Progress() {
               </div>
             </div>
 
-            {/* High Score (Green) */}
-            <div className="w-[50px] flex flex-col justify-start items-center gap-1.5">
+            {/* High Score (Gray) */}
+            <div className="w-[50px] flex flex-col justify-start items-center gap-1.5 opacity-50 grayscale">
               <div className="w-[38px] h-[38px] relative bg-[#C3FDD8] rounded-full flex justify-center items-center">
                 <Star className="w-5 h-5 text-[#0A0A0A]" strokeWidth={1.5} />
               </div>
@@ -79,8 +79,8 @@ export function Progress() {
               </div>
             </div>
 
-            {/* First Sale (Blue) */}
-            <div className="w-[50px] flex flex-col justify-start items-center gap-1.5">
+            {/* First Sale (Gray) */}
+            <div className="w-[50px] flex flex-col justify-start items-center gap-1.5 opacity-50 grayscale">
               <div className="w-[38px] h-[38px] relative bg-[#C3E4FD] rounded-full flex justify-center items-center">
                 <DollarSign className="w-5 h-5 text-[#0A0A0A]" strokeWidth={1.5} />
               </div>

@@ -15,9 +15,12 @@ interface NewProductPage4Props {
   onStepClick: (step: string) => void;
   formData: AddProductFormState;
   updateFormData: (data: Partial<AddProductFormState>) => void;
+  maxStep: number;
 }
 
 import { z } from 'zod';
+import { Input } from '@/components/ui/input';
+import { ProductStepper } from './shared/ProductStepper';
 
 const inventorySchema = z.object({
   stock: z.string().min(1, 'لطفا موجودی محصول را وارد کنید'),
@@ -31,22 +34,9 @@ export function NewProductPage4({
   onStepClick,
   formData,
   updateFormData,
+  maxStep
 }: NewProductPage4Props) {
-  const progressBarRef = useRef<HTMLDivElement>(null);
-  const activeStepRef = useRef<HTMLDivElement>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
-
-  // Auto-scroll active step to center on mount
-  useEffect(() => {
-    if (progressBarRef.current && activeStepRef.current) {
-      const progressBar = progressBarRef.current;
-      const activeStep = activeStepRef.current;
-
-      const scrollLeft =
-        activeStep.offsetLeft - progressBar.clientWidth / 2 + activeStep.clientWidth / 2;
-      progressBar.scrollTo({ left: scrollLeft, behavior: 'smooth' });
-    }
-  }, []);
 
   const handleNext = () => {
     setErrors({});
@@ -71,7 +61,7 @@ export function NewProductPage4({
       if (axios.isAxiosError(error)) {
         toast.error('خطای شبکه رخ داده است');
       } else {
-        toast.error((error as Error).message);
+        toast.error('خطای غیرمنتظره‌ای در اعتبارسنجی رخ داده است');
       }
     }
   };
@@ -97,54 +87,7 @@ export function NewProductPage4({
         </div>
 
         {/* Progress Bar */}
-        <div
-          ref={progressBarRef}
-          className="w-full px-5 py-5 border-b border-[#DFE1E7] flex justify-end items-center gap-3 overflow-x-auto no-scrollbar"
-          dir="ltr"
-        >
-          <StepItem
-            step="6"
-            label="تائید نهایی"
-            isActive={false}
-            onClick={() => onStepClick('step6')}
-          />
-          <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
-          <StepItem
-            step="5"
-            label="دسته بندی و برچسب ها"
-            isActive={false}
-            onClick={() => onStepClick('step5')}
-          />
-          <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
-          <StepItem
-            step="4"
-            label="موجودی"
-            isActive={true}
-            onClick={() => {}}
-            ref={activeStepRef}
-          />
-          <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
-          <StepItem
-            step="3"
-            label="قیمت گذاری"
-            isActive={false}
-            onClick={() => onStepClick('step3')}
-          />
-          <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
-          <StepItem
-            step="2"
-            label="ویژگی ها"
-            isActive={false}
-            onClick={() => onStepClick('step2')}
-          />
-          <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
-          <StepItem
-            step="1"
-            label="اطلاعات پایه"
-            isActive={false}
-            onClick={() => onStepClick('step1')}
-          />
-        </div>
+        <ProductStepper currentStep="step4" onStepClick={onStepClick} maxStep={maxStep} />
 
         {/* Form Fields */}
         <div className="w-full flex-1 overflow-y-auto px-5 py-5 flex flex-col gap-4">
@@ -160,9 +103,9 @@ export function NewProductPage4({
                 عدد
               </div>
               <div className="w-[1px] h-full bg-[#DFE1E7]"></div>
-              <input
+              <Input
                 type="text"
-                className="flex-1 h-full border-none outline-none text-right dir-rtl text-[#0D0D12] text-base font-semibold font-['PeydaFaNum'] placeholder:text-[#DFE1E7] bg-transparent"
+                className="flex-1 h-full border-none outline-none text-right dir-rtl text-[#0D0D12] text-base font-semibold font-['PeydaFaNum'] placeholder:text-[#DFE1E7] bg-transparent shadow-none focus-visible:ring-0 px-0"
                 placeholder="۲۰۰"
                 value={formData.stock || ''}
                 onChange={(e) => {
@@ -192,9 +135,9 @@ export function NewProductPage4({
                 عدد
               </div>
               <div className="w-[1px] h-full bg-[#DFE1E7]"></div>
-              <input
+              <Input
                 type="text"
-                className="flex-1 h-full border-none outline-none text-right dir-rtl text-[#0D0D12] text-base font-semibold font-['PeydaFaNum'] placeholder:text-[#DFE1E7] bg-transparent"
+                className="flex-1 h-full border-none outline-none text-right dir-rtl text-[#0D0D12] text-base font-semibold font-['PeydaFaNum'] placeholder:text-[#DFE1E7] bg-transparent shadow-none focus-visible:ring-0 px-0"
                 placeholder="۱۰"
                 value={formData.maxOrderQuantity || ''}
                 onChange={(e) => {
@@ -224,9 +167,9 @@ export function NewProductPage4({
                 عدد
               </div>
               <div className="w-[1px] h-full bg-[#DFE1E7]"></div>
-              <input
+              <Input
                 type="text"
-                className="flex-1 h-full border-none outline-none text-right dir-rtl text-[#0D0D12] text-base font-semibold font-['PeydaFaNum'] placeholder:text-[#DFE1E7] bg-transparent"
+                className="flex-1 h-full border-none outline-none text-right dir-rtl text-[#0D0D12] text-base font-semibold font-['PeydaFaNum'] placeholder:text-[#DFE1E7] bg-transparent shadow-none focus-visible:ring-0 px-0"
                 placeholder="۱۰"
                 value={formData.lowStockWarning || ''}
                 onChange={(e) => {
@@ -268,33 +211,4 @@ export function NewProductPage4({
 }
 
 // Helpers
-const StepItem = React.forwardRef<
-  HTMLDivElement,
-  {
-    step: string;
-    label: string;
-    isActive: boolean;
-    onClick?: () => void;
-  }
->(({ step, label, isActive, onClick }, ref) => {
-  return (
-    <div
-      ref={ref}
-      className="flex items-center gap-2.5 flex-shrink-0 cursor-pointer"
-      onClick={onClick}
-    >
-      <span
-        className={`text-sm font-medium font-['PeydaWeb'] leading-[21px] tracking-wide whitespace-nowrap ${isActive ? 'text-[#0D0D12]' : 'text-[#818898]'}`}
-      >
-        {label}
-      </span>
-      <div
-        className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold font-['PeydaFaNum'] leading-[21px] tracking-wide ${isActive ? 'bg-[#FFD369] text-white' : 'bg-[#DFE1E7] text-white'}`}
-      >
-        {toFarsiNumber(step)}
-      </div>
-    </div>
-  );
-});
 
-StepItem.displayName = 'StepItem';

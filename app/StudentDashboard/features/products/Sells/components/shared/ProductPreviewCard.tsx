@@ -281,7 +281,7 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
             {formatPrice(currentPrice)} ریال
           </div>
           {(isEditMode || product.isMultiPrice) && (
-            <span className="text-xs text-gray-500 font-['PeydaWeb']">قیمت بسته به ویژگی</span>
+            <span className="text-xs text-gray-500 font-medium">قیمت بسته به ویژگی</span>
           )}
         </div>
       </div>
@@ -294,23 +294,23 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
       <div className="flex justify-start items-center gap-2" dir="rtl">
         <div className="h-[30px] px-2.5 bg-white rounded-lg border border-[#E4E6EA] flex items-center gap-1.5 select-none">
           <Star className="w-4 h-4 text-[#FFC107] fill-[#FFC107]" />
-          <span className="text-[#3D424D] text-[13px] font-medium font-['PeydaFaNum'] mt-0.5">
-            ۴.۵
+          <span className="text-[#3D424D] text-[13px] font-medium  mt-0.5">
+            0
           </span>
-          <span className="text-[#9CA3AF] text-[11px] font-normal font-['PeydaFaNum'] mt-0.5">
-            (۱۲ نظر)
+          <span className="text-[#9CA3AF] text-[11px] font-medium  mt-0.5">
+            (0 نظر)
           </span>
         </div>
         <div className="h-[30px] px-2.5 bg-white rounded-lg border border-[#E4E6EA] flex items-center gap-1.5 select-none">
           <Heart className="w-4 h-4 text-[#FF4D4D] fill-[#FF4D4D]" />
           <span className="text-[#3D424D] text-[13px] font-medium font-['PeydaFaNum'] mt-0.5">
-            ۳۲
+            0
           </span>
         </div>
         <div className="h-[30px] px-2.5 bg-white rounded-lg border border-[#E4E6EA] flex items-center gap-1.5 select-none">
           <Eye className="w-4 h-4 text-[#9CA3AF]" />
           <span className="text-[#3D424D] text-[13px] font-medium font-['PeydaFaNum'] mt-0.5">
-            ۲۰۴
+            0
           </span>
         </div>
         <div className="ml-auto">
@@ -359,7 +359,7 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
                                                     : 'border-[#E5E5E5] hover:border-gray-300'
                                                 }
                                             `}
-                      style={feature.title === 'رنگ' ? { backgroundColor: getColorCode(val) } : {}}
+                      style={feature.title === 'رنگ' ? { backgroundColor: val } : {}}
                     >
                       {feature.title !== 'رنگ' && val}
                       {feature.title === 'رنگ' && isSelected && (

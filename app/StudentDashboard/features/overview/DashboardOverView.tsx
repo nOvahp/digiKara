@@ -3,8 +3,8 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Store, ShoppingBag, Package, Loader2 } from 'lucide-react';
-import earningBg from '../../../../public/DashboardEarning.png';
+import { Store, ShoppingBag, Package, Loader2, Eye, EyeOff } from 'lucide-react';
+import earningBg from '../../../../public/Earnings.png';
 import { cn } from '@/lib/utils';
 import { toFarsiNumber } from '@/app/services/common/utils';
 import { dashboardService, DashboardStats } from '@/app/services/dashboard/dashboardService';
@@ -13,6 +13,7 @@ export function DashboardOverview({ isApproved: propIsApproved }: { isApproved?:
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showBalance, setShowBalance] = useState(false);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -42,6 +43,7 @@ export function DashboardOverview({ isApproved: propIsApproved }: { isApproved?:
   const isApproved = stats?.isApproved ?? propIsApproved ?? false;
   const newOrders = stats?.newOrders ?? 0;
   const activeProducts = stats?.activeProducts ?? 0;
+  const totalEarnings = 0; // Hardcoded for now as requested
 
   return (
     <div className="w-full flex flex-col gap-3 mb-6 font-['PeydaWeb']" dir="rtl">
@@ -64,6 +66,21 @@ export function DashboardOverview({ isApproved: propIsApproved }: { isApproved?:
         {/* Wallet / Earning Card */}
         <div className="w-full relative bg-transparent rounded-lg overflow-hidden h-auto aspect-[3/1]">
           <Image src={earningBg} alt="Background" fill className="object-cover" priority />
+          <div className="absolute inset-0 px-6 flex flex-col justify-center items-start gap-1">
+            <div className="text-[#222831] text-sm font-medium opacity-90">موجودی کیف پول شما</div>
+            <div className="text-[#222831] text-2xl font-bold flex items-center gap-2">
+              {showBalance ? (
+                <>
+                  {toFarsiNumber(totalEarnings)} <span className="text-sm font-normal">تومان</span>
+                </>
+              ) : (
+                <span className="mt-2 text-lg tracking-widest">****</span>
+              )}
+              <button onClick={() => setShowBalance(!showBalance)} className="mr-2">
+                {showBalance ? <EyeOff className="w-5 h-5 text-[#222831]" /> : <Eye className="w-5 h-5 text-[#222831]" />}
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* Stats Row */}

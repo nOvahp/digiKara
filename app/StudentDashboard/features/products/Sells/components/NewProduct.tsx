@@ -9,6 +9,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+
+import { ProductStepper } from './shared/ProductStepper';
 import Image from 'next/image';
 
 interface NewProductProps {
@@ -18,6 +22,7 @@ interface NewProductProps {
   formData: AddProductFormState;
   updateFormData: (data: Partial<AddProductFormState>) => void;
   categories?: { id: number | string; name: string }[];
+  maxStep: number;
 }
 
 export function NewProduct({
@@ -27,6 +32,7 @@ export function NewProduct({
   formData,
   updateFormData,
   categories = [],
+  maxStep,
 }: NewProductProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [fetchedCategories, setFetchedCategories] = useState<
@@ -119,64 +125,15 @@ export function NewProduct({
               <span className="text-xl font-bold text-[#0D0D12]">&times;</span>
             </div>
           </button>
-          <div className="text-[#0D0D12] text-lg font-semibold font-['PeydaWeb'] leading-relaxed tracking-wide">
+          <div className="text-[#0D0D12] text-lg font-semibold leading-relaxed tracking-wide">
             افزودن محصول جدید
           </div>
         </div>
 
         {/* Steps Bar - Style matched to hojreCreation/step2 */}
         {/* Steps Bar - Style matched to hojreCreation/step2 */}
-        <div
-          className="w-full px-5 py-5 border-b border-[#DFE1E7] flex justify-end items-center gap-3 overflow-x-auto no-scrollbar"
-          dir="ltr"
-        >
-          <StepIndicator
-            step="6"
-            label="تائید نهایی"
-            isActive={false}
-            onClick={() => onStepClick('step6')}
-          />
-          <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
-
-          <StepIndicator
-            step="5"
-            label="دسته بندی و برچسب ها"
-            isActive={false}
-            onClick={() => onStepClick('step5')}
-          />
-          <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
-
-          <StepIndicator
-            step="4"
-            label="موجودی"
-            isActive={false}
-            onClick={() => onStepClick('step4')}
-          />
-          <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
-
-          <StepIndicator
-            step="3"
-            label="قیمت گذاری"
-            isActive={false}
-            onClick={() => onStepClick('step3')}
-          />
-          <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
-
-          <StepIndicator
-            step="2"
-            label="ویژگی ها"
-            isActive={false}
-            onClick={() => onStepClick('step2')}
-          />
-          <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
-
-          <StepIndicator
-            step="1"
-            label="اطلاعات پایه"
-            isActive={true}
-            onClick={() => onStepClick('step1')}
-          />
-        </div>
+        {/* Product Stepper */}
+        <ProductStepper currentStep="step1" onStepClick={onStepClick} maxStep={maxStep} />
 
         {/* Scrollable Form Body */}
         <div className="flex-1 overflow-y-auto w-full p-5 flex flex-col gap-4">
@@ -185,14 +142,14 @@ export function NewProduct({
             <label className="text-right text-[#666D80] text-sm font-semibold font-['PeydaWeb'] leading-tight tracking-wide">
               نام محصول
             </label>
-            <input
+            <Input
               type="text"
               value={formData.name}
               onChange={(e) => {
                 updateFormData({ name: e.target.value });
                 clearError('name');
               }}
-              className={`w-full h-[52px] bg-white rounded-xl border ${errors.name ? 'border-red-500' : 'border-[#DFE1E7]'} px-3 text-right text-[#0D0D12] text-sm font-normal outline-none focus:border-[#FDD00A] placeholder:text-[#DFE1E7] placeholder:font-medium`}
+              className={`w-full h-[52px] bg-white rounded-xl border ${errors.name ? 'border-red-500' : 'border-[#DFE1E7]'} px-3 text-right text-[#0D0D12] text-sm outline-none focus:border-[#FDD00A] placeholder:text-[#DFE1E7] placeholder:font-medium`}
               placeholder="نام محصول را وارد کنید"
               dir="rtl"
             />
@@ -244,13 +201,13 @@ export function NewProduct({
             <div
               className={`w-full h-[180px] bg-white rounded-xl border ${errors.description ? 'border-red-500' : 'border-[#DFE1E7]'} px-3 py-2.5 flex flex-col overflow-hidden focus-within:border-[#FDD00A]`}
             >
-              <textarea
+              <Textarea
                 value={formData.description}
                 onChange={(e) => {
                   updateFormData({ description: e.target.value });
                   clearError('description');
                 }}
-                className="flex-1 w-full bg-transparent border-none outline-none resize-none text-[#0D0D12] text-sm font-normal text-right font-['PeydaWeb'] placeholder:text-[#DFE1E7] placeholder:font-medium"
+                className="flex-1 w-full bg-transparent border-none outline-none resize-none text-[#0D0D12] text-sm text-right font-['PeydaWeb'] placeholder:text-[#DFE1E7] placeholder:font-medium shadow-none focus-visible:ring-0 p-0"
                 dir="rtl"
                 maxLength={200}
                 placeholder="توضیحات محصول..."
@@ -348,29 +305,4 @@ export function NewProduct({
 }
 
 // Helper Component for Steps
-function StepIndicator({
-  step,
-  label,
-  isActive,
-  onClick,
-}: {
-  step: string;
-  label: string;
-  isActive: boolean;
-  onClick?: () => void;
-}) {
-  return (
-    <div className="flex items-center gap-2 flex-shrink-0 cursor-pointer" onClick={onClick}>
-      <span
-        className={`text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide whitespace-nowrap ${isActive ? 'text-[#0D0D12]' : 'text-[#818898]'}`}
-      >
-        {label}
-      </span>
-      <div
-        className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold font-['PeydaFaNum'] leading-[21px] tracking-wide ${isActive ? 'bg-[#FDD00A] text-white' : 'bg-[#DFE1E7] text-white'}`}
-      >
-        {step}
-      </div>
-    </div>
-  );
-}
+

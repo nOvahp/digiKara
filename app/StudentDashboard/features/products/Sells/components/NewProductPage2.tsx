@@ -27,7 +27,63 @@ interface FeatureItem {
   value: string;
 }
 
+// Helper functions for color conversion
+function hslToHex(h: number, s: number, l: number): string {
+  l /= 100;
+  const a = (s * Math.min(l, 1 - l)) / 100;
+  const f = (n: number) => {
+    const k = (n + h / 30) % 12;
+    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+    return Math.round(255 * color)
+      .toString(16)
+      .padStart(2, '0');
+  };
+  return `#${f(0)}${f(8)}${f(4)}`.toUpperCase();
+}
+
+function hexToHsl(hex: string): { h: number; s: number; l: number } {
+  let r = 0,
+    g = 0,
+    b = 0;
+  if (hex.length === 4) {
+    r = parseInt('0x' + hex[1] + hex[1]);
+    g = parseInt('0x' + hex[2] + hex[2]);
+    b = parseInt('0x' + hex[3] + hex[3]);
+  } else if (hex.length === 7) {
+    r = parseInt('0x' + hex[1] + hex[2]);
+    g = parseInt('0x' + hex[3] + hex[4]);
+    b = parseInt('0x' + hex[5] + hex[6]);
+  }
+  r /= 255;
+  g /= 255;
+  b /= 255;
+  const cmin = Math.min(r, g, b),
+    cmax = Math.max(r, g, b),
+    delta = cmax - cmin;
+  let h = 0,
+    s = 0,
+    l = 0;
+
+  if (delta === 0) h = 0;
+  else if (cmax === r) h = ((g - b) / delta) % 6;
+  else if (cmax === g) h = (b - r) / delta + 2;
+  else h = (r - g) / delta + 4;
+
+  h = Math.round(h * 60);
+
+  if (h < 0) h += 360;
+
+  l = (cmax + cmin) / 2;
+  s = delta === 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+  s = +(s * 100).toFixed(1);
+  l = +(l * 100).toFixed(1);
+
+  return { h, s, l };
+}
+
 import { AddProductFormState } from '../types';
+import { Input } from '@/components/ui/input';
+import { ProductStepper } from './shared/ProductStepper';
 
 interface NewProductPage2Props {
   onClose: () => void;
@@ -35,6 +91,7 @@ interface NewProductPage2Props {
   onStepClick: (step: string) => void;
   formData: AddProductFormState;
   updateFormData: (data: Partial<AddProductFormState>) => void;
+  maxStep: number;
 }
 
 export function NewProductPage2({
@@ -43,9 +100,13 @@ export function NewProductPage2({
   onStepClick,
   formData,
   updateFormData,
+  maxStep,
 }: NewProductPage2Props) {
   const [openSection, setOpenSection] = useState<string | null>('id');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [showColorPicker, setShowColorPicker] = useState(false);
+  const [featureInputs, setFeatureInputs] = useState<Record<string, string>>({});
+  const [pendingColor, setPendingColor] = useState<string | null>(null);
 
   // Initialize variant features if not present
   useEffect(() => {
@@ -130,47 +191,7 @@ export function NewProductPage2({
         {/* Scrollable Body */}
         <div className="flex-1 overflow-y-auto w-full no-scrollbar">
           {/* Progress Bar */}
-          <div
-            className="w-full px-5 py-5 border-b border-[#DFE1E7] flex justify-end items-center gap-3 overflow-x-auto no-scrollbar"
-            dir="ltr"
-          >
-            <StepItem
-              step="6"
-              label="تائید نهایی"
-              isActive={false}
-              onClick={() => onStepClick('step6')}
-            />
-            <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
-            <StepItem
-              step="5"
-              label="دسته بندی و برچسب ها"
-              isActive={false}
-              onClick={() => onStepClick('step5')}
-            />
-            <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
-            <StepItem
-              step="4"
-              label="موجودی"
-              isActive={false}
-              onClick={() => onStepClick('step4')}
-            />
-            <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
-            <StepItem
-              step="3"
-              label="قیمت گذاری"
-              isActive={false}
-              onClick={() => onStepClick('step3')}
-            />
-            <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
-            <StepItem step="2" label="ویژگی ها" isActive={true} onClick={() => {}} />
-            <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
-            <StepItem
-              step="1"
-              label="اطلاعات پایه"
-              isActive={false}
-              onClick={() => onStepClick('step1')}
-            />
-          </div>
+          <ProductStepper currentStep="step2" onStepClick={onStepClick} maxStep={maxStep} />
 
           <div className="p-5 flex flex-col gap-4" dir="rtl">
             {/* Variant Feature Selector */}
@@ -241,41 +262,199 @@ export function NewProductPage2({
                   </div>
 
                   {/* Input Section */}
-                  <div className="flex-1 px-3 h-full flex items-center">
+                  <div className="flex-1 px-3 h-full flex items-center min-w-0">
                     {feature.id === 'color' ? (
-                      <div className="flex items-center gap-2 overflow-x-auto no-scrollbar h-full">
-                        {COLORS.map((color, idx) => {
-                          const isSelected = feature.values?.includes(color.name);
+                      <div className="flex items-center gap-2 overflow-x-auto no-scrollbar h-full pl-2 w-full">
+                        {/* Add Color Button (Opens Modal) - Moved to Start for Right Alignment in RTL */}
+                        <div
+                          onClick={() => setShowColorPicker(true)}
+                          className={`w-[24px] h-[24px] rounded-md cursor-pointer flex-shrink-0 flex items-center justify-center transition-all bg-gradient-to-br from-red-500 via-yellow-500 via-green-500 via-blue-500 to-purple-500 relative overflow-hidden ring-1 ring-[#DFE1E7] hover:ring-[#FDD00A]`}
+                          title="افزودن رنگ جدید"
+                        >
+                          <Plus className="w-3 h-3 text-white drop-shadow-md" />
+                        </div>
+                        {/* Selected Colors List */}
+                        {(feature.values || []).map((val, idx) => {
+                          // Try to find if it's a predefined color to get its special bg (e.g. gradient)
+                          const predefined = COLORS.find((c) => c.name === val);
+                          const background = predefined ? predefined.bg : val;
+
                           return (
                             <div
-                              key={idx}
+                              key={`${val}-${idx}`}
                               onClick={() => {
                                 const current = feature.values || [];
-                                const newValues = current.includes(color.name)
-                                  ? current.filter((c: string) => c !== color.name)
-                                  : [...current, color.name];
-                                updateVariantValues('color', newValues);
+                                updateVariantValues(
+                                  'color',
+                                  current.filter((c) => c !== val),
+                                );
                               }}
-                              className={`w-[24px] h-[24px] rounded-md cursor-pointer flex-shrink-0 flex items-center justify-center transition-all ${isSelected ? 'ring-2 ring-offset-1 ring-[#FDD00A]' : ''}`}
-                              style={{ background: color.bg }}
-                              title={color.name}
+                              className="w-[24px] h-[24px] rounded-md cursor-pointer flex-shrink-0 flex items-center justify-center ring-1 ring-[#DFE1E7] relative group"
+                              style={{ background: val.startsWith('#') || val.startsWith('rgb') ? val : COLORS.find((c) => c.name === val)?.bg || val }}
+                              title={val}
                             >
-                              {isSelected && (
-                                <Check className="w-3 h-3 text-white drop-shadow-md" />
-                              )}
+                              <div className="opacity-0 group-hover:opacity-100 absolute inset-0 bg-black/20 flex items-center justify-center rounded-md transition-opacity">
+                                <X className="w-3 h-3 text-white" />
+                              </div>
                             </div>
                           );
                         })}
                       </div>
+                    ) : feature.id === 'weight' || feature.id === 'volume' ? (
+                      <div className="flex items-center gap-3 overflow-x-auto no-scrollbar h-full pl-2 w-full py-1">
+                        {/* Input Group */}
+                        <div className="bg-gray-50 border border-gray-200 rounded-xl px-2 py-1.5 flex items-center gap-1 flex-shrink-0 h-[42px]">
+                          <input
+                            type="text"
+                            className="w-[100px] h-full bg-transparent border-none outline-none text-right text-sm font-num-medium placeholder:text-gray-400 px-1"
+                            placeholder="افزودن..."
+                            value={featureInputs[feature.id] || ''}
+                            onChange={(e) =>
+                              setFeatureInputs({ ...featureInputs, [feature.id]: e.target.value })
+                            }
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                const val = featureInputs[feature.id]?.trim();
+                                if (val) {
+                                  const current = feature.values || [];
+                                  if (!current.includes(val)) {
+                                    updateVariantValues(feature.id, [...current, val]);
+                                  }
+                                  setFeatureInputs({ ...featureInputs, [feature.id]: '' });
+                                }
+                              }
+                            }}
+                          />
+                          <button
+                            onClick={() => {
+                              const val = featureInputs[feature.id]?.trim();
+                              if (val) {
+                                const current = feature.values || [];
+                                if (!current.includes(val)) {
+                                  updateVariantValues(feature.id, [...current, val]);
+                                }
+                                setFeatureInputs({ ...featureInputs, [feature.id]: '' });
+                              }
+                            }}
+                            className="w-8 h-8 rounded-lg bg-white border border-gray-200 flex items-center justify-center hover:border-[#FDD00A] hover:text-[#FDD00A] transition-all shadow-sm"
+                          >
+                            <Plus className="w-4 h-4 text-gray-500" />
+                          </button>
+                        </div>
+                        
+                        {/* Selected Items Chips */}
+                        <div className="flex items-center gap-2">
+                          {(feature.values || []).map((val, idx) => (
+                            <div
+                              key={idx}
+                              className="bg-white rounded-xl px-3 py-1.5 flex items-center gap-2 border border-gray-200 shadow-sm flex-shrink-0 min-h-[36px]"
+                            >
+                              <span className="text-sm font-num-medium text-[#0D0D12]">{val}</span>
+                              <div 
+                                className="w-5 h-5 rounded-full bg-gray-50 flex items-center justify-center cursor-pointer hover:bg-red-50 hover:text-red-500 transition-colors"
+                                onClick={() => {
+                                  const current = feature.values || [];
+                                  updateVariantValues(
+                                    feature.id,
+                                    current.filter((v) => v !== val),
+                                  );
+                                }}
+                              >
+                                <X className="w-3 h-3" />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : feature.id === 'size' ? (
+                      <div className="flex flex-col gap-2 w-full py-1">
+                        <div className="flex items-center gap-3 overflow-x-auto no-scrollbar w-full pb-1">
+                          {/* Dimension Inputs Group */}
+                          <div className="bg-gray-50 border border-gray-200 rounded-xl p-1.5 flex items-center gap-2 flex-shrink-0 h-[48px]">
+                            <div className="flex items-center gap-1 bg-white rounded-lg border border-gray-200 px-2 h-full shadow-sm">
+                              <input
+                                type="text"
+                                className="w-[45px] h-full bg-transparent border-none text-center text-sm font-num-medium outline-none focus:placeholder-transparent placeholder:text-gray-400"
+                                placeholder="طول"
+                                value={featureInputs['size_l'] || ''}
+                                onChange={(e) =>
+                                  setFeatureInputs({ ...featureInputs, size_l: e.target.value })
+                                }
+                              />
+                              <span className="text-gray-300">|</span>
+                              <input
+                                type="text"
+                                className="w-[45px] h-full bg-transparent border-none text-center text-sm font-num-medium outline-none focus:placeholder-transparent placeholder:text-gray-400"
+                                placeholder="عرض"
+                                value={featureInputs['size_w'] || ''}
+                                onChange={(e) =>
+                                  setFeatureInputs({ ...featureInputs, size_w: e.target.value })
+                                }
+                              />
+                              <span className="text-gray-300">|</span>
+                              <input
+                                type="text"
+                                className="w-[45px] h-full bg-transparent border-none text-center text-sm font-num-medium outline-none focus:placeholder-transparent placeholder:text-gray-400"
+                                placeholder="ارتفاع"
+                                value={featureInputs['size_h'] || ''}
+                                onChange={(e) =>
+                                  setFeatureInputs({ ...featureInputs, size_h: e.target.value })
+                                }
+                              />
+                            </div>
+                            <button
+                              onClick={() => {
+                                const l = featureInputs['size_l']?.trim();
+                                const w = featureInputs['size_w']?.trim();
+                                const h = featureInputs['size_h']?.trim();
+                                if (l && w && h) {
+                                  const val = `${l}x${w}x${h}`;
+                                  const current = feature.values || [];
+                                  if (!current.includes(val)) {
+                                    updateVariantValues(feature.id, [...current, val]);
+                                  }
+                                  setFeatureInputs({ ...featureInputs, size_l: '', size_w: '', size_h: '' });
+                                }
+                              }}
+                              className="w-8 h-8 rounded-lg bg-white border border-gray-200 flex items-center justify-center hover:border-[#FDD00A] hover:text-[#FDD00A] transition-all shadow-sm"
+                            >
+                              <Plus className="w-4 h-4 text-gray-500" />
+                            </button>
+                          </div>
+
+                          {/* Selected Sizes Chips */}
+                          <div className="flex items-center gap-2">
+                            {(feature.values || []).map((val, idx) => (
+                              <div
+                                key={idx}
+                                className="bg-white rounded-xl px-3 py-1.5 flex items-center gap-2 border border-gray-200 shadow-sm flex-shrink-0 min-h-[36px]"
+                              >
+                                <span className="text-sm font-num-medium text-[#0D0D12]">{val}</span>
+                                <div
+                                  className="w-5 h-5 rounded-full bg-gray-50 flex items-center justify-center cursor-pointer hover:bg-red-50 hover:text-red-500 transition-colors"
+                                  onClick={() => {
+                                    const current = feature.values || [];
+                                    updateVariantValues(
+                                      feature.id,
+                                      current.filter((v) => v !== val),
+                                    );
+                                  }}
+                                >
+                                  <X className="w-3 h-3" />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
                     ) : (
-                      <input
+                      <Input
                         type="text"
-                        className="w-full h-full outline-none text-right text-sm font-['PeydaWeb'] font-medium placeholder:text-[#DFE1E7] placeholder:font-medium placeholder:font-['PeydaFaNum']"
+                        className="w-full h-full outline-none text-right text-sm font-['PeydaWeb'] font-medium placeholder:text-[#DFE1E7] placeholder:font-num-medium border-none shadow-none focus-visible:ring-0 px-0"
                         placeholder={`با ، ${feature.title} های مختلف را از هم جدا کنید`}
                         value={feature.values?.join('، ') || ''}
                         onChange={(e) => {
                           const val = e.target.value;
-                          // Split by English comma or Persian comma
                           const vals = val.split(/,|،/).map((s: string) => s.trim());
                           updateVariantValues(feature.id, vals);
                         }}
@@ -306,7 +485,7 @@ export function NewProductPage2({
                   items={formData.features?.id || []}
                   onChange={(items) => updateStaticFeatures('id', items)}
                   placeholderKey="عنوان (مثلا: برند)"
-                  placeholderValue="مقدار (مثلا: نایک)"
+                  placeholderValue="مقدار (مثلا: ایرانپوش)"
                 />
               </AccordionItem>
               {/* ... other accordions ... */}
@@ -380,37 +559,169 @@ export function NewProductPage2({
           </button>
         </div>
       </div>
+
+      {/* Color Picker Modal */}
+      {showColorPicker && (
+        <ColorPickerModal
+          startColor={COLORS[0].bg} // Default start
+          onClose={() => setShowColorPicker(false)}
+          onConfirm={(color) => {
+            const current = formData.variantFeatures?.find((f) => f.id === 'color')?.values || [];
+            if (!current.includes(color)) {
+              updateVariantValues('color', [...current, color]);
+            }
+            setShowColorPicker(false);
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
+interface ColorPickerModalProps {
+  startColor: string;
+  onClose: () => void;
+  onConfirm: (color: string) => void;
+}
+
+function ColorPickerModal({ startColor, onClose, onConfirm }: ColorPickerModalProps) {
+  const [hex, setHex] = useState(startColor);
+  const [hue, setHue] = useState(() => hexToHsl(startColor).h);
+
+  // Sync state if startColor prop changes
+  useEffect(() => {
+    const { h } = hexToHsl(startColor);
+    setHue(h);
+    setHex(startColor);
+  }, [startColor]);
+
+  // When hue changes, update hex (keep saturation/lightness 100/50 for vibrancy)
+  const handleHueChange = (newHue: number) => {
+    setHue(newHue);
+    const newHex = hslToHex(newHue, 100, 50);
+    setHex(newHex);
+  };
+
+  return (
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative w-[320px] bg-white rounded-2xl shadow-2xl p-5 flex flex-col gap-4 animate-in zoom-in-95 duration-200">
+        {/* Header */}
+        <div className="flex justify-between items-center border-b border-gray-100 pb-3">
+          <button onClick={onClose} className="p-1 hover:bg-gray-100 rounded-full">
+            <X className="w-5 h-5 text-gray-500" />
+          </button>
+          <span className="text-lg font-semibold font-['PeydaWeb'] text-[#0D0D12]">
+            انتخاب رنگ
+          </span>
+        </div>
+
+        {/* Preview */}
+        <div
+          className="w-full h-24 rounded-xl border border-gray-200 shadow-inner transition-colors duration-200"
+          style={{ background: hex }}
+        />
+
+        {/* Hue Slider */}
+        <div className="flex flex-col gap-2">
+          <label className="text-right text-sm font-medium text-gray-600 font-['PeydaWeb']">
+            طیف رنگ
+          </label>
+          <input
+            type="range"
+            min="0"
+            max="360"
+            value={hue}
+            onChange={(e) => handleHueChange(Number(e.target.value))}
+            className="w-full h-4 rounded-lg appearance-none cursor-pointer"
+            style={{
+              background:
+                'linear-gradient(to right, #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%)',
+            }}
+          />
+        </div>
+
+        {/* Hex Input */}
+        <div className="flex flex-col gap-2">
+          <label className="text-right text-sm font-medium text-gray-600 font-['PeydaWeb']">
+            کد رنگ (Hex)
+          </label>
+          <div className="flex items-center border border-gray-200 rounded-xl px-3 h-10 focus-within:border-[#FDD00A] transition-colors">
+            <span className="text-gray-400 mr-2">#</span>
+            <input
+              type="text"
+              value={hex.replace('#', '')}
+              onChange={(e) => {
+                const val = '#' + e.target.value;
+                setHex(val);
+                // Try to update hue if valid hex
+                if (/^#[0-9A-F]{6}$/i.test(val)) {
+                  const { h } = hexToHsl(val);
+                  setHue(h);
+                }
+              }}
+              className="flex-1 outline-none text-left font-mono text-sm uppercase text-[#0D0D12]"
+              maxLength={6}
+            />
+          </div>
+        </div>
+
+        {/* Presets */}
+        <div className="flex flex-col gap-2">
+          <label className="text-right text-sm font-medium text-gray-600 font-['PeydaWeb']">
+            پیش‌فرض‌ها
+          </label>
+          <div className="grid grid-cols-6 gap-2">
+            {[
+              '#FF3B30',
+              '#FF9500',
+              '#FFCC00',
+              '#34C759',
+              '#00C7BE',
+              '#32ADE6',
+              '#007AFF',
+              '#5856D6',
+              '#AF52DE',
+              '#FF2D55',
+              '#A2845E',
+              '#000000',
+            ].map((preset) => (
+              <button
+                key={preset}
+                onClick={() => {
+                  setHex(preset);
+                  const { h } = hexToHsl(preset);
+                  setHue(h);
+                }}
+                className="w-8 h-8 rounded-full border border-gray-100 hover:scale-110 transition-transform shadow-sm"
+                style={{ background: preset }}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="flex gap-3 mt-2">
+          <button
+            onClick={onClose}
+            className="flex-1 h-10 rounded-xl border border-gray-200 text-gray-600 text-sm font-medium hover:bg-gray-50 transition-colors"
+          >
+            انصراف
+          </button>
+          <button
+            onClick={() => onConfirm(hex)}
+            className="flex-1 h-10 rounded-xl bg-[#FDD00A] text-[#1A1C1E] text-sm font-semibold hover:bg-[#eac009] transition-colors shadow-sm"
+          >
+            تایید
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
 
 // Helper Components
-function StepItem({
-  step,
-  label,
-  isActive,
-  onClick,
-}: {
-  step: string;
-  label: string;
-  isActive: boolean;
-  onClick?: () => void;
-}) {
-  return (
-    <div className="flex items-center gap-2.5 flex-shrink-0 cursor-pointer" onClick={onClick}>
-      <span
-        className={`text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide whitespace-nowrap ${isActive ? 'text-[#0D0D12]' : 'text-[#818898]'}`}
-      >
-        {label}
-      </span>
-      <div
-        className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold font-['PeydaFaNum'] leading-[21px] tracking-wide ${isActive ? 'bg-[#FFD369] text-white' : 'bg-[#DFE1E7] text-white'}`}
-      >
-        {step}
-      </div>
-    </div>
-  );
-}
+
 
 function AccordionItem({
   label,
@@ -472,14 +783,14 @@ function FeatureSection({
 
       {items.map((item, idx) => (
         <div key={idx} className="flex gap-2 items-center w-full">
-          <input
+          <Input
             value={item.key}
             onChange={(e) => updateRow(idx, 'key', e.target.value)}
             placeholder={placeholderKey}
             className="flex-1 h-10 px-3 rounded-lg border border-[#DFE1E7] text-right text-sm outline-none focus:border-[#FDD00A] focus:ring-1 focus:ring-[#FDD00A]"
           />
           <div className="text-gray-400">:</div>
-          <input
+          <Input
             value={item.value}
             onChange={(e) => updateRow(idx, 'value', e.target.value)}
             placeholder={placeholderValue}
