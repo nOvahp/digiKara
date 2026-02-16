@@ -145,7 +145,9 @@ export default function ShopIdentityPage() {
             >
               <div className="relative">
                 <Image
-                  style={{ width: 126.21, height: 126.21, borderRadius: 63.11 }}
+                  width={126}
+                  height={126}
+                  style={{ borderRadius: 63.11 }}
                   src={logoPreview}
                   alt="Shop Logo"
                   className="object-cover"

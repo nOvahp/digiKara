@@ -124,7 +124,9 @@ const ManagerOrderPopup = ({ onClose, orderId, onUpdate }: ManagerOrderPopupProp
                 <Image
                   src={`https://digikara.back.adiaweb.dev/storage/${product.image_path}`}
                   alt={product.title || 'محصول'}
-                  className="w-20 h-20 rounded-lg object-cover border border-[#DFE1E7]"
+                  width={80}
+                  height={80}
+                  className="rounded-lg object-cover border border-[#DFE1E7]"
                 />
               ) : (
                 <div className="w-20 h-20 rounded-lg bg-gray-50 border border-[#DFE1E7] flex items-center justify-center">

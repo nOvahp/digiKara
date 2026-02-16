@@ -285,7 +285,7 @@ export function NewProduct({
                     key={index}
                     className="relative min-w-[137px] h-full rounded-xl border border-[#DFE1E7] overflow-hidden flex-shrink-0 group"
                   >
-                    <Image src={img} alt="Product" className="w-full h-full object-cover" />
+                    <Image src={img} alt="Product" className="object-cover" fill sizes="137px" />
                     <button
                       onClick={() => removeImage(index)}
                       className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity"

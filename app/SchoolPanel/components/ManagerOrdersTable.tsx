@@ -290,7 +290,9 @@ const ManagerOrdersTable = () => {
                             <Image
                               src={`https://digikara.back.adiaweb.dev/storage/${order.product.image_path}`}
                               alt=""
-                              className="w-8 h-8 rounded object-cover"
+                              width={32}
+                              height={32}
+                              className="rounded object-cover"
                             />
                           )}
                           <span className="line-clamp-1 max-w-[150px]">

@@ -237,11 +237,15 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
 
       <div className="flex flex-col gap-3">
         {mainImage ? (
-          <Image
-            src={mainImage}
-            alt="Product Preview"
-            className="w-full h-[305px] object-cover rounded-xl border border-[#DFE1E7]"
-          />
+          <div className="relative w-full h-[305px]">
+            <Image
+              src={mainImage}
+              alt="Product Preview"
+              className="object-cover rounded-xl border border-[#DFE1E7]"
+              fill
+              sizes="100vw"
+            />
+          </div>
         ) : (
           <div className="w-full h-[305px] bg-gray-50 rounded-xl border border-[#DFE1E7] flex flex-col items-center justify-center text-gray-400 gap-2">
             <Info className="w-8 h-8" />
@@ -251,13 +255,16 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
         {images.length > 1 && (
           <div className="flex gap-3 overflow-x-auto pb-2 px-1" dir="rtl">
             {images.map((img: string, idx: number) => (
-              <Image
-                key={idx}
-                src={img}
-                alt={`Thumbnail ${idx}`}
-                className={`w-[75px] h-[56px] object-cover rounded-lg border cursor-pointer transition-all ${mainImage === img ? 'border-[#FDD00A] ring-2 ring-[#FDD00A]/20' : 'border-[#DFE1E7] hover:border-gray-400'}`}
-                onClick={() => setActiveImage(img)}
-              />
+              <div key={idx} className="relative w-[75px] h-[56px] flex-shrink-0">
+                <Image
+                  src={img}
+                  alt={`Thumbnail ${idx}`}
+                  className={`object-cover rounded-lg border cursor-pointer transition-all ${mainImage === img ? 'border-[#FDD00A] ring-2 ring-[#FDD00A]/20' : 'border-[#DFE1E7] hover:border-gray-400'}`}
+                  onClick={() => setActiveImage(img)}
+                  fill
+                  sizes="75px"
+                />
+              </div>
             ))}
           </div>
         )}

@@ -115,9 +115,9 @@ export function LoginViewCustomerRegister({
           <div className="flex justify-center mb-6">
             <div className="relative group overflow-visible">
               {/* Main Avatar Circle */}
-              <div className="w-24 h-24 rounded-full bg-gray-50 border-4 border-white shadow-lg flex items-center justify-center overflow-hidden">
+              <div className="w-24 h-24 rounded-full bg-gray-50 border-4 border-white shadow-lg flex items-center justify-center overflow-hidden relative">
                 {avatarPreview ? (
-                  <Image src={avatarPreview} alt="Avatar" className="w-full h-full object-cover" />
+                  <Image src={avatarPreview} alt="Avatar" fill className="object-cover" sizes="96px" />
                 ) : (
                   <User className="w-10 h-10 text-gray-300" />
                 )}

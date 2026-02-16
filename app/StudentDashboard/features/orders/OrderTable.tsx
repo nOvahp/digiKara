@@ -321,12 +321,14 @@ export function OrderTable({
                       {/* Product */}
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-12 h-12 rounded-lg border border-gray-100 overflow-hidden flex-shrink-0 bg-gray-50">
+                          <div className="w-12 h-12 rounded-lg border border-gray-100 overflow-hidden flex-shrink-0 bg-gray-50 relative">
                             {order.productImage ? (
                               <Image
                                 src={order.productImage}
                                 alt={order.productName || 'محصول'}
-                                className="w-full h-full object-cover"
+                                fill
+                                className="object-cover"
+                                sizes="48px"
                               />
                             ) : (
                               <div className="w-full h-full flex items-center justify-center text-gray-300">

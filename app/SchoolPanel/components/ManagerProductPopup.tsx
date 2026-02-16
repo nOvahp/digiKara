@@ -262,11 +262,15 @@ const ManagerProductPopup = ({
             {/* Image Section */}
             {model_data?.image_path ? (
               <div className="self-stretch flex-col justify-start items-start gap-3 flex w-full shrink-0">
-                <Image
-                  className="self-stretch h-[200px] w-full object-cover rounded-xl border border-[#DFE1E7]"
-                  src={`https://digikara.back.adiaweb.dev/storage/${model_data.image_path}`}
-                  alt={model_data.title || 'محصول'}
-                />
+                <div className="relative self-stretch h-[200px] w-full rounded-xl border border-[#DFE1E7] overflow-hidden">
+                  <Image
+                    fill
+                    className="object-cover"
+                    src={`https://digikara.back.adiaweb.dev/storage/${model_data.image_path}`}
+                    alt={model_data.title || 'محصول'}
+                    sizes="(max-width: 768px) 100vw, 500px"
+                  />
+                </div>
               </div>
             ) : (
               <div className="self-stretch h-[200px] bg-gray-50 rounded-xl border border-[#DFE1E7] flex flex-col items-center justify-center text-gray-400 gap-2">

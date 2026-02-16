@@ -301,7 +301,9 @@ const ManagerProductsTable = () => {
                         <Image
                           src={`https://digikara.back.adiaweb.dev/storage/${product.model_data.image_path}`}
                           alt="product"
-                          className="w-10 h-10 rounded-lg object-cover border border-gray-200"
+                          width={40}
+                          height={40}
+                          className="rounded-lg object-cover border border-gray-200"
                         />
                       ) : (
                         <div className="w-10 h-10 bg-gray-100 rounded-lg"></div>

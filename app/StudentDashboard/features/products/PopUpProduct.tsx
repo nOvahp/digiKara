@@ -114,11 +114,15 @@ export function PopUpProduct({ order, onClose }: PopUpProductProps) {
           {/* Image Section */}
           <div className="self-stretch flex-col justify-start items-start gap-3 flex w-full">
             {order.productImage ? (
-              <Image
-                className="self-stretch h-[180px] w-full object-cover rounded-xl border border-[#DFE1E7]"
-                src={order.productImage}
-                alt={order.productName || 'محصول'}
-              />
+              <div className="relative self-stretch h-[180px] w-full rounded-xl border border-[#DFE1E7] overflow-hidden">
+                <Image
+                  fill
+                  className="object-cover"
+                  src={order.productImage}
+                  alt={order.productName || 'محصول'}
+                  sizes="(max-width: 768px) 100vw, 500px"
+                />
+              </div>
             ) : (
               <div className="self-stretch h-[120px] w-full bg-gray-50 rounded-xl border border-[#DFE1E7] flex items-center justify-center text-gray-400 text-sm">
                 تصویر موجود نیست

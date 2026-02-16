@@ -205,8 +205,10 @@ export function BasicInfoForm({ defaultValues = {}, values, onChange }: BasicInf
                     <Image
                       src={img}
                       alt={`product-${i}`}
-                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-105 cursor-zoom-in"
+                      fill
+                      className="object-cover transition-transform duration-500 hover:scale-105 cursor-zoom-in"
                       onClick={() => setExpandedImage(img)}
+                      sizes="100vw"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.style.display = 'none';
@@ -295,12 +297,16 @@ export function BasicInfoForm({ defaultValues = {}, values, onChange }: BasicInf
           >
             <X className="w-6 h-6" />
           </button>
-          <Image
-            src={expandedImage}
-            className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl scale-100 animate-in zoom-in-95 duration-300"
-            onClick={(e) => e.stopPropagation()}
-            alt="Full size"
-          />
+          <div className="relative max-w-[90vw] max-h-[90vh] w-full h-full">
+            <Image
+              src={expandedImage}
+              fill
+              className="object-contain rounded-lg shadow-2xl scale-100 animate-in zoom-in-95 duration-300"
+              onClick={(e) => e.stopPropagation()}
+              alt="Full size"
+              sizes="90vw"
+            />
+          </div>
         </div>
       )}
     </div>
