@@ -9,13 +9,11 @@ interface LoginHeaderProps {
 
 export function LoginHeader({ imageSrc, overlayImageSrc, onBack }: LoginHeaderProps) {
   return (
-    <div className="relative w-full h-auto z-0 mb-16">
-      <div className="relative w-full aspect-[16/9]">
-        <Image src={imageSrc} alt="Login Header" fill className="object-cover" priority sizes="100vw" />
-      </div>
+    <div className="relative w-full h-auto z-0 mb-6 -mt-14">
+      <Image src={imageSrc} alt="Login Header" className="w-full h-auto object-cover" priority />
       {/* Overlay Image */}
       {overlayImageSrc && (
-        <div className="absolute bottom-[-12%] left-[17%] h-[280px] w-[280px] z-10">
+        <div className="absolute bottom-[-12%] left-[17%] h-[280px] w-[280px]">
           <Image src={overlayImageSrc} alt="Overlay Image" fill className="object-contain" />
         </div>
       )}
