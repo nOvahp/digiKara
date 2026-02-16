@@ -117,7 +117,7 @@ export function LoginViewCustomerRegister({ onNext, phone, onBack }: LoginViewCu
                             )}
                         </div>
 
-                         {/* Camera Icon Badge - Always Visible */}
+                         {/* Camera Icon Badge - Always Visible 111 */}
                          <div className="absolute -bottom-1 -right-1 bg-[#FDD00A] text-[#393E46] p-2 rounded-full border-4 border-white shadow-md z-10">
                             <Camera className="w-4 h-4" />
                         </div>
