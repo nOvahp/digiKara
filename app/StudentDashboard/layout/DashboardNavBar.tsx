@@ -6,9 +6,10 @@ import Image from 'next/image';
 
 import { PopUpStudent } from '../features/products/PopUpStudent';
 import Notifications from '../features/notifications/Notifications';
+import { UserData } from '@/app/services/common/schemas';
 
 export function DashboardNavBar() {
-  const [user, setUser] = React.useState<any>(null);
+  const [user, setUser] = React.useState<UserData | null>(null);
   const [showStudentPopup, setShowStudentPopup] = React.useState(false);
   const [showNotifications, setShowNotifications] = React.useState(false);
 

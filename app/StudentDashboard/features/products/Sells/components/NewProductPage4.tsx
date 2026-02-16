@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import axios from 'axios';
 import { ChevronRight, X } from 'lucide-react';
+import { AddProductFormState } from '../types';
 
 const toFarsiNumber = (n: number | string | undefined): string => {
   if (n === undefined || n === null) return '';
@@ -12,8 +13,8 @@ interface NewProductPage4Props {
   onClose: () => void;
   onNext: () => void;
   onStepClick: (step: string) => void;
-  formData: any;
-  updateFormData: (data: any) => void;
+  formData: AddProductFormState;
+  updateFormData: (data: Partial<AddProductFormState>) => void;
 }
 
 import { z } from 'zod';

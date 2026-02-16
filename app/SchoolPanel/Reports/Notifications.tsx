@@ -136,7 +136,7 @@ const Notifications = ({ onClose }: NotificationsProps) => {
                     <div className="w-2 h-2 bg-[#DF1C41] rounded-full" />
                   </div>
                   <div className="self-stretch text-right text-[#666D80] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">
-                    موجودی <span className="font-semibold">"عسل چهل گیاه ارگانیک"</span> رو به اتمام
+                    موجودی <span className="font-semibold">&quot;عسل چهل گیاه ارگانیک&quot;</span> رو به اتمام
                     است - فقط {toFarsiNumber(8)} مورد در انبار باقی مانده است.
                   </div>
                 </div>
@@ -196,7 +196,7 @@ const Notifications = ({ onClose }: NotificationsProps) => {
                     </div>
                   </div>
                   <div className="self-stretch text-right text-[#666D80] text-xs font-['PeydaWeb'] font-light leading-[18px] tracking-wide break-word">
-                    جزئیات و سطوح سهام <span className="font-semibold">"عسل چهل گیاه ارگانیک"</span>{' '}
+                    جزئیات و سطوح سهام <span className="font-semibold">&quot;عسل چهل گیاه ارگانیک&quot;</span>{' '}
                     با موفقیت به روز شده اند.
                   </div>
                 </div>

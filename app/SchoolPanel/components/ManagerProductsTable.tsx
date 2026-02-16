@@ -11,7 +11,7 @@ const toFarsiNumber = (n: number | string | undefined): string => {
 };
 
 const ManagerProductsTable = () => {
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Record<string, unknown>[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
@@ -82,7 +82,7 @@ const ManagerProductsTable = () => {
     if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
   };
 
-  const handleProductClick = (product: any) => {
+  const handleProductClick = (product: Record<string, unknown>) => {
     setSelectedProduct(product);
     setIsPopupOpen(true);
   };

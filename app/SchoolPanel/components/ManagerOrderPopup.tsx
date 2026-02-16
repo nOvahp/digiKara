@@ -70,7 +70,7 @@ const ManagerOrderPopup = ({ onClose, orderId, onUpdate }: ManagerOrderPopupProp
         status: newStatus,
       });
       if (response.success) {
-        setOrder((prev: any) => ({ ...prev, status: newStatus }));
+        setOrder((prev: Record<string, unknown> | null) => prev ? ({ ...prev, status: newStatus }) : null);
         if (onUpdate) onUpdate();
       }
     } catch (error) {

@@ -60,7 +60,7 @@ export default function DigiKaraCart() {
     return price.toLocaleString('fa-IR') + ' ریال';
   };
 
-  const handleIncrement = async (item: any) => {
+  const handleIncrement = async (item: Pick<{ id: number }, 'id'>) => {
     try {
       await bazzarService.incrementOrderItem(item.id);
       incrementItem(item.id);
@@ -69,7 +69,7 @@ export default function DigiKaraCart() {
     }
   };
 
-  const handleDecrement = async (item: any) => {
+  const handleDecrement = async (item: Pick<{ id: number }, 'id'>) => {
     try {
       await bazzarService.decrementOrderItem(item.id);
       decrementItem(item.id);

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Search, Filter, ChevronLeft, ChevronRight, MoreHorizontal, Eye } from 'lucide-react';
-import { managerService } from '@/app/services/manager/managerService';
+import { managerService, Order } from '@/app/services/manager/managerService';
 import ManagerOrderPopup from './ManagerOrderPopup';
 
 const toFarsiNumber = (n: number | string | undefined): string => {
@@ -10,13 +10,13 @@ const toFarsiNumber = (n: number | string | undefined): string => {
   return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
 };
 
-const formatPrice = (price: string | number) => {
+const formatPrice = (price: string | number | undefined) => {
   if (!price) return '۰';
   return toFarsiNumber(price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
 };
 
 const ManagerOrdersTable = () => {
-  const [orders, setOrders] = useState<any[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
@@ -75,10 +75,7 @@ const ManagerOrdersTable = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentOrders = filteredOrders.slice(startIndex, startIndex + itemsPerPage);
 
-  // Reset pagination when filter changes
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery, filterStatus]);
+
 
   // Close filter when clicking outside
   useEffect(() => {
@@ -120,7 +117,10 @@ const ManagerOrdersTable = () => {
               type="text"
               placeholder="جستجو در سفارشات..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setCurrentPage(1); // Reset pagination here
+              }}
               className="w-full h-10 pr-9 pl-4 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] text-sm text-[#0D0D12] focus:outline-blue-500 transition-colors font-medium"
             />
             <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#818898]" />
@@ -130,7 +130,6 @@ const ManagerOrdersTable = () => {
           <div className="flex items-center gap-2" ref={filterRef}>
             <div className="relative">
               <div
-                className={`h-10 px-4 rounded-xl outline outline-1 outline-[#DFE1E7] flex justify-center items-center gap-2 cursor-pointer transition-colors ${isFilterOpen ? 'bg-gray-100 ring-2 ring-blue-100' : 'bg-white hover:bg-gray-50'}`}
                 onClick={() => setIsFilterOpen(!isFilterOpen)}
               >
                 <Filter
@@ -164,6 +163,7 @@ const ManagerOrdersTable = () => {
                       className="flex items-center gap-2 px-2 py-1.5 hover:bg-gray-50 rounded-lg cursor-pointer"
                       onClick={() => {
                         setFilterStatus(option.value);
+                        setCurrentPage(1); // Reset pagination here
                         setIsFilterOpen(false);
                       }}
                     >

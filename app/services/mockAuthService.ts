@@ -1,6 +1,6 @@
 // Mock auth service for testing without backend
 
-import { id } from 'zod/v4/locales';
+
 
 export const testOtp = '12345';
 
@@ -19,7 +19,7 @@ export const mockAuthService = {
   ): Promise<{
     success: boolean;
     message?: string;
-    data?: any[];
+    data?: unknown[];
     code?: number;
     status?: string;
   }> => {

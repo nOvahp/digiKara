@@ -24,7 +24,8 @@ export interface UserData {
   is_info_correct?: boolean;
   favorites?: boolean;
   meta?: boolean;
-  cell?: any;
+  cell?: unknown;
+  profile_image?: string;
   // Add other fields as per your API response
 }
 
@@ -45,4 +46,5 @@ export const UserSchema = z.object({
   favorites: z.boolean().optional(),
   meta: z.boolean().optional(),
   cell: z.any().optional(),
+  profile_image: z.string().optional(),
 });

@@ -5,12 +5,14 @@ import { useRouter } from 'next/navigation';
 import { ArrowLeft, Box, Check, ChevronLeft, MapPin, Truck, ShoppingBag } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useCart } from '@/app/Bazzar/CartContext';
-import { bazzarService } from '@/app/services/bazzarService';
+import { bazzarService, Address } from '@/app/services/bazzarService';
+
+
 
 export default function FinalCheckPage() {
   const router = useRouter();
   const { items } = useCart();
-  const [selectedAddress, setSelectedAddress] = React.useState<any>(null);
+  const [selectedAddress, setSelectedAddress] = React.useState<Address | null>(null);
 
   React.useEffect(() => {
     const fetchAddress = async () => {

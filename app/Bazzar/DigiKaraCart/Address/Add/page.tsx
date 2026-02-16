@@ -9,8 +9,8 @@ import { toast } from 'sonner';
 export default function AddAddressPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [provinces, setProvinces] = useState<any[]>([]);
-  const [cities, setCities] = useState<any[]>([]);
+  const [provinces, setProvinces] = useState<Record<string, unknown>[]>([]);
+  const [cities, setCities] = useState<Record<string, unknown>[]>([]);
 
   interface AddressFormData {
     title: string;
@@ -115,7 +115,7 @@ export default function AddAddressPage() {
 
     setIsLoading(true);
     try {
-      const response = await bazzarService.createAddress(formData);
+      const response = await bazzarService.createAddress(formData as unknown as Parameters<typeof bazzarService.createAddress>[0]);
       if (response) {
         // Add stricter check if needed based on API response structure
         toast.success('آدرس با موفقیت ثبت شد');
@@ -168,7 +168,7 @@ export default function AddAddressPage() {
               className="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-[#FDD00A] outline-none transition-colors appearance-none"
             >
               <option value="">انتخاب کنید</option>
-              {provinces.map((prov: any) => (
+              {provinces.map((prov) => (
                 <option key={prov.id} value={prov.id}>
                   {prov.name}
                 </option>
@@ -186,7 +186,7 @@ export default function AddAddressPage() {
               className="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-[#FDD00A] outline-none transition-colors appearance-none disabled:opacity-50"
             >
               <option value="">انتخاب کنید</option>
-              {cities.map((city: any) => (
+              {cities.map((city) => (
                 <option key={city.id} value={city.id}>
                   {city.name}
                 </option>

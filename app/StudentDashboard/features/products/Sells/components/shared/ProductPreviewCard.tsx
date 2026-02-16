@@ -38,8 +38,31 @@ const PRICE_TYPE_LABELS: Record<number, string> = {
   6: 'وزن',
 };
 
+import { AddProductFormState, VariantFeature, VariantPrice } from '../../types';
+import { Product } from '@/app/services/products/productsService';
+
+// Define a unified type for preview
+type PreviewProduct = Omit<Partial<Product>, 'id'> & {
+  id?: string | number;
+  variantFeatures?: VariantFeature[];
+  variantPrices?: VariantPrice[];
+  extraPrices?: VariantPrice[]; // Legacy support
+  isMultiPrice?: boolean;
+  features?: {
+    id: FeatureItem[];
+    visual: FeatureItem[];
+    production: FeatureItem[];
+    packaging: FeatureItem[];
+  };
+};
+
+interface FeatureItem {
+  key: string;
+  value: string;
+}
+
 export interface ProductPreviewProps {
-  product: any; // Using any for flexibility with formData structure
+  product: PreviewProduct;
 }
 
 export function ProductPreviewCard({ product }: ProductPreviewProps) {
@@ -50,7 +73,7 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
   // Initialize images
   const images =
     product.images && product.images.length > 0
-      ? product.images.map((img: any) => (typeof img === 'string' ? img : URL.createObjectURL(img)))
+      ? product.images.map((img) => (typeof img === 'string' ? img : URL.createObjectURL(img)))
       : [];
 
   const mainImage = activeImage || (images.length > 0 ? images[0] : null);
@@ -63,11 +86,12 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
   const displayFeatures = React.useMemo(() => {
     // Priority: Prices (Edit Mode) > VariantFeatures (Wizard Legacy/Metadata)
     // If we have explicit price definitions, they are the source of truth.
-    if (isEditMode) {
+    if (isEditMode && product.prices) {
       const groups: Record<string, Set<string>> = {};
-      product.prices.forEach((p: any) => {
-        let effectiveType = Number(p.type);
-        let value = p.title;
+      product.prices.forEach((p) => {
+        const price = p as { type?: number | string; title?: string };
+        let effectiveType = Number(price.type);
+        let value = price.title || '';
 
         // HEURISTIC: Detect "Weight" mislabeled as "Color"
         if (value.trim().startsWith('وزن:') || value.trim().startsWith('وزن :')) {
@@ -112,7 +136,7 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
   useEffect(() => {
     if (displayFeatures && displayFeatures.length > 0) {
       const defaults: Record<string, string> = {};
-      displayFeatures.forEach((f: any) => {
+      displayFeatures.forEach((f) => {
         if (f.values && f.values.length > 0) {
           defaults[f.title] = f.values[0];
         }
@@ -127,12 +151,13 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
     let calculatedPrice = basePrice;
 
     // 1. Logic for "Edit Page"
-    if (isEditMode) {
+    if (isEditMode && product.prices) {
       Object.entries(selectedVariants).forEach(([label, value]) => {
         // Find price item matching Type Label + Title
-        const priceItem = product.prices.find((p: any) => {
-          let effectiveType = Number(p.type);
-          let rawTitle = p.title;
+        const priceItem = product.prices!.find((p) => {
+          const price = p as { type?: number | string; title?: string };
+          let effectiveType = Number(price.type);
+          let rawTitle = price.title || '';
 
           // HEURISTIC: Detect "Weight" mislabeled
           if (rawTitle.trim().startsWith('وزن:') || rawTitle.trim().startsWith('وزن :')) {
@@ -161,7 +186,7 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
         });
 
         if (priceItem) {
-          const variantAmount = parseInt(priceItem.amount?.toString().replace(/\D/g, '') || '0');
+          const variantAmount = parseInt((priceItem as any).amount?.toString().replace(/\D/g, '') || '0');
           const difference = variantAmount - basePrice;
           calculatedPrice += difference;
         }
@@ -176,7 +201,7 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
       for (const [title, value] of Object.entries(selectedVariants)) {
         const key = `${title}: ${value}`;
         const variantPrice = wizardPrices.find(
-          (p: any) => p.variantLabel === key || p.title === key,
+          (p: unknown) => (p as { variantLabel?: string; title?: string }).variantLabel === key || (p as { variantLabel?: string; title?: string }).title === key,
         );
         if (variantPrice) {
           const variantAmount = parseInt(variantPrice.amount?.toString().replace(/\D/g, '') || '0');
@@ -298,7 +323,7 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
           <div className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb']">
             ویژگی‌های قابل انتخاب
           </div>
-          {displayFeatures.map((feature: any) => (
+          {displayFeatures.map((feature) => (
             <div key={feature.title} className="flex flex-col gap-2">
               <div className="text-right text-[#0D0D12] text-sm font-medium font-['PeydaWeb']">
                 {feature.title}:{' '}
@@ -336,7 +361,7 @@ export function ProductPreviewCard({ product }: ProductPreviewProps) {
       )}
 
       {/* All Product Specifications (Read-only from Step 2) */}
-      {product.features && Object.values(product.features).some((arr: any) => arr.length > 0) && (
+      {product.features && Object.values(product.features).some((arr) => arr.length > 0) && (
         <div className="flex flex-col gap-3 border-t border-[#DFE1E7] pt-4" dir="rtl">
           <div className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb'] flex items-center gap-2">
             <ListCheck className="w-4 h-4" />

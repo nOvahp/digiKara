@@ -51,6 +51,12 @@ enum Step {
   CUSTOMER_LOGIN = 14,
 }
 
+import { UserData } from '@/app/services/common/schemas';
+
+// ... (imports remain)
+
+// ... (step enum remains)
+
 export default function LoginPage() {
   const [step, setStep] = React.useState<number>(Step.INTRO_1);
   const [phone, setPhone] = React.useState<string>(''); // Store phone for multi-step flows
@@ -67,10 +73,11 @@ export default function LoginPage() {
   }, [searchParams]);
 
   // Handler for successful login (returning user)
-  const handleLoginSuccess = (userData?: any) => {
+  const handleLoginSuccess = (userData?: UserData) => {
     if (userData) {
       try {
         localStorage.setItem('user_data', JSON.stringify(userData));
+        // cell is typed as any in UserData, so this check is valid
         if (userData.cell) {
           localStorage.setItem('hojre_created', 'true');
         }
@@ -87,7 +94,7 @@ export default function LoginPage() {
   };
 
   // --- Smart Navigation Logic ---
-  const handleNextStep = (currentUserData: any = user) => {
+  const handleNextStep = (currentUserData: UserData | null = user) => {
     console.log('🚀 [Smart Nav] handleNextStep called with:', currentUserData);
 
     // Save user data to localStorage for persistence across app
@@ -148,26 +155,26 @@ export default function LoginPage() {
     }
 
     // For student, check if hojre exists
-    // First check local user object (fastest)
-    // We need to access the current 'user' state which might be stale in closure,
-    // but 'user' from useAuth or the one passed in handleNextStep is best.
-    // However, handleFinalRedirect is called without args here.
-    // Let's rely on localStorage as a reliable fallback for the latest data
-    // or the 'user' from context if available.
-
-    let currentUser = user;
+    let currentUser: UserData | null = user;
     try {
       const stored = localStorage.getItem('user_data');
-      if (stored) currentUser = JSON.parse(stored);
-    } catch (e) {}
+      if (stored) currentUser = JSON.parse(stored) as UserData;
+    } catch (e) {
+      // ignore json parse error
+    }
 
     // Logic to check cell existence
     const checkHojre = async () => {
       // 1. Check in user object
-      const actualUser = (currentUser as any)?.user || currentUser;
-      const hasCellInUser = Array.isArray(actualUser?.cell)
-        ? actualUser.cell.length > 0
-        : !!actualUser?.cell;
+      // Handle potential nested user object (legacy or safety check)
+      const hasNestedUser = currentUser && 'user' in (currentUser as unknown as Record<string, unknown>);
+      const actualUser = hasNestedUser ? (currentUser as unknown as { user: UserData }).user : currentUser;
+
+      const hasCellInUser = actualUser?.cell
+        ? Array.isArray(actualUser.cell)
+          ? actualUser.cell.length > 0
+          : true // if cell is object/truthy
+        : false;
 
       if (hasCellInUser) {
         localStorage.setItem('hojre_created', 'true');
@@ -198,7 +205,7 @@ export default function LoginPage() {
   };
 
   // Wrapper for LoginViewNationalID which passes userData directly
-  const handleNationalIdNext = (userData: any) => {
+  const handleNationalIdNext = (userData: UserData) => {
     handleNextStep(userData);
   };
 
@@ -302,7 +309,7 @@ export default function LoginPage() {
     case Step.NATIONAL_ID:
       return (
         <LoginViewNationalID
-          onNext={(u: any) => handleNationalIdNext(u)}
+          onNext={(u) => handleNationalIdNext(u)}
           onBack={() => setStep(Step.LOGIN_FORM)}
         />
       );

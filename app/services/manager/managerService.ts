@@ -1,9 +1,25 @@
 import apiClient from '../common/apiClient';
+import { ApiResponse } from '../common/schemas';
+
+export interface Order {
+  id: number;
+  user?: {
+    firstname?: string;
+    lastname?: string;
+  };
+  product?: {
+    image_path?: string;
+    title?: string;
+  };
+  total_price: string | number;
+  jalali_date?: string;
+  status: string;
+}
 
 export const managerService = {
   confirmInfo: async (): Promise<{ success: boolean; message?: string }> => {
     try {
-      const response = await apiClient.put<any, any>('/manager/school/correct_info');
+      const response = await apiClient.put<ApiResponse<unknown>>('/manager/school/correct_info');
 
       if (response.status === 'success' || response.code === 200) {
         return { success: true, message: 'اطلاعات با موفقیت تایید شد' };
@@ -12,16 +28,18 @@ export const managerService = {
         success: false,
         message: response.message || 'خطا در تایید اطلاعات',
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('confirmInfo Error:', error);
-      return { success: false, message: error.message || 'خطای شبکه' };
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 
-  changeManagerInfo: async (data: any): Promise<{ success: boolean; message?: string }> => {
+  changeManagerInfo: async (data: unknown): Promise<{ success: boolean; message?: string }> => {
     try {
       // Endpoint provided: /manager/managers/change_info/student
-      const response = await apiClient.post<any, any>(
+      const response = await apiClient.post<ApiResponse<unknown>>(
         '/manager/managers/change_info/student',
         data,
       );
@@ -36,8 +54,10 @@ export const managerService = {
         success: false,
         message: response.message || 'خطا در ویرایش اطلاعات',
       };
-    } catch (error: any) {
-      return { success: false, message: error.message || 'خطای شبکه' };
+    } catch (error: unknown) {
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 
@@ -47,7 +67,7 @@ export const managerService = {
     message?: string;
   }> => {
     try {
-      const response = await apiClient.put<any, any>('/manager/school/correct_info');
+      const response = await apiClient.put<ApiResponse<unknown>>('/manager/school/correct_info');
 
       if (response.status === 'success' || response.code === 200) {
         return { success: true, message: 'اطلاعات مدرسه با موفقیت تایید شد' };
@@ -56,15 +76,17 @@ export const managerService = {
         success: false,
         message: response.message || 'خطا در تایید اطلاعات مدرسه',
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('confirmSchoolInfo Error:', error);
-      return { success: false, message: error.message || 'خطای شبکه' };
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 
-  reportSchoolDiscrepancy: async (data: any): Promise<{ success: boolean; message?: string }> => {
+  reportSchoolDiscrepancy: async (data: unknown): Promise<{ success: boolean; message?: string }> => {
     try {
-      const response = await apiClient.post<any, any>('/manager/school/change_info', data);
+      const response = await apiClient.post<ApiResponse<unknown>>('/manager/school/change_info', data);
 
       if (response.status === 'success' || response.code === 200) {
         return {
@@ -76,19 +98,21 @@ export const managerService = {
         success: false,
         message: response.message || 'خطا در ثبت گزارش مغایرت',
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('reportSchoolDiscrepancy Error:', error);
-      return { success: false, message: error.message || 'خطای شبکه' };
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 
   getStudentRequests: async (): Promise<{
     success: boolean;
-    data?: any[];
+    data?: unknown[];
     message?: string;
   }> => {
     try {
-      const response = await apiClient.get<any, any>('/manager/students');
+      const response = await apiClient.get<ApiResponse<unknown[]>>('/manager/students');
 
       if (response.status === 'success' || response.code === 200) {
         return { success: true, data: response.data };
@@ -97,17 +121,19 @@ export const managerService = {
         success: false,
         message: response.message || 'خطا در دریافت لیست درخواست‌ها',
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('getStudentRequests Error:', error);
-      return { success: false, message: error.message || 'خطای شبکه' };
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 
   getStudentRequestById: async (
     id: number,
-  ): Promise<{ success: boolean; data?: any; message?: string }> => {
+  ): Promise<{ success: boolean; data?: unknown; message?: string }> => {
     try {
-      const response = await apiClient.get<any, any>(`/manager/students/${id}`);
+      const response = await apiClient.get<ApiResponse<unknown>>(`/manager/students/${id}`);
 
       if (response.status === 'success' || response.code === 200) {
         return { success: true, data: response.data };
@@ -116,15 +142,17 @@ export const managerService = {
         success: false,
         message: response.message || 'خطا در دریافت جزئیات درخواست',
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('getStudentRequestById Error:', error);
-      return { success: false, message: error.message || 'خطای شبکه' };
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 
   approveStudentRequest: async (id: number): Promise<{ success: boolean; message?: string }> => {
     try {
-      const response = await apiClient.put<any, any>(`/manager/students/${id}`);
+      const response = await apiClient.put<ApiResponse<unknown>>(`/manager/students/${id}`);
 
       if (response.status === 'success' || response.code === 200) {
         return {
@@ -136,19 +164,21 @@ export const managerService = {
         success: false,
         message: response.message || 'خطا در تایید درخواست',
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('approveStudentRequest Error:', error);
-      return { success: false, message: error.message || 'خطای شبکه' };
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 
   getManagerProducts: async (): Promise<{
     success: boolean;
-    data?: any[];
+    data?: unknown[];
     message?: string;
   }> => {
     try {
-      const response = await apiClient.get<any, any>('/manager/products');
+      const response = await apiClient.get<ApiResponse<unknown[]>>('/manager/products');
 
       if (response.status === 'success' || response.code === 200) {
         return { success: true, data: response.data };
@@ -157,17 +187,19 @@ export const managerService = {
         success: false,
         message: response.message || 'خطا در دریافت لیست محصولات',
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('getManagerProducts Error:', error);
-      return { success: false, message: error.message || 'خطای شبکه' };
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 
   getManagerProductById: async (
     id: number,
-  ): Promise<{ success: boolean; data?: any; message?: string }> => {
+  ): Promise<{ success: boolean; data?: unknown; message?: string }> => {
     try {
-      const response = await apiClient.get<any, any>(`/manager/products/${id}`);
+      const response = await apiClient.get<ApiResponse<unknown>>(`/manager/products/${id}`);
 
       if (response.status === 'success' || response.code === 200) {
         return { success: true, data: response.data };
@@ -176,15 +208,17 @@ export const managerService = {
         success: false,
         message: response.message || 'خطا در دریافت جزئیات محصول',
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('getManagerProductById Error:', error);
-      return { success: false, message: error.message || 'خطای شبکه' };
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 
   approveManagerProduct: async (id: number): Promise<{ success: boolean; message?: string }> => {
     try {
-      const response = await apiClient.put<any, any>(`/manager/products/${id}`);
+      const response = await apiClient.put<ApiResponse<unknown>>(`/manager/products/${id}`);
 
       if (response.status === 'success' || response.code === 200) {
         return {
@@ -196,20 +230,24 @@ export const managerService = {
         success: false,
         message: response.message || 'خطا در تایید محصول',
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('approveManagerProduct Error:', error);
-      return { success: false, message: error.message || 'خطای شبکه' };
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
+
+
 
   // Manager Orders
   getManagerOrders: async (): Promise<{
     success: boolean;
-    data?: any[];
+    data?: Order[];
     message?: string;
   }> => {
     try {
-      const response = await apiClient.get<any, any>('/manager/orders');
+      const response = await apiClient.get<ApiResponse<Order[]>>('/manager/orders');
 
       if (response.status === 'success' || response.code === 200) {
         return { success: true, data: response.data };
@@ -218,17 +256,19 @@ export const managerService = {
         success: false,
         message: response.message || 'خطا در دریافت لیست سفارشات',
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('getManagerOrders Error:', error);
-      return { success: false, message: error.message || 'خطای شبکه' };
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 
   getManagerOrderById: async (
     id: number | string,
-  ): Promise<{ success: boolean; data?: any; message?: string }> => {
+  ): Promise<{ success: boolean; data?: Order; message?: string }> => {
     try {
-      const response = await apiClient.get<any, any>(`/manager/orders/${id}`);
+      const response = await apiClient.get<ApiResponse<Order>>(`/manager/orders/${id}`);
 
       if (response.status === 'success' || response.code === 200) {
         return { success: true, data: response.data };
@@ -237,18 +277,20 @@ export const managerService = {
         success: false,
         message: response.message || 'خطا در دریافت جزئیات سفارش',
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('getManagerOrderById Error:', error);
-      return { success: false, message: error.message || 'خطای شبکه' };
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 
   updateManagerOrder: async (
     id: number | string,
-    data: any,
+    data: unknown,
   ): Promise<{ success: boolean; message?: string }> => {
     try {
-      const response = await apiClient.put<any, any>(`/manager/orders/${id}`, data);
+      const response = await apiClient.put<ApiResponse<unknown>>(`/manager/orders/${id}`, data);
 
       if (response.status === 'success' || response.code === 200) {
         return {
@@ -260,9 +302,11 @@ export const managerService = {
         success: false,
         message: response.message || 'خطا در تغییر وضعیت سفارش',
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('updateManagerOrder Error:', error);
-      return { success: false, message: error.message || 'خطای شبکه' };
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 };

@@ -8,10 +8,19 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 
+interface ShareMember {
+  id: number;
+  name: string;
+  code: string;
+  share: number;
+  avatar: string;
+  type: string;
+}
+
 interface AddSharePopupProps {
   isOpen: boolean;
   onClose: () => void;
-  onAdd: (data: any) => void;
+  onAdd: (data: ShareMember) => void;
 }
 
 const toFarsiNumber = (n: number | string | undefined): string => {
@@ -68,6 +77,7 @@ const AddSharePopup = ({ isOpen, onClose, onAdd }: AddSharePopupProps) => {
     watch,
     formState: { errors },
     reset,
+    resetField,
   } = useForm<PopupFormValues>({
     resolver: zodResolver(popupSchema),
     defaultValues: {
@@ -142,7 +152,7 @@ const AddSharePopup = ({ isOpen, onClose, onAdd }: AddSharePopupProps) => {
               <div
                 onClick={() => {
                   setValue('userType', 'booth');
-                  setValue('selectedUser', undefined as any);
+                  resetField('selectedUser');
                   setSearchQuery('');
                   setSearchResults([]);
                 }}
@@ -160,7 +170,7 @@ const AddSharePopup = ({ isOpen, onClose, onAdd }: AddSharePopupProps) => {
               <div
                 onClick={() => {
                   setValue('userType', 'student');
-                  setValue('selectedUser', undefined as any);
+                  resetField('selectedUser');
                   setSearchQuery('');
                   setSearchResults([]);
                 }}

@@ -21,7 +21,9 @@ type AuthContextType = {
     user?: UserData | null;
     token?: string;
   }>;
-  verifyNationalId: (nationalId: string) => Promise<{ success: boolean; message?: string }>;
+  verifyNationalId: (
+    nationalId: string,
+  ) => Promise<{ success: boolean; user?: UserData; message?: string }>;
   signIn: (
     phoneNumber: string,
     password: string,
@@ -32,9 +34,9 @@ type AuthContextType = {
     password: string;
   }) => Promise<{ success: boolean; token?: string; message?: string }>;
   logoutCustomer: () => Promise<{ success: boolean; message?: string }>;
-  reportIssue: (data: any) => Promise<{ success: boolean; message?: string }>;
+  reportIssue: (data: Record<string, unknown>) => Promise<{ success: boolean; message?: string }>;
   saveStudentData: (data: {
-    meta: any;
+    meta: Record<string, unknown>;
     training_course: boolean;
   }) => Promise<{ success: boolean; message?: string }>;
   signOut: () => Promise<void>;
@@ -45,32 +47,36 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState<UserData | null>(null);
-  const [token, setToken] = useState<string | null>(null);
-  const [role, setRole] = useState<'student' | 'manager' | 'customer' | null>('student'); // Default to student
-
-  useEffect(() => {
-    // Check for token and user on mount
-    const storedToken = getToken();
-    const storedUser = localStorage.getItem('user_data');
-
-    if (storedToken) {
-      setToken(storedToken);
-      setIsAuthenticated(true);
+  // Lazy initialize state to avoid set-state-in-effect and double render
+  const [token, setToken] = useState<string | null>(() => {
+    if (typeof window !== 'undefined') {
+      return getToken();
     }
+    return null;
+  });
 
-    if (storedUser) {
+  const [user, setUser] = useState<UserData | null>(() => {
+    if (typeof window !== 'undefined') {
       try {
-        setUser(JSON.parse(storedUser));
+        const stored = localStorage.getItem('user_data');
+        return stored ? JSON.parse(stored) : null;
       } catch (e) {
         console.error('Failed to hydrate user data', e);
+        return null;
       }
     }
+    return null;
+  });
 
-    setIsLoading(false);
-  }, []);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return !!getToken();
+    }
+    return false;
+  });
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [role, setRole] = useState<'student' | 'manager' | 'customer' | null>('student'); // Default to student
 
   const requestOtp = async (phoneNumber: string) => {
     return await authService.requestOtp(phoneNumber, role || 'student');
@@ -137,11 +143,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return result;
   };
 
-  const reportIssue = async (data: any) => {
+  const reportIssue = async (data: Record<string, unknown>) => {
     return await authService.reportIssue(data);
   };
 
-  const saveStudentData = async (data: { meta: any; training_course: boolean }) => {
+  const saveStudentData = async (data: { meta: Record<string, unknown>; training_course: boolean }) => {
     return await authService.saveStudentData(data);
   };
 

@@ -20,7 +20,7 @@ export function toEnglishDigits(input: string | number | null | undefined): stri
  * @param data - The payload (object, array, string, etc.)
  * @returns The normalized data with English digits.
  */
-export function normalizeRequestData(data: any): any {
+export function normalizeRequestData(data: unknown): unknown {
   if (typeof data === 'string') {
     return toEnglishDigits(data);
   }
@@ -35,10 +35,8 @@ export function normalizeRequestData(data: any): any {
     return data;
   }
 
-  // Handle FormData (skip or implement if needed - usually risky to recreate)
+  // Handle FormData
   if (typeof FormData !== 'undefined' && data instanceof FormData) {
-    // For now, we skip FormData to avoid breaking file uploads/complexity
-    // If strict requirement, we would need to iterate entries and create new FormData
     return data;
   }
 
@@ -47,10 +45,12 @@ export function normalizeRequestData(data: any): any {
   }
 
   // Handle Plain Objects
-  const newData: any = {};
-  for (const key in data) {
-    if (Object.prototype.hasOwnProperty.call(data, key)) {
-      newData[key] = normalizeRequestData(data[key]);
+  const newData: Record<string, unknown> = {};
+  const obj = data as Record<string, unknown>;
+  
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      newData[key] = normalizeRequestData(obj[key]);
     }
   }
   return newData;

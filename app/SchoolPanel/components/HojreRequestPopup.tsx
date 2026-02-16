@@ -35,7 +35,7 @@ const InfoField = ({
 }: {
   label: string;
   value?: string;
-  icon: any;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   className?: string;
 }) => (
   <div className={`w-full ${className}`}>
@@ -59,7 +59,7 @@ const InfoField = ({
 
 const HojreRequestPopup = ({ requestId, onClose, onApprove }: HojreRequestPopupProps) => {
   const modalRef = useRef<HTMLDivElement>(null);
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<Record<string, unknown> | null>(null);
   const [loading, setLoading] = useState(true);
   const [isApproving, setIsApproving] = useState(false);
 
@@ -83,7 +83,7 @@ const HojreRequestPopup = ({ requestId, onClose, onApprove }: HojreRequestPopupP
       try {
         const response = await managerService.getStudentRequestById(requestId);
         if (response.success && response.data) {
-          setData(response.data);
+          setData(response.data as Record<string, unknown>);
         }
       } catch (error) {
         console.error('Failed to fetch request details', error);
@@ -105,7 +105,7 @@ const HojreRequestPopup = ({ requestId, onClose, onApprove }: HojreRequestPopupP
       const response = await managerService.approveStudentRequest(requestId);
       if (response.success) {
         // Update local state to reflect change immediately
-        setData((prev: any) => ({ ...prev, approved: true }));
+        setData((prev) => ({ ...prev, approved: true }));
         if (onApprove) onApprove();
       }
     } catch (error) {
@@ -145,10 +145,10 @@ const HojreRequestPopup = ({ requestId, onClose, onApprove }: HojreRequestPopupP
           ) : data ? (
             <div className="flex flex-col items-center gap-3">
               <div className="w-20 h-20 relative bg-white rounded-2xl shadow-lg border-2 border-white overflow-hidden shrink-0">
-                {data.model_data.logo ? (
+                {data.model_data && (data.model_data as { logo?: string; name?: string }).logo ? (
                   <Image
-                    src={`https://digikara.back.adiaweb.dev/storage/${data.model_data.logo}`}
-                    alt={data.model_data.name}
+                    src={`https://digikara.back.adiaweb.dev/storage/${(data.model_data as { logo?: string }).logo}`}
+                    alt={(data.model_data as { name?: string }).name || ''}
                     fill
                     className="object-cover"
                     unoptimized
@@ -160,8 +160,8 @@ const HojreRequestPopup = ({ requestId, onClose, onApprove }: HojreRequestPopupP
                 )}
               </div>
               <div className="text-center space-y-1">
-                <h2 className="text-[#393E46] text-xl font-black">{data.model_data.name}</h2>
-                <p className="text-[#393E46] text-sm font-semibold opacity-70">{data.model_type}</p>
+                <h2 className="text-[#393E46] text-xl font-black">{(data.model_data as { name: string }).name}</h2>
+                <p className="text-[#393E46] text-sm font-semibold opacity-70">{String(data.model_type)}</p>
               </div>
             </div>
           ) : (
@@ -180,16 +180,16 @@ const HojreRequestPopup = ({ requestId, onClose, onApprove }: HojreRequestPopupP
                 value={`${data.firstname} ${data.lastname}`}
                 icon={User}
               />
-              <InfoField label="مدرسه" value={data.school_name} icon={School} />
+              <InfoField label="مدرسه" value={data.school_name ? String(data.school_name) : undefined} icon={School} />
               <InfoField
                 label="پایه / رشته"
                 value={`${data.grade} - ${data.field}`}
                 icon={GraduationCap}
               />
-              <InfoField label="مهارت" value={data.model_data.skill} icon={Briefcase} />
+              <InfoField label="مهارت" value={(data.model_data as { skill?: string }).skill} icon={Briefcase} />
               <InfoField
                 label="تجربه (ماه/سال)"
-                value={toFarsiNumber(data.model_data.experience)}
+                value={toFarsiNumber((data.model_data as { experience?: string | number }).experience)}
                 icon={Clock}
               />
 
@@ -203,7 +203,7 @@ const HojreRequestPopup = ({ requestId, onClose, onApprove }: HojreRequestPopupP
                 <div className="w-full min-h-[100px] border border-[#DCE4E8] rounded-3xl p-4 bg-white relative flex gap-3">
                   <FileText className="w-5 h-5 text-[#DCE4E8] stroke-[1.5] shrink-0 mt-1" />
                   <p className="text-[#393E46] text-sm font-medium leading-relaxed text-right flex-1 whitespace-pre-wrap break-all">
-                    {data.model_data.description}
+                    {String((data.model_data as { description?: string }).description)}
                   </p>
                 </div>
               </div>

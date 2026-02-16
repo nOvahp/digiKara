@@ -40,7 +40,22 @@ export interface Order {
   deliveryTime?: string;
   description?: string;
   note?: string;
-  item?: any;
+  item?: unknown;
+}
+
+// Internal interface for API response shape
+interface RawOrderResponse {
+  id: string | number;
+  status?: string;
+  price?: string | number;
+  quantity?: number;
+  product?: {
+    title?: string;
+    image?: string;
+    image_path?: string;
+    description?: string;
+  };
+  [key: string]: unknown;
 }
 
 export const ordersService = {
@@ -50,26 +65,29 @@ export const ordersService = {
     message?: string;
   }> => {
     try {
-      const response = await apiClient.get<any, ApiResponse<any[]>>('/student/orders');
+      const response = await apiClient.get<ApiResponse<unknown[]>>('/student/orders');
 
       if (response.status === 'success' || response.code === 200) {
         const rawData = response.data || [];
         if (!Array.isArray(rawData)) return { success: true, data: [] };
 
         const mappedOrders: Order[] = rawData
-          .filter((item: any) => item !== null && item !== undefined && typeof item === 'object')
-          .map((item: any) => ({
+          .filter(
+            (item: unknown): item is RawOrderResponse =>
+              item !== null && item !== undefined && typeof item === 'object',
+          )
+          .map((item) => ({
             id: toFarsiNumber(item.id),
             orderDetailId: item.id,
-            customer: 'شما', // Context: Student seeing their own orders
-            date: toFarsiNumber('1402/12/12'), // Mock date as API misses it
-            status: mapApiStatus(item.status),
+            customer: 'شما',
+            date: toFarsiNumber('1402/12/12'),
+            status: mapApiStatus(item.status || ''),
             statusText: item.status || 'نامشخص',
             paymentMethod: 'اینترنتی',
             amount: toFarsiNumber(item.price) || '۰',
             productName: item.product?.title || 'محصول نامشخص',
             productImage: item.product?.image || item.product?.image_path || '',
-            weight: item.product?.description || '', // Using desc as weight placeholder or just empty
+            weight: item.product?.description || '',
             count: item.quantity || 0,
             deliveryTime: 'نامشخص',
             description: item.product?.description,
@@ -83,9 +101,11 @@ export const ordersService = {
         success: false,
         message: response.message || 'خطا در دریافت لیست سفارشات',
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('getOrders Error:', error);
-      return { success: false, message: error.message || 'خطای شبکه' };
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 
@@ -94,7 +114,7 @@ export const ordersService = {
     status: string,
   ): Promise<{ success: boolean; message?: string }> => {
     try {
-      const response = await apiClient.put<any, ApiResponse<any>>(
+      const response = await apiClient.put<ApiResponse<unknown>>(
         `/student/orders/orderDetail/${orderDetailId}/status`,
         {
           status: status,
@@ -111,9 +131,11 @@ export const ordersService = {
         success: false,
         message: response.message || 'خطا در تغییر وضعیت سفارش',
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('updateOrderStatus Error:', error);
-      return { success: false, message: error.message || 'خطای شبکه' };
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 };

@@ -51,7 +51,7 @@ const INTEREST_STYLES = [
 
 export function LoginView6({ onNext, onBack }: LoginViewProps) {
   const [selectedInterests, setSelectedInterests] = useState<number[]>([]);
-  const [interests, setInterests] = useState<any[]>([]);
+  const [interests, setInterests] = useState<Record<string, unknown>[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

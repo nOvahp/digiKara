@@ -1,26 +1,26 @@
-import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
+import axios, { AxiosError, InternalAxiosRequestConfig, AxiosRequestConfig } from 'axios';
 import { getToken, removeToken } from '../auth/tokenService';
 import { normalizeRequestData } from '@/lib/number';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://digikara.back.adiaweb.dev/api';
 
-const apiClient = axios.create({
+const axiosInstance = axios.create({
   baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 15000, // 15 seconds timeout
+  timeout: 15000,
 });
 
 // Request Interceptor: Attach Token & Log Request
-apiClient.interceptors.request.use(
+axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const token = getToken();
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
 
-    // Normalize params and data (convert Persian/Arabic digits to English)
+    // Normalize params and data
     if (config.params) {
       config.params = normalizeRequestData(config.params);
     }
@@ -29,11 +29,12 @@ apiClient.interceptors.request.use(
       config.data = normalizeRequestData(config.data);
     }
 
-    console.group(`🚀 API Request: [${config.method?.toUpperCase()}] ${config.url}`);
-    console.log('Headers:', config.headers);
-    console.log('Payload:', config.data);
-    console.log('Params:', config.params);
-    console.groupEnd();
+    if (process.env.NODE_ENV === 'development') {
+      console.group(`🚀 API Request: [${config.method?.toUpperCase()}] ${config.url}`);
+      console.log('Headers:', config.headers);
+      console.log('Payload:', config.data);
+      console.groupEnd();
+    }
 
     return config;
   },
@@ -44,33 +45,33 @@ apiClient.interceptors.request.use(
 );
 
 // Response Interceptor: Global Error Handling & Log Response
-apiClient.interceptors.response.use(
+axiosInstance.interceptors.response.use(
   (response) => {
-    console.group(`✅ API Response: [${response.status}] ${response.config.url}`);
-    console.log('Data:', response.data);
-    console.groupEnd();
-    return response.data; // Return direct data to simplify calls
+    if (process.env.NODE_ENV === 'development') {
+      console.group(`✅ API Response: [${response.status}] ${response.config.url}`);
+      console.log('Data:', response.data);
+      console.groupEnd();
+    }
+    return response.data;
   },
   (error: AxiosError) => {
-    // Handle 401 Unauthorized globally
     if (error.response?.status === 401) {
       removeToken();
       if (typeof window !== 'undefined') {
-        // Redirect to login on 401 Unauthorized
         window.location.href = '/login';
       }
     }
 
-    // Normalize error message
     const message =
-      (error.response?.data as any)?.message || error.message || 'An unexpected error occurred';
+      (error.response?.data as { message?: string })?.message || error.message || 'An unexpected error occurred';
 
-    console.group(
-      `​​​​​🔴 API Error: [${error.response?.status || 'Unknown'}] ${error.config?.url}`,
-    );
-    console.error('Message:', message);
-    console.error('Full Error Response:', error.response?.data);
-    console.groupEnd();
+    if (process.env.NODE_ENV === 'development') {
+      console.group(
+        `🔴 API Error: [${error.response?.status || 'Unknown'}] ${error.config?.url}`,
+      );
+      console.error('Message:', message);
+      console.groupEnd();
+    }
 
     return Promise.reject({
       success: false,
@@ -80,5 +81,19 @@ apiClient.interceptors.response.use(
     });
   },
 );
+
+// Typed API Client Wrapper
+const apiClient = {
+  get: <T>(url: string, config?: AxiosRequestConfig) =>
+    axiosInstance.get<T>(url, config) as Promise<T>,
+  post: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
+    axiosInstance.post<T>(url, data, config) as Promise<T>,
+  put: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
+    axiosInstance.put<T>(url, data, config) as Promise<T>,
+  patch: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
+    axiosInstance.patch<T>(url, data, config) as Promise<T>,
+  delete: <T>(url: string, config?: AxiosRequestConfig) =>
+    axiosInstance.delete<T>(url, config) as Promise<T>,
+};
 
 export default apiClient;

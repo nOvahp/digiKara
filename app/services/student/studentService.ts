@@ -10,7 +10,7 @@ export const studentService = {
     nationalCode: string,
   ): Promise<{ success: boolean; user?: UserData; message?: string }> => {
     try {
-      const response = await apiClient.post<any, ApiResponse<UserData>>(
+      const response = await apiClient.post<ApiResponse<UserData>>(
         '/student/users/check/national_code',
         {
           national_code: nationalCode,
@@ -20,12 +20,12 @@ export const studentService = {
       if (response.status === 'success' || response.code === 200) {
         // Merge top-level flags into the user object
         // The flags are inside `data`, not the root response
-        const resData = response.data as any;
+        const resData = response.data as unknown as Record<string, unknown>;
 
         // Helper to normalize boolean values (handles true, "true", 1, etc)
-        const toBool = (val: any) => val === true || val === 'true' || val === 1;
+        const toBool = (val: unknown) => val === true || val === 'true' || val === 1;
 
-        const userWithFlags = {
+        const userWithFlags: UserData = {
           ...response.data,
           is_info_correct: toBool(resData.is_info_correct),
           favorites: toBool(resData.favorites),
@@ -49,18 +49,20 @@ export const studentService = {
         success: false,
         message: response.message || 'خطا در تایید کد ملی',
       };
-    } catch (error: any) {
-      return { success: false, message: error.message || 'خطای شبکه' };
+    } catch (error: unknown) {
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 
   getInterests: async (): Promise<{
     success: boolean;
-    data?: any[];
+    data?: unknown[];
     message?: string;
   }> => {
     try {
-      const response = await apiClient.get<any, ApiResponse<any[]>>(
+      const response = await apiClient.get<ApiResponse<unknown[]>>(
         '/student/students/favorites/list',
       );
 
@@ -71,14 +73,16 @@ export const studentService = {
         success: false,
         message: response.message || 'خطا در دریافت لیست علاقه مندی ها',
       };
-    } catch (error: any) {
-      return { success: false, message: error.message || 'خطای شبکه' };
+    } catch (error: unknown) {
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 
   confirmInfo: async (): Promise<{ success: boolean; message?: string }> => {
     try {
-      const response = await apiClient.put<any, any>('/student/students/correct_info', {});
+      const response = await apiClient.put<ApiResponse<unknown>>('/student/students/correct_info', {});
 
       if (response.status === 'success' || response.code === 200) {
         return { success: true, message: 'اطلاعات با موفقیت تایید شد' };
@@ -87,9 +91,11 @@ export const studentService = {
         success: false,
         message: response.message || 'خطا در تایید اطلاعات',
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('confirmInfo Error:', error);
-      return { success: false, message: error.message || 'خطای شبکه' };
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 
@@ -104,7 +110,7 @@ export const studentService = {
     };
 
     try {
-      const response = await apiClient.post<any, any>('/student/students/add/favorite', payload);
+      const response = await apiClient.post<ApiResponse<unknown>>('/student/students/add/favorite', payload);
 
       if (response.status === 'success' || response.code === 200) {
         return { success: true, message: 'علاقه مندی ها با موفقیت ثبت شد' };
@@ -113,15 +119,17 @@ export const studentService = {
         success: false,
         message: response.message || 'خطا در ثبت علاقه مندی ها',
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('addFavorites Error:', error);
-      return { success: false, message: error.message || 'خطای شبکه' };
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 
-  changeStudentInfo: async (data: any): Promise<{ success: boolean; message?: string }> => {
+  changeStudentInfo: async (data: unknown): Promise<{ success: boolean; message?: string }> => {
     try {
-      const response = await apiClient.post<any, any>('/student/students/change_info', data);
+      const response = await apiClient.post<ApiResponse<unknown>>('/student/students/change_info', data);
 
       if (response.status === 'success' || response.code === 200) {
         return {
@@ -133,17 +141,19 @@ export const studentService = {
         success: false,
         message: response.message || 'خطا در ویرایش اطلاعات',
       };
-    } catch (error: any) {
-      return { success: false, message: error.message || 'خطای شبکه' };
+    } catch (error: unknown) {
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 
   saveStudentData: async (data: {
-    meta: any;
+    meta: unknown;
     training_course: boolean;
   }): Promise<{ success: boolean; message?: string }> => {
     try {
-      const response = await apiClient.post<any, any>('/student/students/complete/data', data);
+      const response = await apiClient.post<ApiResponse<unknown>>('/student/students/complete/data', data);
 
       if (response.status === 'success' || response.code === 200) {
         return { success: true, message: 'اطلاعات با موفقیت ثبت شد' };
@@ -152,11 +162,13 @@ export const studentService = {
         success: false,
         message: response.message || 'خطا در ثبت اطلاعات',
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Save student data error:', error);
+      let message = 'خطا در برقراری ارتباط با سرور';
+      if (error instanceof Error) message = error.message || message;
       return {
         success: false,
-        message: error.message || 'خطا در برقراری ارتباط با سرور',
+        message,
       };
     }
   },

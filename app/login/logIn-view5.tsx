@@ -23,7 +23,7 @@ interface LoginViewProps {
 }
 
 // Reusable Info Field Component
-const InfoField = ({ label, value, icon: Icon }: { label: string; value?: string; icon: any }) => (
+const InfoField = ({ label, value, icon: Icon }: { label: string; value?: string; icon: React.ComponentType<{ className?: string }> }) => (
   <div className="w-full">
     {/* Label with line connector (visual style from design) */}
     <div className="flex justify-end items-center mb-[-12px] pr-4 relative z-10">

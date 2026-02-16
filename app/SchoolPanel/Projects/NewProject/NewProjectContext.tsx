@@ -25,7 +25,7 @@ export interface ProjectData {
 
   // Step 4
   schoolShare: number;
-  staffShares: any[];
+  staffShares: unknown[];
 }
 
 interface NewProjectContextType {

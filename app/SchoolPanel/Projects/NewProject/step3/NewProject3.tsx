@@ -54,7 +54,7 @@ const NewProject3 = () => {
       {/* Header */}
       <div className="w-full h-16 px-0 flex justify-between items-center bg-white border-b border-[#DFE1E7]">
         <div className="w-10"></div>
-        <div className="text-[#0D0D12] text-xl font-['PeydaWeb'] font-semibold leading-[27px]">
+        <div className="text-[#0D0D12] text-xl font-semibold leading-[27px]">
           افزودن پروژه
         </div>
         <div
@@ -75,7 +75,7 @@ const NewProject3 = () => {
                 {toFarsiNumber(1)}
               </span>
             </div>
-            <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">
+            <span className="text-[#666D80] text-sm font-semibold ">
               اطلاعات پایه
             </span>
           </div>
@@ -89,7 +89,7 @@ const NewProject3 = () => {
                 {toFarsiNumber(2)}
               </span>
             </div>
-            <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">منابع</span>
+            <span className="text-[#666D80] text-sm font-semibold ">منابع</span>
           </div>
 
           <div className="w-8 h-[1px] bg-[#DFE1E7] flex-shrink-0"></div>
@@ -101,7 +101,7 @@ const NewProject3 = () => {
                 {toFarsiNumber(3)}
               </span>
             </div>
-            <span className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb']">مالی</span>
+            <span className="text-[#0D0D12] text-sm font-semibold ">مالی</span>
           </div>
 
           <div className="w-8 h-[1px] bg-[#DFE1E7] flex-shrink-0"></div>
@@ -113,19 +113,19 @@ const NewProject3 = () => {
                 {toFarsiNumber(4)}
               </span>
             </div>
-            <span className="text-[#666D80] text-sm font-semibold font-['PeydaWeb']">تسهیم</span>
+            <span className="text-[#666D80] text-sm font-semibold ">تسهیم</span>
           </div>
         </div>
 
         {/* Form Fields */}
         <div className="flex flex-col gap-6 px-0">
-          <div className="w-full text-right text-[#0D0D12] text-base font-semibold font-['PeydaWeb']">
+          <div className="w-full text-right text-[#0D0D12] text-base font-semibold ">
             برآورد مالی پروژه
           </div>
 
           {/* Estimated Cost */}
           <div className="flex flex-col gap-2">
-            <label className="text-[#666D80] text-sm font-semibold font-['PeydaWeb'] text-right">
+            <label className="text-[#666D80] text-sm font-semibold  text-right">
               هزینه تخمینی
             </label>
             <div
@@ -134,7 +134,8 @@ const NewProject3 = () => {
                 errors.estimatedCost ? 'border-red-500' : 'border-[#DFE1E7]',
               )}
             >
-              <span className="text-[#818898] text-base font-semibold font-['PeydaWeb'] ml-2">
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+              <span className="text-[#818898] text-base font-semibold  ml-2">
                 ریال
               </span>
               <input
@@ -152,7 +153,7 @@ const NewProject3 = () => {
 
           {/* Estimated Revenue */}
           <div className="flex flex-col gap-2">
-            <label className="text-[#666D80] text-sm font-semibold font-['PeydaWeb'] text-right">
+            <label className="text-[#666D80] text-sm font-semibold  text-right">
               درآمد تخمینی
             </label>
             <div
@@ -161,7 +162,7 @@ const NewProject3 = () => {
                 errors.estimatedRevenue ? 'border-red-500' : 'border-[#DFE1E7]',
               )}
             >
-              <span className="text-[#818898] text-base font-semibold font-['PeydaWeb'] ml-2">
+              <span className="text-[#818898] text-base font-semibold  ml-2">
                 ریال
               </span>
               <input
@@ -179,7 +180,7 @@ const NewProject3 = () => {
 
           {/* Estimated Profit */}
           <div className="flex flex-col gap-2">
-            <label className="text-[#666D80] text-sm font-semibold font-['PeydaWeb'] text-right">
+            <label className="text-[#666D80] text-sm font-semibold  text-right">
               سود تخمینی
             </label>
             <div
@@ -188,7 +189,7 @@ const NewProject3 = () => {
                 errors.estimatedProfit ? 'border-red-500' : 'border-[#DFE1E7]',
               )}
             >
-              <span className="text-[#818898] text-base font-semibold font-['PeydaWeb'] ml-2">
+              <span className="text-[#818898] text-base font-semibold  ml-2">
                 ریال
               </span>
               <input
@@ -210,7 +211,7 @@ const NewProject3 = () => {
             type="submit"
             className="flex-1 h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-2.5 hover:bg-[#e5c109] transition-colors"
           >
-            <span className="text-center text-[#1A1C1E] text-lg font-semibold font-['PeydaWeb']">
+            <span className="text-center text-[#1A1C1E] text-lg font-semibold ">
               ادامه
             </span>
           </button>

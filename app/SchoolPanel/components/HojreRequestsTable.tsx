@@ -19,7 +19,7 @@ interface StudentRequest {
   model_data: {
     logo?: string;
     name: string;
-    image: any[];
+    image: unknown[];
     skill: string;
     user_id: number;
     school_id: number;
@@ -54,7 +54,7 @@ const HojreRequestsTable = () => {
       setLoading(true);
       const response = await managerService.getStudentRequests();
       if (response.success && response.data) {
-        setRequests(response.data);
+        setRequests(response.data as StudentRequest[]);
       }
     } catch (error) {
       console.error('Failed to fetch requests', error);

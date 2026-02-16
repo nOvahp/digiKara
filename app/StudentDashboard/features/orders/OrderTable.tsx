@@ -88,10 +88,7 @@ export function OrderTable({
     }
   });
 
-  // Reset page when filters change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery, statusFilter, sortOption]);
+
 
   // Calculate total pages
   const totalPages = Math.ceil(filteredAndSortedOrders.length / itemsPerPage);
@@ -150,7 +147,10 @@ export function OrderTable({
           <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <input
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setCurrentPage(1);
+            }}
             placeholder="جستجو در سفارشات..."
             className="w-full pr-10 pl-4 py-2.5 rounded-lg border border-[#DFE1E7] focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500/50 text-sm font-['PeydaWeb'] font-medium transition-all"
           />
@@ -161,7 +161,10 @@ export function OrderTable({
             <Filter className="w-4 h-4 text-gray-500 shrink-0" />
             <select
               value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
+              onChange={(e) => {
+                setStatusFilter(e.target.value);
+                setCurrentPage(1);
+              }}
               className="bg-transparent border-none outline-none text-sm font-['PeydaWeb'] font-medium text-[#0D0D12] cursor-pointer w-full appearance-none py-0.5 z-10"
             >
               <option value="all">همه وضعیت‌ها</option>
@@ -179,7 +182,10 @@ export function OrderTable({
             <ArrowUpDown className="w-4 h-4 text-gray-500 shrink-0" />
             <select
               value={sortOption}
-              onChange={(e) => setSortOption(e.target.value)}
+              onChange={(e) => {
+                setSortOption(e.target.value);
+                setCurrentPage(1);
+              }}
               className="bg-transparent border-none outline-none text-sm font-['PeydaWeb'] font-medium text-[#0D0D12] cursor-pointer w-full appearance-none py-0.5 z-10"
             >
               <option value="newest">جدیدترین</option>

@@ -66,13 +66,13 @@ const SchoolHomePage = () => {
         if (ordersRes.success && ordersRes.data) {
           ordersCount = ordersRes.data.length;
           // Calculate total sales
-          totalSales = ordersRes.data.reduce(
-            (sum: number, order: any) => sum + (Number(order.total_price) || 0),
+          totalSales = (ordersRes.data as Array<{ total_price?: string | number }>).reduce(
+            (sum, order) => sum + (Number(order.total_price) || 0),
             0,
           );
           // Calculate completed orders
-          const completed = ordersRes.data.filter(
-            (o: any) => o.status === 'sent' || o.status === 'completed' || o.status === 'تکمیل شده',
+          const completed = (ordersRes.data as Array<{ status?: string }>).filter(
+            (o) => o.status === 'sent' || o.status === 'completed' || o.status === 'تکمیل شده',
           );
           completedOrders = completed.length;
         }
@@ -87,8 +87,8 @@ const SchoolHomePage = () => {
           totalStudents = requestsRes.data.length;
 
           // Active means approved: true
-          const approved = requestsRes.data.filter(
-            (r: any) =>
+          const approved = (requestsRes.data as Array<{ approved?: boolean | number; status?: string }>).filter(
+            (r) =>
               r.approved === true ||
               r.approved === 1 ||
               r.status === 'approved' ||

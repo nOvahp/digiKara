@@ -3,7 +3,7 @@ import { ChevronDown, X } from 'lucide-react';
 import { FormLabel } from './FormLabel';
 
 interface CategoryTagsFormProps {
-  defaultValues?: any;
+  defaultValues?: Record<string, unknown>;
   values?: { category: string; tags: string[]; metadata: string };
   onChange?: (updates: { category?: string; tags?: string[]; metadata?: string }) => void;
   categories?: { id: number | string; name: string }[];
@@ -16,13 +16,13 @@ export function CategoryTagsForm({
   categories = [],
 }: CategoryTagsFormProps) {
   const [localTags, setLocalTags] = useState<string[]>(
-    defaultValues.tags || ['ارگانیک', 'عسل طبیعی'],
+    (defaultValues.tags as string[]) || ['ارگانیک', 'عسل طبیعی'],
   );
 
   const currentTags = values?.tags || localTags;
   // Default to empty string instead of "agricultural" to force selection from valid list
-  const currentCategory = values ? values.category : defaultValues.category || '';
-  const currentMetadata = values ? values.metadata : defaultValues.metadata || '';
+  const currentCategory = values ? values.category : String(defaultValues.category || '');
+  const currentMetadata = values ? values.metadata : String(defaultValues.metadata || '');
 
   // Mock available tags
   const availableTags = [

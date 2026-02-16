@@ -54,6 +54,7 @@ export default function ShopCategoryPage() {
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     resolver: zodResolver(formSchema) as any,
     defaultValues: {
       experience: 0,

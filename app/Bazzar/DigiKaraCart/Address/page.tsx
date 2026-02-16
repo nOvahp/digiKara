@@ -24,12 +24,15 @@ export default function AddressPage() {
       try {
         const response = await bazzarService.getAddresses();
         if (response && response.data) {
-          const mappedAddresses = response.data.map((item: any) => ({
-            id: String(item.id),
-            label: item.title || item.city || 'آدرس', // Fallback label
-            address: item.address,
-            city: item.city || '',
-          }));
+          const mappedAddresses = response.data.map((item: unknown) => {
+            const apiItem = item as { id: number; title?: string; city?: string; address?: string };
+            return {
+              id: String(apiItem.id),
+              label: apiItem.title || apiItem.city || 'آدرس',
+              address: apiItem.address || '',
+              city: apiItem.city || '',
+            };
+          });
           setAddresses(mappedAddresses);
           if (mappedAddresses.length > 0) {
             setSelectedId(String(mappedAddresses[0].id));

@@ -36,7 +36,7 @@ const toFarsiNumber = (n: number | string | undefined): string => {
   return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
 };
 
-const CustomXAxisTick = (props: any) => {
+const CustomXAxisTick = (props: Partial<{ x: number; y: number; payload: { value: string | number } }>) => {
   const { x, y, payload } = props;
   return (
     <g transform={`translate(${x},${y})`}>
@@ -50,13 +50,13 @@ const CustomXAxisTick = (props: any) => {
         fontFamily="PeydaWeb"
         fontWeight={500}
       >
-        {toFarsiNumber(payload.value)}
+        {toFarsiNumber(payload?.value)}
       </text>
     </g>
   );
 };
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+const CustomTooltip = ({ active, payload, label }: Partial<{ active: boolean; payload: Array<{ value: number }>; label: string }>) => {
   if (active && payload && payload.length) {
     return (
       <div

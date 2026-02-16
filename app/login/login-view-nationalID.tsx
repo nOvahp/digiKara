@@ -15,8 +15,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { nationalIdSchema, NationalIdFormValues } from './utils/schemas';
 import { toEnglishDigits } from '@/lib/number';
 
+import { UserData } from '@/app/services/common/schemas';
+
 interface LoginViewProps {
-  onNext?: (user: any) => void;
+  onNext?: (user: UserData) => void;
   onBack?: () => void;
 }
 
@@ -42,9 +44,8 @@ export function LoginViewNationalID({ onNext, onBack }: LoginViewProps) {
 
       setIsLoading(false);
 
-      if (result.success) {
+      if (result.success && result.user) {
         if (onNext) {
-          // @ts-ignore - passing data to next step
           onNext(result.user);
         }
       } else {

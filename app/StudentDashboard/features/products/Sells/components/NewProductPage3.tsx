@@ -3,24 +3,14 @@ import { X, Plus, Minus, ChevronDown, Info, Check, ChevronRight } from 'lucide-r
 import { toast } from 'sonner';
 import { z } from 'zod';
 import { ServiceFeeModal } from './ServiceFeeModal';
+import { AddProductFormState, VariantPrice } from '../types';
 
 interface NewProductPage3Props {
   onClose: () => void;
   onNext: () => void;
   onStepClick: (step: string) => void;
-  formData: any;
-  updateFormData: (data: any) => void;
-}
-
-interface VariantPrice {
-  variantLabel: string; // e.g., "رنگ: قرمز"
-  amount: number; // final price for this variant
-  title: string; // variant title
-  type: number; // variant type (integer)
-  discount_percent: number | null; // discount percentage (0-100)
-  inventory: number | null; // stock quantity
-  type_inventory: number | null; // inventory type
-  warn_inventory: number | null; // warning inventory level
+  formData: AddProductFormState;
+  updateFormData: (data: Partial<AddProductFormState>) => void;
 }
 
 // Zod validation schema
@@ -83,7 +73,7 @@ export function NewProductPage3({
   // Get unique feature types from Step 2
   const getFeatureTypes = (): string[] => {
     if (!formData.variantFeatures || formData.variantFeatures.length === 0) return [];
-    return formData.variantFeatures.map((f: any) => f.title);
+    return formData.variantFeatures.map((f) => f.title);
   };
 
   // Check which feature types have been covered
@@ -105,7 +95,7 @@ export function NewProductPage3({
     if (!formData.variantFeatures || formData.variantFeatures.length === 0) return [];
 
     const options: string[] = [];
-    formData.variantFeatures.forEach((feature: any) => {
+    formData.variantFeatures.forEach((feature) => {
       if (feature.values && feature.values.length > 0) {
         feature.values.forEach((value: string) => {
           if (value.trim()) {

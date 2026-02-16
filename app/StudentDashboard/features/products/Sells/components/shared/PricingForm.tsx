@@ -7,7 +7,7 @@ const toFarsiNumber = (n: number | string | undefined): string => {
 };
 
 interface PricingFormProps {
-  defaultValues?: any;
+  defaultValues?: Record<string, unknown>;
   values?: {
     price: string;
     fee: string;
@@ -32,7 +32,7 @@ export function PricingForm({ defaultValues = {}, values, onChange }: PricingFor
   const handleChange = (field: string, value: string) => {
     if (!onChange) return;
 
-    let updates: any = { [field]: value };
+    const updates: Record<string, string> = { [field]: value };
 
     if (field === 'price') {
       // Remove non-digits to calculate
@@ -68,8 +68,10 @@ export function PricingForm({ defaultValues = {}, values, onChange }: PricingFor
     onChange(updates);
   };
 
-  const val = (field: string) =>
-    values ? (values as any)[field] || '' : defaultValues[field] || '';
+  const val = (field: string): string => {
+    const value = values ? (values as Record<string, unknown>)[field] : (defaultValues as Record<string, unknown>)[field];
+    return String(value || '');
+  };
 
   return (
     <div className="w-full bg-white rounded-2xl border border-[#DFE1E7] p-3 md:p-5 flex flex-col gap-5 shadow-sm">

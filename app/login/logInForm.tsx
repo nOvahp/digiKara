@@ -21,6 +21,8 @@ import { Loader2, ChevronLeft } from 'lucide-react';
 
 const RESEND_DELAY = 120; // 2 minutes
 
+import { UserData } from '@/app/services/common/schemas';
+
 export function LogInForm({
   onNext,
   onExistingUser,
@@ -29,7 +31,7 @@ export function LogInForm({
   onCustomerLogin,
 }: {
   onNext?: () => void;
-  onExistingUser?: (user: any) => void;
+  onExistingUser?: (user: UserData) => void;
   onBack?: () => void;
   onCustomerRegister?: (phone: string) => void;
   onCustomerLogin?: (phone: string) => void;
@@ -47,11 +49,16 @@ export function LogInForm({
   const [timeLeft, setTimeLeft] = useState(0);
 
   useEffect(() => {
+    let timer: NodeJS.Timeout;
     if (timeLeft > 0) {
-      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
-      return () => clearTimeout(timer);
+      timer = setInterval(() => {
+        setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+      }, 1000);
     }
-  }, [timeLeft]);
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [timeLeft > 0]);
 
   const handleResend = () => {
     if (timeLeft === 0 && phoneForm.getValues('phoneNumber')) {

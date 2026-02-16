@@ -248,7 +248,7 @@ export function LoginViewManagerReport({ onNext, onLoginAgain, onBack }: LoginVi
           ) : (
             <>
               <Button
-                onClick={handleSubmit as any}
+                onClick={(e) => handleSubmit(e as unknown as React.FormEvent)}
                 disabled={isLoading}
                 className="w-full h-[54px] bg-[#FDD00A] hover:bg-[#e5bc09] text-[#1A1C1E] font-bold rounded-2xl text-lg shadow-lg shadow-[#FDD00A]/20"
               >

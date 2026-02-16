@@ -6,7 +6,7 @@ import { managerService } from '@/app/services/manager/managerService';
 
 interface ManagerProductPopupProps {
   onClose: () => void;
-  product: any;
+  product: Record<string, unknown>;
   onApprove?: () => void;
 }
 
@@ -78,7 +78,8 @@ const ManagerProductPopup = ({
   }, [initialProduct?.id]);
 
   // Variant Logic
-  const { model_data } = product || {};
+  const { model_data: model_data_raw } = product || {};
+  const model_data = model_data_raw as { price?: string | number; prices?: unknown[]; image_path?: string; title?: string; description?: string; inventory?: number; features?: Record<string, unknown[]> } | undefined;
   const [selectedVariants, setSelectedVariants] = useState<Record<string, string>>({});
   const [currentPrice, setCurrentPrice] = useState<string | number>(model_data?.price || 0);
 
@@ -86,9 +87,10 @@ const ManagerProductPopup = ({
   const displayFeatures = React.useMemo(() => {
     if (model_data?.prices && model_data.prices.length > 0) {
       const groups: Record<string, Set<string>> = {};
-      model_data.prices.forEach((p: any) => {
-        let effectiveType = Number(p.type);
-        let value = p.title;
+      model_data.prices.forEach((p: unknown) => {
+        const price = p as { type?: number; title?: string };
+        let effectiveType = Number(price.type);
+        let value = price.title || '';
 
         // HEURISTIC: Detect "Weight" mislabeled
         if (value.trim().startsWith('وزن:') || value.trim().startsWith('وزن :')) {
@@ -128,9 +130,10 @@ const ManagerProductPopup = ({
   useEffect(() => {
     if (displayFeatures && displayFeatures.length > 0) {
       const defaults: Record<string, string> = {};
-      displayFeatures.forEach((f: any) => {
-        if (f.values && f.values.length > 0) {
-          defaults[f.title] = f.values[0];
+      displayFeatures.forEach((f: unknown) => {
+        const feature = f as { values?: string[]; title?: string };
+        if (feature.values && feature.values.length > 0) {
+          defaults[feature.title || ''] = feature.values[0];
         }
       });
       setSelectedVariants(defaults);
@@ -144,9 +147,10 @@ const ManagerProductPopup = ({
 
     if (model_data?.prices && model_data.prices.length > 0) {
       Object.entries(selectedVariants).forEach(([label, value]) => {
-        const priceItem = model_data.prices.find((p: any) => {
-          let effectiveType = Number(p.type);
-          let rawTitle = p.title;
+        const priceItem = model_data.prices.find((p: unknown) => {
+          const price = p as { type?: number; title?: string };
+          let effectiveType = Number(price.type);
+          let rawTitle = price.title || '';
 
           if (rawTitle.trim().startsWith('وزن:') || rawTitle.trim().startsWith('وزن :')) {
             effectiveType = 6;
@@ -173,7 +177,7 @@ const ManagerProductPopup = ({
         });
 
         if (priceItem) {
-          const variantAmount = parseInt(priceItem.amount?.toString().replace(/\D/g, '') || '0');
+          const variantAmount = parseInt((priceItem as { amount?: string | number }).amount?.toString().replace(/\D/g, '') || '0');
           const difference = variantAmount - basePrice;
           calculatedPrice += difference;
         }
@@ -203,7 +207,7 @@ const ManagerProductPopup = ({
     try {
       const response = await managerService.approveManagerProduct(product.id);
       if (response.success) {
-        setProduct((prev: any) => ({ ...prev, approved: true }));
+        setProduct((prev) => ({ ...prev, approved: true }));
         if (onApprove) onApprove();
       }
     } catch (error) {
@@ -286,23 +290,25 @@ const ManagerProductPopup = ({
             {/* Dynamic Variant Selectors */}
             {displayFeatures && displayFeatures.length > 0 && (
               <div className="self-stretch flex flex-col gap-3 w-full border-t border-[#DFE1E7] pt-3">
-                {displayFeatures.map((feature: any) => (
-                  <div key={feature.title} className="flex flex-col gap-2">
+                {displayFeatures.map((feature: unknown) => {
+                  const f = feature as { title: string; values: string[] };
+                  return (
+                  <div key={f.title} className="flex flex-col gap-2">
                     <div className="text-right text-[#0D0D12] text-sm font-medium font-['PeydaWeb']">
-                      {feature.title}:{' '}
+                      {f.title}:{' '}
                       <span className="text-[#35685A]">
-                        {selectedVariants[feature.title] || ''}
+                        {selectedVariants[f.title] || ''}
                       </span>
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {feature.values.map((val: string, i: number) => {
-                        const isSelected = selectedVariants[feature.title] === val;
+                        const isSelected = selectedVariants[f.title] === val;
                         return (
                           <div
                             key={i}
-                            onClick={() => handleSelect(feature.title, val)}
+                            onClick={() => handleSelect(f.title, val)}
                             className={`
-                                                        ${feature.title === 'رنگ' ? 'w-8 h-8 rounded-full border' : 'px-3 py-1 rounded-full border text-sm font-medium'}
+                                                        ${f.title === 'رنگ' ? 'w-8 h-8 rounded-full border' : 'px-3 py-1 rounded-full border text-sm font-medium'}
                                                         cursor-pointer flex items-center justify-center transition-all
                                                         ${
                                                           isSelected
@@ -311,11 +317,11 @@ const ManagerProductPopup = ({
                                                         }
                                                     `}
                             style={
-                              feature.title === 'رنگ' ? { backgroundColor: getColorCode(val) } : {}
+                              f.title === 'رنگ' ? { backgroundColor: getColorCode(val) } : {}
                             }
                           >
-                            {feature.title !== 'رنگ' && val}
-                            {feature.title === 'رنگ' && isSelected && (
+                            {f.title !== 'رنگ' && val}
+                            {f.title === 'رنگ' && isSelected && (
                               <div className="w-2 h-2 bg-white rounded-full shadow-sm" />
                             )}
                           </div>
@@ -323,7 +329,8 @@ const ManagerProductPopup = ({
                       })}
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             )}
 
@@ -399,7 +406,7 @@ const ManagerProductPopup = ({
 
             {/* Features Read Only */}
             {model_data.features &&
-              Object.values(model_data.features).some((arr: any) => arr.length > 0) && (
+              Object.values(model_data.features).some((arr: unknown) => Array.isArray(arr) && arr.length > 0) && (
                 <div
                   className="flex flex-col gap-3 border-t border-[#DFE1E7] pt-4 w-full"
                   dir="rtl"
@@ -423,7 +430,7 @@ const ManagerProductPopup = ({
                           className="flex flex-col gap-2 bg-gray-50 p-3 rounded-lg border border-[#DFE1E7]"
                         >
                           <div className="text-xs font-semibold text-gray-500 mb-1">{label}</div>
-                          {items.map((item: { key: string; value: string }, idx: number) => (
+                          {(items as Array<{ key: string; value: string }>).map((item, idx) => (
                             <div
                               key={idx}
                               className="flex justify-between items-center text-sm border-b border-gray-200 last:border-0 pb-1 last:pb-0"

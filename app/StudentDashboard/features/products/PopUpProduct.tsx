@@ -1,7 +1,7 @@
 'use client';
 
 import { createPortal } from 'react-dom';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Order } from '@/app/services/studentService';
 import { cn } from '@/lib/utils';
 import { toFarsiNumber } from '@/app/services/common/utils';
@@ -12,8 +12,7 @@ interface PopUpProductProps {
 }
 
 export function PopUpProduct({ order, onClose }: PopUpProductProps) {
-  const [mounted, setMounted] = useState(false);
-  const portalRef = useRef<HTMLDivElement | null>(null);
+  const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
     // Create portal container
@@ -28,17 +27,15 @@ export function PopUpProduct({ order, onClose }: PopUpProductProps) {
     portalRoot.style.pointerEvents = 'none';
 
     document.body.appendChild(portalRoot);
-    portalRef.current = portalRoot;
+    setPortalContainer(portalRoot);
 
     // Prevent scrolling on body when modal is open
     document.body.style.overflow = 'hidden';
 
-    setMounted(true);
-
     return () => {
       document.body.style.overflow = 'unset';
-      if (portalRef.current && document.body.contains(portalRef.current)) {
-        document.body.removeChild(portalRef.current);
+      if (document.body.contains(portalRoot)) {
+        document.body.removeChild(portalRoot);
       }
     };
   }, []);
@@ -52,7 +49,7 @@ export function PopUpProduct({ order, onClose }: PopUpProductProps) {
   const weightVal = order.weight ? order.weight.replace(/[^0-9]/g, '') : '';
   const weightUnit = order.weight ? order.weight.replace(/[0-9]/g, '') : '';
 
-  if (!mounted || !portalRef.current) return null;
+  if (!portalContainer) return null;
 
   return createPortal(
     <div
@@ -201,7 +198,7 @@ export function PopUpProduct({ order, onClose }: PopUpProductProps) {
         </div>
       </div>
     </div>,
-    portalRef.current,
+    portalContainer,
   );
 }
 

@@ -8,20 +8,28 @@ import { BasicInfoForm } from './Sells/components/shared/BasicInfoForm';
 import { PricingForm } from './Sells/components/shared/PricingForm';
 import { CategoryTagsForm } from './Sells/components/shared/CategoryTagsForm';
 import { ProductPreviewCard } from './Sells/components/shared/ProductPreviewCard';
+import { Product } from '@/app/services/products/productsService';
 import { studentProductService } from '@/app/services/studentProductService';
 import { Skeleton } from '@/app/components/Skeleton';
 import { ConfirmModal } from '@/app/components/ConfirmModal';
 import { SuccessModal } from '@/app/components/SuccessModal';
 import { PriceListEditor } from './components/PriceListEditor';
 import { ProductPreviewModal } from './components/ProductPreviewModal';
+import { Price } from '@/app/StudentDashboard/data/products';
+
+interface ProductFormState extends Partial<Omit<Product, 'prices'>> {
+  prices?: Price[];
+  imageFile?: File | null;
+  image?: string | null;
+}
 
 export function EditeProducts() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const productId = searchParams.get('id');
   const [showPreview, setShowPreview] = useState(false);
-  const [formData, setFormData] = useState<any>({});
-  const [isLoading, setIsLoading] = useState(true);
+  const [formData, setFormData] = useState<ProductFormState>({});
+  const [isLoading, setIsLoading] = useState(!!productId);
 
   // Modal State
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -36,7 +44,7 @@ export function EditeProducts() {
     if (!productId) return;
     const { success, data } = await studentProductService.getProductById(productId as string);
     if (success && data) {
-      setFormData(data);
+      setFormData({ ...data, prices: (data.prices as Price[]) || [] });
     }
     setIsLoading(false);
   };
@@ -52,13 +60,26 @@ export function EditeProducts() {
     if (productId) {
       fetchProduct();
       fetchCategories();
-    } else {
-      setIsLoading(false);
     }
   }, [productId]);
 
-  const handleUpdateChange = (updates: any) => {
-    setFormData((prev: any) => ({ ...prev, ...updates }));
+  const handleUpdateChange = (updates: Partial<Product>) => {
+    setFormData((prev: ProductFormState) => ({
+      ...prev,
+      ...updates,
+      prices: updates.prices ? (updates.prices as Price[]) : prev.prices,
+    }));
+  };
+
+  // Wrapper for BasicInfoForm which expects id as string
+  const handleBasicInfoChange = (updates: Partial<{ name: string; description: string; id: string; images?: string[]; image?: string | null; imageFile?: File | null }>) => {
+    const { id, ...rest } = updates;
+    const productUpdates: Partial<Product> = { ...rest };
+    // Convert id from string to number if present
+    if (id !== undefined) {
+      productUpdates.id = Number(id);
+    }
+    handleUpdateChange(productUpdates);
   };
 
   const handleSave = async () => {
@@ -72,7 +93,7 @@ export function EditeProducts() {
 
     setIsLoading(true);
 
-    const payload: any = {
+    const payload: Record<string, unknown> = {
       category_id: formData.category ? String(formData.category) : '1',
       inventory: parseInt(String(formData.stock || '0').replace(/\D/g, ''), 10) || 0,
       price: parseInt(String(formData.price || '0').replace(/\D/g, ''), 10) || 0,
@@ -92,8 +113,9 @@ export function EditeProducts() {
 
       // Append regular fields
       Object.keys(payload).forEach((key) => {
-        if (payload[key] !== null && payload[key] !== undefined) {
-          data.append(key, payload[key]);
+        const value = payload[key];
+        if (value !== null && value !== undefined) {
+          data.append(key, String(value));
         }
       });
 
@@ -245,15 +267,21 @@ export function EditeProducts() {
           </div>
         ) : (
           <div className="w-full flex flex-col gap-6">
-            <BasicInfoForm values={formData} onChange={handleUpdateChange} />
-            <PricingForm values={formData} onChange={handleUpdateChange} />
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            <BasicInfoForm
+              values={formData as any}
+              onChange={handleBasicInfoChange}
+            />
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            <PricingForm values={formData as any} onChange={handleUpdateChange} />
             <PriceListEditor
               prices={formData.prices || []}
               onRefresh={fetchProduct}
               basePrice={formData.price}
             />
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             <CategoryTagsForm
-              values={formData}
+              values={formData as any}
               onChange={handleUpdateChange}
               categories={fetchedCategories}
             />
@@ -288,7 +316,7 @@ export function EditeProducts() {
       <ProductPreviewModal
         isOpen={showPreview}
         onClose={() => setShowPreview(false)}
-        product={formData}
+        product={formData as Product}
       />
       <ConfirmModal
         isOpen={showDeleteModal}
@@ -299,6 +327,7 @@ export function EditeProducts() {
         isLoading={isDeleting}
       />
 
+      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
       <SuccessModal
         isOpen={showSuccessModal}
         onClose={handleSuccessClose}

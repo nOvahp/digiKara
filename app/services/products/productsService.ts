@@ -33,7 +33,27 @@ export interface ApiProduct {
   status?: string;
   image_path?: string;
   images?: string[];
-  [key: string]: any;
+  description?: string;
+  category_id?: number | string;
+  category?: string;
+  prices?: unknown[];
+  code?: string;
+  fee?: number | string;
+  receive?: number | string;
+  discount?: number | string;
+  percent?: number | string;
+  stock?: number | string;
+  reminder?: string | number;
+  created_at?: string;
+  updated_at?: string;
+  approved?: boolean;
+  warn_inventory?: number;
+  sold_count?: number;
+  soldCount?: number;
+  inventoryCount?: number;
+  trendType?: string;
+  tags?: string[];
+  [key: string]: unknown;
 }
 
 // Define UI Product Interface (should be shared ideally, but defining here for now to match)
@@ -53,7 +73,7 @@ export interface Product {
   stock: string;
   reminder: string;
   metadata: string;
-  prices: any[];
+  prices: unknown[];
   code?: string;
   fee?: string;
   receive?: string;
@@ -64,6 +84,15 @@ export interface Product {
   approved?: boolean;
 }
 
+const safeNumber = (val: unknown): number => {
+  if (typeof val === 'number') return val;
+  if (typeof val === 'string') {
+    const num = Number(val);
+    return isNaN(num) ? 0 : num;
+  }
+  return 0; // Handle {}, [], null, undefined cases
+};
+
 export const productsService = {
   getProducts: async (): Promise<{
     success: boolean;
@@ -71,22 +100,22 @@ export const productsService = {
     message?: string;
   }> => {
     try {
-      const response = await apiClient.get<any, ApiResponse<ApiProduct[]>>('/student/products');
+      const response = await apiClient.get<ApiResponse<ApiProduct[]>>('/student/products');
 
       if (response.status === 'success' || response.code === 200) {
         // Map API data to the Product interface used by the UI
         const mappedProducts: Product[] = (response.data || [])
-          .filter((item: any) => item !== null && item !== undefined)
+          .filter((item): item is ApiProduct => item !== null && item !== undefined)
           .map((item) => ({
             id: Number(item.id),
             name: item.name || item.title || 'نامشخص',
-            soldCount: item.sold || item.soldCount || 0,
+            soldCount: safeNumber(item.sold) || safeNumber(item.soldCount) || 0,
             revenue: item.revenue ? item.revenue.toString() : '---',
-            inventoryCount: item.inventory || item.count || item.inventoryCount || 0,
+            inventoryCount: safeNumber(item.inventory) || safeNumber(item.count) || safeNumber(item.inventoryCount) || 0,
             trendPercentage: item.trend || '---',
             trendType:
               item.trendType === 'positive' || item.trendType === 'negative'
-                ? item.trendType
+                ? (item.trendType as 'positive' | 'negative')
                 : 'positive',
             price: item.price ? item.price.toString() : '---',
             description: item.description || 'توضیحات موجود نیست',
@@ -103,7 +132,7 @@ export const productsService = {
             code: item.code || '---',
             percent: item.percent ? item.percent.toString() : '---',
             stock: item.stock ? item.stock.toString() : '---',
-            reminder: item.reminder || '---',
+            reminder: item.reminder ? item.reminder.toString() : '---',
             created_at: item.created_at || '',
             updated_at: item.updated_at || '',
             metadata: '',
@@ -118,9 +147,11 @@ export const productsService = {
         success: false,
         message: response.message || 'خطا در دریافت لیست محصولات',
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('getProducts Error:', error);
-      return { success: false, message: error.message || 'خطای شبکه' };
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 
@@ -130,7 +161,7 @@ export const productsService = {
     message?: string;
   }> => {
     try {
-      const response = await apiClient.get<any, ApiResponse<any[]>>('/student/products/categories');
+      const response = await apiClient.get<ApiResponse<{ id: number; name?: string; title?: string }[]>>('/student/products/categories');
 
       if (response.status === 'success' || response.code === 200) {
         const mapped = (response.data || []).map((c) => ({
@@ -143,9 +174,11 @@ export const productsService = {
         success: false,
         message: response.message || 'خطا در دریافت دسته بندی ها',
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('getCategories Error:', error);
-      return { success: false, message: error.message || 'خطای شبکه' };
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 
@@ -153,7 +186,7 @@ export const productsService = {
     id: string | number,
   ): Promise<{ success: boolean; data?: Product; message?: string }> => {
     try {
-      const response = await apiClient.get<any, ApiResponse<ApiProduct>>(`/student/products/${id}`);
+      const response = await apiClient.get<ApiResponse<ApiProduct>>(`/student/products/${id}`);
 
       if (response.status === 'success' || (response.code === 200 && response.data)) {
         const item = response.data;
@@ -176,9 +209,9 @@ export const productsService = {
         const product: Product = {
           id: Number(item.id),
           name: item.name || item.title || 'نامشخص',
-          soldCount: item.sold_count || 0,
+          soldCount: safeNumber(item.sold_count),
           revenue: item.revenue ? item.revenue.toString() : '0',
-          inventoryCount: item.inventory || 0,
+          inventoryCount: safeNumber(item.inventory),
           trendPercentage: item.trend || '0%',
           trendType: 'positive',
           price: item.price ? item.price.toString() : '0',
@@ -198,21 +231,25 @@ export const productsService = {
         success: false,
         message: response.message || 'خطا در دریافت اطلاعات محصول',
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('getProductById Error:', error);
-      return { success: false, message: error.message || 'خطای شبکه' };
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 
   updateProduct: async (
     id: string | number,
-    data: any,
+    data: unknown,
   ): Promise<{ success: boolean; message?: string }> => {
     try {
       const isFormData = data instanceof FormData;
       const headers = isFormData ? { 'Content-Type': 'multipart/form-data' } : {};
 
-      const response = await apiClient.put<any, any>(`/student/products/${id}`, data, { headers });
+      const response = await apiClient.put<ApiResponse<unknown>>(`/student/products/${id}`, data, {
+        headers: headers,
+      });
 
       if (response.status === 'success' || response.code === 200) {
         return { success: true, message: 'محصول با موفقیت ویرایش شد' };
@@ -221,15 +258,17 @@ export const productsService = {
         success: false,
         message: response.message || 'خطا در ویرایش محصول',
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('updateProduct Error:', error);
-      return { success: false, message: error.message || 'خطای شبکه' };
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 
   deleteProduct: async (id: string | number): Promise<{ success: boolean; message?: string }> => {
     try {
-      const response = await apiClient.delete<any, any>(`/student/products/${id}`);
+      const response = await apiClient.delete<ApiResponse<unknown>>(`/student/products/${id}`);
       if (response.status === 'success' || response.code === 200) {
         return { success: true, message: 'محصول با موفقیت حذف شد' };
       }
@@ -237,17 +276,19 @@ export const productsService = {
         success: false,
         message: response.message || 'خطا در حذف محصول',
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('deleteProduct Error:', error);
-      return { success: false, message: error.message || 'خطای شبکه' };
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 
   addProduct: async (
     data: FormData,
-  ): Promise<{ success: boolean; message?: string; data?: any }> => {
+  ): Promise<{ success: boolean; message?: string; data?: unknown }> => {
     try {
-      const response = await apiClient.post<any, any>('/student/products', data, {
+      const response = await apiClient.post<ApiResponse<unknown>>('/student/products', data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -264,18 +305,20 @@ export const productsService = {
         success: false,
         message: response.message || 'خطا در ثبت محصول',
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('addProduct Error:', error);
-      return { success: false, message: error.message || 'خطای شبکه' };
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 
   addProductPrice: async (
     productId: string | number,
-    priceData: any,
+    priceData: unknown,
   ): Promise<{ success: boolean; message?: string }> => {
     try {
-      const response = await apiClient.post<any, any>(
+      const response = await apiClient.post<ApiResponse<unknown>>(
         `/student/products/${productId}/prices`,
         priceData,
       );
@@ -283,18 +326,20 @@ export const productsService = {
         return { success: true, message: 'قیمت با موفقیت افزوده شد' };
       }
       return { success: false, message: response.message || 'خطا در ثبت قیمت' };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('addProductPrice Error:', error);
-      return { success: false, message: error.message || 'خطای شبکه' };
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 
   updateProductPrice: async (
     priceId: string | number,
-    priceData: any,
+    priceData: unknown,
   ): Promise<{ success: boolean; message?: string }> => {
     try {
-      const response = await apiClient.put<any, any>(
+      const response = await apiClient.put<ApiResponse<unknown>>(
         `/student/products/prices/${priceId}`,
         priceData,
       );
@@ -305,9 +350,11 @@ export const productsService = {
         success: false,
         message: response.message || 'خطا در ویرایش قیمت',
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('updateProductPrice Error:', error);
-      return { success: false, message: error.message || 'خطای شبکه' };
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 
@@ -315,14 +362,16 @@ export const productsService = {
     priceId: string | number,
   ): Promise<{ success: boolean; message?: string }> => {
     try {
-      const response = await apiClient.delete<any, any>(`/student/products/prices/${priceId}`);
+      const response = await apiClient.delete<ApiResponse<unknown>>(`/student/products/prices/${priceId}`);
       if (response.status === 'success' || response.code === 200) {
         return { success: true, message: 'قیمت با موفقیت حذف شد' };
       }
       return { success: false, message: response.message || 'خطا در حذف قیمت' };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('deleteProductPrice Error:', error);
-      return { success: false, message: error.message || 'خطای شبکه' };
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 };

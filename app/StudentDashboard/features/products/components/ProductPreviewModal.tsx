@@ -1,10 +1,11 @@
 import { X } from 'lucide-react';
 import { ProductPreviewCard } from '../Sells/components/shared/ProductPreviewCard';
+import { Product } from '@/app/services/studentProductService';
 
 interface ProductPreviewModalProps {
   isOpen: boolean;
   onClose: () => void;
-  product: any;
+  product: Product;
 }
 
 export function ProductPreviewModal({ isOpen, onClose, product }: ProductPreviewModalProps) {

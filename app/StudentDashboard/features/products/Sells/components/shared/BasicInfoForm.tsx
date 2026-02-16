@@ -9,7 +9,7 @@ const toFarsiNumber = (n: number | string | undefined): string => {
 };
 
 interface BasicInfoFormProps {
-  defaultValues?: any;
+  defaultValues?: Record<string, unknown>;
   values?: {
     name: string;
     description: string;
@@ -48,8 +48,10 @@ export function BasicInfoForm({ defaultValues = {}, values, onChange }: BasicInf
     }
   };
 
-  const val = (field: string) =>
-    values ? (values as any)[field] || '' : defaultValues[field] || '';
+  const val = (field: string): string => {
+    const value = values ? (values as Record<string, unknown>)[field] : (defaultValues as Record<string, unknown>)[field];
+    return String(value || '');
+  };
 
   // Normalize images: use provided images array, or fallback to single image, or placeholder
   const getImages = () => {
@@ -60,7 +62,7 @@ export function BasicInfoForm({ defaultValues = {}, values, onChange }: BasicInf
 
   const productImages = getImages();
 
-  const handleChange = (field: string, value: any) => {
+  const handleChange = (field: string, value: unknown) => {
     if (onChange) {
       onChange({ [field]: value });
     }

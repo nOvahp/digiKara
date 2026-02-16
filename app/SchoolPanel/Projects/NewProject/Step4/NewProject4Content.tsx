@@ -43,13 +43,22 @@ const toFarsiNumber = (n: number | string | undefined): string => {
   return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
 };
 
+interface ShareMember {
+  id: number;
+  name: string;
+  code: string;
+  share: number;
+  avatar: string;
+  type: string;
+}
+
 const NewProject4Content = () => {
   const router = useRouter();
   const { updateProjectData, projectData, saveProject, resetProjectData } = useNewProject();
 
   // Initialize state from context if available, else default
   const [schoolShare, setSchoolShare] = useState(projectData.schoolShare || 20);
-  const [staffShares, setStaffShares] = useState<any[]>(projectData.staffShares || initialStaff);
+  const [staffShares, setStaffShares] = useState<ShareMember[]>((projectData.staffShares as ShareMember[]) || (initialStaff as unknown as ShareMember[]));
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   // Sync local state back to context when changed (optional, but good for backbtn)
@@ -74,7 +83,7 @@ const NewProject4Content = () => {
     setStaffShares((prev) => prev.filter((staff) => staff.id !== id));
   };
 
-  const handleAddShare = (data: any) => {
+  const handleAddShare = (data: ShareMember) => {
     setStaffShares((prev) => {
       const exists = prev.find((s) => s.id === data.id);
       if (exists) {

@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { toast } from 'sonner';
-import { studentProductService } from '@/app/services/studentProductService';
+import { studentProductService, Product } from '@/app/services/studentProductService';
+import { AddProductFormState } from '../types';
 import { ChevronRight } from 'lucide-react';
 import {
   Select,
@@ -14,8 +15,8 @@ interface NewProductProps {
   onClose: () => void;
   onNext: () => void;
   onStepClick: (step: string) => void;
-  formData: any;
-  updateFormData: (data: any) => void;
+  formData: AddProductFormState;
+  updateFormData: (data: Partial<AddProductFormState>) => void;
   categories?: { id: number | string; name: string }[];
 }
 
@@ -61,7 +62,7 @@ export function NewProduct({
     if (!formData.name) newErrors.name = 'لطفا نام محصول را وارد کنید';
     if (!formData.category) newErrors.category = 'لطفا دسته بندی را انتخاب کنید';
     if (!formData.description) newErrors.description = 'لطفا توضیحات محصول را وارد کنید';
-    if (formData.images.length === 0)
+    if ((formData.images || []).length === 0)
       newErrors.images = 'لطفا حداقل یک تصویر برای محصول انتخاب کنید';
 
     if (Object.keys(newErrors).length > 0) {
@@ -80,7 +81,7 @@ export function NewProduct({
       const currentFiles = formData.imageFiles || [];
 
       updateFormData({
-        images: [...formData.images, ...newImages],
+        images: [...(formData.images || []), ...newImages],
         imageFiles: [...currentFiles, ...newFiles],
       });
       clearError('images');
@@ -88,9 +89,9 @@ export function NewProduct({
   };
 
   const removeImage = (index: number) => {
-    const newImages = formData.images.filter((_: string, i: number) => i !== index);
+    const newImages = (formData.images || []).filter((_: string, i: number) => i !== index);
     const currentFiles = formData.imageFiles || [];
-    const newFiles = currentFiles.filter((_: any, i: number) => i !== index);
+    const newFiles = currentFiles.filter((_: File, i: number) => i !== index);
 
     updateFormData({
       images: newImages,
@@ -271,7 +272,7 @@ export function NewProduct({
               تصاویر محصول
             </label>
 
-            {formData.images.length > 0 ? (
+            {(formData.images || []).length > 0 ? (
               <div className="w-full h-[137px] flex gap-2 overflow-x-auto pb-2" dir="rtl">
                 <div
                   onClick={() => fileInputRef.current?.click()}
@@ -279,7 +280,7 @@ export function NewProduct({
                 >
                   <span className="text-[#666D80] text-xl font-bold">+</span>
                 </div>
-                {formData.images.map((img: string, index: number) => (
+                {(formData.images || []).map((img: string, index: number) => (
                   <div
                     key={index}
                     className="relative min-w-[137px] h-full rounded-xl border border-[#DFE1E7] overflow-hidden flex-shrink-0 group"

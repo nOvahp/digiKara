@@ -17,14 +17,16 @@ import {
   GraduationCap,
   BadgeCheck,
 } from 'lucide-react';
-import { bazzarService } from '@/app/services/bazzarService';
+import { bazzarService, UserProfile } from '@/app/services/bazzarService';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/app/providers/AuthProvider';
+
+
 
 export default function UserProfilePage() {
   const router = useRouter();
   const { logoutCustomer } = useAuth();
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -126,7 +128,7 @@ export default function UserProfilePage() {
   // Components
   // ----------------------------------------------------------------------
 
-  const InfoRow = ({ icon: Icon, label, value, isNum = false }: any) => (
+  const InfoRow = ({ icon: Icon, label, value, isNum = false }: { icon: React.ComponentType<React.SVGProps<SVGSVGElement>>; label: string; value?: string | number; isNum?: boolean }) => (
     <div className="group w-full flex items-center justify-between py-3 px-2 rounded-xl hover:bg-gray-50/80 transition-colors duration-200 cursor-default">
       <div className="flex items-center gap-3.5">
         <div className="w-9 h-9 rounded-xl bg-gray-50 border border-gray-100 group-hover:bg-white group-hover:shadow-sm flex items-center justify-center text-gray-500 transition-all duration-200">
@@ -147,7 +149,7 @@ export default function UserProfilePage() {
     </div>
   );
 
-  const SectionCard = ({ title, children, icon: TitleIcon }: any) => (
+  const SectionCard = ({ title, children, icon: TitleIcon }: { title: string; children: React.ReactNode; icon: React.ComponentType<{ className?: string }> }) => (
     <div className="w-full bg-white rounded-2xl p-5 border border-gray-100/80 shadow-[0px_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0px_6px_24px_rgba(0,0,0,0.05)] transition-shadow duration-300">
       <div className="flex items-center gap-2 mb-4 pb-2 border-b border-gray-50">
         {TitleIcon && <TitleIcon className="w-4 h-4 text-[#FDD00A]" />}

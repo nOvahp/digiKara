@@ -27,12 +27,14 @@ interface FeatureItem {
   value: string;
 }
 
+import { AddProductFormState, VariantFeature } from '../types';
+
 interface NewProductPage2Props {
   onClose: () => void;
   onNext: () => void;
   onStepClick: (step: string) => void;
-  formData: any;
-  updateFormData: (data: any) => void;
+  formData: AddProductFormState;
+  updateFormData: (data: Partial<AddProductFormState>) => void;
 }
 
 export function NewProductPage2({
@@ -76,12 +78,12 @@ export function NewProductPage2({
 
   const toggleVariantFeature = (type: string) => {
     const currentVariants = formData.variantFeatures || [];
-    const exists = currentVariants.find((v: any) => v.id === type);
+    const exists = currentVariants.find((v) => v.id === type);
 
     if (exists) {
       // Remove
       updateFormData({
-        variantFeatures: currentVariants.filter((v: any) => v.id !== type),
+        variantFeatures: currentVariants.filter((v) => v.id !== type),
       });
     } else {
       // Add
@@ -90,7 +92,7 @@ export function NewProductPage2({
           ...currentVariants,
           {
             id: type,
-            title: VARIANT_OPTIONS.find((o) => o.id === type)?.label,
+            title: VARIANT_OPTIONS.find((o) => o.id === type)?.label || '',
             values: [],
           },
         ],
@@ -101,7 +103,7 @@ export function NewProductPage2({
   const updateVariantValues = (id: string, values: string[]) => {
     const currentVariants = formData.variantFeatures || [];
     updateFormData({
-      variantFeatures: currentVariants.map((v: any) => (v.id === id ? { ...v, values } : v)),
+      variantFeatures: currentVariants.map((v) => (v.id === id ? { ...v, values } : v)),
     });
   };
 
@@ -193,7 +195,7 @@ export function NewProductPage2({
               {isDropdownOpen && (
                 <div className="absolute top-[60px] left-0 right-0 bg-white rounded-xl shadow-lg border border-[#E4E2E4] overflow-hidden flex flex-col z-30 animate-in fade-in zoom-in-95 duration-200">
                   {VARIANT_OPTIONS.map((opt) => {
-                    const isSelected = formData.variantFeatures?.some((v: any) => v.id === opt.id);
+                    const isSelected = formData.variantFeatures?.some((v) => v.id === opt.id);
                     return (
                       <div
                         key={opt.id}
@@ -227,7 +229,7 @@ export function NewProductPage2({
 
             {/* Selected Variant Inputs */}
             <div className="flex flex-col gap-3">
-              {formData.variantFeatures?.map((feature: any) => (
+              {formData.variantFeatures?.map((feature) => (
                 <div
                   key={feature.id}
                   className="w-full bg-white rounded-xl border border-[#DFE1E7] p-1 flex items-center h-[52px]"

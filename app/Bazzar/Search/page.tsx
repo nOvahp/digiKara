@@ -279,7 +279,7 @@ function SearchContent() {
               filters={filters}
               categories={categories}
               onRemove={(key) => {
-                let newFilters = { ...filters };
+                const newFilters = { ...filters };
                 if (key === 'categoryId') newFilters.categoryId = null;
                 else newFilters[key] = '';
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { studentProductService } from '@/app/services/studentProductService';
+import { AddProductFormState } from '../types';
 
 // Wizard Steps
 import { NewProduct } from './NewProduct';
@@ -18,15 +19,15 @@ interface AddProductFlowProps {
   initialStep?: 'step1';
 }
 
+type Step = 'none' | 'step1' | 'step2' | 'step3' | 'step4' | 'step5' | 'step6' | 'step7';
+
 export function AddProductFlow({
   isOpen,
   onClose,
   onSuccess,
   initialStep = 'step1',
 }: AddProductFlowProps) {
-  const [activePopup, setActivePopup] = useState<
-    'none' | 'step1' | 'step2' | 'step3' | 'step4' | 'step5' | 'step6' | 'step7'
-  >('none');
+  const [activePopup, setActivePopup] = useState<Step>('none');
 
   // Sync with external open state
   useEffect(() => {
@@ -47,13 +48,13 @@ export function AddProductFlow({
     return `NK-PRD-${Math.floor(100000 + Math.random() * 900000)}`;
   };
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<AddProductFormState>({
     name: '',
     description: '',
-    images: [] as string[],
+    images: [],
     category: '',
-    tags: [] as string[],
-    id: generateProductCode(),
+    tags: [],
+    id: parseInt(generateProductCode().replace(/\D/g, '')) || 0,
     price: '',
     fee: '',
     receive: '',
@@ -62,16 +63,16 @@ export function AddProductFlow({
     percent: '',
     stock: '',
     reminder: '',
-    imageFiles: [] as File[],
-    variantPrices: [] as any[],
+    imageFiles: [],
+    variantPrices: [],
     isMultiPrice: false,
     features: {
-      id: [] as { key: string; value: string }[],
-      visual: [] as { key: string; value: string }[],
-      production: [] as { key: string; value: string }[],
-      packaging: [] as { key: string; value: string }[],
+      id: [],
+      visual: [],
+      production: [],
+      packaging: [],
     },
-    variantFeatures: [] as { id: string; title: string; values: string[] }[],
+    variantFeatures: [],
   });
 
   // Reset form when flow opens
@@ -95,7 +96,7 @@ export function AddProductFlow({
     data.append('category_id', categoryId);
 
     // code (max 100 chars)
-    data.append('code', formData.id || generateProductCode());
+    data.append('code', String(formData.id || generateProductCode()));
 
     // image (Required, Must be an image)
     // We use the first uploaded file as the main image
@@ -114,7 +115,7 @@ export function AddProductFlow({
     data.append('price', (formData.price || '').replace(/\D/g, '') || '0');
 
     // title (string, max 255)
-    data.append('title', formData.name);
+    data.append('title', formData.name || '');
 
     // type_inventory (number/integer)
     data.append('type_inventory', '1');
@@ -141,12 +142,12 @@ export function AddProductFlow({
     // Structure: amount, title, type, discount_percent, inventory, type_inventory, warn_inventory
     // CORRECTED: Using variantPrices instead of extraPrices
     if (formData.isMultiPrice && formData.variantPrices && formData.variantPrices.length > 0) {
-      formData.variantPrices.forEach((price: any, index: number) => {
+      formData.variantPrices.forEach((price, index) => {
         // amount (integer, required)
         data.append(`prices[${index}][amount]`, String(price.amount).replace(/\D/g, ''));
 
         // title (string, required)
-        data.append(`prices[${index}][title]`, price.title || `Variant ${index + 1}`);
+        data.append(`prices[${index}][title]`, String(price.title || `Variant ${index + 1}`));
 
         // type (integer, required)
         data.append(`prices[${index}][type]`, String(price.type || '1'));

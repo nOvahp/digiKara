@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { X, ChevronRight } from 'lucide-react';
 import { ProductPreviewCard } from './shared/ProductPreviewCard';
+import { AddProductFormState } from '../types';
 
 const toFarsiNumber = (n: number | string | undefined): string => {
   if (n === undefined || n === null) return '';
@@ -11,7 +12,7 @@ interface NewProductPage6Props {
   onClose: () => void;
   onNext: () => void;
   onStepClick: (step: string) => void;
-  formData: any;
+  formData: AddProductFormState;
 }
 
 export function NewProductPage6({ onClose, onNext, onStepClick, formData }: NewProductPage6Props) {

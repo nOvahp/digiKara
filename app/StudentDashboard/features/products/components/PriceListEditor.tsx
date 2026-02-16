@@ -23,7 +23,7 @@ interface PriceListEditorProps {
 export function PriceListEditor({ prices, onRefresh, basePrice }: PriceListEditorProps) {
   const searchParams = useSearchParams();
   const productId = searchParams.get('id');
-  const [editedPrices, setEditedPrices] = useState<Record<string, any>>({});
+  const [editedPrices, setEditedPrices] = useState<Record<string, Partial<Price>>>({});
 
   // Add New Price State
   const [isAdding, setIsAdding] = useState(false);
@@ -100,7 +100,7 @@ export function PriceListEditor({ prices, onRefresh, basePrice }: PriceListEdito
   // When props change, clear edits? Or keep them?
   // Usually keep unless saved.
 
-  const handleChange = (id: string | number, field: string, value: any) => {
+  const handleChange = (id: string | number, field: string, value: unknown) => {
     setEditedPrices((prev) => {
       const currentEdit = prev[id] || prices.find((p) => p.id === id) || {};
       return {
@@ -124,7 +124,7 @@ export function PriceListEditor({ prices, onRefresh, basePrice }: PriceListEdito
 
     // Construct payload
     const finalTitle = changes.title || original.title || '';
-    const rawType = parseInt(changes.type || original.type || 1);
+    const rawType = parseInt(String(changes.type || original.type || 1));
     const finalType = inferType(finalTitle, rawType);
 
     const payload = {
@@ -132,12 +132,12 @@ export function PriceListEditor({ prices, onRefresh, basePrice }: PriceListEdito
       title: finalTitle,
       type: finalType,
       discount_percent: changes.discount_percent
-        ? parseInt(changes.discount_percent)
+        ? parseInt(String(changes.discount_percent))
         : original.discount_percent || null,
-      inventory: changes.inventory ? parseInt(changes.inventory) : original.inventory || null,
+      inventory: changes.inventory ? parseInt(String(changes.inventory)) : original.inventory || null,
       type_inventory: 1,
       warn_inventory: changes.warn_inventory
-        ? parseInt(changes.warn_inventory)
+        ? parseInt(String(changes.warn_inventory))
         : original.warn_inventory || null,
     };
 
@@ -362,7 +362,7 @@ export function PriceListEditor({ prices, onRefresh, basePrice }: PriceListEdito
                     </label>
                     <input
                       className="w-full h-[52px] px-3 rounded-xl border border-[#DFE1E7] text-right font-num-medium font-['PeydaFaNum'] text-sm outline-none focus:border-[#FDD00A]"
-                      value={current.amount ? parseInt(current.amount).toLocaleString() : ''}
+                      value={current.amount ? parseInt(String(current.amount)).toLocaleString() : ''}
                       onChange={(e) =>
                         handleChange(price.id, 'amount', e.target.value.replace(/\D/g, ''))
                       }

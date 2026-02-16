@@ -13,8 +13,8 @@ export default function EditAddressPage() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
-  const [provinces, setProvinces] = useState<any[]>([]);
-  const [cities, setCities] = useState<any[]>([]);
+  const [provinces, setProvinces] = useState<Record<string, unknown>[]>([]);
+  const [cities, setCities] = useState<Record<string, unknown>[]>([]);
 
   interface AddressFormData {
     title: string;
@@ -51,21 +51,31 @@ export default function EditAddressPage() {
         if (!isMounted) return;
 
         if (addressesRes && addressesRes.data) {
-          const targetAddress = addressesRes.data.find((a: any) => Number(a.id) === addressId);
+          const targetAddress = addressesRes.data.find((a) => Number(a.id) === addressId);
 
           if (targetAddress) {
+            // Cast to unknown first to access properties not in Address interface
+            const apiAddress = targetAddress as unknown as {
+              id: number;
+              title?: string;
+              address?: string;
+              postal_code?: string;
+              province_id?: number;
+              city_id?: number;
+            };
+
             // 3. Set basic form data
             setFormData({
-              title: targetAddress.title || '',
-              address: targetAddress.address || '',
-              postal_code: targetAddress.postal_code || '',
-              province_id: Number(targetAddress.province_id) || '',
-              city_id: Number(targetAddress.city_id) || '', // We'll set this, but might need to wait for cities
+              title: apiAddress.title || '',
+              address: apiAddress.address || '',
+              postal_code: apiAddress.postal_code || '',
+              province_id: Number(apiAddress.province_id) || '',
+              city_id: Number(apiAddress.city_id) || '', // We'll set this, but might need to wait for cities
             });
 
             // 4. Fetch cities for this province immediately if present
-            if (targetAddress.province_id) {
-              const citiesRes = await bazzarService.getCities(Number(targetAddress.province_id));
+            if (apiAddress.province_id) {
+              const citiesRes = await bazzarService.getCities(Number(apiAddress.province_id));
               if (isMounted && citiesRes && citiesRes.data) {
                 setCities(citiesRes.data);
               }
@@ -144,7 +154,7 @@ export default function EditAddressPage() {
 
     setIsLoading(true);
     try {
-      const response = await bazzarService.updateAddress(addressId, formData);
+      const response = await bazzarService.updateAddress(addressId, formData as unknown as Parameters<typeof bazzarService.updateAddress>[1]);
       if (response) {
         toast.success('آدرس با موفقیت ویرایش شد');
         router.back();
@@ -204,7 +214,7 @@ export default function EditAddressPage() {
               className="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-[#FDD00A] outline-none transition-colors appearance-none"
             >
               <option value="">انتخاب کنید</option>
-              {provinces.map((prov: any) => (
+              {provinces.map((prov) => (
                 <option key={prov.id} value={prov.id}>
                   {prov.name}
                 </option>
@@ -222,7 +232,7 @@ export default function EditAddressPage() {
               className="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-[#FDD00A] outline-none transition-colors appearance-none disabled:opacity-50"
             >
               <option value="">انتخاب کنید</option>
-              {cities.map((city: any) => (
+              {cities.map((city) => (
                 <option key={city.id} value={city.id}>
                   {city.name}
                 </option>

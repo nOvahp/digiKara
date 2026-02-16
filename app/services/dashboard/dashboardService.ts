@@ -17,9 +17,13 @@ export const dashboardService = {
   }> => {
     try {
       // Fetch products and orders in parallel
+      // Define partial types for what we need to calculate stats
+      type RawProduct = { approved?: boolean | number };
+      type RawOrder = { status?: string };
+
       const [productsResponse, ordersResponse] = await Promise.all([
-        apiClient.get<any, ApiResponse<any[]>>('/student/products'),
-        apiClient.get<any, ApiResponse<any[]>>('/student/orders'),
+        apiClient.get<ApiResponse<RawProduct[]>>('/student/products'),
+        apiClient.get<ApiResponse<RawOrder[]>>('/student/orders'),
       ]);
 
       // Calculate stats from the responses
@@ -35,13 +39,13 @@ export const dashboardService = {
 
       // Count active (approved) products
       const activeProductsCount = Array.isArray(products)
-        ? products.filter((p: any) => p.approved === true || p.approved === 1).length
+        ? products.filter((p) => p.approved === true || p.approved === 1).length
         : 0;
 
       // Count new orders (orders with status "سفارش جدید" or similar)
       const newOrdersCount = Array.isArray(orders)
         ? orders.filter(
-            (o: any) =>
+            (o) =>
               o.status === 'سفارش جدید' ||
               o.status === 'new' ||
               o.status === 'pending' ||
@@ -61,11 +65,18 @@ export const dashboardService = {
       };
 
       return { success: true, data: stats };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('getDashboardStats Error:', error);
+      const message =
+        error instanceof Error
+          ? error.message
+          : (error as Record<string, unknown>)?.message &&
+              typeof (error as Record<string, unknown>).message === 'string'
+            ? ((error as Record<string, unknown>).message as string)
+            : 'خطای شبکه';
       return {
         success: false,
-        message: error.message || 'خطای شبکه',
+        message,
         data: {
           storeStatus: 'pending',
           newOrders: 0,

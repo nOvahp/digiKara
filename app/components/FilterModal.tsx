@@ -27,7 +27,8 @@ export default function FilterModal({
 
   useEffect(() => {
     if (isOpen) {
-      setFilters(initialFilters);
+      const t = setTimeout(() => setFilters(initialFilters), 0);
+      return () => clearTimeout(t);
     }
   }, [isOpen, initialFilters]);
 
