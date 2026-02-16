@@ -42,7 +42,7 @@ export function HomePage() {
 
   console.log('Dashboard User Data:', user);
   // Support both { cell: ... } and { user: { cell: ... } } structures
-  const actualUser = (user?.user || user) as Record<string, any>;
+  const actualUser = (user?.user || user) as Record<string, unknown>;
 
   // Robust check for cell: handle single object or array, and multiple field names
   const cell = Array.isArray(actualUser?.cell) ? actualUser.cell[0] : actualUser?.cell;

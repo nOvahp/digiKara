@@ -124,7 +124,6 @@ export function NewProductPage5({
             step="4"
             label="موجودی"
             isActive={false}
-            isCompleted={true}
             onClick={() => onStepClick('step4')}
           />
           <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
@@ -132,7 +131,6 @@ export function NewProductPage5({
             step="3"
             label="قیمت گذاری"
             isActive={false}
-            isCompleted={true}
             onClick={() => onStepClick('step3')}
           />
           <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
@@ -140,7 +138,6 @@ export function NewProductPage5({
             step="2"
             label="ویژگی ها"
             isActive={false}
-            isCompleted={true}
             onClick={() => onStepClick('step2')}
           />
           <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
@@ -148,7 +145,6 @@ export function NewProductPage5({
             step="1"
             label="اطلاعات پایه"
             isActive={false}
-            isCompleted={true}
             onClick={() => onStepClick('step1')}
           />
         </div>

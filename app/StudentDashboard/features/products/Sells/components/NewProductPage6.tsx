@@ -68,7 +68,6 @@ export function NewProductPage6({ onClose, onNext, onStepClick, formData }: NewP
             step="5"
             label="دسته بندی و برچسب ها"
             isActive={false}
-            isCompleted={true}
             onClick={() => onStepClick('step5')}
           />
           <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
@@ -76,7 +75,6 @@ export function NewProductPage6({ onClose, onNext, onStepClick, formData }: NewP
             step="4"
             label="موجودی"
             isActive={false}
-            isCompleted={true}
             onClick={() => onStepClick('step4')}
           />
           <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
@@ -84,7 +82,6 @@ export function NewProductPage6({ onClose, onNext, onStepClick, formData }: NewP
             step="3"
             label="قیمت گذاری"
             isActive={false}
-            isCompleted={true}
             onClick={() => onStepClick('step3')}
           />
           <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
@@ -92,7 +89,6 @@ export function NewProductPage6({ onClose, onNext, onStepClick, formData }: NewP
             step="2"
             label="ویژگی ها"
             isActive={false}
-            isCompleted={true}
             onClick={() => onStepClick('step2')}
           />
           <div className="w-8 border-t-2 border-dashed border-[#DFE1E7] mx-1 shrink-0" />
@@ -100,7 +96,6 @@ export function NewProductPage6({ onClose, onNext, onStepClick, formData }: NewP
             step="1"
             label="اطلاعات پایه"
             isActive={false}
-            isCompleted={true}
             onClick={() => onStepClick('step1')}
           />
         </div>

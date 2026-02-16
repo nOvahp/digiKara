@@ -168,7 +168,6 @@ export function NewProductPage2({
               step="1"
               label="اطلاعات پایه"
               isActive={false}
-              isCompleted={true}
               onClick={() => onStepClick('step1')}
             />
           </div>
