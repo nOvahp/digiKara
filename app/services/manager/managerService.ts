@@ -3,21 +3,24 @@ import { ApiResponse } from '../common/schemas';
 
 export interface Order {
   id: number;
-  user?: {
-    firstname?: string;
-    lastname?: string;
-    phone?: string;
-  };
-  product?: {
-    image_path?: string;
-    title?: string;
-  };
-  address?: string;
-  quantity?: number | string;
-  created_at?: string;
-  total_price: string | number;
-  jalali_date?: string;
+  order_id: number;
+  product_id: number;
+  quantity: number;
+  price: number;
+  discount: number;
+  is_updated: boolean;
   status: string;
+  product: {
+    id: number;
+    title: string;
+    description: string;
+    image_path: string;
+    category_id?: number;
+    code?: string;
+    inventory?: number;
+    price?: number;
+    // Add other fields as optional if needed
+  };
 }
 
 export interface ManagerProduct {

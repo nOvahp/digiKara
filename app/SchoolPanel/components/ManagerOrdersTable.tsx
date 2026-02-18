@@ -28,80 +28,67 @@ const ManagerOrdersTable = () => {
   const filterRef = React.useRef<HTMLDivElement>(null);
   const itemsPerPage = 7;
 
-  // Manual fetch for updates
   const fetchOrders = async () => {
     setLoading(true);
-    const response = await managerService.getManagerOrders();
-    if (response.success && response.data) {
-      setOrders(response.data);
-    } else {
-      console.error(response.message);
+    try {
+      const response = await managerService.getManagerOrders();
+      if (response.success && response.data) {
+        setOrders(response.data);
+      } else {
+        console.error(response.message);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
-    let cancelled = false;
-    const loadInitialOrders = async () => {
-      // Avoid setting loading here if it triggers cascade, but we need it.
-      // Ideally, start with loading=true in useState (already done).
-      try {
-        const response = await managerService.getManagerOrders();
-        if (!cancelled) {
-            if (response.success && response.data) {
-                setOrders(response.data);
-            } else {
-                console.error(response.message);
-            }
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    };
-
-    loadInitialOrders();
-
-    return () => {
-      cancelled = true;
-    };
+    fetchOrders();
   }, []);
 
   // Filter Logic
   const filteredOrders = orders.filter((order) => {
     const matchesSearch =
       (order.product?.title || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (order.user?.firstname || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (order.user?.lastname || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-      order.id.toString().includes(searchQuery);
-
-    // Normalize status check
-    const status = order.status;
-    // Assuming status might be 'sent', 'pending', 'completed', etc.
-    // Let's check what the API returns or what we displayed before.
-    // Before: order.status === 'sent' || order.status === 'تکمیل شده' -> completed
-
-    const isCompleted = status === 'sent' || status === 'completed' || status === 'تکمیل شده';
+      order.id.toString().includes(searchQuery) ||
+      order.order_id.toString().includes(searchQuery);
 
     const matchesStatus =
       filterStatus === 'all'
         ? true
         : filterStatus === 'completed'
-          ? isCompleted
+          ? order.status === 'تکمیل شده' || order.status === 'sent'
           : filterStatus === 'pending'
-            ? !isCompleted
+            ? order.status === 'در حال انتظار' || order.status === 'pending'
             : true;
 
     return matchesSearch && matchesStatus;
   });
 
-  // Pagination
   const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentOrders = filteredOrders.slice(startIndex, startIndex + itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredOrders.slice(indexOfFirstItem, indexOfLastItem);
 
+  // Reset pagination when filter changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, filterStatus]);
 
+  // Pagination Handlers
+  const handlePrevPage = () => {
+    if (currentPage > 1) setCurrentPage((prev) => prev - 1);
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
+  };
+
+  const handleOrderClick = (order: Order) => {
+    setSelectedOrder(order);
+  };
 
   // Close filter when clicking outside
   useEffect(() => {
@@ -134,7 +121,7 @@ const ManagerOrdersTable = () => {
         className={`w-full h-16 px-5 py-2 ${!isListEmpty ? 'border-b border-[#DFE1E7] bg-white' : ''} flex justify-between items-center mb-4`}
       >
         <div className="text-[#0D0D12] text-16 font-['PeydaWeb'] font-semibold leading-24 tracking-wide">
-          {!isListEmpty && 'سفارشات'}
+          {!isListEmpty}
         </div>
         <div className="flex justify-start items-center gap-2 w-full max-w-md">
           {/* Search Box */}
@@ -143,10 +130,7 @@ const ManagerOrdersTable = () => {
               type="text"
               placeholder="جستجو در سفارشات..."
               value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-                setCurrentPage(1); // Reset pagination here
-              }}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full h-10 pr-9 pl-4 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] text-sm text-[#0D0D12] focus:outline-blue-500 transition-colors font-medium"
             />
             <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#818898]" />
@@ -156,6 +140,7 @@ const ManagerOrdersTable = () => {
           <div className="flex items-center gap-2" ref={filterRef}>
             <div className="relative">
               <div
+                className={`h-10 px-4 rounded-xl outline outline-1 outline-[#DFE1E7] flex justify-center items-center gap-2 cursor-pointer transition-colors ${isFilterOpen ? 'bg-gray-100 ring-2 ring-blue-100' : 'bg-white hover:bg-gray-50'}`}
                 onClick={() => setIsFilterOpen(!isFilterOpen)}
               >
                 <Filter
@@ -189,7 +174,6 @@ const ManagerOrdersTable = () => {
                       className="flex items-center gap-2 px-2 py-1.5 hover:bg-gray-50 rounded-lg cursor-pointer"
                       onClick={() => {
                         setFilterStatus(option.value);
-                        setCurrentPage(1); // Reset pagination here
                         setIsFilterOpen(false);
                       }}
                     >
@@ -238,141 +222,175 @@ const ManagerOrdersTable = () => {
         </div>
       ) : (
         <div className="w-full overflow-x-auto no-scrollbar">
-          <div className="w-full overflow-x-auto">
-            <table className="w-full min-w-[800px]">
-              <thead className="bg-[#F0F3F7] h-[48px]">
-                <tr>
-                  <th className="px-6 text-right text-[#666D80] text-xs font-semibold ">#</th>
-                  <th className="px-6 text-right text-[#666D80] text-xs font-semibold ">
-                    کد سفارش
-                  </th>
-                  <th className="px-6 text-right text-[#666D80] text-xs font-semibold ">
-                    نام محصول
-                  </th>
-                  <th className="px-6 text-right text-[#666D80] text-xs font-semibold ">مشتری</th>
-                  <th className="px-6 text-right text-[#666D80] text-xs font-semibold ">
-                    مبلغ کل (ریال)
-                  </th>
-                  <th className="px-6 text-right text-[#666D80] text-xs font-semibold ">تاریخ</th>
-                  <th className="px-6 text-right text-[#666D80] text-xs font-semibold ">وضعیت</th>
-                  <th className="px-6 text-center text-[#666D80] text-xs font-semibold ">عملیات</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#F2F4F7]">
-                {loading ? (
-                  <tr>
-                    <td colSpan={8} className="text-center py-8 text-gray-500">
-                      در حال بارگذاری...
-                    </td>
-                  </tr>
-                ) : currentOrders.length === 0 ? (
-                  <tr>
-                    <td colSpan={8} className="text-center py-8 text-gray-500">
-                      سفارشی یافت نشد
-                    </td>
-                  </tr>
-                ) : (
-                  currentOrders.map((order, index) => (
-                    <tr
-                      key={order.id}
-                      className="hover:bg-gray-50 transition-colors cursor-pointer"
-                      onClick={() => setSelectedOrder(order)}
-                    >
-                      <td className="px-6 py-4 text-[#0D0D12] text-sm font-num-medium font-normal">
-                        {toFarsiNumber(startIndex + index + 1)}
-                      </td>
-                      <td className="px-6 py-4 text-[#0D0D12] text-sm font-num-medium font-normal">
-                        {toFarsiNumber(order.id)}
-                      </td>
-                      <td className="px-6 py-4 text-[#0D0D12] text-sm font-medium ">
-                        <div className="flex items-center gap-2">
-                          {order.product?.image_path && (
-                            <Image
-                              src={`https://digikara.back.adiaweb.dev/storage/${order.product.image_path}`}
-                              alt=""
-                              width={32}
-                              height={32}
-                              className="rounded object-cover"
-                            />
-                          )}
-                          <span className="line-clamp-1 max-w-[150px]">
-                            {order.product?.title || 'نامشخص'}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 text-[#666D80] text-sm font-normal ">
-                        {order.user?.firstname} {order.user?.lastname}
-                      </td>
-                      <td className="px-6 py-4 text-[#0D0D12] text-sm font-num-medium font-normal">
-                        {formatPrice(order.total_price)}
-                      </td>
-                      <td className="px-6 py-4 text-[#666D80] text-sm font-num-medium font-normal">
-                        {toFarsiNumber(order.jalali_date || '۱۴۰۲/۰۱/۰۱')}
-                      </td>
-                      <td className="px-6 py-4">
-                        <div
-                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border
-                                                ${
-                                                  order.status === 'sent' ||
-                                                  order.status === 'تکمیل شده'
-                                                    ? 'bg-green-50 text-green-700 border-green-200'
-                                                    : 'bg-amber-50 text-amber-700 border-amber-200'
-                                                }`}
-                        >
-                          {order.status === 'sent' ? 'تکمیل شده' : 'در انتظار'}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex justify-center items-center">
-                          <button className="p-1.5 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors">
-                            <Eye className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Pagination */}
-          <div className="w-full h-[52px] px-6 py-3 bg-white border-t border-[#DCE4E8] flex justify-between items-center">
-            <button
-              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-              disabled={currentPage === 1}
-              className="flex justify-center items-center gap-2 px-3 py-1.5 bg-white rounded-lg border border-[#DCE4E8] text-[#818898] hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <ChevronRight className="w-4 h-4" />
-              <span className="text-xs font-semibold font-['PeydaWeb']">قبلی</span>
-            </button>
-
-            <div className="flex justify-center items-center gap-1">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <button
-                  key={page}
-                  onClick={() => setCurrentPage(page)}
-                  className={`w-8 h-8 rounded-lg text-xs font-num-medium flex justify-center items-center transition-colors
-                                    ${
-                                      currentPage === page
-                                        ? 'bg-[#F9FAFB] text-[#0D0D12] border border-[#DFE1E7]'
-                                        : 'text-[#666D80] hover:bg-gray-50'
-                                    }`}
-                >
-                  {toFarsiNumber(page)}
-                </button>
-              ))}
+          <div className="min-w-[1000px] flex flex-col">
+            {/* Table Header */}
+            <div className="w-full bg-[#F6F8FA] border-b border-[#DFE1E7] flex justify-end items-center px-2">
+              <div className="w-16 h-10 px-3 flex justify-end items-center">
+                <div className="w-4 h-4 bg-white rounded border border-[#DFE1E7]" />
+              </div>
+              <div className="w-[80px] h-10 px-3 flex justify-center items-center">
+                <div className="text-center text-[#666D80] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">
+                  تصویر
+                </div>
+              </div>
+              <div className="w-[200px] h-10 px-3 flex justify-center items-center">
+                <div className="text-center text-[#666D80] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">
+                  نام محصول
+                </div>
+              </div>
+              <div className="w-[100px] h-10 px-3 flex justify-center items-center">
+                <div className="text-center text-[#666D80] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">
+                  تعداد
+                </div>
+              </div>
+              <div className="w-[120px] h-10 px-3 flex justify-center items-center">
+                <div className="text-center text-[#666D80] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">
+                  قیمت (ریال)
+                </div>
+              </div>
+              <div className="w-[120px] h-10 px-3 flex justify-center items-center">
+                <div className="text-center text-[#666D80] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">
+                  تخفیف
+                </div>
+              </div>
+              <div className="w-[150px] h-10 px-3 flex justify-center items-center">
+                <div className="text-[#666D80] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">
+                  وضعیت
+                </div>
+              </div>
+              <div className="w-[120px] h-10 px-3 flex justify-center items-center">
+                <div className="text-[#666D80] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">
+                  عملیات
+                </div>
+              </div>
             </div>
 
-            <button
-              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-              disabled={currentPage === totalPages}
-              className="flex justify-center items-center gap-2 px-3 py-1.5 bg-white rounded-lg border border-[#DCE4E8] text-[#818898] hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <span className="text-xs font-semibold font-['PeydaWeb']">بعدی</span>
-              <ChevronLeft className="w-4 h-4" />
-            </button>
+            {/* Table Body - Rows */}
+            {currentItems.length > 0 ? (
+              currentItems.map((order, idx) => {
+                const itemIndex = indexOfFirstItem + idx + 1;
+                const statusBg =
+                  order.status === 'تکمیل شده' || order.status === 'sent'
+                    ? '#ECF9F7'
+                    : '#FFF4E5';
+                const statusColor =
+                  order.status === 'تکمیل شده' || order.status === 'sent'
+                    ? '#267666'
+                    : '#B98900';
+                
+                // Use backend status string or map it
+                const statusText = order.status || 'نامشخص';
+
+                return (
+                  <div
+                    key={order.id}
+                    onClick={() => handleOrderClick(order)}
+                    className="w-full h-16 border-b border-[#DFE1E7] flex justify-end items-center px-2 hover:bg-gray-50 transition-colors cursor-pointer group"
+                  >
+                    <div className="w-16 h-16 px-3 flex justify-start items-center gap-2.5">
+                      <span className="text-center text-[#0D0D12] text-sm font-num-medium font-semibold flex-1">
+                        {toFarsiNumber(itemIndex)}
+                      </span>
+                      <div className="w-4 h-4 bg-white rounded border border-[#DFE1E7] cursor-pointer" />
+                    </div>
+                    <div className="w-[80px] h-16 px-3 flex justify-center items-center">
+                      {order.product?.image_path ? (
+                        <div className="w-10 h-10 relative flex-shrink-0 rounded-lg overflow-hidden border border-gray-200">
+                          <Image
+                            src={
+                              order.product.image_path.startsWith('http')
+                                ? order.product.image_path
+                                : `https://digikara.back.adiaweb.dev/storage/${order.product.image_path.replace(/^\//, '')}`
+                            }
+                            alt="product"
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                      ) : (
+                        <div className="w-10 h-10 bg-gray-100 rounded-lg"></div>
+                      )}
+                    </div>
+                    <div className="w-[200px] h-16 px-3 flex justify-center items-center">
+                      <span
+                        className="text-center text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold truncate w-full"
+                        dir="auto"
+                      >
+                        {order.product?.title || 'نامشخص'}
+                      </span>
+                    </div>
+                    <div className="w-[100px] h-16 px-3 flex justify-center items-center">
+                      <span className="text-center text-[#0D0D12] text-sm font-num-medium font-semibold">
+                        {toFarsiNumber(order.quantity)}
+                      </span>
+                    </div>
+                    <div className="w-[120px] h-16 px-3 flex justify-center items-center">
+                      <span className="text-center text-[#0D0D12] text-sm font-num-medium font-semibold">
+                        {formatPrice(order.price)}
+                      </span>
+                    </div>
+                    <div className="w-[120px] h-16 px-3 flex justify-center items-center">
+                      <span className="text-center text-[#0D0D12] text-sm font-num-medium font-semibold">
+                        {toFarsiNumber(order.discount)}٪
+                      </span>
+                    </div>
+                    <div className="w-[150px] h-16 px-3 flex justify-center items-center">
+                      <div
+                        className="px-2 py-0.5 rounded-2xl flex justify-center items-center"
+                        style={{ backgroundColor: statusBg }}
+                      >
+                        <span
+                          className="text-[12px] font-num-medium whitespace-nowrap"
+                          style={{ color: statusColor }}
+                        >
+                          {statusText}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="w-[120px] h-16 px-3 flex justify-center items-center">
+                      <div className="flex justify-center items-center">
+                         <button className="p-1.5 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors">
+                           <Eye className="w-5 h-5 text-[#666D80]" />
+                         </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="w-full h-20 flex items-center justify-center text-gray-500">
+                موردی یافت نشد
+              </div>
+            )}
           </div>
+        </div>
+      )}
+
+      {/* Footer */}
+      {totalPages > 1 && (
+        <div className="w-full px-5 py-4 flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <div
+              onClick={handleNextPage}
+              className={`w-8 h-8 flex items-center justify-center bg-white rounded-lg border border-[#DFE1E7] cursor-pointer ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'}`}
+            >
+              <ChevronRight className="w-5 h-5 text-[#0D0D12]" />
+            </div>
+            <div className="w-[55px] h-8 rounded-lg border border-[#DFE1E7] flex justify-center items-center">
+              <span className="text-[#0D0D12] text-xs font-num-medium font-medium">
+                {toFarsiNumber(currentPage)}/{toFarsiNumber(totalPages)}
+              </span>
+            </div>
+            <div
+              onClick={handlePrevPage}
+              className={`w-8 h-8 flex items-center justify-center bg-white rounded-lg border border-[#DFE1E7] cursor-pointer ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'}`}
+            >
+              <ChevronLeft className="w-5 h-5 text-[#0D0D12]" />
+            </div>
+          </div>
+          <span className="text-center text-[#0D0D12] text-sm font-num-medium font-medium">
+            صفحه {toFarsiNumber(currentPage)} از {toFarsiNumber(totalPages)}
+          </span>
         </div>
       )}
 
@@ -383,10 +401,6 @@ const ManagerOrdersTable = () => {
           onClose={() => setSelectedOrder(null)}
           onUpdate={() => {
             fetchOrders();
-            // Optional: Keep popup open or close it? usually nice to keep open to see change or close.
-            // For now let's keep it open or just refresh data.
-            // Actually, better to just refresh table when popup closes or if we want real-time update.
-            // But fetchOrders will update the list background.
           }}
         />
       )}

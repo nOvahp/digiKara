@@ -59,13 +59,19 @@ interface RawOrderResponse {
 }
 
 export const ordersService = {
-  getOrders: async (): Promise<{
+  getOrders: async (status: string): Promise<{
     success: boolean;
     data?: Order[];
     message?: string;
   }> => {
     try {
-      const response = await apiClient.get<ApiResponse<unknown[]>>('/student/orders');
+      // Map UI status to API endpoint
+      // processing -> /customers/users/orders/processing
+      // complete -> /customers/users/orders/complete
+      // cancel -> /customers/users/orders/cancel
+      const endpoint = `/customers/users/orders/${status}`;
+      
+      const response = await apiClient.get<ApiResponse<unknown[]>>(endpoint);
 
       if (response.status === 'success' || response.code === 200) {
         const rawData = response.data || [];
@@ -80,7 +86,7 @@ export const ordersService = {
             id: toFarsiNumber(item.id),
             orderDetailId: item.id,
             customer: 'شما',
-            date: toFarsiNumber('1402/12/12'),
+            date: toFarsiNumber((item as any).created_at || '---'),
             status: mapApiStatus(item.status || ''),
             statusText: item.status || 'نامشخص',
             paymentMethod: 'اینترنتی',

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useEffect, useState } from 'react';
-import { X, Info, Clock, User, MapPin } from 'lucide-react';
+import { X, Info, Clock, Tag, Percent } from 'lucide-react';
 import { managerService, Order } from '@/app/services/manager/managerService';
 import Image from 'next/image';
 
@@ -66,7 +66,6 @@ const ManagerOrderPopup = ({ onClose, orderId, onUpdate }: ManagerOrderPopupProp
 
     setIsUpdating(true);
     try {
-      // Adjust payload based on actual API requirement. Assuming simple status object for now.
       const response = await managerService.updateManagerOrder(orderId, {
         status: newStatus,
       });
@@ -83,7 +82,7 @@ const ManagerOrderPopup = ({ onClose, orderId, onUpdate }: ManagerOrderPopupProp
 
   if (!order && !isLoading) return null;
 
-  const { product, user, address, status, quantity, total_price } = order || {};
+  const { product, status, quantity, price, discount } = order || {};
 
   return (
     <div
@@ -92,7 +91,7 @@ const ManagerOrderPopup = ({ onClose, orderId, onUpdate }: ManagerOrderPopupProp
     >
       <div
         ref={modalRef}
-        className="w-full max-w-[480px] h-[90vh] bg-white rounded-xl border border-[#DFE1E7] overflow-y-auto flex flex-col justify-start items-start gap-5 p-5 relative shadow-lg animate-in fade-in zoom-in duration-200"
+        className="w-full max-w-[480px] h-auto max-h-[90vh] bg-white rounded-xl border border-[#DFE1E7] overflow-y-auto flex flex-col justify-start items-start gap-5 p-5 relative shadow-lg animate-in fade-in zoom-in duration-200"
       >
         {/* Close Button */}
         <button
@@ -113,16 +112,16 @@ const ManagerOrderPopup = ({ onClose, orderId, onUpdate }: ManagerOrderPopupProp
         </div>
 
         {isLoading ? (
-          <div className="flex-1 w-full flex items-center justify-center">
+          <div className="flex-1 w-full flex items-center justify-center py-10">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#0A33FF]"></div>
           </div>
         ) : (
-          <div className="self-stretch flex-col justify-start items-end gap-4 flex w-full flex-1 overflow-y-auto no-scrollbar pb-20">
+          <div className="self-stretch flex-col justify-start items-end gap-4 flex w-full flex-1 overflow-y-auto no-scrollbar">
             {/* Product Info */}
             <div className="w-full p-4 rounded-xl border border-[#DFE1E7] flex justify-start items-start gap-4">
               {product?.image_path ? (
                 <Image
-                  src={`https://digikara.back.adiaweb.dev/storage/${product.image_path}`}
+                  src={`https://digikara.back.adiaweb.dev/storage/${product.image_path.startsWith('http') ? product.image_path.split('/storage/')[1] : product.image_path}`}
                   alt={product.title || 'محصول'}
                   width={80}
                   height={80}
@@ -137,49 +136,43 @@ const ManagerOrderPopup = ({ onClose, orderId, onUpdate }: ManagerOrderPopupProp
                 <div className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb'] line-clamp-2">
                   {product?.title || 'محصول نامشخص'}
                 </div>
-                <div className="flex items-center gap-3 text-xs text-[#666D80]">
-                  <span className="bg-gray-50 px-2 py-1 rounded-md border border-gray-100">
-                    تعداد: {toFarsiNumber(quantity)}
-                  </span>
-                  <span className="bg-gray-50 px-2 py-1 rounded-md border border-gray-100">
-                    قیمت کل: {formatPrice(total_price)} ریال
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Customer Info */}
-            <div className="self-stretch flex-col gap-3 flex w-full">
-              <div className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb'] flex items-center gap-2">
-                <User className="w-4 h-4 text-blue-600" />
-                اطلاعات مشتری
-              </div>
-              <div className="w-full p-4 rounded-xl bg-[#F9FAFB] border border-[#DFE1E7] flex flex-col gap-3">
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-[#666D80]">نام مشتری:</span>
-                  <span className="text-[#0D0D12] font-medium">
-                    {user?.firstname} {user?.lastname}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-[#666D80]">شماره تماس:</span>
-                  <span className="text-[#0D0D12] font-num-medium">
-                    {toFarsiNumber(user?.phone)}
-                  </span>
-                </div>
-                {address && (
-                  <div className="flex flex-col gap-1 text-sm border-t border-gray-200 pt-2 mt-1">
-                    <span className="text-[#666D80] flex items-center gap-1">
-                      <MapPin className="w-3 h-3" /> آدرس:
-                    </span>
-                    <span className="text-[#0D0D12] leading-relaxed">{address}</span>
+                {product?.code && (
+                  <div className="text-[#666D80] text-xs font-num-medium">
+                    کد محصول: {toFarsiNumber(product.code)}
                   </div>
                 )}
               </div>
             </div>
 
+            {/* Order Details Grid */}
+            <div className="w-full grid grid-cols-2 gap-3">
+               <div className="p-3 bg-gray-50 rounded-xl flex flex-col gap-1">
+                 <span className="text-xs text-[#666D80]">تعداد</span>
+                 <span className="text-sm font-medium font-num-medium text-[#0D0D12]">{toFarsiNumber(quantity)} عدد</span>
+               </div>
+               <div className="p-3 bg-gray-50 rounded-xl flex flex-col gap-1">
+                 <span className="text-xs text-[#666D80]">قیمت واحد</span>
+                 <span className="text-sm font-medium font-num-medium text-[#0D0D12]">{formatPrice(price)} ریال</span>
+               </div>
+               <div className="p-3 bg-gray-50 rounded-xl flex flex-col gap-1">
+                 <span className="text-xs text-[#666D80] flex items-center gap-1">
+                    <Percent className="w-3 h-3" /> تخفیف
+                 </span>
+                 <span className="text-sm font-medium font-num-medium text-[#0D0D12]">{toFarsiNumber(discount)}٪</span>
+               </div>
+               <div className="p-3 bg-gray-50 rounded-xl flex flex-col gap-1">
+                 <span className="text-xs text-[#666D80] flex items-center gap-1">
+                    <Tag className="w-3 h-3" /> قیمت نهایی
+                 </span>
+                  {/* Calculate final price if needed or just use price if it's already final. Assuming 'price' is unit price. */}
+                 <span className="text-sm font-medium font-num-medium text-[#0D0D12]">
+                    {formatPrice((Number(price || 0) * Number(quantity || 0)) * (1 - (Number(discount || 0) / 100)))} ریال
+                 </span>
+               </div>
+            </div>
+
             {/* Order Status */}
-            <div className="self-stretch flex-col gap-3 flex w-full">
+            <div className="self-stretch flex-col gap-3 flex w-full border-t border-[#DFE1E7] pt-4 mt-2">
               <div className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb'] flex items-center gap-2">
                 <Clock className="w-4 h-4 text-amber-500" />
                 وضعیت سفارش
@@ -191,7 +184,7 @@ const ManagerOrderPopup = ({ onClose, orderId, onUpdate }: ManagerOrderPopupProp
                   onClick={() => handleStatusUpdate('pending')}
                   disabled={isUpdating}
                   className={`h-10 rounded-lg text-sm font-medium transition-all ${
-                    status === 'pending' || status === 'در انتظار ارسال'
+                    status === 'pending' || status === 'در انتظار' || status === 'در حال انتظار'
                       ? 'bg-amber-100 text-amber-700 border border-amber-200'
                       : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
                   }`}
@@ -202,7 +195,7 @@ const ManagerOrderPopup = ({ onClose, orderId, onUpdate }: ManagerOrderPopupProp
                   onClick={() => handleStatusUpdate('sent')}
                   disabled={isUpdating}
                   className={`h-10 rounded-lg text-sm font-medium transition-all ${
-                    status === 'sent' || status === 'ارسال شده' || status === 'delivered'
+                    status === 'sent' || status === 'ارسال شده' || status === 'تکمیل شده'
                       ? 'bg-green-100 text-green-700 border border-green-200'
                       : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
                   }`}

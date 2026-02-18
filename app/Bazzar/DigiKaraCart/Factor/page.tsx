@@ -20,9 +20,9 @@ export default function FactorPage() {
       dir="rtl"
     >
       {/* Header */}
-      <div className="w-full max-w-[440px] flex justify-between items-center px-0 py-4 shrink-0 print:w-full print:max-w-none">
+      <div className="w-full max-w-[440px] flex justify-between items-center px-6 py-4 shrink-0 print:w-full print:max-w-none">
         <div className="flex items-center justify-between w-full relative">
-          <span className="text-[#0C1415] text-base font-['PeydaWeb'] font-semibold">
+          <span className="text-[#0C1415] text-base font-semibold">
             رسید خرید
           </span>
           <button
@@ -35,13 +35,13 @@ export default function FactorPage() {
       </div>
 
       {/* Content List */}
-      <div className="w-full max-w-[440px] flex flex-col gap-0 px-0 pb-28 flex-1 overflow-y-auto no-scrollbar bg-white print:w-full print:max-w-none print:pb-0 print:overflow-visible print:h-auto">
+      <div className="w-full max-w-[440px] flex flex-col gap-0 px-6 pb-28 flex-1 overflow-y-auto no-scrollbar bg-white print:w-full print:max-w-none print:pb-0 print:overflow-visible print:h-auto">
         {/* Order List Header */}
         <div className="flex justify-between items-center w-full mt-4 mb-4">
-          <span className="text-[#0C1415] text-base font-['PeydaWeb'] font-semibold">
+          <span className="text-[#0C1415] text-base font-semibold">
             لیست سفارش
           </span>
-          <button className="text-[#707F81] text-xs font-['PeydaFaNum'] font-normal hover:text-[#0C1415] transition-colors print:hidden">
+          <button className="text-[#707F81] text-xs font-normal hover:text-[#0C1415] transition-colors print:hidden">
             مشاهده همه
           </button>
         </div>
@@ -66,13 +66,13 @@ export default function FactorPage() {
                   )}
                 </div>
                 <div className="flex-1 flex flex-col items-start gap-1">
-                  <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] line-clamp-1 text-right">
+                  <span className="text-[#0C1415] text-sm font-medium line-clamp-1 text-right">
                     {item.name}
                   </span>
-                  <span className="text-[#707F81] text-xs font-['PeydaFaNum'] text-right">
+                  <span className="text-[#707F81] text-xs font-normal text-right">
                     {item.shopName || 'فروشگاه'}
                   </span>
-                  <span className="text-[#0C1415] text-sm font-num-medium mt-1 text-right">
+                  <span className="text-[#0C1415] text-sm font-medium mt-1 text-right">
                     {(item.price * item.count).toLocaleString()} ریال
                   </span>
                 </div>
@@ -85,7 +85,7 @@ export default function FactorPage() {
             </React.Fragment>
           ))}
           {items.length === 0 && (
-            <div className="w-full text-center text-[#707F81] py-4 text-sm font-['PeydaWeb']">
+            <div className="w-full text-center text-[#707F81] py-4 text-sm font-medium">
               سبد خرید خالی است
             </div>
           )}
@@ -96,17 +96,17 @@ export default function FactorPage() {
         {/* Order Details Grid */}
         <div className="flex flex-col gap-4 w-full break-inside-avoid">
           <div className="flex justify-between items-center w-full">
-            <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-semibold">
+            <span className="text-[#707F81] text-sm font-medium">
               تاریخ سفارش
             </span>
-            <span className="text-[#080B11] text-sm font-num-medium">۲۷ شهریور ۱۴۰۴ | ۱۰:۰۰</span>
+            <span className="text-[#080B11] text-sm font-medium">۲۷ شهریور ۱۴۰۴ | ۱۰:۰۰</span>
           </div>
 
           <div className="flex justify-between items-center w-full">
-            <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-semibold">
+            <span className="text-[#707F81] text-sm font-medium">
               نوع تحویل
             </span>
-            <span className="text-[#080B11] text-sm font-['PeydaFaNum'] font-medium">اقتصادی</span>
+            <span className="text-[#080B11] text-sm font-medium">اقتصادی</span>
           </div>
 
           <div className="w-full h-px bg-[rgba(0,0,0,0.10)] my-2"></div>
@@ -114,29 +114,29 @@ export default function FactorPage() {
           {/* Cost Breakdown */}
           <div className="flex flex-col gap-4 w-full">
             <div className="flex justify-between items-center w-full">
-              <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-semibold">مبلغ</span>
-              <span className="text-[#080B11] text-sm font-num-medium">
+              <span className="text-[#707F81] text-sm font-medium">مبلغ</span>
+              <span className="text-[#080B11] text-sm font-medium">
                 {totalPrice.toLocaleString()} ریال
               </span>
             </div>
             <div className="flex justify-between items-center w-full">
-              <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-semibold">
+              <span className="text-[#707F81] text-sm font-medium">
                 هزینه ارسال
               </span>
-              <span className="text-[#080B11] text-sm font-num-medium">
+              <span className="text-[#080B11] text-sm font-medium">
                 {shippingCost.toLocaleString()} ریال
               </span>
             </div>
             <div className="flex justify-between items-center w-full">
-              <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-semibold">مالیات</span>
-              <span className="text-[#080B11] text-sm font-num-medium">
+              <span className="text-[#707F81] text-sm font-medium">مالیات</span>
+              <span className="text-[#080B11] text-sm font-medium">
                 {(shippingCost * 0.05).toLocaleString()} ریال
               </span>{' '}
               {/* Mock Tax */}
             </div>
             <div className="flex justify-between items-center w-full">
-              <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-semibold">تخفیف</span>
-              <span className="text-[#080B11] text-sm font-num-medium">
+              <span className="text-[#707F81] text-sm font-medium">تخفیف</span>
+              <span className="text-[#080B11] text-sm font-medium">
                 {discount.toLocaleString()} ریال
               </span>
             </div>
@@ -146,8 +146,8 @@ export default function FactorPage() {
 
           {/* Total */}
           <div className="flex justify-between items-center w-full">
-            <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-semibold">جمع کل</span>
-            <span className="text-[#080B11] text-sm  font-num-medium">
+            <span className="text-[#707F81] text-sm font-medium">جمع کل</span>
+            <span className="text-[#080B11] text-sm  font-medium">
               {finalPrice.toLocaleString()} ریال
             </span>
           </div>
@@ -157,28 +157,26 @@ export default function FactorPage() {
           {/* Payment Info */}
           <div className="flex justify-between items-center w-full">
             <div className="flex items-center gap-3">
-              <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-semibold">
+              <span className="text-[#707F81] text-sm font-medium">
                 درگاه بانک سامان
               </span>
               <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center text-[10px] text-blue-600 print:border print:border-blue-200">
                 S
               </div>
             </div>
-            <span className="text-[#3C5A5D] text-sm font-num-medium">
+            <span className="text-[#3C5A5D] text-sm font-medium">
               12345678431 :شناسه پرداخت
             </span>
           </div>
         </div>
-      </div>
 
-      {/* Bottom Bar - Download Button */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 w-full max-w-[440px] mx-auto p-6 bg-transparent print:hidden">
-        <div className="w-full  rounded-2xl  p-3">
+        {/* Download Button - Moved Inside */}
+        <div className="w-full mt-8 print:hidden">
           <button
             onClick={handleDownload}
             className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-3 hover:bg-[#e5bc09] transition-colors shadow-sm"
           >
-            <span className="text-[#1A1C1E] text-[17px] font-['PeydaWeb'] font-semibold">
+            <span className="text-[#1A1C1E] text-[17px] font-semibold">
               دانلود فاکتور
             </span>
           </button>

@@ -252,4 +252,17 @@ export const bazzarService = {
   getUserProfile: async (): Promise<ApiResponse<UserProfile>> => {
     return await apiClient.get<ApiResponse<UserProfile>>('/customers/users');
   },
+
+  updateProfile: async (data: Partial<UserProfile>): Promise<ApiResponse<UserProfile>> => {
+    return await apiClient.put<ApiResponse<UserProfile>>('/customers/users/update', data);
+  },
+
+  updatePassword: async (data: {
+    current_password?: string;
+    mobile?: string;
+    password?: string;
+    password_confirmation?: string;
+  }): Promise<ApiResponse<null>> => {
+    return await apiClient.put<ApiResponse<null>>('/customers/users/update-password', data);
+  },
 };

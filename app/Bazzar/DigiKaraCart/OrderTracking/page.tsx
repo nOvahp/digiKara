@@ -13,9 +13,9 @@ export default function OrderTrackingPage() {
   return (
     <div className="w-full min-h-screen bg-white flex flex-col items-center relative" dir="rtl">
       {/* Header */}
-      <div className="w-full max-w-[440px] flex justify-between items-center px-0 py-4 shrink-0">
+      <div className="w-full max-w-[440px] flex justify-between items-center px-6 py-4 shrink-0">
         <div className="flex items-center justify-between w-full relative">
-          <span className="text-[#0C1415] text-base font-['PeydaWeb'] font-semibold">
+          <span className="text-[#0C1415] text-base font-semibold">
             پیگیری سفارش
           </span>
           <button
@@ -28,13 +28,13 @@ export default function OrderTrackingPage() {
       </div>
 
       {/* Content List */}
-      <div className="w-full max-w-[440px] flex flex-col gap-0 px-0 pb-12 flex-1 overflow-y-auto no-scrollbar">
+      <div className="w-full max-w-[440px] flex flex-col gap-0 px-6 pb-28 flex-1 overflow-y-auto no-scrollbar">
         {/* Order List Header */}
         <div className="flex justify-between items-center w-full mt-4 mb-4">
-          <span className="text-[#0C1415] text-base font-['PeydaWeb'] font-semibold">
+          <span className="text-[#0C1415] text-base font-semibold">
             لیست سفارش
           </span>
-          <button className="text-[#707F81] text-xs font-['PeydaFaNum'] font-normal hover:text-[#0C1415] transition-colors">
+          <button className="text-[#707F81] text-xs font-normal hover:text-[#0C1415] transition-colors">
             مشاهده همه
           </button>
         </div>
@@ -59,13 +59,13 @@ export default function OrderTrackingPage() {
                   )}
                 </div>
                 <div className="flex-1 flex flex-col items-start gap-1">
-                  <span className="text-[#0C1415] text-sm font-['PeydaFaNum'] line-clamp-1 text-right">
+                  <span className="text-[#0C1415] text-sm font-medium line-clamp-1 text-right">
                     {item.name}
                   </span>
-                  <span className="text-[#707F81] text-xs font-['PeydaFaNum'] text-right">
+                  <span className="text-[#707F81] text-xs font-normal text-right">
                     {item.shopName || 'فروشگاه'}
                   </span>
-                  <span className="text-[#0C1415] text-sm font-num-medium mt-1 text-right">
+                  <span className="text-[#0C1415] text-sm font-medium mt-1 text-right">
                     {(item.price * item.count).toLocaleString()} ریال
                   </span>
                 </div>
@@ -73,7 +73,7 @@ export default function OrderTrackingPage() {
             </React.Fragment>
           ))}
           {items.length === 0 && (
-            <div className="w-full text-center text-[#707F81] py-4 text-sm font-['PeydaWeb']">
+            <div className="w-full text-center text-[#707F81] py-4 text-sm font-medium">
               سوابق خریدی موجود نیست
             </div>
           )}
@@ -84,32 +84,32 @@ export default function OrderTrackingPage() {
         {/* Order Details Grid */}
         <div className="flex flex-col gap-4 w-full mb-6">
           <div className="flex justify-between items-center w-full">
-            <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-semibold align-middle">
+            <span className="text-[#707F81] text-sm font-semibold align-middle">
               جزییات سفارش
             </span>
           </div>
 
           <div className="flex justify-between items-center w-full">
-            <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-light">
+            <span className="text-[#707F81] text-sm font-light">
               تاریخ تحویل مورد انتظار
             </span>
-            <span className="text-[#080B11] text-sm font-num-medium font-semibold">
+            <span className="text-[#080B11] text-sm font-medium font-semibold">
               ۱۲ شهریور ۱۴۰۴
             </span>
           </div>
 
           <div className="flex justify-between items-center w-full">
-            <span className="text-[#707F81] text-sm font-['PeydaWeb'] font-light">
+            <span className="text-[#707F81] text-sm font-light">
               شناسه رهگیری
             </span>
-            <span className="text-[#080B11] text-sm font-num-medium font-semibold">987654321</span>
+            <span className="text-[#080B11] text-sm font-medium font-semibold">987654321</span>
           </div>
         </div>
 
         {/* Tracking Timeline */}
         <div className="flex flex-col gap-4 w-full">
           <div className="flex justify-between items-center w-full mb-2">
-            <span className="text-[#0C1415] text-base font-['PeydaWeb'] font-semibold">
+            <span className="text-[#0C1415] text-base font-semibold">
               وضعیت سفارش
             </span>
           </div>
@@ -124,10 +124,10 @@ export default function OrderTrackingPage() {
               <div className="flex justify-start gap-2 w-full items-start">
                 <ClipboardList className="w-6 h-6 text-[#3C5A5D]" strokeWidth={1.5} />
                 <div className="flex flex-col gap-1 text-left">
-                  <span className="text-[#0C1415] text-sm font-['PeydaWeb'] font-semibold">
+                  <span className="text-[#0C1415] text-sm font-semibold">
                     سفارش ثبت شد
                   </span>
-                  <span className="text-[#707F81] text-xs font-num-medium">۱ مهر ۱۴۰۴، ۱۶:۲۵</span>
+                  <span className="text-[#707F81] text-xs font-medium">۱ مهر ۱۴۰۴، ۱۶:۲۵</span>
                 </div>
               </div>
               <div className="w-6 h-6 rounded-full bg-[#3C5A5D] flex items-center justify-center shrink-0 border border-[#3C5A5D]">
@@ -140,10 +140,10 @@ export default function OrderTrackingPage() {
               <div className="flex justify-start gap-2 w-full items-start">
                 <Package className="w-6 h-6 text-[#3C5A5D]" strokeWidth={1.5} />
                 <div className="flex flex-col gap-1 text-right">
-                  <span className="text-[#0C1415] text-sm font-['PeydaWeb'] font-semibold">
+                  <span className="text-[#0C1415] text-sm font-semibold">
                     در حال پردازش
                   </span>
-                  <span className="text-[#707F81] text-xs font-num-medium">۱ مهر ۱۴۰۴، ۱۵:۵۴</span>
+                  <span className="text-[#707F81] text-xs font-medium">۱ مهر ۱۴۰۴، ۱۵:۵۴</span>
                 </div>
               </div>
               <div className="w-6 h-6 rounded-full bg-[#3C5A5D] flex items-center justify-center shrink-0 border border-[#3C5A5D]">
@@ -156,10 +156,10 @@ export default function OrderTrackingPage() {
               <div className="flex justify-start gap-2 w-full items-start">
                 <Truck className="w-6 h-6 text-[#3C5A5D]" strokeWidth={1.5} />
                 <div className="flex flex-col gap-1 text-right">
-                  <span className="text-[#0C1415] text-sm font-['PeydaWeb'] font-semibold">
+                  <span className="text-[#0C1415] text-sm font-semibold">
                     ارسال شده
                   </span>
-                  <span className="text-[#707F81] text-xs font-num-medium">
+                  <span className="text-[#707F81] text-xs font-medium">
                     انتظار می رود ۱۱ شهریور ۱۴۰۴
                   </span>
                 </div>
@@ -174,10 +174,10 @@ export default function OrderTrackingPage() {
               <div className="flex justify-start gap-2 w-full items-start">
                 <CheckCircle2 className="w-6 h-6 text-[#3C5A5D]" strokeWidth={1.5} />
                 <div className="flex flex-col gap-1 text-right">
-                  <span className="text-[#0C1415] text-sm font-['PeydaWeb'] font-semibold">
+                  <span className="text-[#0C1415] text-sm font-semibold">
                     تحویل داده شده
                   </span>
-                  <span className="text-[#707F81] text-xs font-num-medium">۱ مهر ۱۴۰۴</span>
+                  <span className="text-[#707F81] text-xs font-medium">۱ مهر ۱۴۰۴</span>
                 </div>
               </div>
               <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center shrink-0 border border-gray-200">

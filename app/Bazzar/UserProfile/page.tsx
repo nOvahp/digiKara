@@ -14,6 +14,8 @@ import {
   School,
   GraduationCap,
   BadgeCheck,
+  Package,
+  ChevronLeft,
 } from 'lucide-react';
 import { bazzarService, UserProfile } from '@/app/services/bazzarService';
 import { cn } from '@/lib/utils';
@@ -226,11 +228,22 @@ export default function UserProfilePage() {
             </span>
           </div>
 
-          <div className="mt-2 px-5 py-2 bg-white border border-gray-100 shadow-sm rounded-full flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-[#FDD00A] animate-pulse"></div>
-            <span className="text-xs text-gray-600 font-['PeydaWeb'] font-medium">
-              {user.grade ? `دانش‌آموز پایه ${user.grade}` : 'دانش‌آموز'}
-            </span>
+          <div className="flex items-center gap-2">
+            <div className="px-5 py-2 bg-white border border-gray-100 shadow-sm rounded-full flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-[#FDD00A] animate-pulse"></div>
+              <span className="text-xs text-gray-600 font-['PeydaWeb'] font-medium">
+                {user.grade ? `دانش‌آموز پایه ${user.grade}` : 'دانش‌آموز'}
+              </span>
+            </div>
+            
+            <button
+               onClick={() => router.push('/Bazzar/UserProfile/edit')}
+               className="px-4 py-2 bg-gray-50 hover:bg-gray-100 text-[#0D0D12] rounded-full border border-gray-200 text-xs font-['PeydaWeb'] font-semibold transition-colors flex items-center gap-1"
+            >
+               <span>ویرایش</span>
+               <div className="w-1 h-1 bg-[#0D0D12] rounded-full mx-0.5"></div>
+               <span>پروفایل</span>
+            </button>
           </div>
         </div>
 
@@ -259,6 +272,23 @@ export default function UserProfilePage() {
             <InfoRow icon={MapPin} label="شهر" value={user.city} />
             <InfoRow icon={MapPin} label="منطقه" value={user.district} isNum />
           </SectionCard>
+
+          {/* New Orders Link */}
+          <button
+              onClick={() => router.push('/customers/users/orders/processing')}
+              className="w-full bg-white rounded-2xl p-4 border border-gray-100 shadow-sm flex items-center justify-between hover:bg-gray-50 transition-colors"
+          >
+              <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center">
+                      <Package className="w-5 h-5" />
+                  </div>
+                  <span className="text-[#0C1415] text-[15px] font-['PeydaWeb'] font-bold">سفارشات من</span>
+              </div>
+               <div className="flex items-center gap-2">
+                   <span className="text-gray-400 text-xs font-['PeydaWeb']">مشاهده همه</span>
+                   <ChevronLeft className="w-4 h-4 text-gray-400" />
+               </div>
+          </button>
 
           {/* Logout Button */}
           <button

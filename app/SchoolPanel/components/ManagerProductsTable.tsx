@@ -298,13 +298,14 @@ const ManagerProductsTable = () => {
                     </div>
                     <div className="w-[80px] h-16 px-3 flex justify-center items-center">
                       {product.model_data?.image_path ? (
-                        <Image
-                          src={`https://digikara.back.adiaweb.dev/storage/${product.model_data.image_path}`}
-                          alt="product"
-                          width={40}
-                          height={40}
-                          className="rounded-lg object-cover border border-gray-200"
-                        />
+                        <div className="w-10 h-10 relative flex-shrink-0 rounded-lg overflow-hidden border border-gray-200">
+                          <Image
+                            src={`https://digikara.back.adiaweb.dev/storage/${product.model_data.image_path}`}
+                            alt="product"
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
                       ) : (
                         <div className="w-10 h-10 bg-gray-100 rounded-lg"></div>
                       )}

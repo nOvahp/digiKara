@@ -254,11 +254,7 @@ export default function ProductDetails() {
                                             `}
                     >
                       <span className="text-xs font-['PeydaWeb'] font-medium">{variant.title}</span>
-                      {variant.discount_percent && variant.discount_percent !== '0.00' && (
-                        <div className="absolute -top-2 -right-2 bg-red-500 text-white text-[9px] w-5 h-5 rounded-full flex items-center justify-center shadow-sm">
-                          %
-                        </div>
-                      )}
+                      
                     </div>
                   ))}
                 </div>

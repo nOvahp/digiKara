@@ -31,8 +31,12 @@ export default function ConditionalLayout() {
     };
   }, [pathname]);
 
-  // Hide global navs on School Panel and Login pages
-  if (pathname?.startsWith('/SchoolPanel') || pathname?.startsWith('/login')) {
+  // Hide global navs on School Panel, Login, and Customers pages
+  if (
+    pathname?.startsWith('/SchoolPanel') ||
+    pathname?.startsWith('/login') ||
+    pathname?.startsWith('/customers')
+  ) {
     return null;
   }
 

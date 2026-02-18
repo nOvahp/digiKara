@@ -26,7 +26,7 @@ export default function TransitionPage() {
       </div>
 
       {/* Content Content - Centered */}
-      <div className="w-full max-w-[440px] flex flex-col items-center justify-center gap-6 px-0 flex-1 -mt-20">
+      <div className="w-full max-w-[440px] flex flex-col items-center justify-center gap-6 px-0 flex-1 mt-10">
         {/* Image */}
         <div className="w-[126px] h-[126px] relative">
           <Image
@@ -50,7 +50,7 @@ export default function TransitionPage() {
       </div>
 
       {/* Bottom Bar - Action Buttons */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 w-full max-w-[440px] mx-auto p-6 bg-transparent">
+      <div className="w-full max-w-[440px] mx-auto p-6 pb-20 bg-transparent shrink-0">
         <div className="w-full  rounded-2xl  p-6 flex flex-col gap-3">
           {/* Track Order Button */}
           <button
