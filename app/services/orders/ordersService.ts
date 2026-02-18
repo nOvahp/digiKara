@@ -59,7 +59,7 @@ interface RawOrderResponse {
 }
 
 export const ordersService = {
-  getOrders: async (status: string): Promise<{
+  getOrders: async (status?: string): Promise<{
     success: boolean;
     data?: Order[];
     message?: string;
@@ -69,7 +69,7 @@ export const ordersService = {
       // processing -> /customers/users/orders/processing
       // complete -> /customers/users/orders/complete
       // cancel -> /customers/users/orders/cancel
-      const endpoint = `/customers/users/orders/${status}`;
+      const endpoint = status ? `/customers/users/orders/${status}` : '/customers/users/orders';
       
       const response = await apiClient.get<ApiResponse<unknown[]>>(endpoint);
 
