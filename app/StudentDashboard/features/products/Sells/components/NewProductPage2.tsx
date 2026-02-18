@@ -5,10 +5,10 @@ import { ChevronRight, ChevronLeft, Info, X, Plus, Trash2, Check } from 'lucide-
 // ... interfaces
 
 const VARIANT_OPTIONS = [
-  { id: 'color', label: 'رنگ', icon: '🎨' },
-  { id: 'weight', label: 'وزن', icon: '⚖️' },
-  { id: 'size', label: 'اندازه', icon: '📏' },
-  { id: 'volume', label: 'حجم', icon: '🧊' },
+  { id: 1, label: 'رنگ', icon: '🎨' },
+  { id: 6, label: 'وزن', icon: '⚖️' },
+  { id: 2, label: 'سایز', icon: '📏' },
+  { id: 7, label: 'حجم', icon: '🧊' },
 ];
 
 const COLORS = [
@@ -106,7 +106,6 @@ export function NewProductPage2({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [featureInputs, setFeatureInputs] = useState<Record<string, string>>({});
-  const [pendingColor, setPendingColor] = useState<string | null>(null);
 
   // Initialize variant features if not present
   useEffect(() => {
@@ -137,7 +136,7 @@ export function NewProductPage2({
     });
   };
 
-  const toggleVariantFeature = (type: string) => {
+  const toggleVariantFeature = (type: number) => {
     const currentVariants = formData.variantFeatures || [];
     const exists = currentVariants.find((v) => v.id === type);
 
@@ -161,7 +160,7 @@ export function NewProductPage2({
     }
   };
 
-  const updateVariantValues = (id: string, values: string[]) => {
+  const updateVariantValues = (id: number, values: string[]) => {
     const currentVariants = formData.variantFeatures || [];
     updateFormData({
       variantFeatures: currentVariants.map((v) => (v.id === id ? { ...v, values } : v)),
@@ -263,7 +262,7 @@ export function NewProductPage2({
 
                   {/* Input Section */}
                   <div className="flex-1 px-3 h-full flex items-center min-w-0">
-                    {feature.id === 'color' ? (
+                    {feature.id === 1 ? (
                       <div className="flex items-center gap-2 overflow-x-auto no-scrollbar h-full pl-2 w-full">
                         {/* Add Color Button (Opens Modal) - Moved to Start for Right Alignment in RTL */}
                         <div
@@ -275,17 +274,13 @@ export function NewProductPage2({
                         </div>
                         {/* Selected Colors List */}
                         {(feature.values || []).map((val, idx) => {
-                          // Try to find if it's a predefined color to get its special bg (e.g. gradient)
-                          const predefined = COLORS.find((c) => c.name === val);
-                          const background = predefined ? predefined.bg : val;
-
                           return (
                             <div
                               key={`${val}-${idx}`}
                               onClick={() => {
                                 const current = feature.values || [];
                                 updateVariantValues(
-                                  'color',
+                                  1,
                                   current.filter((c) => c !== val),
                                 );
                               }}
@@ -300,7 +295,7 @@ export function NewProductPage2({
                           );
                         })}
                       </div>
-                    ) : feature.id === 'weight' || feature.id === 'volume' ? (
+                    ) : feature.id === 6 || feature.id === 7 ? (
                       <div className="flex items-center gap-3 overflow-x-auto no-scrollbar h-full pl-2 w-full py-1">
                         {/* Input Group */}
                         <div className="bg-gray-50 border border-gray-200 rounded-xl px-2 py-1.5 flex items-center gap-1 flex-shrink-0 h-[42px]">
@@ -366,7 +361,7 @@ export function NewProductPage2({
                           ))}
                         </div>
                       </div>
-                    ) : feature.id === 'size' ? (
+                    ) : feature.id === 2 ? (
                       <div className="flex flex-col gap-2 w-full py-1">
                         <div className="flex items-center gap-3 overflow-x-auto no-scrollbar w-full pb-1">
                           {/* Dimension Inputs Group */}
@@ -566,9 +561,9 @@ export function NewProductPage2({
           startColor={COLORS[0].bg} // Default start
           onClose={() => setShowColorPicker(false)}
           onConfirm={(color) => {
-            const current = formData.variantFeatures?.find((f) => f.id === 'color')?.values || [];
+            const current = formData.variantFeatures?.find((f) => f.id === 1)?.values || [];
             if (!current.includes(color)) {
-              updateVariantValues('color', [...current, color]);
+              updateVariantValues(1, [...current, color]);
             }
             setShowColorPicker(false);
           }}
@@ -588,11 +583,20 @@ function ColorPickerModal({ startColor, onClose, onConfirm }: ColorPickerModalPr
   const [hex, setHex] = useState(startColor);
   const [hue, setHue] = useState(() => hexToHsl(startColor).h);
 
-  // Sync state if startColor prop changes
+  // Sync state if startColor prop changes using async pattern
   useEffect(() => {
-    const { h } = hexToHsl(startColor);
-    setHue(h);
-    setHex(startColor);
+    let cancelled = false;
+    (async () => {
+      await Promise.resolve(); // Make state update asynchronous
+      if (!cancelled) {
+        const { h } = hexToHsl(startColor);
+        setHue(h);
+        setHex(startColor);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [startColor]);
 
   // When hue changes, update hex (keep saturation/lightness 100/50 for vibrancy)
@@ -611,7 +615,7 @@ function ColorPickerModal({ startColor, onClose, onConfirm }: ColorPickerModalPr
           <button onClick={onClose} className="p-1 hover:bg-gray-100 rounded-full">
             <X className="w-5 h-5 text-gray-500" />
           </button>
-          <span className="text-lg font-semibold font-['PeydaWeb'] text-[#0D0D12]">
+          <span className="text-lg font-semibold  text-[#0D0D12]">
             انتخاب رنگ
           </span>
         </div>

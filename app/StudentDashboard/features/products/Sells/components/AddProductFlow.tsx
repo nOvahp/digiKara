@@ -96,12 +96,19 @@ export function AddProductFlow({
   const [maxStepReached, setMaxStepReached] = useState(1);
 
   useEffect(() => {
-    if (activePopup !== 'none') {
-      const stepNum = parseInt(activePopup.replace('step', ''));
-      if (!isNaN(stepNum)) {
-        setMaxStepReached((prev) => Math.max(prev, stepNum));
+    let cancelled = false;
+    (async () => {
+      await Promise.resolve(); // Make state update asynchronous
+      if (!cancelled && activePopup !== 'none') {
+        const stepNum = parseInt(activePopup.replace('step', ''));
+        if (!isNaN(stepNum)) {
+          setMaxStepReached((prev) => Math.max(prev, stepNum));
+        }
       }
-    }
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [activePopup]);
 
   const handleSubmitProduct = async () => {

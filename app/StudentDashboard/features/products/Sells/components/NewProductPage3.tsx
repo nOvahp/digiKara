@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { X, Plus, Minus, ChevronDown, Info, Check, ChevronRight } from 'lucide-react';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -115,14 +115,24 @@ export function NewProductPage3({
     const priceDifference = parseInt(variantAmount.replace(/\D/g, '') || '0');
     const finalAmount = isAddition ? basePrice + priceDifference : basePrice - priceDifference;
 
+    // Find the feature type ID based on the selected variant label (e.g. "Color: Red" -> "Color" -> ID 1)
+    let typeId = 1; // Default
+    if (selectedVariant && formData.variantFeatures) {
+        const featureTitle = selectedVariant.split(':')[0].trim();
+        const feature = formData.variantFeatures.find(f => f.title === featureTitle);
+        if (feature) {
+            typeId = feature.id; // logic: feature.id is now number
+        }
+    }
+
     const newVariantPrice: VariantPrice = {
       variantLabel: selectedVariant,
       amount: finalAmount, // Final calculated price
       title: selectedVariant, // Use the selected variant as title
-      type: parseInt(variantType),
-      discount_percent: variantDiscount ? parseInt(variantDiscount) : null,
+      type: typeId,
+      discount_percent: variantDiscount ? Math.min(100, Math.max(0, parseInt(variantDiscount))) : null,
       inventory: variantInventory ? parseInt(variantInventory.replace(/\D/g, '') || '0') : null,
-      type_inventory: null, // Not required, always null
+      type_inventory: 1, // Set to 1 as requested
       warn_inventory: variantWarnInventory
         ? parseInt(variantWarnInventory.replace(/\D/g, '') || '0')
         : null,
@@ -136,7 +146,7 @@ export function NewProductPage3({
     setSelectedVariant('');
     setVariantAmount('');
     setIsAddition(true);
-    setVariantType('1');
+    setVariantType('1'); 
     setVariantDiscount('');
     setVariantInventory('');
     setVariantWarnInventory('');
@@ -409,17 +419,7 @@ export function NewProductPage3({
                 </div>
               </div>
 
-              {/* Variant Type Input */}
-              <div className="w-full flex flex-col gap-2">
-                <div className="text-right text-[#666D80] text-sm font-semibold">نوع ویژگی</div>
-                <Input
-                  type="number"
-                  className="w-full h-[52px] px-3 bg-white rounded-xl border border-[#DFE1E7] text-right outline-none text-[#0D0D12] text-base font-num-semibold placeholder:text-[#DFE1E7] focus:border-[#FDD00A] focus-visible:ring-0"
-                  placeholder="1"
-                  value={variantType}
-                  onChange={(e) => setVariantType(e.target.value)}
-                />
-              </div>
+
 
               {/* Optional Fields Row 1: Discount & Inventory */}
               <div className="w-full grid grid-cols-2 gap-3">

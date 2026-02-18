@@ -11,24 +11,6 @@ const formatPrice = (price: string | number) => {
   return toFarsiNumber(price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
 };
 
-// Helper to map color names to codes (basic mock)
-const getColorCode = (name: string) => {
-  const map: Record<string, string> = {
-    قرمز: '#EF4444',
-    آبی: '#3B82F6',
-    سبز: '#10B981',
-    زرد: '#F59E0B',
-    مشکی: '#000000',
-    سفید: '#FFFFFF',
-    'قهوه ای': '#A2845E',
-    خاکستری: '#6B7280',
-    نارنجی: '#F97316',
-    بنفش: '#8B5CF6',
-    صورتی: '#EC4899',
-  };
-  return map[name] || '#CCCCCC';
-};
-
 const PRICE_TYPE_LABELS: Record<number, string> = {
   1: 'رنگ',
   2: 'سایز',

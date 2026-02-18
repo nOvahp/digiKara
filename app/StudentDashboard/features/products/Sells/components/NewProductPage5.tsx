@@ -1,15 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 
 import { ChevronRight, X, ChevronDown, Info } from 'lucide-react';
 import { AddProductFormState } from '../types';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { ProductStepper } from './shared/ProductStepper';
-
-const toFarsiNumber = (n: number | string | undefined): string => {
-  if (n === undefined || n === null) return '';
-  return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
-};
 
 interface NewProductPage5Props {
   onClose: () => void;
@@ -256,7 +251,7 @@ export function NewProductPage5({
               <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-100">
                 <p className="text-xs text-yellow-800 font-medium mb-1">مثال خوب:</p>
                 <p className="text-xs text-gray-600 leading-relaxed font-medium">
-                  "کفش ورزشی نایک مدل ایرمکس، سبک و راحت برای پیاده‌روی روزانه. با کفی طبی و ضمانت اصالت کالا. ارسال رایگان به سراسر کشور."
+                  &quot;کفش ورزشی نایک مدل ایرمکس، سبک و راحت برای پیاده‌روی روزانه. با کفی طبی و ضمانت اصالت کالا. ارسال رایگان به سراسر کشور.&quot;
                 </p>
               </div>
             </div>

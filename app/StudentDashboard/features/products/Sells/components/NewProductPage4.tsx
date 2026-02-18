@@ -1,13 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { toast } from 'sonner';
 import axios from 'axios';
 import { ChevronRight, X } from 'lucide-react';
 import { AddProductFormState } from '../types';
-
-const toFarsiNumber = (n: number | string | undefined): string => {
-  if (n === undefined || n === null) return '';
-  return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
-};
 
 interface NewProductPage4Props {
   onClose: () => void;

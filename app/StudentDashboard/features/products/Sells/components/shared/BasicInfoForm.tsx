@@ -137,7 +137,7 @@ export function BasicInfoForm({ defaultValues = {}, values, onChange }: BasicInf
         <FormLabel text="توضیحات" />
         <div className="h-[180px] p-3 bg-white rounded-xl border border-[#DFE1E7] flex flex-col focus-within:border-[#FDD00A] transition-colors">
           <textarea
-            className="w-full flex-1 text-right text-[#0D0D12] text-base font-normal font-['PeydaWeb'] bg-transparent outline-none resize-none leading-relaxed placeholder:text-[#DFE1E7]"
+            className="w-full flex-1 text-right text-[#0D0D12] text-base font-medium bg-transparent outline-none resize-none leading-relaxed placeholder:text-[#DFE1E7]"
             value={val('description') || ''}
             onChange={(e) => handleChange('description', e.target.value)}
             dir="rtl"

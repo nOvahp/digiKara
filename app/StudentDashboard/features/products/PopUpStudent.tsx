@@ -24,23 +24,34 @@ export function PopUpStudent({ onClose }: PopUpStudentProps) {
   const [hojreData, setHojreData] = useState<HojreData | null>(null);
 
   useEffect(() => {
-    // Fetch user data from localStorage
-    if (typeof window !== 'undefined') {
-      const storedData = localStorage.getItem('user_data');
-      if (storedData) {
-        try {
-          const parsed = JSON.parse(storedData) as UserData;
-          setUserData(parsed);
-          
-          // Extract hojre data from cell
-          if (parsed.cell && typeof parsed.cell === 'object') {
-            setHojreData(parsed.cell as HojreData);
+    // Fetch user data from localStorage using async pattern to avoid synchronous setState
+    let cancelled = false;
+    (async () => {
+      await Promise.resolve(); // Make state update asynchronous
+      
+      if (cancelled) return;
+      
+      if (typeof window !== 'undefined') {
+        const storedData = localStorage.getItem('user_data');
+        if (storedData) {
+          try {
+            const parsed = JSON.parse(storedData) as UserData;
+            setUserData(parsed);
+            
+            // Extract hojre data from cell
+            if (parsed.cell && typeof parsed.cell === 'object') {
+              setHojreData(parsed.cell as HojreData);
+            }
+          } catch (e) {
+            console.error('Failed to parse user data:', e);
           }
-        } catch (e) {
-          console.error('Failed to parse user data:', e);
         }
       }
-    }
+    })();
+    
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   // Prevent click propagation to parent (which might close the modal)

@@ -1,13 +1,8 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import { X, ChevronRight } from 'lucide-react';
 import { ProductPreviewCard } from './shared/ProductPreviewCard';
 import { ProductStepper } from './shared/ProductStepper';
 import { AddProductFormState } from '../types';
-
-const toFarsiNumber = (n: number | string | undefined): string => {
-  if (n === undefined || n === null) return '';
-  return n.toString().replace(/[0-9]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
-};
 
 interface NewProductPage6Props {
   onClose: () => void;

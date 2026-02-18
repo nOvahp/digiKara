@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { Box, BarChart, AlertTriangle, XCircle, CheckCircle, X } from 'lucide-react';
+import { Box, X } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface NotificationsProps {

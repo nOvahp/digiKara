@@ -6,7 +6,7 @@ export interface FeatureItem {
 }
 
 export interface VariantFeature {
-  id: string;
+  id: number;
   title: string;
   values: string[];
 }
