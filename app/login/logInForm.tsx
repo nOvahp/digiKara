@@ -75,12 +75,16 @@ export function LogInForm({
   const onSubmitPhone: SubmitHandler<PhoneNumberFormValues> = async (data) => {
     setIsLoading(true);
     setServerError('');
-    const result = await requestOtp(data.phoneNumber);
+    
+    // Prepend '0' for backend
+    const fullPhoneNumber = '0' + data.phoneNumber;
+
+    const result = await requestOtp(fullPhoneNumber);
     setIsLoading(false);
 
     if (result.success) {
       if (role === 'customer' && result.status === 3) {
-        onCustomerLogin?.(data.phoneNumber);
+        onCustomerLogin?.(fullPhoneNumber);
         return;
       }
       setStage('OTP_ENTRY');
@@ -100,7 +104,7 @@ export function LogInForm({
   const onSubmitOtp: SubmitHandler<OtpFormValues> = async (data) => {
     setIsLoading(true);
     setServerError('');
-    const phone = phoneForm.getValues('phoneNumber');
+    const phone = '0' + phoneForm.getValues('phoneNumber');
     const result = await verifyOtp(phone, data.otp);
 
     setIsLoading(false);
@@ -237,7 +241,7 @@ export function LogInForm({
                       </div>
                       <div className="h-1/3 bg-[#E31D1C]"></div>
                     </div>
-                    <span className="text-[#1A1C1E] font-medium text-sm">+98</span>
+                    <span className="text-[#1A1C1E] font-num-medium text-sm">+98</span>
                     {/* Arrow Icon */}
                     {/* <ChevronDown size={12} className="opacity-50" /> */}
                   </div>
@@ -248,11 +252,15 @@ export function LogInForm({
                     id="phone"
                     type="tel"
                     inputMode="numeric"
-                    placeholder="09123456789"
-                    className="flex-1 border-none shadow-none focus-visible:ring-0 bg-transparent text-left text-lg font-bold placeholder:text-gray-300 h-full"
+                    placeholder="9123456789"
+                    className="flex-1 border-none shadow-none focus-visible:ring-0 bg-transparent text-left text-lg font-num-medium placeholder:text-gray-300 h-full"
                     autoFocus
                     onChange={(e) => {
-                      const val = toEnglishDigits(e.target.value);
+                      let val = toEnglishDigits(e.target.value);
+                      // Remove leading zero if present
+                      if (val.startsWith('0')) {
+                        val = val.substring(1);
+                      }
                       phoneForm.setValue('phoneNumber', val, {
                         shouldValidate: true,
                       });
@@ -280,16 +288,7 @@ export function LogInForm({
                 {isLoading ? <Loader2 className="animate-spin w-5 h-5 text-[#1A1C1E]" /> : 'ادامه'}
               </Button>
 
-              {/* Footer Link */}
-              <div className="flex items-center justify-start gap-2 mt-4 px-2">
-                <span className="text-[#6C7278] text-sm font-semibold">حساب کاربری دارید؟</span>
-                <button
-                  type="button"
-                  className="text-[#4365DE] text-sm font-semibold hover:underline"
-                >
-                  ورود
-                </button>
-              </div>
+
             </form>
           ) : (
             <form

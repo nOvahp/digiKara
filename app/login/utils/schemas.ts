@@ -3,14 +3,15 @@ import { z } from 'zod';
 // --- Validation Schemas ---
 
 // Regex for Iranian phone numbers: starts with 09, followed by 9 digits
-const phoneRegex = /^09[0-9]{9}$/;
+// Regex for Iranian phone numbers: starts with 9, followed by 9 digits (total 10)
+const phoneRegex = /^9[0-9]{9}$/;
 
 export const phoneNumberSchema = z.object({
   phoneNumber: z
     .string()
-    .min(11, 'شماره تماس باید ۱۱ رقم باشد')
-    .max(11, 'شماره تماس باید ۱۱ رقم باشد')
-    .regex(phoneRegex, 'الگوی شماره تماس صحیح نیست (مثال: ۰۹۱۲۳۴۵۶۷۸۹)'),
+    .min(10, 'شماره تماس باید ۱۰ رقم باشد')
+    .max(10, 'شماره تماس باید ۱۰ رقم باشد')
+    .regex(phoneRegex, 'الگوی شماره تماس صحیح نیست (مثال: ۹۱۲۳۴۵۶۷۸۹)'),
 });
 
 export const otpSchema = z.object({

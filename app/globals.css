@@ -297,6 +297,11 @@ body.landing-page {
   max-width: 1440px; /* Landing Page Exception */
 }
 
+body.login-page {
+  padding: 0 !important;
+  max-width: 425px; /* Ensures it stays mobile size but full bleed */
+}
+
 /* SYSTEMIC MOBILE LAYOUT FORCE (for non-landing pages on Desktop) */
 @media (min-width: 426px) {
   /* Hide Desktop Nav */

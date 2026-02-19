@@ -56,7 +56,7 @@ import { UserData } from '@/app/services/common/schemas';
 // ... (step enum remains)
 
 export default function LoginPage() {
-  const [step, setStep] = React.useState<number>(Step.INTRO_1);
+  const [step, setStep] = React.useState<number>(Step.LOADING);
   const [phone, setPhone] = React.useState<string>(''); // Store phone for multi-step flows
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -67,6 +67,14 @@ export default function LoginPage() {
     if (phoneParam) {
       setPhone(phoneParam);
       setStep(Step.CUSTOMER_LOGIN);
+    } else {
+      // Check if user has seen intro
+      const hasSeenIntro = localStorage.getItem('has_seen_intro');
+      if (hasSeenIntro === 'true') {
+        setStep(Step.LOGIN_LANDING);
+      } else {
+        setStep(Step.INTRO_1);
+      }
     }
   }, [searchParams]);
 
@@ -265,23 +273,25 @@ export default function LoginPage() {
       return <LoginView onNext={() => setStep(Step.INTRO_2)} />;
     case Step.INTRO_2:
       return (
-        <LoginView2 onNext={() => setStep(Step.INTRO_3)} onBack={() => setStep(Step.INTRO_1)} />
+        <LoginView2 onNext={() => setStep(Step.INTRO_3)} />
       );
     case Step.INTRO_3:
       return (
-        <LoginView3 onNext={() => setStep(Step.INTRO_3_5)} onBack={() => setStep(Step.INTRO_2)} />
+        <LoginView3 onNext={() => setStep(Step.INTRO_3_5)} />
       );
     case Step.INTRO_3_5:
       return (
         <LoginView35
-          onNext={() => setStep(Step.LOGIN_LANDING)}
-          onBack={() => setStep(Step.INTRO_3)}
+          onNext={() => {
+            localStorage.setItem('has_seen_intro', 'true');
+            setStep(Step.LOGIN_LANDING);
+          }}
         />
       );
 
     case Step.LOGIN_LANDING:
       return (
-        <Login onNext={() => setStep(Step.LOGIN_FORM)} onBack={() => setStep(Step.INTRO_3_5)} />
+        <Login onNext={() => setStep(Step.LOGIN_FORM)} />
       );
 
     case Step.LOGIN_FORM:

@@ -9,7 +9,7 @@ export default function ConditionalLayout() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const isLandingPage = pathname === '/' || pathname?.startsWith('/homePgae');
+    const isLandingPage = pathname === '/' || pathname?.startsWith('/homePage');
     const isLoginPage = pathname?.startsWith('/login');
 
     if (isLandingPage) {
@@ -18,16 +18,18 @@ export default function ConditionalLayout() {
       document.body.classList.remove('landing-page');
     }
 
+
+
     if (isLoginPage) {
-      document.body.classList.add('full-width');
+      document.body.classList.add('login-page');
     } else {
-      document.body.classList.remove('full-width');
+      document.body.classList.remove('login-page');
     }
 
     // Cleanup on unmount
     return () => {
       document.body.classList.remove('landing-page');
-      document.body.classList.remove('full-width');
+      document.body.classList.remove('login-page');
     };
   }, [pathname]);
 

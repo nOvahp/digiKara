@@ -1,5 +1,5 @@
 
-import HomePage from './homePgae/page';
+import HomePage from './homePage/page';
 
 export default function Home() {
   return (
