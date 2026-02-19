@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { ChevronRight, ArrowUpRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Navigation } from '@/app/StudentDashboard/layout/Navigation';
@@ -43,7 +44,7 @@ export default function ShopSuccessPage() {
         {/* Text */}
         <div className="flex flex-col items-center text-center gap-3">
           <h2 className="text-[#0A0A0A] text-lg font-semibold font-['PeydaWeb'] leading-7">
-            با موفقیت حجره ساخته شد.
+            .با موفقیت حجره ساخته شد
           </h2>
           <p className="text-[#737373] text-sm font-light font-['PeydaWeb'] leading-tight max-w-[300px]">
             حالا که حجره با موفقیت ساخته شد، وقتشه اولین محصول رو اضافه کنی و فروشت رو شروع کنی!
@@ -54,13 +55,16 @@ export default function ShopSuccessPage() {
         <div className="flex flex-col gap-3 w-full items-center mt-4">
           <div className="flex gap-4 w-full justify-center px-4">
             {/* Education */}
-            <Button
-              variant="outline"
-              className="h-10 px-6 bg-white border-[#E5E5E5] text-[#666D80] text-sm font-semibold font-['PeydaWeb'] hover:bg-gray-50 flex items-center gap-2"
-            >
-              <span>آموزش</span>
-              <ArrowUpRight className="w-4 h-4 text-[#737373]" />
-            </Button>
+            {/* Education */}
+            <Link href="https://digikara.c60.darkube.app/auth/login">
+              <Button
+                variant="outline"
+                className="h-10 px-6 bg-white border-[#E5E5E5] text-[#666D80] text-sm font-semibold font-['PeydaWeb'] hover:bg-gray-50 flex items-center gap-2"
+              >
+                <span>آموزش</span>
+                <ArrowUpRight className="w-4 h-4 text-[#737373]" />
+              </Button>
+            </Link>
 
             {/* Add Product */}
             <Button

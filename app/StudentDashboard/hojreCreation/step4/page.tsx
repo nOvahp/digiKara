@@ -8,6 +8,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Input } from '@/components/ui/input';
+import { toast } from 'sonner';
 import {
   Select,
   SelectContent,
@@ -113,10 +114,20 @@ export default function ShopCategoryPage() {
           try {
             const userData = JSON.parse(storedUser);
             // Store the new cell. If it's a student login, cell is usually on the user object.
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const responseData = result.data as any;
+            const newImage = responseData?.image || responseData?.logo;
+
             if (userData.user) {
               userData.user.cell = result.data;
+              if (newImage) {
+                userData.user.profile_image = newImage;
+              }
             } else {
               userData.cell = result.data;
+              if (newImage) {
+                userData.profile_image = newImage;
+              }
             }
             localStorage.setItem('user_data', JSON.stringify(userData));
           } catch (e) {
@@ -127,8 +138,7 @@ export default function ShopCategoryPage() {
       router.push('/StudentDashboard/hojreCreation/success');
     } else {
       console.error('Shop Creation Failed:', result.message);
-      // Optionally show toast error here
-      alert(result.message || 'خطا در ساخت حجره');
+      toast.error(result.message || 'خطا در ساخت حجره');
     }
   };
 

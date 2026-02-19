@@ -32,6 +32,7 @@ export default function ShopIdentityPage() {
   const router = useRouter();
   const { state, updateState } = useShopCreation();
   const [logoPreview, setLogoPreview] = useState<string | null>(state.logoPreview);
+  const [logoError, setLogoError] = useState<string | null>(null);
 
   const {
     register,
@@ -58,6 +59,12 @@ export default function ShopIdentityPage() {
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        setLogoError('حجم تصویر نباید بیشتر از ۲ مگابایت باشد.');
+        e.target.value = '';
+        return;
+      }
+      setLogoError(null);
       const reader = new FileReader();
       reader.onloadend = () => {
         const previewUrl = reader.result as string;
@@ -217,6 +224,11 @@ export default function ShopIdentityPage() {
             onChange={handleLogoChange}
           />
         </label>
+        {logoError && (
+          <span className="text-red-500 text-xs text-center font-medium mt-2 block">
+            {logoError}
+          </span>
+        )}
 
         {/* Shop Name */}
         <div className="flex flex-col gap-2">
