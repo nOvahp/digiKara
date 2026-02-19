@@ -15,10 +15,8 @@ export default function CreateShopCharterPage() {
       <div className="w-full max-w-md px-4 pt-4 flex flex-col items-center gap-4">
         {/* Top Bar with Back functionality */}
         <div className="w-full flex justify-between items-center relative h-11">
-          {/* Back Icon on Left */}
-          <Link href="/StudentDashboard/hojreCreation" className="p-1">
-            <ChevronRight className="w-6 h-6 text-[#222831] rotate-180" />
-          </Link>
+          {/* Back Icon on Left - REMOVED per user request */}
+          <div className="w-6 h-6" />
 
           {/* Title on Right */}
           <div className="text-[#0D0D12] text-xl font-semibold font-['PeydaWeb'] leading-snug">

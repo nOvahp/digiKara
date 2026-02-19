@@ -39,6 +39,7 @@ const PillInput = ({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
+        dir="rtl"
         className="border-none shadow-none focus-visible:ring-0 text-right h-full text-[#393E46] font-bold text-sm px-5"
       />
     </div>
@@ -78,9 +79,11 @@ export function LoginViewReport({ onLoginAgain, onBack }: LoginViewProps) {
     district: '',
   });
 
+  const [initialData, setInitialData] = useState<typeof formData | null>(null);
+
   useEffect(() => {
     if (user) {
-      setFormData({
+      const data = {
         firstname: user.firstname || '',
         lastname: user.lastname || '',
         national_code: user.national_code || '',
@@ -90,7 +93,9 @@ export function LoginViewReport({ onLoginAgain, onBack }: LoginViewProps) {
         province: user.province || '',
         city: user.city || '',
         district: user.district || '',
-      });
+      };
+      setFormData(data);
+      setInitialData(data);
     }
   }, [user]);
 
@@ -102,6 +107,12 @@ export function LoginViewReport({ onLoginAgain, onBack }: LoginViewProps) {
     e.preventDefault();
     setIsLoading(true);
     setError('');
+
+    if (initialData && JSON.stringify(formData) === JSON.stringify(initialData)) {
+      setError('هیچ تغییری اعمال نشده است');
+      setIsLoading(false);
+      return;
+    }
 
     try {
       const { authService } = await import('@/app/services/authService');

@@ -111,7 +111,10 @@ export function AddProductFlow({
     };
   }, [activePopup]);
 
+  const [submissionError, setSubmissionError] = useState<string | null>(null);
+
   const handleSubmitProduct = async () => {
+    setSubmissionError(null);
     const data = new FormData();
 
     // --- Required Fields per User Spec ---
@@ -217,7 +220,7 @@ export function AddProductFlow({
       setActivePopup('step7');
       if (onSuccess) onSuccess();
     } else {
-      toast.error(message || 'خطا در ثبت محصول');
+      setSubmissionError(message || 'خطا در ثبت محصول');
     }
   };
 
@@ -308,6 +311,8 @@ export function AddProductFlow({
           onStepClick={(step) => setActivePopup(step as Step)}
           formData={formData}
           maxStep={maxStepReached}
+          error={submissionError}
+          onErrorReset={() => setSubmissionError(null)}
         />
       )}
       {activePopup === 'step7' && (

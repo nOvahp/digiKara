@@ -27,7 +27,7 @@ export default function ManageOrders() {
   React.useEffect(() => {
     const fetchOrders = async () => {
       setIsLoading(true);
-      const response = await studentService.getOrders();
+      const response = await studentService.getStudentOrders();
       if (response.success && response.data) {
         setOrdersData(response.data);
       }
@@ -99,7 +99,7 @@ export default function ManageOrders() {
       );
 
       // Refetch
-      const response = await studentService.getOrders();
+      const response = await studentService.getStudentOrders();
       if (response.success && response.data) {
         setOrdersData(response.data);
       }
@@ -137,7 +137,7 @@ export default function ManageOrders() {
       </div>
 
       {/* Main Content */}
-      <div className="w-full flex flex-col pb-[150px] px-0 pt-0 gap-6" dir="rtl">
+      <div className="w-full flex flex-col pb-[150px] px-0 pt-8 gap-6" dir="rtl">
         {/* Header Section: Title */}
         <div className="w-full flex-col flex items-start gap-4">
           <h1 className="text-center text-[#0D0D12] text-xl  font-semibold leading-[27px]">

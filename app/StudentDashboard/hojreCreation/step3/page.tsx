@@ -73,9 +73,7 @@ export default function ShopIdentityPage() {
       {/* Header */}
       <div className="w-full max-w-md px-4 pt-4 flex flex-col items-center gap-4">
         <div className="w-full flex justify-between items-center relative h-11">
-          <Link href="/StudentDashboard/hojreCreation/step2" className="p-1">
-            <ChevronRight className="w-6 h-6 text-[#222831] rotate-180" />
-          </Link>
+          <div className="w-6 h-6" /> {/* Placeholder spacing */}
           <div className="text-[#0D0D12] text-xl font-semibold font-['PeydaWeb'] leading-snug">
             ساخت حجره
           </div>
@@ -261,20 +259,20 @@ export default function ShopIdentityPage() {
         </div>
 
         {/* Actions */}
-        <div className="w-full flex gap-4 mt-auto mb-4">
+        <div className="w-full flex gap-3 mt-auto mb-4">
           <button
             type="button"
             onClick={() => router.push('/StudentDashboard/hojreCreation/step2')}
-            className="flex-1 h-14 rounded-xl border border-[#DFE1E7] flex justify-center items-center text-[#1A1C1E] text-lg font-semibold font-medium hover:bg-gray-50 transition-colors"
+            className="w-[100px] h-14 rounded-xl border border-[#DFE1E7] flex justify-center items-center text-[#1A1C1E] text-lg font-semibold hover:bg-gray-50 transition-colors shrink-0"
           >
-            قبلی
+           <span className="text-base sm:text-lg">بازگشت</span>
           </button>
 
           <button
             type="submit"
-            className="w-[279px] h-14 bg-[#FDD00A] active:bg-[#eac009] rounded-xl flex justify-center items-center text-[#1A1C1E] text-lg font-semibold font-medium transition-colors"
+            className="flex-1 h-14 bg-[#FDD00A] active:bg-[#eac009] rounded-xl flex justify-center items-center text-[#1A1C1E] text-lg font-semibold transition-colors"
           >
-            ادامه
+            <span className="text-base sm:text-lg">ادامه</span>
           </button>
         </div>
       </form>

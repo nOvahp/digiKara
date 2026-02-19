@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm, Controller } from 'react-hook-form';
@@ -27,15 +27,14 @@ const formSchema = z.object({
     .number()
     .min(0, {
       message: 'تجربه نمیتواند منفی باشد',
-    })
-    .default(0),
+    }),
 });
 
 // Explicitly define the type to match the transformed output
 type FormValues = {
   workCategory: string;
   abilities: string;
-  experience: number;
+  experience: number | string;
 };
 
 import { useShopCreation } from '../context/ShopCreationContext';
@@ -46,18 +45,20 @@ import { shopService } from '../../../services/student/shopService';
 export default function ShopCategoryPage() {
   const router = useRouter();
   const activeStepRef = React.useRef<HTMLDivElement>(null);
-  const { state } = useShopCreation();
+  const { state, updateState } = useShopCreation();
+  const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
 
   const {
     register,
     control,
+    getValues,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     resolver: zodResolver(formSchema) as any,
     defaultValues: {
-      experience: 0,
+      experience: '',
       workCategory: state.workCategory || '',
       abilities: state.skill || '',
     },
@@ -131,14 +132,22 @@ export default function ShopCategoryPage() {
     }
   };
 
+  const handleBack = () => {
+    const values = getValues();
+    updateState({
+      workCategory: values.workCategory,
+      skill: values.abilities,
+      experience: values.experience === '' ? 0 : Number(values.experience),
+    });
+    router.push('/StudentDashboard/hojreCreation/step3');
+  };
+
   return (
     <div className="w-full min-h-screen bg-white flex flex-col items-center font-sans pb-24">
       {/* Header */}
       <div className="w-full max-w-md px-4 pt-4 flex flex-col items-center gap-4">
         <div className="w-full flex justify-between items-center relative h-11">
-          <Link href="/StudentDashboard/hojreCreation/step3" className="p-1">
-            <ChevronRight className="w-6 h-6 text-[#222831] rotate-180" />
-          </Link>
+          <div className="w-6 h-6" /> {/* Placeholder */}
           <div className="text-[#0D0D12] text-xl font-semibold font-['PeydaWeb'] leading-snug">
             ساخت حجره
           </div>
@@ -203,31 +212,58 @@ export default function ShopCategoryPage() {
             control={control}
             name="workCategory"
             render={({ field }) => (
-              <Select onValueChange={field.onChange} defaultValue={field.value} dir="rtl">
-                <SelectTrigger className="h-[52px] w-full bg-white rounded-xl border border-[#DFE1E7] text-right font-medium text-[#1A1C1E]">
-                  <SelectValue
-                    placeholder="مثلاً: پوشاک، کالای دیجیتال، مواد غذایی"
-                    className="placeholder:text-[#DFE1E7] placeholder:font-medium"
-                  />
-                </SelectTrigger>
-                <SelectContent className="font-medium" align="end">
-                  <SelectItem value="clothes" className="font-medium">
-                    پوشاک
-                  </SelectItem>
-                  <SelectItem value="digital" className="font-medium">
-                    کالای دیجیتال
-                  </SelectItem>
-                  <SelectItem value="food" className="font-medium">
-                    مواد غذایی
-                  </SelectItem>
-                  <SelectItem value="art" className="font-medium">
-                    صنایع دستی
-                  </SelectItem>
-                  <SelectItem value="services" className="font-medium">
-                    خدمات
-                  </SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="relative">
+                <div
+                  className={`flex items-center justify-between px-3 h-[52px] w-full bg-white rounded-xl border border-[#DFE1E7] font-medium cursor-pointer ${
+                    field.value ? 'text-[#1A1C1E]' : 'text-[#DFE1E7]'
+                  }`}
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                >
+                  <ChevronDown className={`w-5 h-5 text-[#818898] transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                  <span className={`truncate flex-1 text-right ${field.value ? '' : 'text-[#DFE1E7]'}`}>
+                    {field.value === 'clothes'
+                      ? 'پوشاک'
+                      : field.value === 'digital'
+                      ? 'کالای دیجیتال'
+                      : field.value === 'food'
+                      ? 'مواد غذایی'
+                      : field.value === 'art'
+                      ? 'صنایع دستی'
+                      : field.value === 'services'
+                      ? 'خدمات'
+                      : 'مثلاً: پوشاک، کالای دیجیتال، مواد غذایی'}
+                  </span>
+                </div>
+
+                {isDropdownOpen && (
+                  <>
+                    <div
+                      className="fixed inset-0 z-10"
+                      onClick={() => setIsDropdownOpen(false)}
+                    />
+                    <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-[#DFE1E7] rounded-xl shadow-lg z-20 overflow-hidden font-medium max-h-60 overflow-y-auto">
+                      {[
+                        { val: 'clothes', label: 'پوشاک' },
+                        { val: 'digital', label: 'کالای دیجیتال' },
+                        { val: 'food', label: 'مواد غذایی' },
+                        { val: 'art', label: 'صنایع دستی' },
+                        { val: 'services', label: 'خدمات' },
+                      ].map((opt) => (
+                        <div
+                          key={opt.val}
+                          className="px-3 py-3 text-right hover:bg-gray-50 cursor-pointer text-[#1A1C1E] border-b border-gray-100 last:border-none"
+                          onClick={() => {
+                            field.onChange(opt.val);
+                            setIsDropdownOpen(false);
+                          }}
+                        >
+                          {opt.label}
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
             )}
           />
           {errors.workCategory && (
@@ -266,17 +302,29 @@ export default function ShopCategoryPage() {
           </div>
           <div className="relative w-full h-[52px]">
             <input
-              {...register('experience')}
+              {...register('experience', {
+                onChange: (e) => {
+                  const value = e.target.value;
+                  // Remove leading zeros
+                  if (value.length > 1 && value.startsWith('0')) {
+                    e.target.value = value.replace(/^0+/, '');
+                  }
+                  // If just "0", clear it so it doesn't start with 0
+                  if (value === '0') {
+                    e.target.value = '';
+                  }
+                },
+              })}
               type="number"
-              className="w-full h-full bg-white rounded-xl border border-[#DFE1E7] text-right pr-6 pl-[60px] placeholder:text-[#DFE1E7] text-[#1A1C1E] font-['PeydaFaNum'] font-medium outline-none focus:ring-1 focus:ring-ring"
-              placeholder="0"
+              className="w-full h-full bg-white rounded-xl border border-[#DFE1E7] text-right pr-6 pl-[60px] placeholder:text-[#DFE1E7] text-[#1A1C1E] font-medium outline-none focus:ring-1 focus:ring-ring"
               dir="ltr"
+              placeholder="مثلاً: 2"
             />
 
             {/* Suffix Container (Left aligned) */}
             <div className="absolute top-0 left-0 h-full flex items-center pl-4 gap-3">
               {/* Suffix Text */}
-              <div className="text-[#0D0D12] text-base font-semibold font-['PeydaWeb'] tracking-wide">
+              <div className="text-[#DFE1E7] text-base font-semibold tracking-wide">
                 سال
               </div>
               {/* Separator Line */}
@@ -291,20 +339,20 @@ export default function ShopCategoryPage() {
         </div>
 
         {/* Actions */}
-        <div className="w-full flex gap-4 mt-auto mb-4">
+        <div className="w-full flex gap-3 mt-auto mb-4">
           <button
             type="button"
-            onClick={() => router.push('/StudentDashboard/hojreCreation/step3')}
-            className="flex-1 h-14 rounded-xl border border-[#DFE1E7] flex justify-center items-center text-[#1A1C1E] text-lg font-semibold font-medium hover:bg-gray-50 transition-colors"
+            onClick={handleBack}
+            className="w-[100px] h-14 rounded-xl border border-[#DFE1E7] flex justify-center items-center text-[#1A1C1E] text-lg font-semibold hover:bg-gray-50 transition-colors shrink-0"
           >
-            قبلی
+           <span className="text-base sm:text-lg">بازگشت</span>
           </button>
 
           <button
             type="submit"
-            className="w-[279px] h-14 bg-[#FDD00A] active:bg-[#eac009] rounded-xl flex justify-center items-center text-[#1A1C1E] text-lg font-semibold font-medium transition-colors"
+            className="flex-1 h-14 bg-[#FDD00A] active:bg-[#eac009] rounded-xl flex justify-center items-center text-[#1A1C1E] text-lg font-semibold transition-colors"
           >
-            ساخت حجره
+            <span className="text-base sm:text-lg">ساخت حجره</span>
           </button>
         </div>
       </form>

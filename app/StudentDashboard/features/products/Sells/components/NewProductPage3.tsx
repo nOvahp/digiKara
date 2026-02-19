@@ -563,10 +563,12 @@ export function NewProductPage3({
         {/* Footer */}
         <div className="w-full p-5 border-t border-[#DFE1E7] bg-white flex justify-end items-center gap-3.5 z-10">
           <button
-            className="w-[57px] h-[57px] rounded-xl border border-[#DCE4E8] flex justify-center items-center hover:bg-gray-50"
+            className="w-[100px] h-[57px] rounded-xl border border-[#DCE4E8] flex justify-center items-center hover:bg-gray-50 transition-colors"
             onClick={() => onStepClick('step2')}
           >
-            <ChevronRight className="w-6 h-6 text-[#1A1C1E] rotate-180" />
+            <span className="text-[#1A1C1E] text-base font-medium font-['PeydaWeb']">
+              بازگشت
+            </span>
           </button>
 
           <button

@@ -57,6 +57,7 @@ export function DashboardNavBar() {
                 alt="Profile"
                 fill
                 className="object-cover"
+                unoptimized
               />
             </div>
             {/* Status Dot */}

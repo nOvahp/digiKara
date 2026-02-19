@@ -182,7 +182,7 @@ export function NewProductPage5({
           </div>
 
           {/* Product ID */}
-          <div className="flex flex-col gap-2">
+          {/* <div className="flex flex-col gap-2">
             <div className="text-right text-[#666D80] text-sm font-semibold font-['PeydaWeb']">
               شناسه محصول
             </div>
@@ -194,16 +194,18 @@ export function NewProductPage5({
                 readOnly
               />
             </div>
-          </div>
+          </div> */}
         </div>
 
         {/* Footer Buttons */}
         <div className="w-full p-5 border-t border-[#DFE1E7] bg-white flex justify-end items-center gap-3.5 z-10 mt-auto">
           <button
-            className="w-[57px] h-[57px] rounded-xl border border-[#DCE4E8] flex justify-center items-center hover:bg-gray-50 transition-colors"
+            className="w-[100px] h-[57px] rounded-xl border border-[#DCE4E8] flex justify-center items-center hover:bg-gray-50 transition-colors"
             onClick={() => onStepClick('step4')}
           >
-            <ChevronRight className="w-6 h-6 text-[#1A1C1E] rotate-180" />
+            <span className="text-[#1A1C1E] text-base font-medium font-['PeydaWeb']">
+              بازگشت
+            </span>
           </button>
           <button
             onClick={handleNext}

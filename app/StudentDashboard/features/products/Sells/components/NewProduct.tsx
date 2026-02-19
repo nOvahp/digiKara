@@ -169,7 +169,7 @@ export function NewProduct({
                 updateFormData({ category: val });
                 clearError('category');
               }}
-              dir="rtl"
+              dir="ltr"
             >
               <SelectTrigger
                 className={`w-full h-[52px] bg-white rounded-xl border ${errors.category ? 'border-red-500' : 'border-[#DFE1E7]'} px-3 flex flex-row-reverse justify-between text-[#0D0D12] text-right font-light shadow-none focus:ring-0 focus:border-[#FDD00A]`}
@@ -207,12 +207,12 @@ export function NewProduct({
                   updateFormData({ description: e.target.value });
                   clearError('description');
                 }}
-                className="flex-1 w-full bg-transparent border-none outline-none resize-none text-[#0D0D12] text-sm text-right font-['PeydaWeb'] placeholder:text-[#DFE1E7] placeholder:font-medium shadow-none focus-visible:ring-0 p-0"
+                className="flex-1 w-full bg-transparent border-none outline-none resize-none text-[#0D0D12] text-sm text-right font-medium placeholder:text-[#DFE1E7] placeholder:font-medium shadow-none focus-visible:ring-0 p-0"
                 dir="rtl"
                 maxLength={200}
                 placeholder="توضیحات محصول..."
               />
-              <div className="w-full text-left text-[#A4ACB9] text-xs font-light font-['PeydaFaNum'] tracking-wide">
+              <div className="w-full text-left text-[#A4ACB9] text-xs font-light font-medium tracking-wide">
                 {formData.description?.length || 0}/200
               </div>
             </div>
@@ -284,10 +284,12 @@ export function NewProduct({
         {/* Footer */}
         <div className="w-full p-5 border-t border-[#DFE1E7] flex justify-between items-center bg-white z-10">
           <button
-            className="w-[57px] h-[57px] rounded-xl border border-[#DCE4E8] flex justify-center items-center hover:bg-gray-50"
+            className="w-[100px] h-[57px] rounded-xl border border-[#DCE4E8] flex justify-center items-center hover:bg-gray-50 transition-colors"
             onClick={onClose}
           >
-            <ChevronRight className="w-6 h-6 text-[#1A1C1E] rotate-180" />
+            <span className="text-[#1A1C1E] text-base font-medium font-['PeydaWeb']">
+              بازگشت
+            </span>
           </button>
 
           <button

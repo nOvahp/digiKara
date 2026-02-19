@@ -160,7 +160,7 @@ export function LoginView7({ onNext, onBack }: LoginViewProps) {
     onSelect: (val: string) => void,
     options = ['داشته ام', 'نداشته ام'],
   ) => (
-    <div className="flex flex-col gap-6 animate-in slide-in-from-right-4 fade-in duration-300">
+    <div className="flex flex-col gap-4 animate-in slide-in-from-right-4 fade-in duration-300">
       <div className="text-right space-y-2">
         <h3 className="text-[#393E46] font-bold text-lg">{title}</h3>
         <p className="text-[#9CA3AF] text-sm leading-relaxed">{subtitle}</p>
@@ -200,8 +200,8 @@ export function LoginView7({ onNext, onBack }: LoginViewProps) {
   );
 
   const renderMultiSelect = (selectedFields: string[], onToggle: (field: string) => void) => (
-    <div className="mt-4 pt-4 border-t border-gray-100 animate-in slide-in-from-bottom-4 fade-in duration-500">
-      <p className="text-[#393E46] text-sm font-bold mb-4 text-right">
+    <div className="mt-2 pt-2 border-t border-gray-100 animate-in slide-in-from-bottom-2 fade-in duration-500">
+      <p className="text-[#393E46] text-sm font-bold mb-2 text-right">
         زمینه فعالیت خود را انتخاب کنید
       </p>
       <div className="flex flex-col gap-2">

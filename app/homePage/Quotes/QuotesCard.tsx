@@ -35,6 +35,7 @@ const QuotesCard: React.FC<QuotesCardProps> = ({
             alt={name}
             fill
             sizes="64px"
+            unoptimized
           />
         </div>
       </div>

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import { DashboardNavBar } from '@/app/StudentDashboard/layout/DashboardNavBar';
@@ -54,13 +55,15 @@ export default function DashboardEmptyPage() {
         {/* Actions */}
         <div className="flex items-center gap-3 mt-4 w-full justify-center">
           {/* Education Button */}
-          <Button
-            variant="outline"
-            className="h-8 px-4 bg-white border-gray-200 text-[#666D80] text-sm font-semibold hover:bg-gray-50 flex items-center gap-2"
-          >
-            <span>آموزش</span>
-            <ArrowUpRight className="w-4 h-4 text-[#737373]" />
-          </Button>
+          <Link href="https://digikara.c60.darkube.app/auth/login" target="_blank">
+            <Button
+              variant="outline"
+              className="h-8 px-4 bg-white border-gray-200 text-[#666D80] text-sm font-semibold hover:bg-gray-50 flex items-center gap-2"
+            >
+              <span>آموزش</span>
+              <ArrowUpRight className="w-4 h-4 text-[#737373]" />
+            </Button>
+          </Link>
 
           {/* Create Shop Button */}
           <Button
