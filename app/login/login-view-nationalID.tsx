@@ -105,7 +105,7 @@ export function LoginViewNationalID({ onNext, onBack }: LoginViewProps) {
                   inputMode="numeric"
                   placeholder="1234567890"
                   maxLength={10}
-                  className="flex-1 border-none shadow-none focus-visible:ring-0 bg-transparent text-center text-lg font-bold placeholder:text-gray-300 h-full"
+                  className="flex-1 border-none shadow-none focus-visible:ring-0 bg-transparent text-center text-lg font-num-bold placeholder:text-gray-300 h-full"
                   autoFocus
                   onChange={(e) => {
                     // Custom onChange to handle English digit conversion immediately if desired or rely on submit

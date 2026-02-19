@@ -49,10 +49,12 @@ export const studentService = {
         success: false,
         message: response.message || 'خطا در تایید کد ملی',
       };
-    } catch (error: unknown) {
-      let message = 'خطای شبکه';
-      if (error instanceof Error) message = error.message;
-      return { success: false, message };
+    } catch (error: any) {
+      const msg = error?.message || (error instanceof Error ? error.message : 'خطای نامشخص');
+      return {
+        success: false,
+        message: msg,
+      };
     }
   },
 

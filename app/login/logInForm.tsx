@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { toEnglishDigits } from '@/lib/number';
+import { toEnglishDigits, toPersianDigits } from '@/lib/number';
 
 import { useAuth } from '@/app/providers/AuthProvider';
 import {
@@ -154,7 +154,7 @@ export function LogInForm({
         }
       }
     } else {
-      setServerError(result.message || 'کد تایید نادرست است');
+      setServerError(result.message || '');
     }
   };
 
@@ -168,7 +168,8 @@ export function LogInForm({
   const formatTime = (seconds: number) => {
     const m = Math.floor(seconds / 60);
     const s = seconds % 60;
-    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    const time = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    return toPersianDigits(time);
   };
 
   // Determine title based on role
@@ -211,7 +212,7 @@ export function LogInForm({
             <p className="text-[#393E46] text-sm font-semibold opacity-80">
               {stage === 'PHONE_ENTRY'
                 ? 'اینجا حساب کاربری خود را ایجاد کنید'
-                : `کد ارسال شده به ${phoneForm.getValues('phoneNumber')} را وارد کنید`}
+                : `کد ارسال شده به ${toPersianDigits(phoneForm.getValues('phoneNumber'))} را وارد کنید`}
             </p>
           </div>
 
@@ -241,7 +242,7 @@ export function LogInForm({
                       </div>
                       <div className="h-1/3 bg-[#E31D1C]"></div>
                     </div>
-                    <span className="text-[#1A1C1E] font-num-medium text-sm">+98</span>
+                    <span className="text-[#1A1C1E] font-num-bold text-sm">+98</span>
                     {/* Arrow Icon */}
                     {/* <ChevronDown size={12} className="opacity-50" /> */}
                   </div>
@@ -253,7 +254,7 @@ export function LogInForm({
                     type="tel"
                     inputMode="numeric"
                     placeholder="9123456789"
-                    className="flex-1 border-none shadow-none focus-visible:ring-0 bg-transparent text-left text-lg font-num-medium placeholder:text-gray-300 h-full"
+                    className="flex-1 border-none shadow-none focus-visible:ring-0 bg-transparent text-left text-lg font-num-bold placeholder:text-gray-300 h-full"
                     autoFocus
                     onChange={(e) => {
                       let val = toEnglishDigits(e.target.value);
@@ -303,16 +304,17 @@ export function LogInForm({
                 >
                   ویرایش شماره
                 </button>
-                <p className="text-[#6C7278] text-sm font-bold dir-ltr">
-                  {phoneForm.getValues('phoneNumber')}
+                <p className="text-[#6C7278] text-sm font-num-bold dir-ltr">
+                  {toPersianDigits(phoneForm.getValues('phoneNumber'))}
                 </p>
               </div>
 
               <div className="flex justify-center dir-ltr py-4">
                 <Input
                   {...otpForm.register('otp')}
+                  dir="ltr"
                   maxLength={6}
-                  className="text-center text-3xl tracking-[0.5em] py-8 px-2 rounded-2xl font-black bg-[#F3F6FC] border-none focus-visible:ring-1 focus-visible:ring-[#FDD00A]/50 text-[#393E46]"
+                  className="text-center text-3xl tracking-[0.5em] py-8 px-2 rounded-2xl font-num-bold bg-[#F3F6FC] border-none focus-visible:ring-1 focus-visible:ring-[#FDD00A]/50 text-[#393E46]"
                   placeholder="— — — — —"
                   autoComplete="one-time-code"
                   inputMode="numeric"
@@ -337,7 +339,7 @@ export function LogInForm({
 
               <div className="flex items-center justify-center text-sm">
                 {timeLeft > 0 ? (
-                  <div className="flex items-center gap-2 text-[#6C7278] font-medium bg-gray-50 px-4 py-2 rounded-full">
+                  <div className="flex items-center gap-2 text-[#6C7278] font-num-bold bg-gray-50 px-4 py-2 rounded-full">
                     <Loader2 className="w-4 h-4 animate-spin opacity-50" />
                     <span>{formatTime(timeLeft)} تا ارسال مجدد</span>
                   </div>

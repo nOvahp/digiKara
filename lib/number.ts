@@ -15,6 +15,20 @@ export function toEnglishDigits(input: string | number | null | undefined): stri
 }
 
 /**
+ * Converts English digits to Persian digits.
+ * @param input - The string or number to convert.
+ * @returns The string with all English digits replaced by Persian digits.
+ */
+export function toPersianDigits(input: string | number | null | undefined): string {
+  if (input === null || input === undefined) return '';
+
+  const str = String(input);
+  if (!str) return '';
+
+  return str.replace(/[0-9]/g, (d) => String.fromCharCode(d.charCodeAt(0) + 1728));
+}
+
+/**
  * Recursively converts all string values in an object/array to English digits.
  * Useful for normalizing API requests.
  * @param data - The payload (object, array, string, etc.)

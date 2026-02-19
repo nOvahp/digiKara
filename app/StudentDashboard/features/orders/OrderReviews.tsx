@@ -71,7 +71,7 @@ export function OrderReviews() {
     const fetchOrders = async () => {
       setIsLoading(true);
       setError(null);
-      const response = await ordersService.getOrders();
+      const response = await ordersService.getStudentOrders();
       if (response.success && response.data) {
         setOrders(response.data);
       } else {

@@ -111,14 +111,13 @@ export const authService = {
       }
 
       return { success: false, message: response.message || 'خطا در ارسال کد' };
-    } catch (error: unknown) {
-      let message = 'خطای شبکه';
-      if (axios.isAxiosError(error)) {
-        message = error.response?.data?.message || error.message || message;
-      } else if (error instanceof Error) {
-        message = error.message;
-      }
-      return { success: false, message };
+    } catch (error: any) {
+      // apiClient already formats the error as { success: false, message: ... }
+      // We just need to return it, or extract the message if it's not in that format.
+      return {
+        success: false,
+        message: error.message || 'خطای نامشخص',
+      };
     }
   },
 
@@ -183,16 +182,16 @@ export const authService = {
 
       return {
         success: false,
-        message: response.message || 'کد تایید اشتباه است',
+        message: response.message,
       };
-    } catch (error: unknown) {
-      let message = 'خطای غیرمنتظره';
-      if (axios.isAxiosError(error)) {
-        message = error.response?.data?.message || error.message || message;
-      } else if (error instanceof Error) {
-        message = error.message;
-      }
-      return { success: false, message };
+    } catch (error: any) {
+      // apiClient should have rejected with a structured object { success, message, ... }
+      // but just in case, we fallback to extracting message from error object
+      const msg = error?.message || (error instanceof Error ? error.message : 'خطای نامشخص');
+      return {
+        success: false,
+        message: msg,
+      };
     }
   },
 

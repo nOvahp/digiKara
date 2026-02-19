@@ -200,7 +200,7 @@ export function LoginView7({ onNext, onBack }: LoginViewProps) {
   );
 
   const renderMultiSelect = (selectedFields: string[], onToggle: (field: string) => void) => (
-    <div className="mt-8 pt-8 border-t border-gray-100 animate-in slide-in-from-bottom-4 fade-in duration-500">
+    <div className="mt-4 pt-4 border-t border-gray-100 animate-in slide-in-from-bottom-4 fade-in duration-500">
       <p className="text-[#393E46] text-sm font-bold mb-4 text-right">
         زمینه فعالیت خود را انتخاب کنید
       </p>
@@ -238,7 +238,7 @@ export function LoginView7({ onNext, onBack }: LoginViewProps) {
   );
 
   return (
-    <div className="flex h-full w-full flex-col bg-white relative overflow-hidden">
+    <div className="flex h-full w-full flex-col bg-white relative overflow-hidden" dir="rtl">
       {/* Top Background Gradient */}
       <div className="absolute top-0 left-0 right-0 h-[230px] bg-[linear-gradient(180deg,#F7C309_0%,white_100%)] z-0 pointer-events-none" />
 

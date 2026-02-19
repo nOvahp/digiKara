@@ -59,6 +59,60 @@ interface RawOrderResponse {
 }
 
 export const ordersService = {
+  getStudentOrders: async (status?: string): Promise<{
+    success: boolean;
+    data?: Order[];
+    message?: string;
+  }> => {
+    try {
+      // Map UI status to API endpoint for students
+      // student/orders or student/orders/{status} if backend supports it
+      const endpoint = status ? `/student/orders/${status}` : '/student/orders';
+      
+      const response = await apiClient.get<ApiResponse<unknown[]>>(endpoint);
+
+      if (response.status === 'success' || response.code === 200) {
+        const rawData = response.data || [];
+        if (!Array.isArray(rawData)) return { success: true, data: [] };
+
+        const mappedOrders: Order[] = rawData
+          .filter(
+            (item: unknown): item is RawOrderResponse =>
+              item !== null && item !== undefined && typeof item === 'object',
+          )
+          .map((item) => ({
+            id: toFarsiNumber(item.id),
+            orderDetailId: item.id,
+            customer: 'شما',
+            date: toFarsiNumber((item as any).created_at || '---'),
+            status: mapApiStatus(item.status || ''),
+            statusText: item.status || 'نامشخص',
+            paymentMethod: 'اینترنتی',
+            amount: toFarsiNumber(item.price) || '۰',
+            productName: item.product?.title || 'محصول نامشخص',
+            productImage: item.product?.image || item.product?.image_path || '',
+            weight: item.product?.description || '',
+            count: item.quantity || 0,
+            deliveryTime: 'نامشخص',
+            description: item.product?.description,
+            note: '',
+            item: item,
+          }));
+
+        return { success: true, data: mappedOrders };
+      }
+      return {
+        success: false,
+        message: response.message || 'خطا در دریافت لیست سفارشات دانش آموز',
+      };
+    } catch (error: unknown) {
+      console.error('getStudentOrders Error:', error);
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
+    }
+  },
+
   getOrders: async (status?: string): Promise<{
     success: boolean;
     data?: Order[];

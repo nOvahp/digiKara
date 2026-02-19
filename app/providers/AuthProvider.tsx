@@ -48,35 +48,36 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   // Lazy initialize state to avoid set-state-in-effect and double render
-  const [token, setToken] = useState<string | null>(() => {
-    if (typeof window !== 'undefined') {
-      return getToken();
-    }
-    return null;
-  });
+  // Initialize state with server-safe defaults (no window/localStorage access)
+  const [token, setToken] = useState<string | null>(null);
+  const [user, setUser] = useState<UserData | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [role, setRole] = useState<'student' | 'manager' | 'customer' | null>('student');
 
-  const [user, setUser] = useState<UserData | null>(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const stored = localStorage.getItem('user_data');
-        return stored ? JSON.parse(stored) : null;
-      } catch (e) {
-        console.error('Failed to hydrate user data', e);
-        return null;
+  // Hydrate state from localStorage on client mount
+  React.useEffect(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        // Hydrate Token
+        const storedToken = getToken();
+        if (storedToken) {
+          setToken(storedToken);
+          setIsAuthenticated(true);
+        }
+
+        // Hydrate User Data
+        const storedUser = localStorage.getItem('user_data');
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        }
       }
+    } catch (error) {
+      console.error('AuthProvider hydration error:', error);
+    } finally {
+      setIsLoading(false);
     }
-    return null;
-  });
-
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return !!getToken();
-    }
-    return false;
-  });
-
-  const [isLoading] = useState(false);
-  const [role, setRole] = useState<'student' | 'manager' | 'customer' | null>('student'); // Default to student
+  }, []);
 
   const requestOtp = async (phoneNumber: string) => {
     return await authService.requestOtp(phoneNumber, role || 'student');
