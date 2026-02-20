@@ -16,6 +16,7 @@ interface HojreData {
   skill?: string;
   experience?: number;
   image?: string;
+  logo?: string;
   [key: string]: unknown;
 }
 
@@ -78,7 +79,7 @@ export function PopUpStudent({ onClose }: PopUpStudentProps) {
   };
 
   // Use hojre image if available, otherwise student profile image
-  const displayImage = hojreData?.image || userData.profile_image;
+  const displayImage = hojreData?.image || hojreData?.logo || userData.profile_image;
 
   return (
     <div
@@ -124,6 +125,7 @@ export function PopUpStudent({ onClose }: PopUpStudentProps) {
                   alt="تصویر" 
                   fill 
                   className="object-cover"
+                  unoptimized
                 />
               </div>
             ) : (

@@ -43,7 +43,8 @@ export function NewProductPage3({
   updateFormData,
   maxStep
 }: NewProductPage3Props) {
-  const isMultiPrice = formData.isMultiPrice ?? false;
+  // const isMultiPrice = formData.isMultiPrice ?? false;
+  const isMultiPrice = false;
 
   // State for multi-price variant management
   const [selectedVariant, setSelectedVariant] = useState('');
@@ -202,18 +203,18 @@ export function NewProductPage3({
 
   const handleNext = () => {
     try {
-      if (!isMultiPrice) {
-        if (!formData.price || formData.price === '0') {
-          throw new Error('لطفا قیمت پایه را وارد کنید');
-        }
-      } else {
-        if (!formData.price || formData.price === '0') {
-          throw new Error('لطفا قیمت پایه را وارد کنید');
-        }
-        if (!validateAndProceed()) {
-          return;
-        }
+      // if (!isMultiPrice) {
+      if (!formData.price || formData.price === '0') {
+        throw new Error('لطفا قیمت پایه را وارد کنید');
       }
+      // } else {
+      //   if (!formData.price || formData.price === '0') {
+      //     throw new Error('لطفا قیمت پایه را وارد کنید');
+      //   }
+      //   if (!validateAndProceed()) {
+      //     return;
+      //   }
+      // }
       onNext();
     } catch (error) {
       toast.error((error as Error).message);
@@ -251,6 +252,7 @@ export function NewProductPage3({
         {/* Scrollable Body */}
         <div className="flex-1 overflow-y-auto w-full px-5 py-5" dir="rtl">
           {/* Pricing Type Toggle */}
+          {/*
           <div className="w-full h-9 p-0.5 bg-[#F6F6F6] rounded-lg border border-[#D7D8DA] flex items-center mb-4">
             <div
               onClick={() => updateFormData({ isMultiPrice: true })}
@@ -265,6 +267,7 @@ export function NewProductPage3({
               تک قیمتی
             </div>
           </div>
+          */}
 
           {/* Info Alert (only for multi-price) */}
           {isMultiPrice && (

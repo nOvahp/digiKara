@@ -51,14 +51,34 @@ export function AddProductFlow({
     `NK-PRD-${Math.floor(100000 + Math.random() * 900000)}`
   );
 
+  const clearFormData = () => {
+    setFormData({
+      name: '',
+      description: '',
+      images: [],
+      category: '',
+      tags: [],
+      id: parseInt(`NK-PRD-${Math.floor(100000 + Math.random() * 900000)}`.replace(/\D/g, '')) || 0,
+      price: '',
+      fee: '',
+      receive: '',
+      discount: '',
+      code: '',
+      percent: '',
+      stock: '',
+      reminder: '',
+      imageFiles: [],
+      variantPrices: [],
+      isMultiPrice: false,
+      features: { id: [], visual: [], production: [], packaging: [] },
+      variantFeatures: [],
+    });
+  };
+
   // Handle internal closing - reset form when closing
   const handleClose = () => {
     setActivePopup('none');
-    // Reset form with new product code for next open
-    setFormData((prev) => ({
-      ...prev,
-      id: parseInt(`NK-PRD-${Math.floor(100000 + Math.random() * 900000)}`.replace(/\D/g, '')) || 0,
-    }));
+    clearFormData(); // Reset form for next open
     onClose();
   };
 
@@ -112,9 +132,11 @@ export function AddProductFlow({
   }, [activePopup]);
 
   const [submissionError, setSubmissionError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmitProduct = async () => {
     setSubmissionError(null);
+    setIsLoading(true);
     const data = new FormData();
 
     // --- Required Fields per User Spec ---
@@ -217,35 +239,20 @@ export function AddProductFlow({
 
     if (success) {
       toast.success(message || 'محصول با موفقیت اضافه شد');
+      clearFormData();
       setActivePopup('step7');
       if (onSuccess) onSuccess();
     } else {
       setSubmissionError(message || 'خطا در ثبت محصول');
     }
+    
+    setIsLoading(false);
   };
 
+
+
   const handleReset = () => {
-    setFormData({
-      name: '',
-      description: '',
-      images: [],
-      category: '',
-      tags: [],
-      id: parseInt(`NK-PRD-${Math.floor(100000 + Math.random() * 900000)}`.replace(/\D/g, '')) || 0,
-      price: '',
-      fee: '',
-      receive: '',
-      discount: '',
-      code: '',
-      percent: '',
-      stock: '',
-      reminder: '',
-      imageFiles: [],
-      variantPrices: [],
-      isMultiPrice: false,
-      features: { id: [], visual: [], production: [], packaging: [] },
-      variantFeatures: [],
-    });
+    clearFormData();
     handleClose();
   };
 
@@ -313,6 +320,7 @@ export function AddProductFlow({
           maxStep={maxStepReached}
           error={submissionError}
           onErrorReset={() => setSubmissionError(null)}
+          isLoading={isLoading}
         />
       )}
       {activePopup === 'step7' && (

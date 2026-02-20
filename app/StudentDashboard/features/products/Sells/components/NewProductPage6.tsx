@@ -14,6 +14,7 @@ interface NewProductPage6Props {
   maxStep: number;
   error?: string | null;
   onErrorReset?: () => void;
+  isLoading?: boolean;
 }
 
 export function NewProductPage6({
@@ -24,6 +25,7 @@ export function NewProductPage6({
   maxStep,
   error,
   onErrorReset,
+  isLoading,
 }: NewProductPage6Props) {
   if (error) {
     return (
@@ -118,11 +120,25 @@ export function NewProductPage6({
           </button>
           <button
             onClick={onNext}
-            className="flex-1 h-[57px] bg-[#FDD00A] shadow-[0px_1px_2px_rgba(13,13,18,0.06)] rounded-xl flex justify-center items-center hover:opacity-90 transition-opacity"
+            disabled={isLoading}
+            className={`flex-1 h-[57px] shadow-[0px_1px_2px_rgba(13,13,18,0.06)] rounded-xl flex justify-center items-center transition-all duration-200 ${
+              isLoading
+                ? 'bg-[#E5E7EB] opacity-70 cursor-not-allowed'
+                : 'bg-[#FDD00A] hover:opacity-90'
+            }`}
           >
-            <span className="text-center text-[#1A1C1E] text-lg font-semibold font-['PeydaWeb']">
-              تائید
-            </span>
+            {isLoading ? (
+              <div className="flex items-center gap-2">
+                <RefreshCw className="w-5 h-5 text-[#666D80] animate-spin" />
+                <span className="text-center text-[#666D80] text-lg font-semibold font-['PeydaWeb']">
+                  در حال ثبت...
+                </span>
+              </div>
+            ) : (
+              <span className="text-center text-[#1A1C1E] text-lg font-semibold font-['PeydaWeb']">
+                تائید
+              </span>
+            )}
           </button>
         </div>
       </div>

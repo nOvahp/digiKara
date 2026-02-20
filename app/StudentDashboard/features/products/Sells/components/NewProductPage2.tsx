@@ -298,47 +298,49 @@ export function NewProductPage2({
                     ) : feature.id === 6 || feature.id === 7 ? (
                       <div className="flex items-center gap-3 overflow-x-auto no-scrollbar h-full pl-2 w-full py-1">
                         {/* Input Group */}
-                        <div className="bg-gray-50 border border-gray-200 rounded-xl px-2 py-1.5 flex items-center gap-1 flex-shrink-0 h-[42px]">
-                          <input
-                            type="text"
-                            className="w-[100px] h-full bg-transparent border-none outline-none text-right text-sm font-num-medium placeholder:text-gray-400 px-1"
-                            placeholder="افزودن..."
-                            value={featureInputs[feature.id] || ''}
-                            onChange={(e) =>
-                              setFeatureInputs({ ...featureInputs, [feature.id]: e.target.value })
-                            }
-                            onKeyDown={(e) => {
-                              if (e.key === 'Enter') {
+                        {(!feature.values || feature.values.length === 0) && (
+                          <div className="bg-gray-50 border border-gray-200 rounded-xl px-2 py-1.5 flex items-center gap-1 flex-shrink-0 h-[42px]">
+                            <input
+                              type="text"
+                              className="w-[100px] h-full bg-transparent border-none outline-none text-right text-sm font-num-medium placeholder:text-gray-400 px-1"
+                              placeholder="افزودن..."
+                              value={featureInputs[feature.id] || ''}
+                              onChange={(e) =>
+                                setFeatureInputs({ ...featureInputs, [feature.id]: e.target.value })
+                              }
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                  const val = featureInputs[feature.id]?.trim();
+                                  if (val) {
+                                    const current = feature.values || [];
+                                    if (current.length === 0 && !current.includes(val)) {
+                                      updateVariantValues(feature.id, [val]);
+                                    }
+                                    setFeatureInputs({ ...featureInputs, [feature.id]: '' });
+                                  }
+                                }
+                              }}
+                            />
+                            <span className="text-gray-400 text-xs px-1 whitespace-nowrap font-medium">
+                              {feature.id === 6 ? 'گرم' : 'لیتر'}
+                            </span>
+                            <button
+                              onClick={() => {
                                 const val = featureInputs[feature.id]?.trim();
                                 if (val) {
                                   const current = feature.values || [];
-                                  if (!current.includes(val)) {
-                                    updateVariantValues(feature.id, [...current, val]);
+                                  if (current.length === 0 && !current.includes(val)) {
+                                    updateVariantValues(feature.id, [val]);
                                   }
                                   setFeatureInputs({ ...featureInputs, [feature.id]: '' });
                                 }
-                              }
-                            }}
-                          />
-                          <span className="text-gray-400 text-xs px-1 whitespace-nowrap font-medium">
-                            {feature.id === 6 ? 'گرم' : 'لیتر'}
-                          </span>
-                          <button
-                            onClick={() => {
-                              const val = featureInputs[feature.id]?.trim();
-                              if (val) {
-                                const current = feature.values || [];
-                                if (!current.includes(val)) {
-                                  updateVariantValues(feature.id, [...current, val]);
-                                }
-                                setFeatureInputs({ ...featureInputs, [feature.id]: '' });
-                              }
-                            }}
-                            className="w-8 h-8 rounded-lg bg-white border border-gray-200 flex items-center justify-center hover:border-[#FDD00A] hover:text-[#FDD00A] transition-all shadow-sm"
-                          >
-                            <Plus className="w-4 h-4 text-gray-500" />
-                          </button>
-                        </div>
+                              }}
+                              className="w-8 h-8 rounded-lg bg-white border border-gray-200 flex items-center justify-center hover:border-[#FDD00A] hover:text-[#FDD00A] transition-all shadow-sm"
+                            >
+                              <Plus className="w-4 h-4 text-gray-500" />
+                            </button>
+                          </div>
+                        )}
                         
                         {/* Selected Items Chips */}
                         <div className="flex items-center gap-2">
@@ -368,58 +370,60 @@ export function NewProductPage2({
                       <div className="flex flex-col gap-2 w-full py-1">
                         <div className="flex items-center gap-3 overflow-x-auto no-scrollbar w-full pb-1">
                           {/* Dimension Inputs Group */}
-                          <div className="bg-gray-50 border border-gray-200 rounded-xl p-1.5 flex items-center gap-2 flex-shrink-0 h-[48px]">
-                            <div className="flex items-center gap-1 bg-white rounded-lg border border-gray-200 px-2 h-full shadow-sm">
-                              <input
-                                type="text"
-                                className="w-[45px] h-full bg-transparent border-none text-center text-sm font-num-medium outline-none focus:placeholder-transparent placeholder:text-gray-400"
-                                placeholder="طول"
-                                value={featureInputs['size_l'] || ''}
-                                onChange={(e) =>
-                                  setFeatureInputs({ ...featureInputs, size_l: e.target.value })
-                                }
-                              />
-                              <span className="text-gray-300">|</span>
-                              <input
-                                type="text"
-                                className="w-[45px] h-full bg-transparent border-none text-center text-sm font-num-medium outline-none focus:placeholder-transparent placeholder:text-gray-400"
-                                placeholder="عرض"
-                                value={featureInputs['size_w'] || ''}
-                                onChange={(e) =>
-                                  setFeatureInputs({ ...featureInputs, size_w: e.target.value })
-                                }
-                              />
-                              <span className="text-gray-300">|</span>
-                              <input
-                                type="text"
-                                className="w-[45px] h-full bg-transparent border-none text-center text-sm font-num-medium outline-none focus:placeholder-transparent placeholder:text-gray-400"
-                                placeholder="ارتفاع"
-                                value={featureInputs['size_h'] || ''}
-                                onChange={(e) =>
-                                  setFeatureInputs({ ...featureInputs, size_h: e.target.value })
-                                }
-                              />
-                            </div>
-                            <span className="text-gray-400 text-xs font-medium px-1">سانتی‌متر</span>
-                            <button
-                              onClick={() => {
-                                const l = featureInputs['size_l']?.trim();
-                                const w = featureInputs['size_w']?.trim();
-                                const h = featureInputs['size_h']?.trim();
-                                if (l && w && h) {
-                                  const val = `${l}x${w}x${h}`;
-                                  const current = feature.values || [];
-                                  if (!current.includes(val)) {
-                                    updateVariantValues(feature.id, [...current, val]);
+                          {(!feature.values || feature.values.length === 0) && (
+                            <div className="bg-gray-50 border border-gray-200 rounded-xl p-1.5 flex items-center gap-2 flex-shrink-0 h-[48px]">
+                              <div className="flex items-center gap-1 bg-white rounded-lg border border-gray-200 px-2 h-full shadow-sm">
+                                <input
+                                  type="text"
+                                  className="w-[45px] h-full bg-transparent border-none text-center text-sm font-num-medium outline-none focus:placeholder-transparent placeholder:text-gray-400"
+                                  placeholder="طول"
+                                  value={featureInputs['size_l'] || ''}
+                                  onChange={(e) =>
+                                    setFeatureInputs({ ...featureInputs, size_l: e.target.value })
                                   }
-                                  setFeatureInputs({ ...featureInputs, size_l: '', size_w: '', size_h: '' });
-                                }
-                              }}
-                              className="w-8 h-8 rounded-lg bg-white border border-gray-200 flex items-center justify-center hover:border-[#FDD00A] hover:text-[#FDD00A] transition-all shadow-sm"
-                            >
-                              <Plus className="w-4 h-4 text-gray-500" />
-                            </button>
-                          </div>
+                                />
+                                <span className="text-gray-300">|</span>
+                                <input
+                                  type="text"
+                                  className="w-[45px] h-full bg-transparent border-none text-center text-sm font-num-medium outline-none focus:placeholder-transparent placeholder:text-gray-400"
+                                  placeholder="عرض"
+                                  value={featureInputs['size_w'] || ''}
+                                  onChange={(e) =>
+                                    setFeatureInputs({ ...featureInputs, size_w: e.target.value })
+                                  }
+                                />
+                                <span className="text-gray-300">|</span>
+                                <input
+                                  type="text"
+                                  className="w-[45px] h-full bg-transparent border-none text-center text-sm font-num-medium outline-none focus:placeholder-transparent placeholder:text-gray-400"
+                                  placeholder="ارتفاع"
+                                  value={featureInputs['size_h'] || ''}
+                                  onChange={(e) =>
+                                    setFeatureInputs({ ...featureInputs, size_h: e.target.value })
+                                  }
+                                />
+                              </div>
+                              <span className="text-gray-400 text-xs font-medium px-1">سانتی‌متر</span>
+                              <button
+                                onClick={() => {
+                                  const l = featureInputs['size_l']?.trim();
+                                  const w = featureInputs['size_w']?.trim();
+                                  const h = featureInputs['size_h']?.trim();
+                                  if (l && w && h) {
+                                    const val = `${l}x${w}x${h}`;
+                                    const current = feature.values || [];
+                                    if (current.length === 0 && !current.includes(val)) {
+                                      updateVariantValues(feature.id, [val]);
+                                    }
+                                    setFeatureInputs({ ...featureInputs, size_l: '', size_w: '', size_h: '' });
+                                  }
+                                }}
+                                className="w-8 h-8 rounded-lg bg-white border border-gray-200 flex items-center justify-center hover:border-[#FDD00A] hover:text-[#FDD00A] transition-all shadow-sm"
+                              >
+                                <Plus className="w-4 h-4 text-gray-500" />
+                              </button>
+                            </div>
+                          )}
 
                           {/* Selected Sizes Chips */}
                           <div className="flex items-center gap-2">
@@ -476,6 +480,21 @@ export function NewProductPage2({
             {/* Accordions (Static Features) */}
             <div className="w-full flex flex-col gap-2">
               <AccordionItem
+                label="سایر ویژگی ها"
+                isOpen={openSection === 'id'}
+                onClick={() => toggleSection('id')}
+              >
+                <FeatureSection
+                  items={formData.features?.id || []}
+                  onChange={(items) => updateStaticFeatures('id', items)}
+                  placeholderKey="عنوان (مثلا: برند، رنگ، یا روش تولید)"
+                  placeholderValue="مقدار (مثلا: ایرانپوش، قرمز، یا دست‌ساز)"
+                />
+              </AccordionItem>
+              
+              {/* Old Feature Categories Commented Out */}
+              {/*
+              <AccordionItem
                 label="مشخصات شناسنامه‌ای محصول"
                 isOpen={openSection === 'id'}
                 onClick={() => toggleSection('id')}
@@ -487,7 +506,9 @@ export function NewProductPage2({
                   placeholderValue="مقدار (مثلا: ایرانپوش)"
                 />
               </AccordionItem>
+              */}
               {/* ... other accordions ... */}
+              {/*
               <AccordionItem
                 label="مشخصات ظاهری و حسی"
                 isOpen={openSection === 'visual'}
@@ -526,6 +547,7 @@ export function NewProductPage2({
                   placeholderValue="مقدار (مثلا: جعبه مقوایی)"
                 />
               </AccordionItem>
+              */}
             </div>
 
             {/* Bottom Info */}

@@ -67,10 +67,10 @@ export function DashboardNavBar() {
           </div>
 
           <div className="flex flex-col items-start gap-1">
-            <div className="text-[#222831] text-base font-extrabold font-['PeydaFaNum'] leading-snug">
+            <div className="text-[#222831] text-base font-medium">
               {getFullName()}
             </div>
-            <div className="text-[#61656B] text-xs font-extrabold font-['PeydaFaNum']">
+            <div className="text-[#61656B] text-xs font-medium">
               {getRoleSchool()}
             </div>
           </div>
