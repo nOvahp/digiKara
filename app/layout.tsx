@@ -37,7 +37,19 @@ export default function RootLayout({
           <ConditionalLayout />
           <main>{children}</main>
         </AuthProvider>
-        <Toaster position="top-center" richColors />
+        <Toaster 
+          position="top-center" 
+          richColors 
+          closeButton 
+          duration={2000}
+          toastOptions={{
+            style: {
+              borderRadius: '16px',
+              direction: 'rtl',
+              textAlign: 'right',
+            },
+          }}
+        />
       </body>
     </html>
   );

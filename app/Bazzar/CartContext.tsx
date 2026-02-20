@@ -47,15 +47,21 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     });
 
     if (alreadyInCart) {
-      toast.success('تعداد محصول افزایش یافت');
+      toast.success('تعداد محصول افزایش یافت', {
+        duration: 2000,
+      });
     } else {
-      toast.success('محصول به سبد خرید اضافه شد');
+      toast.success('محصول به سبد خرید اضافه شد', {
+        duration: 2000,
+      });
     }
   };
 
   const removeItem = (id: number) => {
     setItems((prev) => prev.filter((item) => item.id !== id));
-    toast.error('محصول از سبد خرید حذف شد');
+    toast.error('محصول از سبد خرید حذف شد', {
+      duration: 2000,
+    });
   };
 
   const incrementItem = (id: number) => {

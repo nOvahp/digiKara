@@ -41,7 +41,7 @@ export function QuickAccess() {
           <div className="w-9 h-9 relative bg-white rounded-md overflow-hidden flex justify-center items-center">
             <FilePlus className="w-5 h-5 text-[#0A0A0A]" strokeWidth={2} />
           </div>
-          <div className="text-right text-[#0F172A] text-sm font-['Meem'] font-medium leading-[21.70px] break-words">
+          <div className="text-right text-[#0F172A] text-sm font-medium leading-[21.70px] break-words">
             افزودن محصول جدید
           </div>
         </div>

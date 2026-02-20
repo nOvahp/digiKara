@@ -177,10 +177,14 @@ export default function SellsPage() {
         <Navigation />
       </div>
 
-      {/* Popup Layer */}
       <AddProductFlow
         isOpen={activePopup === 'step1'}
-        onClose={() => setActivePopup('none')}
+        onClose={() => {
+          setActivePopup('none');
+          if (searchParams.get('new')) {
+            router.replace('/StudentDashboard/Sells');
+          }
+        }}
         onSuccess={() => {
           fetchProducts();
           // Do not close immediately if we want to show Step 7, but AddProductFlow handles Step 7 internally.

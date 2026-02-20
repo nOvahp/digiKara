@@ -42,12 +42,14 @@ const ProductCard = ({
   price,
   rating,
   image,
+  priority,
 }: {
   id: number;
   title: string;
   price: string;
   rating: number;
   image?: string;
+  priority?: boolean;
 }) => (
   <Link
     href={`/Bazzar/ProductDetails?id=${id}`}
@@ -58,23 +60,14 @@ const ProductCard = ({
         src={image || '/ProductBazzar.png'}
         alt={title}
         fill
+        sizes="170px"
         className="object-cover"
         unoptimized
+        loading={priority ? 'eager' : 'lazy'}
       />
       {/* Shadow Effect from design */}
       <div className="absolute w-[64px] h-[5px] left-[53px] top-[121px] rotate-1 bg-black/80 blur-[11px]" />
-      {/* Random Tag */}
-      {id % 3 === 0 && (
-        <div
-          style={{
-            background:
-              'linear-gradient(0deg, rgba(100, 179, 39, 0.20) 0%, rgba(100, 179, 39, 0.20) 100%), white',
-          }}
-          className="absolute left-[3.5px] bottom-[6px] h-5 px-2 py-0.5 rounded-2xl flex items-center justify-center z-10"
-        >
-          <span className="text-[#64B327] text-xs font-medium leading-[18px]">شغل بابام</span>
-        </div>
-      )}
+      {/* Random Tag Removed */}
     </div>
     <div className="w-full flex flex-col items-start gap-1">
       <div className="w-full flex justify-between items-center">
@@ -116,7 +109,7 @@ const CategoryItem = ({ title, icon }: { title: string; icon?: string | null }) 
         className={`w-16 h-16 rounded-2xl bg-[#FDD00A] flex items-center justify-center transition-colors group-hover:opacity-90 overflow-hidden relative`}
       >
         {icon ? (
-          <Image src={icon} alt={title} fill className="object-cover p-3" unoptimized />
+          <Image src={icon} alt={title} fill sizes="60px" className="object-cover p-3" unoptimized />
         ) : (
           <Icon className="w-8 h-8 text-[#393E46]" strokeWidth={1.5} />
         )}
@@ -184,18 +177,14 @@ export default function HomePage() {
             </div>
           </div>
           {/* Toggle */}
-          <div className="h-9 p-[3px] rounded-lg border border-[#D7D8DA] flex items-center">
+          
             <div className="h-[29px] px-3 bg-[#FDD00A] shadow-sm rounded-md flex items-center justify-center">
               <span className="text-[#393E46] text-sm font-['PeydaWeb'] font-semibold">
                 خرید کالا
               </span>
             </div>
-            <div className="h-[29px] px-3 flex items-center justify-center cursor-pointer">
-              <span className="text-[#0A0A0A] text-sm font-['PeydaWeb'] font-semibold">
-                خرید خدمات
-              </span>
-            </div>
-          </div>
+            
+          
         </div>
 
         {/* Search & Filters Group */}
@@ -252,7 +241,7 @@ export default function HomePage() {
           dir="ltr"
         >
           {/* Background Image */}
-          <Image src="/BazzarHeader.png" alt="Hero Banner" fill className="object-cover" priority />
+          <Image src="/BazzarHeader.png" alt="Hero Banner" fill sizes="100vw" className="object-cover" priority unoptimized />
 
           {/* Content Overlay */}
           <div
@@ -340,7 +329,7 @@ export default function HomePage() {
 
           {/* Horizontal Scroll Products */}
           <div className="flex gap-4 overflow-x-auto pb-4 pt-2 pl-6 -ml-6 w-[calc(100%+24px)] scrollbar-hide pr-1">
-            {specialSaleProducts.map((product) => (
+            {specialSaleProducts.map((product, index) => (
               <ProductCard
                 key={product.id}
                 id={product.id}
@@ -348,6 +337,7 @@ export default function HomePage() {
                 price={product.price}
                 rating={product.rating}
                 image={product.image}
+                priority={index === 0}
               />
             ))}
           </div>
@@ -437,19 +427,7 @@ export default function HomePage() {
                       />
                     </div>
                     <div className="w-[37%] h-[3%] left-[31%] top-[80%] absolute origin-top-left rotate-1 bg-black/80 blur-[11px]" />
-                    {product.id % 3 === 0 && (
-                      <div
-                        style={{
-                          background:
-                            'linear-gradient(0deg, rgba(100, 179, 39, 0.20) 0%, rgba(100, 179, 39, 0.20) 100%), white',
-                        }}
-                        className="absolute left-[3.5px] bottom-[6px] h-5 px-2 py-0.5 rounded-2xl flex items-center justify-center z-10"
-                      >
-                        <span className="text-[#64B327] text-xs font-['PeydaFaNum'] leading-[18px]">
-                          شغل بابام
-                        </span>
-                      </div>
-                    )}
+                    {/* Tag removed */}
                   </Link>
                   <div className="self-stretch flex-col justify-start items-start gap-2.5 flex">
                     <div className="self-stretch flex-col justify-start items-start gap-[7px] flex">

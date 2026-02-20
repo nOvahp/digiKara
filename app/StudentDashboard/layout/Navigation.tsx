@@ -51,7 +51,7 @@ export function Navigation() {
             {/* Report */}
             <div className={getItemClasses(false)}>
               <FileText className={cn('w-6 h-6', getIconColor(false))} strokeWidth={1.5} />
-              <div className={getTextClasses(false)}>گزارش</div>
+              <div className={getTextClasses(false)}>مدیریت درخواست ها</div>
             </div>
 
             {/* Home */}

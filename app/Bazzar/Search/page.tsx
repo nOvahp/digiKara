@@ -191,7 +191,7 @@ function SearchContent() {
 
   return (
     <div
-      className="w-full min-h-screen flex flex-col items-center pb-[50px] relative bg-white"
+      className="w-full min-h-screen flex flex-col items-center pb-28 relative bg-white"
       dir="rtl"
     >
       {/* Header Fixed Area */}
@@ -332,7 +332,7 @@ function SearchContent() {
           // Initial Loading Skeletons
           [...Array(6)].map((_, i) => <ProductSkeleton key={i} />)
         ) : products.length > 0 ? (
-          products.map((product) => (
+          products.map((product, index) => (
             <Link
               href={`/Bazzar/ProductDetails?id=${product.id}`}
               key={product.id}
@@ -344,7 +344,10 @@ function SearchContent() {
                   src={product.image_path || product.image || '/ProductBazzar.png'}
                   alt={product.title}
                   fill
+                  sizes="(max-width: 440px) 50vw, 170px"
                   className="object-cover transition-transform group-hover:scale-105"
+                  loading={index < 2 ? 'eager' : 'lazy'}
+                  unoptimized
                 />
                 {/* Shadow decoration from design */}
                 <div className="absolute w-[40%] h-[3px] left-[30%] bottom-[20%] rotate-1 bg-black/80 blur-[8px] opacity-40" />

@@ -25,14 +25,18 @@ import { useAuth } from '@/app/providers/AuthProvider';
 
 export default function UserProfilePage() {
   const router = useRouter();
-  const { logoutCustomer } = useAuth();
+  const { logoutCustomer, isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProfile = async () => {
+      // Don't fetch if not authenticated
+      if (!isAuthenticated) {
+        setLoading(false);
+        return;
+      }
       try {
-        // Simulate slight delay for skeleton demo if needed, but for production just fetch
         const response = await bazzarService.getUserProfile();
         if (response && response.data) {
           setUser(response.data);
@@ -44,13 +48,47 @@ export default function UserProfilePage() {
       }
     };
 
-    fetchProfile();
-  }, []);
+    if (!isAuthLoading) {
+      fetchProfile();
+    }
+  }, [isAuthenticated, isAuthLoading]);
+
+  // ----------------------------------------------------------------------
+  // Not Logged In State
+  // ----------------------------------------------------------------------
+  if (!isAuthLoading && !isAuthenticated) {
+    return (
+      <div className="w-full h-[100dvh] bg-white flex flex-col items-center justify-center gap-6 relative" dir="rtl">
+        <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-2">
+          <User className="w-10 h-10 text-[#FDD00A]" />
+        </div>
+        <div className="text-center space-y-2 px-6">
+          <h3 className="text-[#0C1415] text-xl font-['PeydaWeb'] font-bold">ورود به حساب کاربری</h3>
+          <p className="text-[#707F81] text-sm font-['PeydaWeb'] leading-relaxed">
+            برای مشاهده پروفایل کاربری خود در بازار، لطفا ابتدا وارد حساب خود شوید.
+          </p>
+        </div>
+        <button
+          onClick={() => router.push('/login?role=customer')}
+          className="mt-4 px-10 py-3.5 bg-[#FDD00A] text-[#1A1C1E] rounded-xl text-[15px] font-['PeydaWeb'] font-bold shadow-md active:scale-95 transition-all hover:bg-[#e5bc09]"
+        >
+          ورود / ثبت‌نام
+        </button>
+
+        <button
+          onClick={() => router.push('/Bazzar')}
+          className="absolute top-4 left-4 w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center hover:bg-gray-50 transition-colors"
+        >
+          <ArrowLeft className="w-5 h-5 text-[#0C1415]" strokeWidth={1.5} />
+        </button>
+      </div>
+    );
+  }
 
   // ----------------------------------------------------------------------
   // Loading State (Skeleton)
   // ----------------------------------------------------------------------
-  if (loading) {
+  if (loading || isAuthLoading) {
     return (
       <div
         className="w-full h-[100dvh] bg-gray-50/50 flex flex-col items-center relative overflow-hidden"
@@ -295,7 +333,7 @@ export default function UserProfilePage() {
             onClick={async () => {
               const res = await logoutCustomer();
               if (res.success) {
-                router.push(`/login?role=customer&phone=${user?.phone || ''}`);
+                router.push('/Bazzar');
               }
             }}
             className="w-full mt-4 group bg-red-50 hover:bg-red-100/80 active:bg-red-100 border border-red-100 text-red-600 h-[56px] rounded-2xl flex items-center justify-center gap-3 transition-all duration-200"

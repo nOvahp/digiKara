@@ -370,9 +370,6 @@ export default function ProductDetails() {
                     price: priceVal,
                     image: productImage,
                   });
-
-                  // Feedback
-                  alert('محصول با موفقیت به سبد خرید اضافه شد'); // Using alert for now, should use toast in real app
                 } catch (error) {
                   console.error('Add to cart failed', error);
                   alert('خطا در افزودن به سبد خرید');

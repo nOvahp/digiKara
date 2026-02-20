@@ -339,9 +339,9 @@ export function EditeProducts() {
           </button>
           <button
             onClick={handleSave}
-            className="flex-1 h-[52px] px-12 bg-[#FDD00A] rounded-xl shadow-sm flex justify-center items-center gap-2 hover:opacity-90 transition-opacity"
+            className="flex-1 h-[52px] px-2 sm:px-12 bg-[#FDD00A] rounded-xl shadow-sm flex justify-center items-center gap-2 hover:opacity-90 transition-opacity min-w-0"
           >
-            <span className="text-[#1A1C1E] text-lg font-semibold font-['PeydaWeb']">
+            <span className="text-[#1A1C1E] text-base sm:text-lg font-semibold font-['PeydaWeb'] whitespace-nowrap">
               ذخیره تغییرات
             </span>
           </button>

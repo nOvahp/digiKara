@@ -60,13 +60,20 @@ export default function LoginPage() {
   const [phone, setPhone] = React.useState<string>(''); // Store phone for multi-step flows
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { role, user } = useAuth(); // Get selected role and user
+  const { role, user, setRole } = useAuth(); // Get selected role and user
 
   React.useEffect(() => {
     const phoneParam = searchParams.get('phone');
+    const roleParam = searchParams.get('role');
+    
     if (phoneParam) {
       setPhone(phoneParam);
+      setRole('customer');
       setStep(Step.CUSTOMER_LOGIN);
+    } else if (roleParam === 'customer') {
+      // Skip landing page for customer role, go directly to login form
+      setRole('customer');
+      setStep(Step.LOGIN_FORM);
     } else {
       // Check if user has seen intro
       const hasSeenIntro = localStorage.getItem('has_seen_intro');
@@ -76,7 +83,7 @@ export default function LoginPage() {
         setStep(Step.INTRO_1);
       }
     }
-  }, [searchParams]);
+  }, [searchParams, setRole]);
 
   // Handler for successful login (returning user)
   const handleLoginSuccess = (userData?: UserData) => {

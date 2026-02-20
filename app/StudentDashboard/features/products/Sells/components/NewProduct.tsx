@@ -244,10 +244,13 @@ export function NewProduct({
                   >
                     <Image src={img} alt="Product" className="object-cover" fill sizes="137px" />
                     <button
-                      onClick={() => removeImage(index)}
-                      className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        removeImage(index);
+                      }}
+                      className="absolute top-1.5 right-1.5 bg-red-500 text-white w-6 h-6 flex items-center justify-center rounded-full shadow-md z-10 hover:bg-red-600 transition-colors"
                     >
-                      &times;
+                      <span className="text-sm font-bold leading-none mb-[2px]">&times;</span>
                     </button>
                   </div>
                 ))}

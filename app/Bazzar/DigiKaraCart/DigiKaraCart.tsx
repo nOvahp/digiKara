@@ -5,11 +5,13 @@ import Image from 'next/image';
 import { ArrowLeft, Trash2, Plus, Minus, ShoppingBag } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '../CartContext';
+import { useAuth } from '@/app/providers/AuthProvider';
 
 import { bazzarService } from '@/app/services/bazzarService';
 
 export default function DigiKaraCart() {
   const router = useRouter();
+  const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const {
     items,
     incrementItem,
@@ -25,6 +27,9 @@ export default function DigiKaraCart() {
 
   useEffect(() => {
     const fetchOrders = async () => {
+      // Don't fetch if not authenticated
+      if (!isAuthenticated) return;
+      
       try {
         const response = await bazzarService.getOrders();
         console.log('Orders response:', response);
@@ -51,8 +56,53 @@ export default function DigiKaraCart() {
       }
     };
 
-    fetchOrders();
-  }, [setCartItems]);
+    if (!isAuthLoading) {
+      fetchOrders();
+    }
+  }, [setCartItems, isAuthenticated, isAuthLoading]);
+
+  // ----------------------------------------------------------------------
+  // Not Logged In State
+  // ----------------------------------------------------------------------
+  if (!isAuthLoading && !isAuthenticated) {
+    return (
+      <div className="w-full h-[100dvh] bg-white flex flex-col items-center justify-center gap-6 relative" dir="rtl">
+        <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-2">
+          <ShoppingBag className="w-10 h-10 text-[#FDD00A]" />
+        </div>
+        <div className="text-center space-y-2 px-6">
+          <h3 className="text-[#0C1415] text-xl font-['PeydaWeb'] font-bold">ورود به حساب کاربری</h3>
+          <p className="text-[#707F81] text-sm font- leading-relaxed">
+            برای مشاهده سبد خرید خود در بازار، لطفا ابتدا وارد حساب خود شوید.
+          </p>
+        </div>
+        <button
+          onClick={() => router.push('/login?role=customer')}
+          className="mt-4 px-10 py-3.5 bg-[#FDD00A] text-[#1A1C1E] rounded-xl text-[15px] font-['PeydaWeb'] font-bold shadow-md active:scale-95 transition-all hover:bg-[#e5bc09]"
+        >
+          ورود / ثبت‌نام
+        </button>
+
+        <button
+          onClick={() => router.push('/Bazzar')}
+          className="absolute top-4 left-4 w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center hover:bg-gray-50 transition-colors"
+        >
+          <ArrowLeft className="w-5 h-5 text-[#0C1415]" strokeWidth={1.5} />
+        </button>
+      </div>
+    );
+  }
+
+  // ----------------------------------------------------------------------
+  // Loading State
+  // ----------------------------------------------------------------------
+  if (isAuthLoading) {
+    return (
+      <div className="w-full h-[100dvh] bg-gray-50/50 flex flex-col items-center justify-center" dir="rtl">
+         <div className="w-8 h-8 rounded-full border-4 border-gray-200 border-t-[#FDD00A] animate-spin"></div>
+      </div>
+    );
+  }
 
   const formatPrice = (price: number) => {
     return price.toLocaleString('fa-IR') + ' ریال';
@@ -231,20 +281,22 @@ export default function DigiKaraCart() {
       </div>
 
       {/* Floating Navigation Buttons */}
-      <div className="fixed bottom-[85px] left-0 right-0 z-40 w-full max-w-[440px] mx-auto p-6 pointer-events-none">
-        <div className="w-full pointer-events-auto">
-          {/* Next Button */}
-          <button
-            onClick={() => router.push('/Bazzar/DigiKaraCart/FinalCheck')}
-            className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-2 hover:bg-[#e5bc09] transition-colors shadow-sm"
-          >
-            <ShoppingBag className="w-5 h-5 text-[#1A1C1E]" />
-            <span className="text-[#1A1C1E] text-lg font-['PeydaWeb'] font-semibold">
-              تکمیل فرایند خرید
-            </span>
-          </button>
+      {items.length > 0 && (
+        <div className="fixed bottom-[85px] left-0 right-0 z-40 w-full max-w-[440px] mx-auto p-6 pointer-events-none">
+          <div className="w-full pointer-events-auto">
+            {/* Next Button */}
+            <button
+              onClick={() => router.push('/Bazzar/DigiKaraCart/FinalCheck')}
+              className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-2 hover:bg-[#e5bc09] transition-colors shadow-sm"
+            >
+              <ShoppingBag className="w-5 h-5 text-[#1A1C1E]" />
+              <span className="text-[#1A1C1E] text-lg font-semibold">
+                تکمیل فرایند خرید
+              </span>
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

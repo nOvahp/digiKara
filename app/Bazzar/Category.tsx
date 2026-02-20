@@ -138,6 +138,7 @@ export default function Category() {
                       src={cat.icon_path}
                       alt={cat.title}
                       fill
+                      sizes="64px"
                       className="object-cover p-3"
                       unoptimized // For external URLs if needed
                     />

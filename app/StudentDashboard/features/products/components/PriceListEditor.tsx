@@ -223,7 +223,7 @@ export function PriceListEditor({ prices, onRefresh, basePrice }: PriceListEdito
     <div className="w-full flex flex-col gap-4 p-5 bg-white rounded-2xl border border-[#DFE1E7] shadow-sm">
       <div className="w-full flex flex-col gap-4">
         <div className="text-[#0D0D12] text-lg font-semibold font-['PeydaWeb'] text-right">
-          لیست قیمت ها و تنوع محصول
+          لیست ویژگی ها و تنوع محصول
         </div>
         <button
           onClick={() => setIsAdding(!isAdding)}
@@ -243,7 +243,7 @@ export function PriceListEditor({ prices, onRefresh, basePrice }: PriceListEdito
             <X className="w-4 h-4 text-gray-500" />
           </div>
           <div className="text-sm font-medium text-[#0D0D12] font-['PeydaWeb'] text-right">
-            افزودن قیمت جدید
+            افزودن ویژگی جدید
           </div>
 
           {/* Type Selector (Custom Dropdown) */}
@@ -266,19 +266,25 @@ export function PriceListEditor({ prices, onRefresh, basePrice }: PriceListEdito
                 <div className="absolute top-[60px] left-0 right-0 bg-white rounded-xl shadow-lg border border-[#E4E2E4] overflow-hidden flex flex-col z-30 animate-in fade-in zoom-in-95 duration-200">
                   {VARIANT_OPTIONS.map((opt) => {
                     const isSelected = parseInt(newPrice.type) === opt.id;
+                    const isSingleType = opt.id === 2 || opt.id === 6 || opt.id === 7;
+                    const alreadyExists = prices?.some((p) => p.type === opt.id) || false;
+                    const isDisabled = isSingleType && alreadyExists;
+
                     return (
                       <div
                         key={opt.id}
                         onClick={() => {
+                            if (isDisabled) return;
                             setNewPrice({ ...newPrice, type: opt.id.toString(), title: '' }); // Reset title when type changes
                             setIsDropdownOpen(false);
                         }}
-                        className="w-full px-4 py-3 flex justify-between items-center hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-0"
+                        className={`w-full px-4 py-3 flex justify-between items-center border-b border-gray-100 last:border-0 ${isDisabled ? 'opacity-50 cursor-not-allowed bg-gray-50' : 'hover:bg-gray-50 cursor-pointer'}`}
                       >
                         <div className="flex items-center gap-2">
                            <span className="text-lg">{opt.icon}</span>
                           <span className="text-[#262527] font-semibold font-['PeydaWeb']">
                             {opt.label}
+                            {isDisabled && <span className="text-xs text-red-500 mr-2">(فقط یکی مجاز است)</span>}
                           </span>
                         </div>
                         <div
@@ -454,12 +460,12 @@ export function PriceListEditor({ prices, onRefresh, basePrice }: PriceListEdito
           </div>
 
           {/* Price Difference (Full Width) */}
+          {/* 
           <div className="flex flex-col gap-2 w-full mt-2">
             <div className="text-right text-[#666D80] text-sm font-medium font-['PeydaWeb']">
               تفاوت قیمت (نسبت به پایه)
             </div>
 
-            {/* Input First */}
             <div className="w-full h-[52px] px-3 bg-white rounded-xl border border-[#DFE1E7] flex items-center gap-2 focus-within:border-[#FDD00A] transition-colors">
               <input
                 type="text"
@@ -472,7 +478,6 @@ export function PriceListEditor({ prices, onRefresh, basePrice }: PriceListEdito
               <div className="text-[#0D0D12] text-sm font-medium font-['PeydaWeb']">ریال</div>
             </div>
 
-            {/* Buttons Below */}
             <div className="w-full flex items-center gap-2">
               <button
                 onClick={() => setIsAddition(true)}
@@ -491,7 +496,8 @@ export function PriceListEditor({ prices, onRefresh, basePrice }: PriceListEdito
             <div className="text-right text-xs text-[#666D80] font-medium font-['PeydaFaNum'] mt-1">
               قیمت نهایی: {calculatedAmount ? parseInt(calculatedAmount).toLocaleString() : '0'} ریال
             </div>
-          </div>
+          </div> 
+          */}
 
           {/* Discount & Inventory Rows */}
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
@@ -554,7 +560,7 @@ export function PriceListEditor({ prices, onRefresh, basePrice }: PriceListEdito
 
       {!prices || prices.length === 0 ? (
         <div className="text-gray-500 text-sm font-medium font-['PeydaWeb'] text-center py-4 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-          هیچ تنوع قیمتی برای این محصول ثبت نشده است.
+          هیچ تنوع ویژگی‌ برای این محصول ثبت نشده است.
         </div>
       ) : (
         <div className="flex flex-col gap-3">
@@ -577,10 +583,10 @@ export function PriceListEditor({ prices, onRefresh, basePrice }: PriceListEdito
                     </div>
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                        <div className="flex flex-col gap-1">
+                        {/* <div className="flex flex-col gap-1">
                              <span className="text-gray-500 text-xs">قیمت</span>
                              <span className="font-num-medium">{parseInt(String(current.amount)).toLocaleString()} ریال</span>
-                        </div>
+                        </div> */}
                         <div className="flex flex-col gap-1">
                              <span className="text-gray-500 text-xs">تخفیف</span>
                              <span className="font-num-medium">{current.discount_percent || 0}%</span>
