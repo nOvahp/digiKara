@@ -5,7 +5,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { ArrowLeft, Bookmark, Star, ShoppingBag, Eye, Heart } from 'lucide-react';
+import { toast } from 'sonner';
 import { useCart } from './CartContext';
+import { useFavorites } from './FavoritesContext';
 import {
   bazzarService,
   BazzarProductDetail,
@@ -20,6 +22,7 @@ const Skeleton = ({ className }: { className: string }) => (
 
 export default function ProductDetails() {
   const { addItem } = useCart();
+  const { toggleFavorite, isFavorite } = useFavorites();
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
 
@@ -113,9 +116,38 @@ export default function ProductDetails() {
               جزئیات محصول
             </span>
 
-            <div className="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center cursor-pointer shadow-sm hover:bg-white transition-colors">
-              <Bookmark className="w-5 h-5 text-[#0C1415]" strokeWidth={2} />
-            </div>
+            <button
+              onClick={() => {
+                if (product) {
+                  const isFav = isFavorite(product.id);
+                  toggleFavorite({
+                    id: product.id,
+                    title: product.title,
+                    price: currentPrice || 0,
+                    image: productImage,
+                    discount: currentDiscount?.toString(),
+                    inventory: currentInventory,
+                  });
+                  
+                  if (isFav) {
+                    toast.success('محصول از علاقه‌مندی‌ها حذف شد', { duration: 2000 });
+                  } else {
+                    toast.success('محصول به علاقه‌مندی‌ها اضافه شد', { duration: 2000 });
+                  }
+                }
+              }}
+              disabled={!product}
+              className="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center cursor-pointer shadow-sm hover:bg-white transition-all active:scale-95 disabled:opacity-50"
+            >
+              <Heart
+                className={`w-5 h-5 transition-colors ${
+                  product && isFavorite(product.id)
+                    ? 'text-red-500 fill-red-500'
+                    : 'text-[#0C1415]'
+                }`}
+                strokeWidth={2}
+              />
+            </button>
           </div>
         </div>
 

@@ -239,10 +239,10 @@ function SearchContent() {
                 autoFocus={false}
               />
 
-              <div className="w-px h-6 bg-gray-300 mx-2"></div>
+              {/* <div className="w-px h-6 bg-gray-300 mx-2"></div> */}
 
               {/* Location */}
-              <div className="relative">
+              {/* <div className="relative">
                 <div
                   className="flex items-center gap-1 cursor-pointer text-gray-600 hover:text-gray-900 px-2"
                   onClick={() => setShowLocationMenu(!showLocationMenu)}
@@ -251,7 +251,7 @@ function SearchContent() {
                   <MapPin size={18} className="text-gray-500" />
                 </div>
 
-                {/* Dropdown */}
+                
                 {showLocationMenu && (
                   <div className="absolute top-12 left-0 w-32 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden py-1 z-50 flex flex-col gap-1 max-h-64 overflow-y-auto">
                     {CITIES.map((city) => (
@@ -268,7 +268,7 @@ function SearchContent() {
                     ))}
                   </div>
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -332,7 +332,7 @@ function SearchContent() {
           // Initial Loading Skeletons
           [...Array(6)].map((_, i) => <ProductSkeleton key={i} />)
         ) : products.length > 0 ? (
-          products.map((product, index) => (
+          products.map((product) => (
             <Link
               href={`/Bazzar/ProductDetails?id=${product.id}`}
               key={product.id}
@@ -346,8 +346,6 @@ function SearchContent() {
                   fill
                   sizes="(max-width: 440px) 50vw, 170px"
                   className="object-cover transition-transform group-hover:scale-105"
-                  loading={index < 2 ? 'eager' : 'lazy'}
-                  unoptimized
                 />
                 {/* Shadow decoration from design */}
                 <div className="absolute w-[40%] h-[3px] left-[30%] bottom-[20%] rotate-1 bg-black/80 blur-[8px] opacity-40" />

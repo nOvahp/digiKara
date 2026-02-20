@@ -265,4 +265,17 @@ export const bazzarService = {
   }): Promise<ApiResponse<null>> => {
     return await apiClient.put<ApiResponse<null>>('/customers/users/update-password', data);
   },
+
+  // Favorites/Wishlist endpoints
+  getFavorites: async (): Promise<ApiResponse<BazzarProduct[]>> => {
+    return await apiClient.get<ApiResponse<BazzarProduct[]>>('/customers/favorites');
+  },
+
+  addToFavorites: async (productId: number): Promise<ApiResponse<null>> => {
+    return await apiClient.post<ApiResponse<null>>('/customers/favorites', { product_id: productId });
+  },
+
+  removeFromFavorites: async (productId: number): Promise<ApiResponse<null>> => {
+    return await apiClient.delete<ApiResponse<null>>(`/customers/favorites/${productId}`);
+  },
 };
