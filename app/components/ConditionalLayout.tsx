@@ -9,7 +9,7 @@ export default function ConditionalLayout() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const isLandingPage = pathname === '/' || pathname?.startsWith('/homePage');
+    const isLandingPage = pathname === '/' || pathname?.startsWith('/homePage') || pathname?.startsWith('/Bazzar');
     const isLoginPage = pathname?.startsWith('/login');
 
     if (isLandingPage) {

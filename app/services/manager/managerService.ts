@@ -48,6 +48,19 @@ export interface ManagerProduct {
       id?: { key: string; value: string }[];
     };
   };
+  // Flat fields that might appear in oldProduct
+  title?: string;
+  description?: string;
+  image_path?: string;
+  category_id?: number | string;
+  price?: number;
+  inventory?: number;
+  code?: string;
+}
+
+export interface ManagerProductResponsePayload extends ManagerProduct {
+  newProduct?: ManagerProduct;
+  oldProduct?: ManagerProduct;
 }
 
 export const managerService = {
@@ -184,9 +197,16 @@ export const managerService = {
     }
   },
 
-  approveStudentRequest: async (id: number): Promise<{ success: boolean; message?: string }> => {
+  approveStudentRequest: async (
+    id: number,
+    status: 2 | 1 | 0,
+    description?: string | null,
+  ): Promise<{ success: boolean; message?: string }> => {
     try {
-      const response = await apiClient.put<ApiResponse<unknown>>(`/manager/students/${id}`);
+      const response = await apiClient.put<ApiResponse<unknown>>(`/manager/students/${id}`, {
+        status,
+        description,
+      });
 
       if (response.status === 'success' || response.code === 200) {
         return {
@@ -231,9 +251,9 @@ export const managerService = {
 
   getManagerProductById: async (
     id: number,
-  ): Promise<{ success: boolean; data?: ManagerProduct; message?: string }> => {
+  ): Promise<{ success: boolean; data?: ManagerProductResponsePayload; message?: string }> => {
     try {
-      const response = await apiClient.get<ApiResponse<ManagerProduct>>(`/manager/products/${id}`);
+      const response = await apiClient.get<ApiResponse<ManagerProductResponsePayload>>(`/manager/products/${id}`);
 
       if (response.status === 'success' || response.code === 200) {
         return { success: true, data: response.data };
@@ -250,9 +270,16 @@ export const managerService = {
     }
   },
 
-  approveManagerProduct: async (id: number): Promise<{ success: boolean; message?: string }> => {
+  approveManagerProduct: async (
+    id: number,
+    status: 2 | 1 | 0,
+    description?: string | null,
+  ): Promise<{ success: boolean; message?: string }> => {
     try {
-      const response = await apiClient.put<ApiResponse<unknown>>(`/manager/products/${id}`);
+      const response = await apiClient.put<ApiResponse<unknown>>(`/manager/products/${id}`, {
+        status,
+        description,
+      });
 
       if (response.status === 'success' || response.code === 200) {
         return {

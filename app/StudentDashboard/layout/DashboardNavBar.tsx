@@ -7,9 +7,11 @@ import Image from 'next/image';
 import { PopUpStudent } from '../features/products/PopUpStudent';
 import Notifications from '../features/notifications/Notifications';
 import { UserData } from '@/app/services/common/schemas';
+import { shopService } from '@/app/services/student/shopService';
 
 export function DashboardNavBar() {
   const [user, setUser] = React.useState<UserData | null>(null);
+  const [hojreImage, setHojreImage] = React.useState<string | null>(null);
   const [showStudentPopup, setShowStudentPopup] = React.useState(false);
   const [showNotifications, setShowNotifications] = React.useState(false);
 
@@ -21,6 +23,16 @@ export function DashboardNavBar() {
         const parsed = JSON.parse(storedUser);
         console.log('DashboardNavBar: parsed user:', parsed);
         setUser(parsed);
+        
+        // Always try to fetch shop image dynamically to ensure freshness
+        shopService.getShop().then((res) => {
+          if (res.success && res.hasShop && res.data) {
+            const shopData = Array.isArray(res.data) ? res.data[0] : res.data;
+            const shopImg = shopData?.image || shopData?.logo;
+            if (shopImg) setHojreImage(shopImg);
+          }
+        }).catch(err => console.error('Error fetching shop image in navbar', err));
+
       } else {
         console.warn('DashboardNavBar: No user data found in localStorage');
       }
@@ -31,7 +43,9 @@ export function DashboardNavBar() {
 
   // Helpers to safely get display names
   const getFullName = () => {
-    if (user?.firstname && user?.lastname) return `${user.firstname} ${user.lastname}`;
+    if (user?.firstname || user?.lastname) {
+      return `${user.firstname || ''} ${user.lastname || ''}`.trim();
+    }
     return 'کاربر ناشناس'; // Unknown User
   };
 
@@ -53,7 +67,7 @@ export function DashboardNavBar() {
             <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-100 relative">
               {/* User Image */}
               <Image
-                src={user?.profile_image || 'https://placehold.co/40x40'}
+                src={hojreImage || user?.profile_image || 'https://placehold.co/40x40'}
                 alt="Profile"
                 fill
                 className="object-cover"

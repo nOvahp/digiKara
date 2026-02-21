@@ -3,7 +3,9 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { X, CheckCircle, AlertCircle, Info, ListCheck } from 'lucide-react';
 import { managerService, ManagerProduct } from '@/app/services/manager/managerService';
+import ConfirmationModal from './ConfirmationModal';
 import Image from 'next/image';
+import { toast } from 'sonner';
 
 interface ManagerProductPopupProps {
   onClose: () => void;
@@ -55,8 +57,11 @@ const ManagerProductPopup = ({
 }: ManagerProductPopupProps) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const [product, setProduct] = useState<ManagerProduct>(initialProduct);
+  const [oldProduct, setOldProduct] = useState<ManagerProduct | null>(null);
+  const [activeTab, setActiveTab] = useState<'new' | 'old'>('new');
   const [isLoading, setIsLoading] = useState(false);
   const [isApproving, setIsApproving] = useState(false);
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
 
   // Fetch detailed product data
   useEffect(() => {
@@ -66,7 +71,12 @@ const ManagerProductPopup = ({
       try {
         const response = await managerService.getManagerProductById(initialProduct.id);
         if (response.success && response.data) {
-          setProduct(response.data);
+          if (response.data.newProduct) {
+            setProduct(response.data.newProduct);
+            setOldProduct(response.data.oldProduct || null);
+          } else {
+            setProduct(response.data);
+          }
         }
       } catch (error) {
         console.error('Failed to fetch product details', error);
@@ -201,15 +211,24 @@ const ManagerProductPopup = ({
     };
   }, [onClose]);
 
-  const handleApprove = async () => {
-    if (!product || product.approved) return;
+  const handleApprove = () => {
+    if (!product || product.status === 'تایید شده') return;
+    setIsConfirmationModalOpen(true);
+  };
+
+  const handleConfirmation = async (status: 2 | 1 | 0, description?: string | null) => {
+    if (!product) return;
 
     setIsApproving(true);
     try {
-      const response = await managerService.approveManagerProduct(product.id);
+      const response = await managerService.approveManagerProduct(product.id, status, description);
       if (response.success) {
-        setProduct((prev) => ({ ...prev, approved: true }));
+        const newStatusStr = status === 2 ? 'تایید شده' : status === 0 ? 'در انتظار تایید' : 'رد شده';
+        setProduct((prev) => ({ ...prev, status: newStatusStr }));
+        setIsConfirmationModalOpen(false);
+        toast.success('وضعیت با موفقیت ثبت شد');
         if (onApprove) onApprove();
+        onClose();
       }
     } catch (error) {
       console.error('Failed to approve product', error);
@@ -224,254 +243,275 @@ const ManagerProductPopup = ({
 
   if (!product) return null;
 
+  const isOldTab = oldProduct && activeTab === 'old';
+  const displayTitle = isOldTab ? oldProduct.title : model_data?.title;
+  const displayPrice = isOldTab ? oldProduct.price : currentPrice;
+  const displayInventory = isOldTab ? oldProduct.inventory : model_data?.inventory;
+  const displayDescription = isOldTab ? oldProduct.description : model_data?.description;
+  const displayImage = isOldTab 
+      ? (oldProduct.image_path?.startsWith('http') ? oldProduct.image_path : (oldProduct.image_path ? `https://digikara.back.adiaweb.dev/storage/${oldProduct.image_path}` : ''))
+      : (model_data?.image_path ? `https://digikara.back.adiaweb.dev/storage/${model_data.image_path}` : '');
+
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+      className="fixed inset-0 z-[999] flex items-center justify-center bg-black/30 backdrop-blur-sm p-4"
       dir="rtl"
     >
       <div
         ref={modalRef}
-        className="w-full max-w-[440px] h-[90vh] bg-white rounded-xl border border-[#DFE1E7] overflow-y-auto flex flex-col justify-start items-start gap-5 p-5 relative shadow-lg animate-in fade-in zoom-in duration-200"
+        className="w-full max-w-[440px] h-[96vh] bg-white rounded-3xl overflow-hidden flex flex-col relative shadow-2xl animate-in fade-in zoom-in duration-200"
       >
-        {/* Close Button */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 left-4 p-1 rounded-full hover:bg-gray-100 transition-colors z-20"
-        >
-          <X className="w-5 h-5 text-gray-500" />
-        </button>
-
-        {/* Title */}
-        <div className="self-stretch text-right mt-2 flex flex-col items-start gap-1">
-          <span className="text-[#0D0D12] text-lg font-semibold font-['PeydaWeb'] leading-relaxed tracking-wide">
-            {model_data?.title || '...'}
-          </span>
-          {product.firstname && product.lastname && (
-            <span className="text-[#666D80] text-sm">
-              توسط: {product.firstname} {product.lastname}
-            </span>
+        {/* Header Image Area */}
+        <div className="relative w-full h-[200px] bg-gray-100 shrink-0">
+          {isLoading ? (
+            <div className="w-full h-full flex items-center justify-center animate-pulse bg-gray-200">
+              <div className="w-8 h-8 rounded-full border-2 border-t-[#0A33FF] animate-spin" />
+            </div>
+          ) : displayImage ? (
+            <Image
+              src={displayImage}
+              alt={displayTitle || 'محصول'}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 500px"
+              priority
+              unoptimized={displayImage.includes('storage')}
+            />
+          ) : (
+            <div className="w-full h-full flex flex-col items-center justify-center text-gray-400 gap-2">
+              <Info className="w-8 h-8" />
+              <span className="text-sm">تصویر ندارد</span>
+            </div>
           )}
+
+          {/* Header Controls (Overlay) */}
+          <div className="absolute top-0 left-0 w-full p-0 flex justify-between items-center z-10 pt-4 px-4">
+            <button
+              onClick={onClose}
+              className="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center cursor-pointer shadow-sm hover:bg-white transition-colors"
+            >
+              <X className="w-5 h-5 text-[#0C1415]" strokeWidth={2} />
+            </button>
+            <div className="px-3 py-1.5 bg-white/80 backdrop-blur-md rounded-full shadow-sm">
+              <span className="text-[#0D0D12] text-xs font-semibold">
+                پیش‌نمایش محصول
+              </span>
+            </div>
+          </div>
         </div>
 
-        {isLoading ? (
-          <div className="flex-1 w-full flex items-center justify-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#0A33FF]"></div>
-          </div>
-        ) : (
-          <div className="self-stretch flex-col justify-start items-end gap-4 flex w-full flex-1 overflow-y-auto no-scrollbar pb-20">
-            {/* Image Section */}
-            {model_data?.image_path ? (
-              <div className="self-stretch flex-col justify-start items-start gap-3 flex w-full shrink-0">
-                <div className="relative self-stretch h-[200px] w-full rounded-xl border border-[#DFE1E7] overflow-hidden">
-                  <Image
-                    fill
-                    className="object-cover"
-                    src={`https://digikara.back.adiaweb.dev/storage/${model_data.image_path}`}
-                    alt={model_data.title || 'محصول'}
-                    sizes="(max-width: 768px) 100vw, 500px"
-                  />
-                </div>
-              </div>
-            ) : (
-              <div className="self-stretch h-[200px] bg-gray-50 rounded-xl border border-[#DFE1E7] flex flex-col items-center justify-center text-gray-400 gap-2">
-                <Info className="w-8 h-8" />
-                <span className="text-sm">تصویری بارگذاری نشده است</span>
-              </div>
-            )}
-
-            {/* Price and Variants Section */}
-            <div className="w-full flex justify-between items-center bg-[#F9FAFB] p-3 rounded-xl border border-[#DFE1E7]">
-              <div className="flex flex-col items-start">
-                <span className="text-[#666D80] text-xs">قیمت نهایی</span>
-                <div className="text-[#0047AB] text-lg font-semibold font-['PeydaFaNum']">
-                  {formatPrice(currentPrice)} ریال
-                </div>
-              </div>
-              {model_data?.prices && model_data.prices.length > 0 && (
-                <span className="text-xs text-amber-600 bg-amber-50 px-2 py-1 rounded-lg">
-                  چند قیمتی
-                </span>
+        {/* Scrollable Content Body */}
+        <div className="flex-1 w-full overflow-y-auto no-scrollbar pb-[100px] bg-white">
+          <div className="flex flex-col px-5 pt-6 gap-6">
+            
+            {/* Title & Price Row */}
+            <div className="flex flex-col gap-3">
+              {oldProduct && (
+                 <div className="flex w-full bg-gray-100 p-1 rounded-xl mb-1">
+                    <button
+                      onClick={() => setActiveTab('new')}
+                      className={`flex-1 py-1.5 text-sm font-semibold rounded-lg transition-all ${
+                        activeTab === 'new' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+                      }`}
+                    >
+                       اطلاعات جدید
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('old')}
+                      className={`flex-1 py-1.5 text-sm font-semibold rounded-lg transition-all ${
+                        activeTab === 'old' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+                      }`}
+                    >
+                       اطلاعات قبلی
+                    </button>
+                 </div>
               )}
-            </div>
-
-            {/* Dynamic Variant Selectors */}
-            {displayFeatures && displayFeatures.length > 0 && (
-              <div className="self-stretch flex flex-col gap-3 w-full border-t border-[#DFE1E7] pt-3">
-                {displayFeatures.map((feature) => {
-                  const f = feature;
-                  return (
-                  <div key={f.title} className="flex flex-col gap-2">
-                    <div className="text-right text-[#0D0D12] text-sm font-medium font-['PeydaWeb']">
-                      {f.title}:{' '}
-                      <span className="text-[#35685A]">
-                        {selectedVariants[f.title] || ''}
-                      </span>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {feature.values.map((val: string, i: number) => {
-                        const isSelected = selectedVariants[f.title] === val;
-                        return (
-                          <div
-                            key={i}
-                            onClick={() => handleSelect(f.title, val)}
-                            className={`
-                                                        ${f.title === 'رنگ' ? 'w-8 h-8 rounded-full border' : 'px-3 py-1 rounded-full border text-sm font-medium'}
-                                                        cursor-pointer flex items-center justify-center transition-all
-                                                        ${
-                                                          isSelected
-                                                            ? 'border-[#35685A] ring-1 ring-[#35685A] bg-gray-50'
-                                                            : 'border-[#E5E5E5] hover:border-gray-300'
-                                                        }
-                                                    `}
-                            style={
-                              f.title === 'رنگ' ? { backgroundColor: getColorCode(val) } : {}
-                            }
-                          >
-                            {f.title !== 'رنگ' && val}
-                            {f.title === 'رنگ' && isSelected && (
-                              <div className="w-2 h-2 bg-white rounded-full shadow-sm" />
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                  );
-                })}
-              </div>
-            )}
-
-            {/* Details List */}
-            <div className="self-stretch flex-col justify-start items-start gap-2 flex w-full">
-              {/* School */}
-              <div className="self-stretch h-[52px] px-3 py-2 bg-white rounded-xl border border-[#DFE1E7] flex justify-between items-center gap-2">
-                <div className="flex justify-end items-center gap-2 w-[100px]">
-                  <div className="flex-1 text-right text-[#666D80] text-sm font-semibold font-['PeydaWeb'] leading-tight tracking-wide">
-                    مدرسه
-                  </div>
-                </div>
-                <div className="flex-1 text-[#818898] text-base font-medium leading-relaxed tracking-wide text-left truncate">
-                  {product.school_name}
-                </div>
-              </div>
-
-              {/* Count */}
-              <div className="self-stretch h-[52px] px-3 py-2 bg-white rounded-xl border border-[#DFE1E7] flex justify-between items-center gap-2">
-                <div className="flex justify-end items-center gap-2 w-[100px]">
-                  <div className="flex-1 text-right text-[#666D80] text-sm font-semibold font-['PeydaWeb'] leading-tight tracking-wide">
-                    موجودی
-                  </div>
-                </div>
-                <div className="flex-1 text-[#818898] text-base font-medium leading-relaxed tracking-wide text-left">
-                  {toFarsiNumber(model_data?.inventory)} عدد
-                </div>
-              </div>
-
-              {/* Status */}
-              <div className="self-stretch h-[52px] px-3 py-2 bg-white rounded-xl border border-[#DFE1E7] flex justify-between items-center">
-                <div className="flex justify-end items-center gap-2 w-[100px]">
-                  <div className="w-full text-right text-[#666D80] text-sm font-bold leading-tight tracking-wide">
-                    وضعیت
-                  </div>
-                </div>
+              <div className="flex justify-between items-start gap-4">
+                <h1 className="text-right text-[#0D0D12] text-xl font-semibold leading-relaxed">
+                  {displayTitle || 'در حال بارگذاری...'}
+                </h1>
+                
+                {/* Status Badge */}
                 <div
-                  className={`h-5 px-2 py-0.5 rounded-2xl flex justify-start items-center ${
-                    product.approved ? 'bg-[#ECF9F7]' : 'bg-[#FFF4E5]'
+                  className={`h-7 px-2.5 rounded-full flex items-center shrink-0 ${
+                    product.status === 'تایید شده' ? 'bg-[#ECF9F7]' : product.status === 'رد شده' ? 'bg-[#FEE2E2]' : 'bg-[#FFF4E5]'
                   }`}
                 >
                   <div
-                    className={`flex items-center gap-1 text-center text-xs font-normal font-['PeydaFaNum'] leading-[18px] tracking-wide ${
-                      product.approved ? 'text-[#267666]' : 'text-[#B98900]'
+                    className={`flex items-center gap-1.5 text-xs font-semibold ${
+                      product.status === 'تایید شده' ? 'text-[#267666]' : product.status === 'رد شده' ? 'text-[#DC2626]' : 'text-[#B98900]'
                     }`}
                   >
-                    {product.approved ? (
-                      <CheckCircle className="w-3 h-3" />
+                    {product.status === 'تایید شده' ? (
+                      <CheckCircle className="w-3.5 h-3.5" />
+                    ) : product.status === 'رد شده' ? (
+                      <AlertCircle className="w-3.5 h-3.5" />
                     ) : (
-                      <AlertCircle className="w-3 h-3" />
+                      <AlertCircle className="w-3.5 h-3.5" />
                     )}
-                    <span className="font-num-medium">
-                      {product.approved ? 'تایید شده' : 'در انتظار تایید'}
-                    </span>
+                    <span>{product.status || 'در انتظار تایید'}</span>
                   </div>
                 </div>
               </div>
+
+              {/* Highlight Metrics */}
+              <div className="flex justify-between items-center pt-2">
+                 <div className="flex items-center gap-2">
+                    <span className="text-[#0D0D12] text-xl font-bold text-[#0047AB]">
+                        {formatPrice(displayPrice || 0)} <span className="text-sm font-medium">ریال</span>
+                    </span>
+                 </div>
+                 <div className="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100">
+                    <span className="text-[#666D80] text-xs font-medium">موجودی:</span>
+                    <span className="text-[#0D0D12] text-sm font-bold">{toFarsiNumber(displayInventory)} عدد</span>
+                 </div>
+              </div>
             </div>
+
+            <div className="w-full h-[1px] bg-gray-100" />
+            
+            {/* Seller Info */}
+            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
+                <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm text-gray-500 font-bold border border-gray-200">
+                        {product.school_name ? product.school_name.charAt(0) : '?'}
+                    </div>
+                    <div className="flex flex-col">
+                        <span className="text-[#0D0D12] text-sm font-bold">{product.school_name || 'نامشخص'}</span>
+                        <span className="text-[#666D80] text-xs font-medium">{product.firstname} {product.lastname}</span>
+                    </div>
+                </div>
+            </div>
+
+            {/* Dynamic Variant Selectors */}
+            {!isOldTab && displayFeatures && displayFeatures.length > 0 && (
+              <div className="flex flex-col gap-4">
+                <div className="text-[#0D0D12] text-sm font-semibold">
+                  ویژگی‌های قابل انتخاب
+                </div>
+                <div className="flex flex-col gap-3">
+                    {displayFeatures.map((feature) => {
+                    const f = feature;
+                    return (
+                        <div key={f.title} className="flex flex-col gap-2">
+                        <div className="text-right text-[#666D80] text-xs font-medium">
+                            {f.title}: <span className="text-[#0D0D12] font-semibold">{selectedVariants[f.title] || ''}</span>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                            {feature.values.map((val: string, i: number) => {
+                            const isSelected = selectedVariants[f.title] === val;
+                            return (
+                                <div
+                                key={i}
+                                onClick={() => handleSelect(f.title, val)}
+                                className={`
+                                    ${f.title === 'رنگ' ? 'w-8 h-8 rounded-full border' : 'px-4 py-1.5 rounded-full border text-sm font-medium'}
+                                    cursor-pointer flex items-center justify-center transition-all
+                                    ${
+                                        isSelected
+                                        ? 'border-[#0A33FF] ring-2 ring-[#0A33FF]/20 bg-blue-50 text-[#0A33FF]'
+                                        : 'border-[#DFE1E7] hover:border-gray-300 text-[#393E46]'
+                                    }
+                                `}
+                                style={
+                                    f.title === 'رنگ' ? { backgroundColor: getColorCode(val) } : {}
+                                }
+                                >
+                                {f.title !== 'رنگ' && val}
+                                {f.title === 'رنگ' && isSelected && (
+                                    <div className="w-2.5 h-2.5 bg-white rounded-full shadow-sm" />
+                                )}
+                                </div>
+                            );
+                            })}
+                        </div>
+                        </div>
+                    );
+                    })}
+                </div>
+              </div>
+            )}
+
+            <div className="w-full h-[1px] bg-gray-100" />
 
             {/* Description */}
-            <div className="self-stretch flex-col justify-start items-start gap-2 flex w-full">
-              <div className="self-stretch flex justify-start items-center">
-                <div className="flex-1 text-right text-[#666D80] text-sm font-semibold font-['PeydaWeb'] leading-tight tracking-wide">
-                  توضیحات
-                </div>
+            <div className="flex flex-col gap-2">
+              <div className="text-[#0D0D12] text-base font-semibold">
+                توضیحات محصول
               </div>
-              <div className="self-stretch px-3 py-2.5 bg-white rounded-xl border border-[#DFE1E7] overflow-hidden flex flex-col justify-start items-start min-h-[100px]">
-                <div className="self-stretch flex-1 text-right text-[#0D0D12] text-sm font-light font-['PeydaWeb'] leading-relaxed tracking-wide whitespace-pre-wrap break-all">
-                  {model_data?.description || 'توضیحات ندارد'}
-                </div>
-              </div>
+              <p className="text-[#6D7280] text-sm font-light leading-relaxed whitespace-pre-wrap break-words">
+                {displayDescription || 'توضیحات اضافی ثبت نشده است.'}
+              </p>
             </div>
 
-            {/* Features Read Only */}
-            {model_data?.features &&
-              Object.values(model_data.features).some((arr) => Array.isArray(arr) && arr.length > 0) && (
-                <div
-                  className="flex flex-col gap-3 border-t border-[#DFE1E7] pt-4 w-full"
-                  dir="rtl"
-                >
-                  <div className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb'] flex items-center gap-2">
-                    <ListCheck className="w-4 h-4" />
-                    مشخصات فنی
-                  </div>
+            {/* Features List */}
+            {!isOldTab && model_data?.features && Object.values(model_data.features).some((arr) => Array.isArray(arr) && arr.length > 0) && (
+              <div className="flex flex-col gap-3 pt-2">
+                <div className="text-[#0D0D12] text-base font-semibold flex items-center gap-2">
+                  <ListCheck className="w-5 h-5 text-[#0A33FF]" />
+                  مشخصات فنی
+                </div>
 
-                  {Object.entries({
+                <div className="flex flex-col gap-3">
+                    {Object.entries({
                     'ویژگی‌های ظاهری': model_data.features.visual,
                     'ویژگی‌های تولید': model_data.features.production,
                     'ویژگی‌های بسته بندی': model_data.features.packaging,
                     شناسه: model_data.features.id,
-                  }).map(
+                    }).map(
                     ([label, items]) =>
-                      items &&
-                      items.length > 0 && (
-                        <div
-                          key={label}
-                          className="flex flex-col gap-2 bg-gray-50 p-3 rounded-lg border border-[#DFE1E7]"
-                        >
-                          <div className="text-xs font-semibold text-gray-500 mb-1">{label}</div>
-                          {items.map((item, idx) => (
-                            <div
-                              key={idx}
-                              className="flex justify-between items-center text-sm border-b border-gray-200 last:border-0 pb-1 last:pb-0"
-                            >
-                              <span className="text-[#666D80]">{item.key}</span>
-                              <span className="text-[#0D0D12] font-medium">{item.value}</span>
+                        items && items.length > 0 && (
+                        <div key={label} className="w-full flex justify-between items-center py-2.5 border-b border-gray-100 last:border-0 border-dashed">
+                            <span className="text-[#666D80] text-sm font-medium">{label}</span>
+                            <div className="flex flex-col items-end gap-1">
+                                {(items as any[]).map((item, idx) => (
+                                    <span key={idx} className="text-[#0D0D12] text-sm font-semibold">
+                                        {String(item.key || '')}: {String(item.value || '')}
+                                    </span>
+                                ))}
                             </div>
-                          ))}
                         </div>
-                      ),
-                  )}
+                        ),
+                    )}
                 </div>
-              )}
+              </div>
+            )}
+            
           </div>
-        )}
+        </div>
 
-        {/* Bottom Fixed Button */}
-        {!product.approved && (
-          <div className="absolute bottom-0 left-0 right-0 p-5 bg-white border-t border-gray-100/50 rounded-b-xl z-30">
+        {/* Fixed Bottom Action */}
+        <div className="w-full p-4 bg-white border-t border-gray-100 z-10 shrink-0 shadow-[0_-4px_24px_rgba(0,0,0,0.02)]">
+          {product.status !== 'تایید شده' ? (
             <button
-              onClick={handleApprove}
+              onClick={() => setIsConfirmationModalOpen(true)}
               disabled={isApproving}
-              className={`w-full h-12 px-6 py-3 rounded-xl flex justify-center items-center gap-2.5 transition-colors ${
+              className={`w-full h-12 rounded-xl flex justify-center items-center gap-2 transition-all shadow-lg ${
                 isApproving
-                  ? 'bg-gray-300 cursor-not-allowed'
-                  : 'bg-[#0A33FF] cursor-pointer hover:bg-blue-700'
+                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed shadow-none'
+                  : 'bg-[#0A33FF] hover:bg-blue-700 text-white shadow-blue-600/20'
               }`}
             >
-              <div className="text-center text-[#D7D8DA] text-base font-extrabold font-num-medium leading-snug">
-                {isApproving ? 'در حال تایید...' : 'تایید محصول'}
-              </div>
+              <span className="text-base font-semibold">
+                {isApproving ? 'کمی صبر کنید...' : 'بررسی و ثبت وضعیت'}
+              </span>
             </button>
-          </div>
-        )}
+          ) : (
+            <div className="w-full h-12 rounded-xl bg-gray-100 flex items-center justify-center text-gray-500 font-medium text-sm">
+                این محصول قبلاً تعیین وضعیت شده است
+            </div>
+          )}
+        </div>
+
+        {/* Confirmation Modal */}
+        <ConfirmationModal
+          isOpen={isConfirmationModalOpen}
+          onClose={() => setIsConfirmationModalOpen(false)}
+          onConfirm={handleConfirmation}
+          loading={isApproving}
+          title="بررسی نهایی محصول"
+          itemName={model_data?.title || 'محصول'}
+        />
       </div>
     </div>
   );

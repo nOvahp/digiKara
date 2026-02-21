@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { UserData } from '@/app/services/common/schemas';
 import { toFarsiNumber } from '@/app/services/common/utils';
+import { shopService } from '@/app/services/student/shopService';
 
 interface PopUpStudentProps {
   onClose: () => void;
@@ -42,9 +43,17 @@ export function PopUpStudent({ onClose }: PopUpStudentProps) {
             // Extract hojre data from cell
             if (parsed.cell && typeof parsed.cell === 'object') {
               setHojreData(parsed.cell as HojreData);
+            } else {
+              // Try fetching directly if cell is not in localStorage
+              const shopRes = await shopService.getShop();
+              if (shopRes.success && shopRes.hasShop && shopRes.data) {
+                // The API might return an array if it's multiple cells, or an object
+                const shopData = Array.isArray(shopRes.data) ? shopRes.data[0] : shopRes.data;
+                setHojreData(shopData as HojreData);
+              }
             }
           } catch (e) {
-            console.error('Failed to parse user data:', e);
+            console.error('Failed to parse user data or fetch shop:', e);
           }
         }
       }
@@ -62,16 +71,28 @@ export function PopUpStudent({ onClose }: PopUpStudentProps) {
 
   if (!userData) return null;
 
-  // Helper to render data row
-  const renderDataRow = (label: string, value: string | number | undefined) => {
+  const renderDataRow = (label: string, value: string | number | undefined, isMultiline: boolean = false) => {
     if (!value && value !== 0) return null;
     
+    if (isMultiline) {
+      return (
+        <div className="w-full min-h-[52px] h-auto px-3 py-2 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] flex flex-col justify-center items-start gap-1.5">
+          <div className="text-right text-[#666D80] text-sm font-semibold leading-tight tracking-wide">
+            {label}
+          </div>
+          <div className="text-[#0D0D12] text-sm font-medium leading-relaxed tracking-wide text-right break-words w-full">
+            {typeof value === 'number' ? toFarsiNumber(value.toString()) : value}
+          </div>
+        </div>
+      );
+    }
+
     return (
-      <div className="w-full h-[52px] px-3 py-2 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] flex justify-between items-center gap-2">
-        <div className="flex-1 text-right text-[#666D80] text-sm font-semibold leading-tight tracking-wide">
+      <div className="w-full min-h-[52px] h-auto px-3 py-2 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] flex justify-between items-center gap-4">
+        <div className="text-right text-[#666D80] text-sm font-semibold leading-tight tracking-wide whitespace-nowrap">
           {label}
         </div>
-        <div className="text-[#0D0D12] text-base font-num-medium leading-relaxed tracking-wide text-left">
+        <div className="text-[#0D0D12] text-sm font-medium leading-relaxed tracking-wide text-left break-words">
           {typeof value === 'number' ? toFarsiNumber(value.toString()) : value}
         </div>
       </div>
@@ -156,8 +177,8 @@ export function PopUpStudent({ onClose }: PopUpStudentProps) {
                     اطلاعات حجره
                   </div>
                   {renderDataRow('نام حجره', hojreData.name)}
-                  {renderDataRow('توضیحات', hojreData.description)}
-                  {renderDataRow('مهارت‌ها', hojreData.skill)}
+                  {renderDataRow('توضیحات', hojreData.description, true)}
+                  {renderDataRow('مهارت‌ها', hojreData.skill, true)}
                   {renderDataRow('سابقه کاری (سال)', hojreData.experience)}
                 </div>
               )}

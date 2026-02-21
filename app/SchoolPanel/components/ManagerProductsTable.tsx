@@ -56,9 +56,9 @@ const ManagerProductsTable = () => {
       filterStatus === 'all'
         ? true
         : filterStatus === 'approved'
-          ? product.approved
+          ? product.status === 'تایید شده'
           : filterStatus === 'pending'
-            ? !product.approved
+            ? product.status !== 'تایید شده'
             : true;
 
     return matchesSearch && matchesStatus;
@@ -280,9 +280,19 @@ const ManagerProductsTable = () => {
             {currentItems.length > 0 ? (
               currentItems.map((product, idx) => {
                 const itemIndex = indexOfFirstItem + idx + 1;
-                const statusBg = product.approved ? '#ECF9F7' : '#FFF4E5';
-                const statusColor = product.approved ? '#267666' : '#B98900';
-                const statusText = product.approved ? 'تایید شده' : 'در انتظار تایید';
+                const isApproved = product.status === 'تایید شده';
+                const isRejected = product.status === 'رد شده';
+                let statusBg = '#FFF4E5';
+                let statusColor = '#B98900';
+                
+                if (isApproved) {
+                  statusBg = '#ECF9F7';
+                  statusColor = '#267666';
+                } else if (isRejected) {
+                  statusBg = '#FEE2E2';
+                  statusColor = '#DC2626';
+                }
+                const statusText = product.status || 'در انتظار تایید';
 
                 return (
                   <div
@@ -352,7 +362,7 @@ const ManagerProductsTable = () => {
                       </div>
                     </div>
                     <div className="w-[120px] h-16 px-3 flex justify-center items-center">
-                      {!product.approved ? (
+                      {product.status !== 'تایید شده' ? (
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
@@ -360,7 +370,7 @@ const ManagerProductsTable = () => {
                           }}
                           className="h-8 px-4 bg-[#0A33FF] hover:bg-blue-600 text-white rounded-lg text-xs font-semibold transition-colors whitespace-nowrap"
                         >
-                          تایید محصول
+                          بررسی محصول
                         </button>
                       ) : (
                         <MoreHorizontal className="w-5 h-5 text-[#666D80]" />

@@ -46,7 +46,7 @@ const ProjectManagment = () => {
             onClick={() => setActiveTab('products')}
             className={`flex-1 h-[29px] px-3 py-1 rounded-md flex justify-center items-center gap-2.5 cursor-pointer transition-all ${activeTab === 'products' ? 'bg-[#F7C61A] shadow-sm outline outline-1 outline-[#D7D8DA] -outline-offset-1 text-[#0A0A0A]' : 'text-[#0A0A0A] hover:bg-white/50'}`}
           >
-            <div className="text-center text-sm font-['PeydaWeb'] font-semibold leading-5 break-words">
+            <div className="text-center text-sm font-semibold leading-5 break-words">
               محصولات
             </div>
           </div>
@@ -54,7 +54,7 @@ const ProjectManagment = () => {
             onClick={() => setActiveTab('orders')}
             className={`flex-1 h-[29px] px-3 py-1 rounded-md flex justify-center items-center gap-2.5 cursor-pointer transition-all ${activeTab === 'orders' ? 'bg-[#F7C61A] shadow-sm outline outline-1 outline-[#D7D8DA] -outline-offset-1 text-[#0A0A0A]' : 'text-[#0A0A0A] hover:bg-white/50'}`}
           >
-            <div className="text-center text-sm font-['PeydaWeb'] font-semibold leading-5 break-words">
+            <div className="text-center text-sm font-semibold leading-5 break-words">
               سفارشات
             </div>
           </div>

@@ -186,7 +186,7 @@ export const productsService = {
     id: string | number,
   ): Promise<{ success: boolean; data?: Product; message?: string }> => {
     try {
-      const response = await apiClient.get<ApiResponse<ApiProduct>>(`/student/products/${id}`);
+      const response = await apiClient.get<ApiResponse<ApiProduct>>(`/student/products/show/${id}`);
 
       if (response.status === 'success' || (response.code === 200 && response.data)) {
         const item = response.data;

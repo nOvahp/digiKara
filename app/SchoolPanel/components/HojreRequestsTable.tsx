@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Search, Filter, ChevronRight, ChevronLeft } from 'lucide-react';
 import { managerService } from '@/app/services/manager/managerService';
 import HojreRequestPopup from './HojreRequestPopup';
+import ConfirmationModal from './ConfirmationModal';
 
 const toFarsiNumber = (n: number | string | undefined): string => {
   if (n === undefined || n === null) return '';
@@ -27,7 +28,7 @@ interface StudentRequest {
     description: string;
   };
   created_at: string;
-  approved: boolean;
+  status: string;
   firstname: string;
   lastname: string;
   school_name: string;
@@ -39,6 +40,9 @@ const HojreRequestsTable = () => {
   const [requests, setRequests] = useState<StudentRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedRequestId, setSelectedRequestId] = useState<number | null>(null);
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+  const [selectedRequest, setSelectedRequest] = useState<StudentRequest | null>(null);
+  const [isApproving, setIsApproving] = useState(false);
 
   // Filter & Pagination State
   const [searchQuery, setSearchQuery] = useState('');
@@ -79,9 +83,9 @@ const HojreRequestsTable = () => {
       filterStatus === 'all'
         ? true
         : filterStatus === 'approved'
-          ? req.approved
+          ? req.status === 'تایید شده'
           : filterStatus === 'pending'
-            ? !req.approved
+            ? req.status !== 'تایید شده'
             : true;
 
     return matchesSearch && matchesStatus;
@@ -111,18 +115,30 @@ const HojreRequestsTable = () => {
     };
   }, []);
 
-  const handleApprove = async (e: React.MouseEvent, req: StudentRequest) => {
+  const handleApprove = (e: React.MouseEvent, req: StudentRequest) => {
     e.stopPropagation(); // Prevent row click
-    if (req.approved) return;
+    if (req.status === 'تایید شده') return;
+    
+    setSelectedRequest(req);
+    setIsConfirmationModalOpen(true);
+  };
 
+  const handleConfirmation = async (status: 2 | 1 | 0, description?: string | null) => {
+    if (!selectedRequest) return;
+
+    setIsApproving(true);
     try {
-      const response = await managerService.approveStudentRequest(req.id);
+      const response = await managerService.approveStudentRequest(selectedRequest.id, status, description);
       if (response.success) {
         // Refresh list
         fetchRequests();
+        setIsConfirmationModalOpen(false);
+        setSelectedRequest(null);
       }
     } catch (error) {
       console.error('Failed to approve request', error);
+    } finally {
+      setIsApproving(false);
     }
   };
 
@@ -287,10 +303,19 @@ const HojreRequestsTable = () => {
               {currentItems.map((req, idx) => {
                 const itemIndex = indexOfFirstItem + idx + 1;
                 // Status logic
-                const isApproved = req.approved;
-                const statusBg = isApproved ? '#ECF9F7' : '#FFF4E5'; // Greenish for approved, Orangeish for pending
-                const statusColor = isApproved ? '#267666' : '#B98900';
-                const statusLabel = isApproved ? 'تایید شده' : 'در انتظار تایید';
+                const isApproved = req.status === 'تایید شده';
+                const isRejected = req.status === 'رد شده';
+                let statusBg = '#FFF4E5';
+                let statusColor = '#B98900';
+                
+                if (isApproved) {
+                  statusBg = '#ECF9F7';
+                  statusColor = '#267666';
+                } else if (isRejected) {
+                  statusBg = '#FEE2E2';
+                  statusColor = '#DC2626';
+                }
+                const statusLabel = req.status || 'در انتظار تایید';
 
                 return (
                   <div
@@ -374,7 +399,7 @@ const HojreRequestsTable = () => {
                           onClick={(e) => handleApprove(e, req)}
                           className="h-8 px-4 bg-[#0A33FF] hover:bg-blue-600 text-white rounded-lg text-xs font-semibold transition-colors"
                         >
-                          تایید درخواست
+                          بررسی درخواست
                         </button>
                       ) : (
                         <span className="text-gray-400 text-xs">---</span>
@@ -425,6 +450,19 @@ const HojreRequestsTable = () => {
             }}
           />
         )}
+
+        {/* Confirmation Modal */}
+        <ConfirmationModal
+          isOpen={isConfirmationModalOpen}
+          onClose={() => {
+            setIsConfirmationModalOpen(false);
+            setSelectedRequest(null);
+          }}
+          onConfirm={handleConfirmation}
+          loading={isApproving}
+          title="تایید درخواست حجره"
+          itemName={selectedRequest?.model_data?.name || 'حجره'}
+        />
       </div>
     </div>
   );
