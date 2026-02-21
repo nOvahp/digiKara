@@ -71,14 +71,14 @@ export default function DigiKaraCart() {
           <ShoppingBag className="w-10 h-10 text-[#FDD00A]" />
         </div>
         <div className="text-center space-y-2 px-6">
-          <h3 className="text-[#0C1415] text-xl font-['PeydaWeb'] font-bold">ورود به حساب کاربری</h3>
-          <p className="text-[#707F81] text-sm font- leading-relaxed">
+          <h3 className="text-[#0C1415] text-xl font-bold">ورود به حساب کاربری</h3>
+          <p className="text-[#707F81] text-sm font-medium leading-relaxed">
             برای مشاهده سبد خرید خود در بازار، لطفا ابتدا وارد حساب خود شوید.
           </p>
         </div>
         <button
           onClick={() => router.push('/login?role=customer')}
-          className="mt-4 px-10 py-3.5 bg-[#FDD00A] text-[#1A1C1E] rounded-xl text-[15px] font-['PeydaWeb'] font-bold shadow-md active:scale-95 transition-all hover:bg-[#e5bc09]"
+          className="mt-4 px-10 py-3.5 bg-[#FDD00A] text-[#1A1C1E] rounded-xl text-[15px] font-bold shadow-md active:scale-95 transition-all hover:bg-[#e5bc09]"
         >
           ورود / ثبت‌نام
         </button>
@@ -281,22 +281,20 @@ export default function DigiKaraCart() {
       </div>
 
       {/* Floating Navigation Buttons */}
-      {items.length > 0 && (
-        <div className="fixed bottom-[85px] left-0 right-0 z-40 w-full max-w-[440px] mx-auto p-6 pointer-events-none">
-          <div className="w-full pointer-events-auto">
-            {/* Next Button */}
-            <button
-              onClick={() => router.push('/Bazzar/DigiKaraCart/FinalCheck')}
-              className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-2 hover:bg-[#e5bc09] transition-colors shadow-sm"
-            >
-              <ShoppingBag className="w-5 h-5 text-[#1A1C1E]" />
-              <span className="text-[#1A1C1E] text-lg font-semibold">
-                تکمیل فرایند خرید
-              </span>
-            </button>
-          </div>
+      <div className="fixed bottom-[85px] left-0 right-0 z-40 w-full max-w-[440px] mx-auto p-6 pointer-events-none">
+        <div className="w-full pointer-events-auto">
+          {/* Next Button */}
+          <button
+            onClick={() => router.push('/Bazzar/DigiKaraCart/FinalCheck')}
+            className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-2 hover:bg-[#e5bc09] transition-colors shadow-sm"
+          >
+            <ShoppingBag className="w-5 h-5 text-[#1A1C1E]" />
+            <span className="text-[#1A1C1E] text-lg font-semibold">
+              تکمیل فرایند خرید
+            </span>
+          </button>
         </div>
-      )}
+      </div>
     </div>
   );
 }
