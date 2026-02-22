@@ -90,10 +90,10 @@ export default function ShopIdentityPage() {
         <div className="w-full border-b border-[#DFE1E7] py-5 flex justify-end items-center gap-3 overflow-x-auto no-scrollbar">
           {/* Step 3 (Inactive) */}
           <div className="flex justify-start items-center gap-2 shrinks-0 whitespace-nowrap opacity-50">
-            <div className="text-[#818898] text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">
+            <div className="text-[#818898] text-sm font-semibold leading-[21px] tracking-wide">
               دسته بندی و محصول اولیه
             </div>
-            <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center text-white text-sm font-bold font-['PeydaFaNum']">
+            <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center text-white text-sm font-num-bold ">
               3
             </div>
           </div>

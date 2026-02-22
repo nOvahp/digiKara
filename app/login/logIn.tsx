@@ -9,12 +9,12 @@ import Logo from '../../public/Logo11.svg';
 import AmuzeshLogo from '../../public/amuzeshLogo.svg';
 import Asset1 from '../../public/Asset 1 1.png';
 
-export function Login({ onNext }: { onNext?: () => void }) {
+export function Login({ onNext }: { onNext?: (selectedRole: 'student' | 'manager' | 'customer') => void }) {
   const { setRole } = useAuth();
 
   const handleRoleSelect = (role: 'student' | 'manager' | 'customer') => {
     setRole(role);
-    if (onNext) onNext();
+    if (onNext) onNext(role);
   };
 
   return (

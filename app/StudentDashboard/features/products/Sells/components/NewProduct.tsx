@@ -1,14 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { studentProductService} from '@/app/services/studentProductService';
 import { AddProductFormState } from '../types';
-import { ChevronRight } from 'lucide-react';
+import { ChevronDown, ChevronRight } from 'lucide-react';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { InformationSquareIcon } from 'hugeicons-react';
@@ -41,6 +39,7 @@ export function NewProduct({
   >([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [showTitleDesc, setShowTitleDesc] = useState(false);
+  const [openCategory, setOpenCategory] = useState(false);
 
   React.useEffect(() => {
     const fetchCategories = async () => {
@@ -209,31 +208,33 @@ export function NewProduct({
             <label className="text-right text-[#666D80] text-sm font-semibold font-['PeydaWeb'] leading-tight">
               دسته بندی
             </label>
-            <Select
-              value={String(formData.category)}
-              onValueChange={(val) => {
-                updateFormData({ category: val });
-                clearError('category');
-              }}
-              dir="ltr"
-            >
-              <SelectTrigger
-                className={`w-full h-[52px] bg-white rounded-xl border ${errors.category ? 'border-red-500' : 'border-[#DFE1E7]'} px-3 flex flex-row-reverse justify-between text-[#0D0D12] text-right font-light shadow-none focus:ring-0 focus:border-[#FDD00A]`}
-              >
-                <SelectValue placeholder="انتخاب کنید" />
-              </SelectTrigger>
-              <SelectContent className="bg-white" dir="rtl">
-                {activeCategories.map((cat) => (
-                  <SelectItem
-                    key={cat.id}
-                    value={String(cat.id)}
-                    className="text-right cursor-pointer hover:bg-gray-50"
-                  >
-                    {cat.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <Popover open={openCategory} onOpenChange={setOpenCategory}>
+              <PopoverTrigger asChild>
+                <button
+                  className={`w-full h-[52px] bg-white rounded-xl border ${errors.category ? 'border-red-500' : 'border-[#DFE1E7]'} px-3 flex flex-row-reverse justify-between items-center text-[#0D0D12] text-right font-light shadow-none focus:outline-none focus:border-[#FDD00A] transition-colors ${!formData.category ? 'text-[#DFE1E7]' : ''}`}
+                >
+                  <span>{formData.category ? activeCategories.find(cat => String(cat.id) === formData.category)?.name : 'انتخاب کنید'}</span>
+                  <ChevronDown size={20} className="text-[#666D80]" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[335px] bg-white border border-[#DFE1E7] rounded-xl p-0" dir="rtl" align="start">
+                <div className="flex flex-col max-h-[300px] overflow-y-auto">
+                  {activeCategories.map((cat) => (
+                    <button
+                      key={cat.id}
+                      onClick={() => {
+                        updateFormData({ category: String(cat.id) });
+                        clearError('category');
+                        setOpenCategory(false);
+                      }}
+                      className="text-right px-3 py-2.5 text-[#0D0D12] text-sm font-light hover:bg-gray-50 border-b border-[#F0F0F0] last:border-b-0 transition-colors"
+                    >
+                      {cat.name}
+                    </button>
+                  ))}
+                </div>
+              </PopoverContent>
+            </Popover>
             {errors.category && (
               <span className="text-red-500 text-xs text-right font-medium">{errors.category}</span>
             )}

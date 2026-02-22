@@ -29,24 +29,28 @@ export function LogInForm({
   onBack,
   onCustomerRegister,
   onCustomerLogin,
+  defaultPhone,
+  defaultCustomerStatus,
 }: {
   onNext?: () => void;
   onExistingUser?: (user: UserData) => void;
   onBack?: () => void;
   onCustomerRegister?: (phone: string) => void;
   onCustomerLogin?: (phone: string) => void;
+  defaultPhone?: string;
+  defaultCustomerStatus?: number;
 }) {
   const router = useRouter();
   const { requestOtp, verifyOtp, role } = useAuth();
 
   // Stages: PHONE_ENTRY -> WAITING (sending) -> OTP_ENTRY
-  const [stage, setStage] = useState<'PHONE_ENTRY' | 'OTP_ENTRY'>('PHONE_ENTRY');
+  const [stage, setStage] = useState<'PHONE_ENTRY' | 'OTP_ENTRY'>(defaultPhone ? 'OTP_ENTRY' : 'PHONE_ENTRY');
   const [serverError, setServerError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [customerStatus, setCustomerStatus] = useState<number | null>(null);
+  const [customerStatus, setCustomerStatus] = useState<number | null>(defaultCustomerStatus ?? null);
 
   // Timer Logic
-  const [timeLeft, setTimeLeft] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(defaultPhone ? RESEND_DELAY : 0);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -69,7 +73,9 @@ export function LogInForm({
   // --- Phone Form ---
   const phoneForm = useForm<PhoneNumberFormValues>({
     resolver: zodResolver(phoneNumberSchema),
-    defaultValues: { phoneNumber: '' },
+    // Pre-populate with defaultPhone (without leading '0') so getValues() is correct
+    // even when phone field is never rendered (skipping PHONE_ENTRY stage).
+    defaultValues: { phoneNumber: defaultPhone ? defaultPhone.substring(1) : '' },
   });
 
   const onSubmitPhone: SubmitHandler<PhoneNumberFormValues> = async (data) => {

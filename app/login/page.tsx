@@ -20,6 +20,9 @@ import { LoginViewManagerInfo } from './LoginViewManagerInfo';
 import { LoginViewManagerReport } from './LoginViewManagerReport';
 import { LoginViewCustomerRegister } from './login-view-customer-register';
 import { LoginViewCustomerLogin } from './login-view-customer-login';
+import { StudentPhoneInput } from './components/StudentPhoneInput';
+import { ManagerPhoneInput } from './components/ManagerPhoneInput';
+import { CustomerPhoneInput } from './components/CustomerPhoneInput';
 
 // Define step constants
 enum Step {
@@ -29,6 +32,10 @@ enum Step {
   INTRO_3 = 3,
   INTRO_3_5 = 3.5,
   LOGIN_LANDING = 4,
+  // Role-specific phone input pages
+  STUDENT_PHONE = 4.1,
+  MANAGER_PHONE = 4.2,
+  CUSTOMER_PHONE = 4.3,
   LOGIN_FORM = 5,
   // Otp is handled inside LOGIN_FORM
   NATIONAL_ID = 5.5,
@@ -58,6 +65,7 @@ import { UserData } from '@/app/services/common/schemas';
 export default function LoginPage() {
   const [step, setStep] = React.useState<number>(Step.LOADING);
   const [phone, setPhone] = React.useState<string>(''); // Store phone for multi-step flows
+  const [customerOtpStatus, setCustomerOtpStatus] = React.useState<number | undefined>(undefined);
   const router = useRouter();
   const searchParams = useSearchParams();
   const { role, user, setRole } = useAuth(); // Get selected role and user
@@ -71,9 +79,9 @@ export default function LoginPage() {
       setRole('customer');
       setStep(Step.CUSTOMER_LOGIN);
     } else if (roleParam === 'customer') {
-      // Skip landing page for customer role, go directly to login form
+      // Customer goes to their dedicated phone page (sealed flow, no escape)
       setRole('customer');
-      setStep(Step.LOGIN_FORM);
+      setStep(Step.CUSTOMER_PHONE);
     } else {
       // Check if user has seen intro
       const hasSeenIntro = localStorage.getItem('has_seen_intro');
@@ -298,17 +306,69 @@ export default function LoginPage() {
 
     case Step.LOGIN_LANDING:
       return (
-        <Login onNext={() => setStep(Step.LOGIN_FORM)} />
+        <Login
+          onNext={(selectedRole) => {
+            if (selectedRole === 'manager') setStep(Step.MANAGER_PHONE);
+            else if (selectedRole === 'customer') setStep(Step.CUSTOMER_PHONE);
+            else setStep(Step.STUDENT_PHONE);
+          }}
+        />
+      );
+
+    case Step.STUDENT_PHONE:
+      return (
+        <StudentPhoneInput
+          onBack={() => setStep(Step.LOGIN_LANDING)}
+          onNext={(ph) => {
+            setPhone(ph);
+            setCustomerOtpStatus(undefined);
+            setStep(Step.LOGIN_FORM);
+          }}
+        />
+      );
+
+    case Step.MANAGER_PHONE:
+      return (
+        <ManagerPhoneInput
+          onBack={() => setStep(Step.LOGIN_LANDING)}
+          onNext={(ph) => {
+            setPhone(ph);
+            setCustomerOtpStatus(undefined);
+            setStep(Step.LOGIN_FORM);
+          }}
+        />
+      );
+
+    case Step.CUSTOMER_PHONE:
+      return (
+        <CustomerPhoneInput
+          onNext={(ph, status) => {
+            setPhone(ph);
+            setCustomerOtpStatus(status);
+            setStep(Step.LOGIN_FORM);
+          }}
+          onCustomerLogin={(ph) => {
+            setPhone(ph);
+            setStep(Step.CUSTOMER_LOGIN);
+          }}
+        />
       );
 
     case Step.LOGIN_FORM:
       return (
         <LogInForm
+          defaultPhone={phone || undefined}
+          defaultCustomerStatus={customerOtpStatus}
           onNext={() =>
             role === 'manager' ? setStep(Step.MANAGER_INFO) : setStep(Step.NATIONAL_ID)
           }
           onExistingUser={handleLoginSuccess}
-          onBack={() => setStep(Step.LOGIN_LANDING)}
+          onBack={() => {
+            // Return to role-specific phone input, not LOGIN_LANDING
+            if (role === 'manager') setStep(Step.MANAGER_PHONE);
+            else if (role === 'customer') setStep(Step.CUSTOMER_PHONE);
+            else setStep(Step.STUDENT_PHONE);
+          }}
           onCustomerRegister={(ph) => {
             setPhone(ph);
             setStep(Step.CUSTOMER_REGISTER);

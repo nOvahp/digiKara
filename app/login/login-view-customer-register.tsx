@@ -11,9 +11,8 @@ import { useAuth } from '@/app/providers/AuthProvider';
 import { Loader2, Camera, User, ChevronLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toEnglishDigits } from '@/lib/number';
+import { PersianDatePicker } from './components/PersianDatePicker';
 import Image from 'next/image';
-// import DatePicker if available, or use simple input for now.
-// Assuming string input for birthday based on prompt "Type: string".
 
 interface LoginViewCustomerRegisterProps {
   onNext: () => void;
@@ -170,14 +169,10 @@ export function LoginViewCustomerRegister({
             <Label htmlFor="birthday" className="text-xs font-bold mr-1">
               تاریخ تولد
             </Label>
-            <Input
-              {...form.register('birthday')}
-              type="date"
-              className="rounded-xl border-[#DCE4E8] bg-[#F3F6FC] text-right"
-              style={{ direction: 'ltr' }}
-              onChange={(e) => {
-                const val = toEnglishDigits(e.target.value);
-                form.setValue('birthday', val, { shouldValidate: true });
+            <PersianDatePicker
+              value={form.watch('birthday')}
+              onChange={(date) => {
+                form.setValue('birthday', date, { shouldValidate: true });
               }}
             />
             {form.formState.errors.birthday && (

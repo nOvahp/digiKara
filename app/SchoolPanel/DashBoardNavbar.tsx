@@ -49,7 +49,7 @@ const DashBoardNavbar = () => {
 
           {/* Wallet Icon */}
           <div
-            onClick={() => router.push('/SchoolPanel/Wallet')} // Navigate to Wallet Page
+            // onClick={() => router.push('/SchoolPanel/Wallet')} // Navigate to Wallet Page
             className="w-[33px] h-[33px] flex justify-center items-center cursor-pointer hover:bg-gray-50 rounded-full transition-colors"
           >
             <Wallet className="w-6 h-6 text-[#393E46]" />
