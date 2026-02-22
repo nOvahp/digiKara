@@ -2,10 +2,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { toast } from 'sonner';
 import { DashboardNavBar } from '../../layout/DashboardNavBar';
 import { BasicInfoForm } from './Sells/components/shared/BasicInfoForm';
 import { PricingForm } from './Sells/components/shared/PricingForm';
 import { CategoryTagsForm } from './Sells/components/shared/CategoryTagsForm';
+import { InventoryForm } from './Sells/components/shared/InventoryForm';
 import { Product } from '@/app/services/products/productsService';
 import { studentProductService } from '@/app/services/studentProductService';
 import { Skeleton } from '@/app/components/Skeleton';
@@ -119,6 +121,7 @@ export function EditeProducts() {
       type_inventory: 1,
       warn_inventory: parseInt(String(formData.reminder || '0').replace(/\D/g, ''), 10),
       description: formData.description || null,
+      max_order: parseInt(String(formData.maxOrderQuantity || '0').replace(/\D/g, ''), 10) || 0,
       tag_id: null,
     };
 
@@ -172,10 +175,14 @@ export function EditeProducts() {
     setIsLoading(false);
 
     if (success) {
-      // Optional: Show success toast
+      toast.success(message || 'محصول با موفقیت ویرایش شد');
       router.push('/StudentDashboard/Sells');
     } else {
-      alert(message || 'خطا در ویرایش محصول');
+      toast.error(message || 'خطا در ویرایش محصول');
+      // Adding a small delay before navigating back so the user can read the error
+      setTimeout(() => {
+        router.push('/StudentDashboard/Sells');
+      }, 3000);
     }
   };
   const [isDeleting, setIsDeleting] = useState(false);
@@ -320,6 +327,20 @@ export function EditeProducts() {
               }}
               onChange={handleUpdateChange}
               categories={fetchedCategories}
+            />
+            <InventoryForm
+              values={{
+                stock: formData.stock || '',
+                maxOrderQuantity: formData.maxOrderQuantity || '',
+                lowStockWarning: formData.reminder || '',
+              }}
+              onChange={(updates) => {
+                const newUpdates: Partial<typeof formData> = {};
+                if (updates.stock !== undefined) newUpdates.stock = updates.stock;
+                if (updates.maxOrderQuantity !== undefined) newUpdates.maxOrderQuantity = updates.maxOrderQuantity;
+                if (updates.lowStockWarning !== undefined) newUpdates.reminder = updates.lowStockWarning;
+                handleUpdateChange(newUpdates);
+              }}
             />
           </div>
         )}

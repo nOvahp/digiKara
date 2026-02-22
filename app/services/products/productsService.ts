@@ -44,6 +44,7 @@ export interface ApiProduct {
   percent?: number | string;
   stock?: number | string;
   reminder?: string | number;
+  max_order?: string | number;
   created_at?: string;
   updated_at?: string;
   approved?: boolean;
@@ -72,6 +73,7 @@ export interface Product {
   images: string[];
   stock: string;
   reminder: string;
+  maxOrderQuantity: string;
   metadata: string;
   prices: unknown[];
   code?: string;
@@ -133,6 +135,7 @@ export const productsService = {
             percent: item.percent ? item.percent.toString() : '---',
             stock: item.stock ? item.stock.toString() : '---',
             reminder: item.reminder ? item.reminder.toString() : '---',
+            maxOrderQuantity: item.max_order ? item.max_order.toString() : '',
             created_at: item.created_at || '',
             updated_at: item.updated_at || '',
             metadata: '',
@@ -150,7 +153,11 @@ export const productsService = {
     } catch (error: unknown) {
       console.error('getProducts Error:', error);
       let message = 'خطای شبکه';
-      if (error instanceof Error) message = error.message;
+      if (error instanceof Error) {
+        message = error.message;
+      } else if (error && typeof error === 'object' && 'message' in error) {
+        message = String((error as Record<string, unknown>).message);
+      }
       return { success: false, message };
     }
   },
@@ -177,7 +184,11 @@ export const productsService = {
     } catch (error: unknown) {
       console.error('getCategories Error:', error);
       let message = 'خطای شبکه';
-      if (error instanceof Error) message = error.message;
+      if (error instanceof Error) {
+        message = error.message;
+      } else if (error && typeof error === 'object' && 'message' in error) {
+        message = String((error as Record<string, unknown>).message);
+      }
       return { success: false, message };
     }
   },
@@ -221,6 +232,7 @@ export const productsService = {
           images: allImages,
           stock: item.inventory ? item.inventory.toString() : '',
           reminder: item.warn_inventory ? item.warn_inventory.toString() : '',
+          maxOrderQuantity: item.max_order ? item.max_order.toString() : '',
           metadata: '',
           prices: item.prices || [],
           code: item.code,
@@ -234,7 +246,11 @@ export const productsService = {
     } catch (error: unknown) {
       console.error('getProductById Error:', error);
       let message = 'خطای شبکه';
-      if (error instanceof Error) message = error.message;
+      if (error instanceof Error) {
+        message = error.message;
+      } else if (error && typeof error === 'object' && 'message' in error) {
+        message = String((error as Record<string, unknown>).message);
+      }
       return { success: false, message };
     }
   },
@@ -261,7 +277,11 @@ export const productsService = {
     } catch (error: unknown) {
       console.error('updateProduct Error:', error);
       let message = 'خطای شبکه';
-      if (error instanceof Error) message = error.message;
+      if (error instanceof Error) {
+        message = error.message;
+      } else if (error && typeof error === 'object' && 'message' in error) {
+        message = String((error as Record<string, unknown>).message);
+      }
       return { success: false, message };
     }
   },
@@ -279,7 +299,11 @@ export const productsService = {
     } catch (error: unknown) {
       console.error('deleteProduct Error:', error);
       let message = 'خطای شبکه';
-      if (error instanceof Error) message = error.message;
+      if (error instanceof Error) {
+        message = error.message;
+      } else if (error && typeof error === 'object' && 'message' in error) {
+        message = String((error as Record<string, unknown>).message);
+      }
       return { success: false, message };
     }
   },
@@ -308,7 +332,11 @@ export const productsService = {
     } catch (error: unknown) {
       console.error('addProduct Error:', error);
       let message = 'خطای شبکه';
-      if (error instanceof Error) message = error.message;
+      if (error instanceof Error) {
+        message = error.message;
+      } else if (error && typeof error === 'object' && 'message' in error) {
+        message = String((error as Record<string, unknown>).message);
+      }
       return { success: false, message };
     }
   },
@@ -329,7 +357,11 @@ export const productsService = {
     } catch (error: unknown) {
       console.error('addProductPrice Error:', error);
       let message = 'خطای شبکه';
-      if (error instanceof Error) message = error.message;
+      if (error instanceof Error) {
+        message = error.message;
+      } else if (error && typeof error === 'object' && 'message' in error) {
+        message = String((error as Record<string, unknown>).message);
+      }
       return { success: false, message };
     }
   },
@@ -353,7 +385,11 @@ export const productsService = {
     } catch (error: unknown) {
       console.error('updateProductPrice Error:', error);
       let message = 'خطای شبکه';
-      if (error instanceof Error) message = error.message;
+      if (error instanceof Error) {
+        message = error.message;
+      } else if (error && typeof error === 'object' && 'message' in error) {
+        message = String((error as Record<string, unknown>).message);
+      }
       return { success: false, message };
     }
   },
@@ -370,7 +406,11 @@ export const productsService = {
     } catch (error: unknown) {
       console.error('deleteProductPrice Error:', error);
       let message = 'خطای شبکه';
-      if (error instanceof Error) message = error.message;
+      if (error instanceof Error) {
+        message = error.message;
+      } else if (error && typeof error === 'object' && 'message' in error) {
+        message = String((error as Record<string, unknown>).message);
+      }
       return { success: false, message };
     }
   },

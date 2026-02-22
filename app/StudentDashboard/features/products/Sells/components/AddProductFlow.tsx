@@ -67,6 +67,8 @@ export function AddProductFlow({
       percent: '',
       stock: '',
       reminder: '',
+      maxOrderQuantity: '',
+      lowStockWarning: '',
       imageFiles: [],
       variantPrices: [],
       isMultiPrice: false,
@@ -97,6 +99,8 @@ export function AddProductFlow({
     percent: '',
     stock: '',
     reminder: '',
+    maxOrderQuantity: '',
+    lowStockWarning: '',
     imageFiles: [],
     variantPrices: [],
     isMultiPrice: false,
@@ -171,7 +175,10 @@ export function AddProductFlow({
     data.append('type_inventory', '1');
 
     // warn_inventory (integer, >= 0)
-    data.append('warn_inventory', (formData.reminder || '').replace(/\D/g, '') || '0');
+    data.append('warn_inventory', (formData.lowStockWarning || formData.reminder || '').replace(/\D/g, '') || '0');
+
+    // max_order (integer, >= 0)
+    data.append('max_order', (formData.maxOrderQuantity || '').replace(/\D/g, '') || '0');
 
     // description (string | null)
     if (formData.description) {
@@ -218,12 +225,39 @@ export function AddProductFlow({
         // type_inventory (string | null) -> Hardcoded to 1 as per consistent usage
         data.append(`prices[${index}][type_inventory]`, '1');
 
-        // warn_inventory (string | null)
         if (
           price.warn_inventory !== null &&
           price.warn_inventory !== undefined
         ) {
           data.append(`prices[${index}][warn_inventory]`, String(price.warn_inventory));
+        }
+      });
+    } else if (formData.variantFeatures && formData.variantFeatures.length > 0) {
+      // Auto-generate prices array for single-price variants
+      let priceIndex = 0;
+      formData.variantFeatures.forEach((feature) => {
+        if (feature.values && feature.values.length > 0) {
+          feature.values.forEach((val) => {
+            const amount = (formData.price || '').replace(/\D/g, '') || '0';
+            const title = `${feature.title}: ${val}`;
+            const inventory = (formData.stock || '').replace(/\D/g, '');
+            const warnInventory = (formData.lowStockWarning || formData.reminder || '').replace(/\D/g, '');
+
+            data.append(`prices[${priceIndex}][amount]`, amount);
+            data.append(`prices[${priceIndex}][title]`, title);
+            data.append(`prices[${priceIndex}][type]`, String(feature.id));
+            data.append(`prices[${priceIndex}][type_inventory]`, '1');
+            
+            if (inventory) {
+              data.append(`prices[${priceIndex}][inventory]`, inventory);
+            }
+            if (warnInventory) {
+              data.append(`prices[${priceIndex}][warn_inventory]`, warnInventory);
+            }
+            
+            // Add any valid values required by backend for Single price features
+            priceIndex++;
+          });
         }
       });
     }

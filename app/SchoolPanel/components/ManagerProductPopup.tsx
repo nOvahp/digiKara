@@ -292,11 +292,7 @@ const ManagerProductPopup = ({
             >
               <X className="w-5 h-5 text-[#0C1415]" strokeWidth={2} />
             </button>
-            <div className="px-3 py-1.5 bg-white/80 backdrop-blur-md rounded-full shadow-sm">
-              <span className="text-[#0D0D12] text-xs font-semibold">
-                پیش‌نمایش محصول
-              </span>
-            </div>
+           
           </div>
         </div>
 

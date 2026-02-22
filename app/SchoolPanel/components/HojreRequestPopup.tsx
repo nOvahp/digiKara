@@ -114,11 +114,7 @@ const HojreRequestPopup = ({ requestId, onClose, onApprove }: HojreRequestPopupP
             >
               <X className="w-5 h-5 text-[#0C1415]" strokeWidth={2} />
             </button>
-            <div className="px-3 py-1.5 bg-white/80 backdrop-blur-md rounded-full shadow-sm">
-              <span className="text-[#0D0D12] text-xs font-semibold ">
-                پروفایل دانش‌آموز
-              </span>
-            </div>
+            
           </div>
 
           {loading ? (
@@ -232,7 +228,7 @@ const HojreRequestPopup = ({ requestId, onClose, onApprove }: HojreRequestPopupP
                         <span className="text-[#0D0D12] text-sm font-semibold">تجريه کاری ثبت شده</span>
                     </div>
                     <span className="text-[#0047AB] text-sm font-bold font-['PeydaFaNum']">
-                        {toFarsiNumber(modelData.experience)} ماه
+                        {toFarsiNumber(modelData.experience)} سال
                     </span>
                 </div>
               )}

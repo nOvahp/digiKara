@@ -43,8 +43,7 @@ export function NewProductPage3({
   updateFormData,
   maxStep
 }: NewProductPage3Props) {
-  // const isMultiPrice = formData.isMultiPrice ?? false;
-  const isMultiPrice = false;
+  const isMultiPrice = formData.isMultiPrice ?? false;
 
   // State for multi-price variant management
   const [selectedVariant, setSelectedVariant] = useState('');
@@ -59,6 +58,7 @@ export function NewProductPage3({
   // State for service fee modal
   const [showServiceFeeModal, setShowServiceFeeModal] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
 
 
@@ -202,19 +202,30 @@ export function NewProductPage3({
   };
 
   const handleNext = () => {
+    setErrors({});
     try {
-      // if (!isMultiPrice) {
-      if (!formData.price || formData.price === '0') {
-        throw new Error('لطفا قیمت پایه را وارد کنید');
+      if (!isMultiPrice) {
+        if (!formData.price || formData.price === '0') {
+          setErrors({ price: 'لطفا قیمت پایه را وارد کنید' });
+          return;
+        }
+        if (parseFloat(formData.price) > 2147483647) {
+          setErrors({ price: 'مبلغ وارد شده بیش از حد مجاز است' });
+          return;
+        }
+      } else {
+        if (!formData.price || formData.price === '0') {
+          setErrors({ price: 'لطفا قیمت پایه را وارد کنید' });
+          return;
+        }
+        if (parseFloat(formData.price) > 2147483647) {
+          setErrors({ price: 'مبلغ وارد شده بیش از حد مجاز است' });
+          return;
+        }
+        if (!validateAndProceed()) {
+          return;
+        }
       }
-      // } else {
-      //   if (!formData.price || formData.price === '0') {
-      //     throw new Error('لطفا قیمت پایه را وارد کنید');
-      //   }
-      //   if (!validateAndProceed()) {
-      //     return;
-      //   }
-      // }
       onNext();
     } catch (error) {
       toast.error((error as Error).message);
@@ -252,22 +263,20 @@ export function NewProductPage3({
         {/* Scrollable Body */}
         <div className="flex-1 overflow-y-auto w-full px-5 py-5" dir="rtl">
           {/* Pricing Type Toggle */}
-          {/*
           <div className="w-full h-9 p-0.5 bg-[#F6F6F6] rounded-lg border border-[#D7D8DA] flex items-center mb-4">
             <div
               onClick={() => updateFormData({ isMultiPrice: true })}
-              className={`flex-1 h-[29px] px-3 py-1 rounded-md flex justify-center items-center gap-2.5 cursor-pointer text-sm font-semibold ${isMultiPrice ? 'bg-[#FFDD8A] shadow-sm border border-[#D7D8DA] text-[#0D0D12]' : 'text-[#0D0D12]'}`}
+              className={`flex-1 h-[29px] px-3 py-1 rounded-md flex justify-center items-center gap-2.5 cursor-pointer text-sm font-semibold transition-colors ${isMultiPrice ? 'bg-[#FFDD8A] shadow-sm border border-[#D7D8DA] text-[#0D0D12]' : 'text-[#666D80] hover:text-[#0D0D12]'}`}
             >
               دارای چند قیمت
             </div>
             <div
               onClick={() => updateFormData({ isMultiPrice: false })}
-              className={`flex-1 h-[29px] px-3 py-1 rounded-md flex justify-center items-center gap-2.5 cursor-pointer text-sm font-semibold ${!isMultiPrice ? 'bg-[#FFDD8A] shadow-sm border border-[#D7D8DA] text-[#0D0D12]' : 'text-[#0D0D12]'}`}
+              className={`flex-1 h-[29px] px-3 py-1 rounded-md flex justify-center items-center gap-2.5 cursor-pointer text-sm font-semibold transition-colors ${!isMultiPrice ? 'bg-[#FFDD8A] shadow-sm border border-[#D7D8DA] text-[#0D0D12]' : 'text-[#666D80] hover:text-[#0D0D12]'}`}
             >
               تک قیمتی
             </div>
           </div>
-          */}
 
           {/* Info Alert (only for multi-price) */}
           {isMultiPrice && (
@@ -318,7 +327,7 @@ export function NewProductPage3({
           {/* Base Price Input */}
           <div className="w-full flex flex-col gap-2 mb-4">
             <div className="text-right text-[#666D80] text-sm font-semibold">قیمت پایه</div>
-            <div className="w-full h-[52px] px-3 bg-white rounded-xl border border-[#DFE1E7] flex items-center gap-2">
+            <div className={`w-full h-[52px] px-3 bg-white rounded-xl border ${errors.price ? 'border-red-500' : 'border-[#DFE1E7]'} flex items-center gap-2`}>
               <Input
                 type="text"
                 className="flex-1 h-full outline-none text-left text-[#0D0D12] text-base font-num-semibold  placeholder:text-[#DFE1E7] border-none shadow-none focus-visible:ring-0 px-0"
@@ -328,12 +337,29 @@ export function NewProductPage3({
                 }
                 onChange={(e) => {
                   const val = e.target.value.replace(/\D/g, '');
-                  updateFormData({ price: val });
+                  if (errors.price) {
+                     setErrors({ ...errors, price: '' });
+                  }
+                  // Prevent PostgreSQL integer overflow (max signed 32-bit int: 2,147,483,647)
+                  if (val === '' || parseInt(val) <= 214748364) { 
+                    // limiting to 214,748,364 Toman to keep Rial under 2,147,483,647 just to be safe, 
+                    // though if it's rial, we just check against 2147483647
+                  }
+                  if (val === '' || parseFloat(val) <= 2147483647) {
+                    updateFormData({ price: val });
+                  } else {
+                     setErrors({ ...errors, price: 'مبلغ وارد شده بیش از حد مجاز است' });
+                  }
                 }}
               />
               <div className="w-[1px] h-[50px] bg-[#DFE1E7]"></div>
               <div className="text-[#0D0D12] text-base font-semibold">ریال</div>
             </div>
+            {errors.price && (
+              <span className="text-right text-red-500 text-xs font-medium font-['PeydaWeb'] mt-1">
+                {errors.price}
+              </span>
+            )}
           </div>
 
           {/* Multi-Price Variant Section */}
@@ -413,7 +439,11 @@ export function NewProductPage3({
                       }
                       onChange={(e) => {
                         const val = e.target.value.replace(/\D/g, '');
-                        setVariantAmount(val);
+                        if (val === '' || parseFloat(val) <= 2147483647) {
+                          setVariantAmount(val);
+                        } else {
+                          toast.error('مبلغ وارد شده بیش از حد مجاز است');
+                        }
                       }}
                     />
                     <div className="w-[1px] h-[50px] bg-[#DFE1E7]"></div>
