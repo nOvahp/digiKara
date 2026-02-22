@@ -9,8 +9,10 @@ import {
   Gem, Palette, Hammer, Shirt, Armchair, Briefcase, Footprints, Grid,
   Facebook, Instagram, Twitter
 } from 'lucide-react';
+import { UserIcon, Search02Icon, ShoppingCart01Icon, FavouriteIcon } from 'hugeicons-react';
 import { bazzarService, BazzarHomeData, BazzarProduct } from '../../services/bazzarService';
 import { products } from '../../data/product';
+import FooterWeb from './FooterWeb';
 
 // UI Helpers
 const CategoryItemWeb = ({ title, icon }: { title: string; icon?: string | null }) => {
@@ -99,64 +101,74 @@ export default function HomePageWeb() {
   const specialSaleProducts = products.filter((p) => p.isSpecialSale);
   const newCollectionProducts = products.filter((p) => p.isNewCollection);
   const bestSellerProducts = homeData?.most_sell || [];
+  const popularProducts = homeData?.most_view || [];
   const popularSchools = homeData?.popular_schools || [];
 
   return (
-    <div className="w-full min-h-screen bg-white flex flex-col items-center overflow-x-hidden font-['PeydaWeb']" dir="rtl">
+    <div className="w-full min-h-screen bg-white flex flex-col items-center overflow-x-hidden font-medium" dir="rtl">
       {/* 1. Navbar */}
-      <header className="w-full max-w-[1440px] px-8 lg:px-24 py-6 flex flex-col lg:flex-row justify-between items-center bg-white z-50 gap-6 lg:gap-0">
-        <div className="flex flex-col-reverse lg:flex-row items-center gap-6 w-full lg:w-auto">
-          <div className="flex gap-4">
-             <button className="p-3 border-2 border-gray-600 rounded-full hover:bg-gray-50 transition-colors">
-                <User className="w-5 h-5 text-gray-700" />
-             </button>
-             <button className="p-3 border-2 border-gray-600 rounded-full hover:bg-gray-50 transition-colors">
-                <Search className="w-5 h-5 text-gray-700" />
-             </button>
-             <button className="p-3 border-2 border-blue-600 rounded-full hover:bg-blue-50 transition-colors">
-                <ShoppingCart className="w-5 h-5 text-blue-600" />
-             </button>
-             <button className="p-3 border-2 border-gray-600 rounded-full hover:bg-gray-50 transition-colors">
-                <Heart className="w-5 h-5 text-gray-700" />
-             </button>
-          </div>
-          <div className="flex items-center gap-4 w-full lg:w-[400px] xl:w-[650px] max-w-full">
-             <div className="w-full h-12 px-4 rounded-xl border border-gray-300 flex items-center justify-between">
-                <span className="text-gray-500 font-light text-sm">جستجو</span>
-                <Search className="w-5 h-5 text-yellow-500" />
-             </div>
-          </div>
+      <header className="w-full max-w-[1440px] px-4 sm:px-8 xl:px-[92px] py-4 lg:py-6 flex flex-col md:flex-row justify-between items-center bg-white z-50 gap-4 md:gap-8 h-auto lg:h-[106px] min-h-[80px]">
+        {/* Right Side (First in RTL): Logo */}
+        <div className="flex items-center shrink-0 w-full md:w-auto justify-center md:justify-start">
+            <Link href="/" className="relative w-[85px] h-[85px] lg:w-[150px] lg:h-[150px] xl:w-[200px] xl:h-[200px]">
+                <Image src="/navbar-brand.svg" alt="Digikara Logo" fill className="object-contain" unoptimized />
+            </Link>
         </div>
-        <div className="flex flex-col items-center shrink-0">
-            <span className="text-[#0A33FF] font-black text-3xl tracking-tight">دیجی کارا</span>
-            <div className="flex mt-1 opacity-80">
-                <div className="w-2 h-2 bg-yellow-400 mx-0.5"></div>
-                <div className="w-2 h-2 bg-blue-600 mx-0.5"></div>
-            </div>
+
+        {/* Left Side (Second in RTL): Search and Icons */}
+        <div className="flex flex-col-reverse md:flex-row items-center gap-4 lg:gap-6 xl:gap-10 w-full md:flex-1 md:justify-end">
+          
+          {/* Search Bar */}
+          <Link href="/Bazzar/Search" className="flex w-full md:max-w-[350px] lg:max-w-[450px] xl:max-w-[649px] h-11 lg:h-12 px-3 py-3 rounded-lg border border-[#D7D8DA] items-center justify-between bg-gray-50/50 hover:bg-white hover:border-blue-400 transition-colors cursor-text group shrink-1">
+              <span className="w-full bg-transparent text-[#707F81] text-[14px] font-light leading-normal pr-2 text-right select-none truncate">جستجو</span>
+              <button className="w-8 h-8 shrink-0 flex justify-center items-center rounded-md group-hover:bg-gray-100 transition-colors">
+                 <Search02Icon className="w-[18px] h-[18px] lg:w-[20px] lg:h-[20px] text-[#FDD00A]" strokeWidth={2.5} />
+              </button>
+          </Link>
+
+          {/* Icons Context */}
+          <div className="flex items-center justify-between w-full md:w-auto gap-2 sm:gap-4 lg:gap-[5px] xl:gap-[10px] px-2 md:px-0 shrink-0">
+             {/* Icon 1: User */}
+             <Link href="/Bazzar/UserProfile" className="p-2 sm:p-3 lg:p-[10px] xl:p-[15px] rounded-full hover:bg-gray-100 flex items-center justify-center transition-colors">
+                <UserIcon className="w-5 h-5 sm:w-6 sm:h-6 text-[#605F5F]" strokeWidth={1.5} />
+             </Link>
+             {/* Icon 2: Search (Mobile only, hidden on Desktop if needed) */}
+             <Link href="/Bazzar/Search" className="md:hidden p-2 sm:p-3 rounded-full hover:bg-gray-100 flex items-center justify-center transition-colors">
+                <Search02Icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#605F5F]" strokeWidth={1.5} />
+             </Link>
+             {/* Icon 3: Shopping Cart (Blue) */}
+             <Link href="/Bazzar/DigiKaraCart" className="p-2 sm:p-3 lg:p-[10px] xl:p-[15px] rounded-full hover:bg-blue-50 flex items-center justify-center transition-colors">
+                <ShoppingCart01Icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#294CFF]" strokeWidth={1.5} />
+             </Link>
+             {/* Icon 4: Heart */}
+             <Link href="/Bazzar/Favorites" className="p-2 sm:p-3 lg:p-[10px] xl:p-[15px] rounded-full hover:bg-gray-100 flex items-center justify-center transition-colors">
+                <FavouriteIcon className="w-5 h-5 sm:w-6 sm:h-6 text-[#605F5F]" strokeWidth={1.5} />
+             </Link>
+          </div>
+
         </div>
       </header>
 
       {/* 2. Hero Banner */}
-      <section className="w-[calc(100%-2rem)] lg:w-[calc(100%-6rem)] max-w-[1292px] min-h-[622px] mx-auto mt-10 rounded-[20px] bg-gradient-to-r from-[#96E9FB] to-[#ABECD6] relative flex flex-col md:flex-row justify-center md:items-center px-8 lg:px-16 xl:px-32 py-10 lg:py-0 overflow-hidden shadow-sm">
-        <div className="flex flex-col items-start gap-6 z-10 w-full md:w-1/2">
-          <span className="text-[#2A7CC7] text-lg font-num-bold tracking-wide">بهار 1405</span>
-          <h1 className="text-[#252B42] text-4xl lg:text-[58px] font-black lg:leading-[80px]">مجموعه جدید</h1>
-          <p className="text-[#737373] text-lg lg:text-xl font-semibold mb-2">۵۰٪ تخفیف برای اولین معامله</p>
-          <div className="flex flex-col xl:flex-row gap-4">
-             <button className="bg-[#FDD00A] text-white px-6 xl:px-8 py-3 xl:py-4 rounded-2xl shadow-[0_15px_30px_rgba(253,208,10,0.4)] text-lg xl:text-2xl font-medium hover:scale-105 transition-transform whitespace-nowrap">
-               همین حالا خرید کنید
-             </button>
-             <button className="bg-[#FDD00A] text-[#393E46] px-6 xl:px-8 py-3 xl:py-4 rounded-2xl text-lg xl:text-2xl font-semibold hover:bg-[#ebd152] transition-colors whitespace-nowrap">
-               همین حالا خرید کنید
-             </button>
-          </div>
+      <section className="w-[calc(100%-2rem)] lg:w-[calc(100%-6rem)] max-w-[1292px] min-h-[622px] mx-auto mt-10 rounded-[20px] bg-gradient-to-r from-[#96E9FB] to-[#ABECD6] relative flex flex-col md:flex-row-reverse justify-between px-6 lg:pl-[100px] lg:pr-0 pt-10 md:pt-0 overflow-hidden shadow-sm items-center md:items-stretch">
+        
+        {/* Left Side (Text) */}
+        <div className="flex flex-col items-center sm:items-end justify-center gap-[30px] z-10 w-full md:w-1/2 text-center sm:text-left pb-10 md:pb-0" dir="ltr">
+            <span className="text-[#2A7CC7] text-[16px] font-semibold font-['PeydaFaNum'] leading-[24px] tracking-[0.10px] w-full text-left">بهار 1405</span>
+            <h1 className="text-[#252B42] text-[40px] lg:text-[58px] font-black font-['PeydaWeb'] leading-[50px] lg:leading-[80px] tracking-[0.20px] w-full text-left" dir="rtl">مجموعه جدید</h1>
+            <p className="text-[#737373] text-[18px] lg:text-[20px] font-semibold font-['PeydaWeb'] leading-[30px] tracking-[0.20px] w-full text-left" dir="rtl">۵۰٪ تخفیف برای اولین معامله</p>
+            
+            <div className="flex flex-col xl:flex-row gap-[20px] mt-2 w-full sm:w-auto self-start mr-auto">
+                <button className="bg-[#FDD00A] text-[#393E46] px-[30px] py-[12px] lg:py-[15px] rounded-[17px] text-[18px] lg:text-[25.81px] font-semibold font-['PeydaWeb'] hover:bg-[#ebd152] transition-colors flex justify-center items-center">
+                    همین حالا خرید کنید
+                </button>
+               
+            </div>
         </div>
-        <div className="absolute left-0 top-0 w-1/2 h-full hidden md:flex justify-center items-center">
-             <div className="relative w-[300px] h-[300px] xl:w-[500px] xl:h-[500px] bg-white/40 rounded-full flex justify-center items-center">
-                 <Image src="https://placehold.co/696x699" alt="Hero Promo" fill className="absolute object-contain -left-10 z-10 scale-125" sizes="(max-width: 1280px) 300px, 500px" unoptimized />
-                 <div className="absolute w-20 h-20 bg-white rounded-full -top-10 left-10"></div>
-                 <div className="absolute w-4 h-4 bg-purple-400 rounded-full bottom-10 right-20"></div>
-             </div>
+
+        {/* Right Side (Image) - Locked to top and bottom */}
+        <div className="relative w-full md:w-1/2 h-[400px] md:h-auto min-h-[400px] md:min-h-full flex justify-center items-end md:items-center self-stretch">
+             <Image src="/col-md-6.png" alt="Hero Promo" fill className="object-cover md:object-contain object-bottom md:object-center" unoptimized />
         </div>
       </section>
 
@@ -167,18 +179,14 @@ export default function HomePageWeb() {
             <button className="text-gray-500 font-light hover:text-black">مشاهده همه</button>
         </div>
         <div className="flex justify-between items-center w-full overflow-x-auto no-scrollbar pb-4 gap-4">
-             {loading ? (
+              {loading ? (
                 <div className="w-full text-center text-gray-500 py-10">در حال بارگذاری دسته‌بندی‌ها...</div>
-             ) : (
-                homeData?.categories?.slice(0, 8).map((cat) => (
+             ) : homeData?.categories && homeData.categories.length > 0 ? (
+                homeData.categories.slice(0, 8).map((cat) => (
                     <CategoryItemWeb key={cat.id} title={cat.title} icon={cat.icon_path} />
-                )) || (
-                    <>
-                      {['لوازم جانبی', 'عطر و ادکلن', 'صنایع دستی', 'پوشاک', 'کفش', 'اکسسوری', 'کیف', 'صنایع چوبی'].map(title => (
-                          <CategoryItemWeb key={title} title={title} />
-                      ))}
-                    </>
-                )
+                ))
+             ) : (
+                <div className="w-full text-center text-gray-500 py-10">دسته‌بندی یافت نشد</div>
              )}
         </div>
       </section>
@@ -222,7 +230,7 @@ export default function HomePageWeb() {
       </div>
 
       {/* 5. Shops Grid */}
-      <section className="w-full max-w-[1290px] mx-auto mt-16 flex flex-col xl:flex-row justify-between gap-8 mb-20 px-4 lg:px-8 xl:px-0">
+      <section className="w-full max-w-[1290px] mx-auto mt-16 flex flex-col xl:flex-row-reverse justify-between gap-8 mb-20 px-4 lg:px-8 xl:px-0">
           <div className="w-full xl:w-[389px] h-[400px] xl:h-[796px] shrink-0 relative rounded-[25px] overflow-hidden group cursor-pointer shadow-sm">
               <Image src="https://placehold.co/389x796" alt="Shops Banner" fill className="object-cover group-hover:scale-105 transition-transform duration-700" unoptimized />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-10">
@@ -232,12 +240,9 @@ export default function HomePageWeb() {
           </div>
           <div className="flex-1 flex flex-col gap-6">
               <div className="flex justify-between items-center border-b-2 border-gray-100 pb-4">
-                  <h2 className="text-[#252B42] text-2xl font-bold">پرفروش ترین ها</h2>
-                  <div className="flex items-center gap-2 lg:gap-4 overflow-x-auto no-scrollbar whitespace-nowrap pb-2">
-                      <button className="px-4 lg:px-6 py-2 lg:py-2.5 rounded-lg bg-transparent text-[#23A6F0] border border-[#23A6F0] font-semibold text-sm hover:bg-blue-50 transition-colors">حجره ها</button>
-                      <button className="px-4 lg:px-6 py-2 lg:py-2.5 rounded-full bg-transparent text-gray-500 font-semibold text-sm hover:bg-gray-100 transition-colors">تیمچه ها</button>
-                      <button className="px-4 lg:px-6 py-2 lg:py-2.5 rounded-full bg-transparent text-gray-500 font-semibold text-sm hover:bg-gray-100 transition-colors">مدارس</button>
-                      <div className="hidden lg:flex ml-4 gap-2" dir="ltr">
+                  <h2 className="text-[#252B42] text-2xl font-bold rtl:text-right">پرفروش ترین ها</h2>
+                  <div className="flex items-center gap-2 lg:gap-4 overflow-x-auto no-scrollbar whitespace-nowrap pb-2 ltr:flex-row rtl:flex-row-reverse">
+                      <div className="hidden lg:flex ml-4 gap-2 mr-4" dir="ltr">
                            <button className="w-10 h-10 rounded-full border border-gray-400 flex items-center justify-center hover:bg-gray-100 transition-colors text-gray-400">
                                <ChevronLeft className="w-5 h-5" />
                            </button>
@@ -245,67 +250,58 @@ export default function HomePageWeb() {
                                <ChevronRight className="w-5 h-5" />
                            </button>
                       </div>
+                      <button className="px-4 lg:px-6 py-2 lg:py-2.5 rounded-lg bg-transparent text-[#23A6F0] border border-[#23A6F0] font-semibold text-sm hover:bg-blue-50 transition-colors">حجره ها</button>
+                      <button className="px-4 lg:px-6 py-2 lg:py-2.5 rounded-full bg-transparent text-gray-500 font-semibold text-sm hover:bg-gray-100 transition-colors">تیمچه ها</button>
+                      <button className="px-4 lg:px-6 py-2 lg:py-2.5 rounded-full bg-transparent text-gray-500 font-semibold text-sm hover:bg-gray-100 transition-colors">مدارس</button>
                   </div>
               </div>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 p-4">
-                  {[
-                      { title: "طراحی وب", cat: "بخش فارسی" },
-                      { title: "مدیریت پروژه", cat: "بخش عربی" },
-                      { title: "تحلیل داده", cat: "بخش فرانسوی" },
-                      { title: "تحلیل داده", cat: "بخش فرانسوی" },
-                      { title: "طراحی گرافیک", cat: "بخش انگلیسی" },
-                      { title: "طراحی گرافیک", cat: "بخش انگلیسی" },
-                      { title: "طراحی گرافیک", cat: "بخش انگلیسی" },
-                      { title: "طراحی گرافیک", cat: "بخش انگلیسی" },
-                  ].map((p, i) => (
-                      <ProductCardHorizontal key={i} title={p.title} category={p.cat} price="600,000 تومان" />
-                  ))}
+                  {loading ? (
+                       <div className="col-span-2 lg:col-span-4 text-center text-gray-500 py-4">در حال بارگذاری...</div>
+                  ) : bestSellerProducts.length > 0 ? (
+                      bestSellerProducts.slice(0, 8).map((p) => (
+                          <ProductCardHorizontal key={p.id} title={p.title} category={"حجره"} price={typeof p.price === 'number' ? `${p.price.toLocaleString()} تومان` : p.price ? p.price.toString() : "0 تومان"} />
+                      ))
+                  ) : (
+                      <div className="col-span-2 lg:col-span-4 text-center text-gray-500 py-4">محصولی یافت نشد</div>
+                  )}
               </div>
           </div>
       </section>
 
       {/* 6. Popular Products Blocks */}
       <section className="w-[calc(100%-2rem)] lg:w-[calc(100%-6rem)] max-w-[1295px] mx-auto bg-[#FAFAFA] rounded-[25px] overflow-hidden flex flex-col xl:flex-row shadow-sm mb-20 h-auto xl:h-[784px]">
-          <div className="flex-1 flex flex-col justify-center items-center py-10 xl:py-16 px-4 xl:px-10 gap-10 xl:gap-16 order-2 xl:order-1">
+          <div className="w-full xl:w-[469px] relative order-1 xl:order-1 shrink-0 h-[300px] md:h-[400px] xl:h-[784px]">
+               <Image src="https://placehold.co/469x784" alt="Popular Block" fill className="object-cover" unoptimized />
+          </div>
+          <div className="flex-1 flex flex-col justify-center items-center py-10 xl:py-16 px-4 xl:px-10 gap-10 xl:gap-16 order-2 xl:order-2">
               <div className="flex flex-col md:flex-row gap-10 w-full">
-                   {/* Card 1 */}
-                   <div className="w-full max-w-[348px] flex flex-col items-center gap-5 text-center mx-auto">
-                       <h3 className="text-[#252B42] text-2xl font-black">محصول محبوب</h3>
-                       <p className="text-[#737373] text-sm font-light leading-relaxed">
-                           ما بر ارگونومی تمرکز می کنیم و شما را در محل کارتان ملاقات می کنیم. این فقط یک ضربه کلید است.
-                       </p>
-                       <div className="w-full h-[226px] relative mt-4">
-                           <Image src="https://placehold.co/348x226" alt="Popular" fill className="object-cover rounded-xl" unoptimized />
-                       </div>
-                       <p className="text-[#252B42] text-sm font-semibold mt-2">بخش انگلیسی</p>
-                       <span className="text-[#737373] text-sm font-num-bold">15 فروش</span>
-                       <span className="text-[#23856D] text-base font-num-bold">600,000 تومان</span>
-                       <div className="flex gap-2">
-                           <div className="w-4 h-4 rounded-full bg-[#23A6F0]"></div>
-                           <div className="w-4 h-4 rounded-full bg-[#23856D]"></div>
-                           <div className="w-4 h-4 rounded-full bg-[#E77C40]"></div>
-                           <div className="w-4 h-4 rounded-full bg-[#252B42]"></div>
-                       </div>
-                   </div>
-                   {/* Card 2 */}
-                   <div className="w-full max-w-[348px] flex flex-col items-center gap-5 text-center mx-auto">
-                       <h3 className="text-[#252B42] text-2xl font-black">محصول محبوب</h3>
-                       <p className="text-[#737373] text-sm font-light leading-relaxed">
-                           ما بر ارگونومی تمرکز می کنیم و شما را در محل کارتان ملاقات می کنیم. این فقط یک ضربه کلید است.
-                       </p>
-                       <div className="w-full h-[226px] relative mt-4">
-                           <Image src="https://placehold.co/348x226" alt="Popular" fill className="object-cover rounded-xl" unoptimized />
-                       </div>
-                       <p className="text-[#252B42] text-sm font-semibold mt-2">بخش انگلیسی</p>
-                       <span className="text-[#737373] text-sm font-num-bold">15 فروش</span>
-                       <span className="text-[#23856D] text-base font-num-bold">600,000 تومان</span>
-                       <div className="flex gap-2">
-                           <div className="w-4 h-4 rounded-full bg-[#23A6F0]"></div>
-                           <div className="w-4 h-4 rounded-full bg-[#23856D]"></div>
-                           <div className="w-4 h-4 rounded-full bg-[#E77C40]"></div>
-                           <div className="w-4 h-4 rounded-full bg-[#252B42]"></div>
-                       </div>
-                   </div>
+                   {loading ? (
+                       <div className="w-full text-center text-gray-500 py-10">در حال بارگذاری...</div>
+                   ) : popularProducts.length > 0 ? (
+                       popularProducts.slice(0, 2).map((p) => (
+                           <div key={p.id} className="w-full max-w-[348px] flex flex-col items-center gap-5 text-center mx-auto">
+                               <h3 className="text-[#252B42] text-2xl font-black">{p.title || "محصول محبوب"}</h3>
+                               <p className="text-[#737373] text-sm font-light leading-relaxed truncate w-full">
+                                   بخش ویژه
+                               </p>
+                               <div className="w-full h-[226px] relative mt-4">
+                                   <Image src={p.image || p.image_path || "https://placehold.co/348x226"} alt={p.title || "Popular"} fill className="object-cover rounded-xl" unoptimized />
+                               </div>
+                               <p className="text-[#252B42] text-sm font-semibold mt-2">حجره</p>
+                               <span className="text-[#737373] text-sm font-num-bold">{p.rating || 0} امتیاز</span>
+                               <span className="text-[#23856D] text-base font-num-bold">{typeof p.price === 'number' ? `${p.price.toLocaleString()} تومان` : p.price ? p.price.toString() : "0 تومان"}</span>
+                               <div className="flex gap-2">
+                                   <div className="w-4 h-4 rounded-full bg-[#23A6F0]"></div>
+                                   <div className="w-4 h-4 rounded-full bg-[#23856D]"></div>
+                                   <div className="w-4 h-4 rounded-full bg-[#E77C40]"></div>
+                                   <div className="w-4 h-4 rounded-full bg-[#252B42]"></div>
+                               </div>
+                           </div>
+                       ))
+                   ) : (
+                       <div className="w-full text-center text-gray-500 py-10">محصولی یافت نشد</div>
+                   )}
               </div>
               {/* Pagination Dots */}
               <div className="flex gap-2 mt-4 items-center h-2">
@@ -315,9 +311,6 @@ export default function HomePageWeb() {
                   <div className="w-2 h-2 rounded-full bg-[#8F8C86]/20"></div>
                   <div className="w-2 h-2 rounded-full bg-[#8F8C86]/20"></div>
               </div>
-          </div>
-          <div className="w-full xl:w-[469px] relative order-1 xl:order-2 shrink-0 h-[300px] md:h-[400px] xl:h-full">
-               <Image src="https://placehold.co/469x784" alt="Popular Block" fill className="object-cover" unoptimized />
           </div>
       </section>
 
@@ -330,15 +323,24 @@ export default function HomePageWeb() {
               </div>
               <div className="w-full h-0.5 bg-gray-200"></div>
               <div className="flex overflow-x-auto no-scrollbar items-center gap-4 mt-6 pb-4">
-                  {(popularSchools.length > 0 ? popularSchools : Array(6).fill({ name: "هنرستان دخترانه", tag: "فلسفه هنر" })).slice(0, 6).map((school, i) => (
-                      <div key={i} className="flex flex-col items-center gap-4 shrink-0">
-                          <div className="w-[189px] h-[176px] relative rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                              <Image src={school.image_path || "https://placehold.co/189x177"} alt={school.name} fill className="object-cover" unoptimized />
+                  {loading ? (
+                       <div className="w-full text-center text-gray-500 py-4">در حال بارگذاری...</div>
+                  ) : popularSchools.length > 0 ? (
+                      popularSchools.map((school) => (
+                          <div key={school.id} className="flex flex-col items-center gap-4 shrink-0">
+                              <div className="w-[189px] h-[176px] relative rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                                  {school.image_path ? (
+                                      <Image src={school.image_path} alt={school.name} fill className="object-cover" unoptimized />
+                                  ) : (
+                                       <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400 text-sm">بدون تصویر</div>
+                                  )}
+                              </div>
+                              <p className="text-[#1F2029] text-xl font-light mt-2">{school.name}</p>
                           </div>
-                          <p className="text-[#1F2029] text-xl font-light mt-2">{school.name}</p>
-                          <p className="text-[#1F2029] text-xl font-bold">{school.tag || "هنرستان آزاد"}</p>
-                      </div>
-                  ))}
+                      ))
+                  ) : (
+                      !loading && <div className="w-full text-center text-gray-500 py-4">مدرسه‌ای یافت نشد</div>
+                  )}
               </div>
           </div>
       </section>
@@ -360,70 +362,8 @@ export default function HomePageWeb() {
           </div>
       </section>
 
-      {/* 9. Footer */}
-      <footer className="w-full bg-[#FAFAFA] flex flex-col items-center relative overflow-hidden">
-          <div className="w-full h-[142px] bg-[#FAFAFA] border-b border-gray-200">
-             <div className="w-full max-w-[1290px] mx-auto h-full flex justify-between items-center">
-                 <div className="flex flex-col items-center relative gap-2 mt-4">
-                    <span className="text-[#0A33FF] font-black text-3xl tracking-tight z-10 w-full text-center">دیجی کارا</span>
-                    <div className="flex items-center gap-1 opacity-80 z-10 mx-auto justify-center">
-                        <div className="w-2 h-2 bg-yellow-400"></div>
-                        <div className="w-2 h-2 bg-blue-600"></div>
-                    </div>
-                </div>
-                <div className="flex gap-4">
-                    <button className="text-gray-400 hover:text-[#0A33FF] transition-colors"><Facebook className="w-6 h-6" /></button>
-                    <button className="text-gray-400 hover:text-[#0A33FF] transition-colors"><Instagram className="w-6 h-6" /></button>
-                    <button className="text-gray-400 hover:text-[#0A33FF] transition-colors"><Twitter className="w-6 h-6" /></button>
-                </div>
-             </div>
-          </div>
-          <div className="w-full bg-white flex justify-center py-20 px-8">
-              <div className="w-full max-w-[1440px] flex flex-col lg:flex-row justify-between items-start gap-16 lg:gap-10">
-                  <div className="flex flex-col w-full lg:w-[300px] gap-4 shrink-0 mt-2">
-                       <h3 className="text-[#252B42] text-lg font-bold">در تماس باشید</h3>
-                       <div className="flex w-full mt-2 shadow-sm rounded-lg overflow-hidden border border-gray-200">
-                           <input type="email" placeholder="ایمیل شما" className="w-full px-4 py-4 bg-gray-50 text-gray-700 text-sm font-light focus:outline-none" />
-                           <button className="bg-[#FFC938] text-black px-6 font-black whitespace-nowrap text-sm hover:bg-[#e6b532] transition-colors">مشترک شوید</button>
-                       </div>
-                       <p className="text-[#737373] text-sm font-light leading-snug mt-1">لورم ایپسوم متن ساختگی با تولید سادگی</p>
-                  </div>
-                  <div className="flex flex-wrap justify-between flex-1 max-w-[800px] gap-10 lg:gap-4 w-full">
-                      <div className="flex flex-col gap-4 text-left mr-auto min-w-[100px]">
-                          <h3 className="text-[#252B42] text-lg font-bold">قانونی</h3>
-                          <Link href="#" className="text-[#737373] text-base font-semibold hover:text-black">درباره ما</Link>
-                          <Link href="#" className="text-[#737373] text-base font-semibold hover:text-black">حامل</Link>
-                          <Link href="#" className="text-[#737373] text-base font-semibold hover:text-black">ما استخدام می کنیم</Link>
-                          <Link href="#" className="text-[#737373] text-base font-semibold hover:text-black">وبلاگ</Link>
-                      </div>
-                      <div className="flex flex-col gap-4 text-left mr-auto">
-                          <h3 className="text-[#252B42] text-lg font-bold">منابع</h3>
-                          <Link href="#" className="text-[#737373] text-base font-semibold hover:text-black">IOS و Android</Link>
-                          <Link href="#" className="text-[#737373] text-base font-semibold hover:text-black">دمو تماشا کنید</Link>
-                          <Link href="#" className="text-[#737373] text-base font-semibold hover:text-black">مشتریان</Link>
-                          <Link href="#" className="text-[#737373] text-base font-semibold hover:text-black">API</Link>
-                      </div>
-                      <div className="flex flex-col gap-4 text-left mr-auto">
-                          <h3 className="text-[#252B42] text-lg font-bold">امکانات</h3>
-                          <Link href="#" className="text-[#737373] text-base font-semibold hover:text-black">بازاریابی کسب و کار</Link>
-                          <Link href="#" className="text-[#737373] text-base font-semibold hover:text-black">تحلیل کاربر</Link>
-                          <Link href="#" className="text-[#737373] text-base font-semibold hover:text-black">چت زنده</Link>
-                          <Link href="#" className="text-[#737373] text-base font-semibold hover:text-black">پشتیبانی نامحدود</Link>
-                      </div>
-                      <div className="flex flex-col gap-4 text-left mr-auto">
-                          <h3 className="text-[#252B42] text-lg font-bold">اطلاعات شرکت</h3>
-                          <Link href="#" className="text-[#737373] text-base font-semibold hover:text-black">درباره ما</Link>
-                          <Link href="#" className="text-[#737373] text-base font-semibold hover:text-black">حامل</Link>
-                          <Link href="#" className="text-[#737373] text-base font-semibold hover:text-black">ما استخدام می کنیم</Link>
-                          <Link href="#" className="text-[#737373] text-base font-semibold hover:text-black">وبلاگ</Link>
-                      </div>
-                  </div>
-              </div>
-          </div>
-          <div className="w-full bg-[#FAFAFA] py-6 flex justify-center border-t border-gray-100">
-               <p className="text-[#737373] text-base font-semibold text-center w-full">ساخته شده با عشق توسط نوید تمام حقوق محفوظ است</p>
-          </div>
-      </footer>
+      {/* Footer */}
+      <FooterWeb />
     </div>
   );
 }
