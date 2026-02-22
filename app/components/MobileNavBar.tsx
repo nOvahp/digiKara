@@ -15,7 +15,7 @@ const MobileNavBar = () => {
     setIsOpen(!isOpen);
   };
 
-  if (pathname?.startsWith('/StudentDashboard') || pathname?.startsWith('/Bazzar')) return null;
+  if (pathname === '/' || pathname?.startsWith('/StudentDashboard') || pathname?.startsWith('/Bazzar')) return null;
 
   return (
     <div

@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { InformationSquareIcon } from 'hugeicons-react';
 
 import { ProductStepper } from './shared/ProductStepper';
 import Image from 'next/image';
@@ -39,6 +40,7 @@ export function NewProduct({
     { id: number | string; name: string }[]
   >([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [showTitleDesc, setShowTitleDesc] = useState(false);
 
   React.useEffect(() => {
     const fetchCategories = async () => {
@@ -139,20 +141,64 @@ export function NewProduct({
         <div className="flex-1 overflow-y-auto w-full p-5 flex flex-col gap-4">
           {/* Product Name */}
           <div className="flex flex-col gap-2">
-            <label className="text-right text-[#666D80] text-sm font-semibold font-['PeydaWeb'] leading-tight tracking-wide">
-              نام محصول
-            </label>
-            <Input
-              type="text"
-              value={formData.name}
-              onChange={(e) => {
-                updateFormData({ name: e.target.value });
-                clearError('name');
-              }}
-              className={`w-full h-[52px] bg-white rounded-xl border ${errors.name ? 'border-red-500' : 'border-[#DFE1E7]'} px-3 text-right text-[#0D0D12] text-sm outline-none focus:border-[#FDD00A] placeholder:text-[#DFE1E7] placeholder:font-medium`}
-              placeholder="نام محصول را وارد کنید"
-              dir="rtl"
-            />
+            <div className="flex justify-between items-center w-full flex-row-reverse">
+              <div className="flex items-center gap-2">
+                <label className="text-right text-[#666D80] text-sm font-semibold font-['PeydaWeb'] leading-tight tracking-wide">
+                  نام محصول
+                </label>
+              </div>
+            </div>
+
+            <div className="relative w-full">
+              <button 
+                  type="button" 
+                  onClick={() => setShowTitleDesc(!showTitleDesc)}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#FDD00A] transition-colors outline-none cursor-pointer"
+                  title="راهنمای نام‌گذاری محصول"
+              >
+                <InformationSquareIcon size={20} />
+              </button>
+              
+              <Input
+                type="text"
+                value={formData.name}
+                onChange={(e) => {
+                  updateFormData({ name: e.target.value });
+                  clearError('name');
+                }}
+                className={`w-full h-[52px] bg-white rounded-xl border ${errors.name ? 'border-red-500' : 'border-[#DFE1E7]'} pl-10 pr-3 text-right text-[#0D0D12] text-sm outline-none focus:border-[#FDD00A] placeholder:text-[#DFE1E7] placeholder:font-medium`}
+                placeholder="نام محصول را وارد کنید"
+                dir="rtl"
+              />
+            </div>
+            
+            {showTitleDesc && (
+              <div 
+                className="w-full rounded-xl  p-3"
+                dir="rtl"
+              >
+                <div className="w-full flex flex-col justify-start items-start gap-2 inline-flex">
+                    <div className="self-stretch justify-start items-start gap-2 inline-flex">
+                        <div className="flex-1 text-right text-[#818898] text-sm font-['PeydaWeb'] font-bold leading-normal break-words">چطور اسمی بنویسیم که خودش بفروشد؟</div>
+                    </div>
+                    <div className="self-stretch flex flex-col justify-start items-start gap-2">
+                        <div className="self-stretch px-3 py-2 bg-white rounded-lg border border-[#DFE1E7] justify-start items-center gap-2 inline-flex">
+                            <div className="flex-1 text-right text-[#818898] text-[12px] font-['PeydaWeb'] leading-relaxed break-words">
+                              <span className="font-medium">نام محصول اولین چیزی است که مشتری و موتورهای جستجو میبینند. برای داشتن بالاترین بازدهی،این فرمول طلایی را دنبال کنید:<br/><br/></span>
+                              <span className="font-bold">[برند] + [مدل] + [نوع محصول] + [ویژگی اصلی (رنگ/سایز ...]<br/><br/></span>
+                              <span className="font-bold">جامع و مختصر: </span><span className="font-medium"> نام محصول نباید خیلی کوتاه (مثل: "کفش") یا خیلی طولانی و گیج‌کننده باشد.<br/></span>
+                              <span className="font-bold">کلمات کلیدی در ابتدا: </span><span className="font-medium"> مهمترین ویژگی محصول (مثلاً: "گوشی موبایل سامسونگ") را در ابتدای عبارت بیاورید.<br/></span>
+                              <span className="font-bold">صداقت در نامگذاری: </span><span className="font-medium"> از به کار بردن کلمات اغراق‌آمیز مثل "بهترین"، "ارزان‌ترین" یا "ارژینال" (اگر نیست) خودداری کنید؛ این کار اعتماد مشتری را در بلندمدت از بین می‌برد.<br/></span>
+                              <span className="font-bold">فارسی‌نویسی صحیح: </span><span className="font-medium"> از کیبورد فارسی و اعداد فارسی استفاده کنید و از به کار بردن شکلک‌ها (Emoji) در نام محصول بپرهیزید.<br/></span>
+                              <span className="font-medium"><br/>❌ </span><span className="font-bold">مثال اشتباه:<br/></span><span className="font-medium">کفش شیک و عالی برای همه مدل ۲۰۲۶<br/>✅ </span><span className="font-bold">مثال درست:<br/></span><span className="font-medium">کفش پیاده‌روی مردانه نایکی مدل Air Max رنگ مشکی<br/><br/></span>
+                              <span className="font-bold">یادتان باشد: </span><span className="font-medium">نام محصول شما، همان تابلوی مغازه شماست. هرچه شفاف‌تر باشد، مشتری راحت‌تر وارد حجره مجازی شما می‌شود.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            )}
+            
             {errors.name && (
               <span className="text-red-500 text-xs text-right font-medium">{errors.name}</span>
             )}

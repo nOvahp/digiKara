@@ -1,10 +1,10 @@
-
-import HomePage from './homePage/page';
+import BazzarLayout from './Bazzar/layout';
+import BazzarPage from './Bazzar/page';
 
 export default function Home() {
   return (
-    <main>
-      <HomePage />
-    </main>
+    <BazzarLayout>
+      <BazzarPage />
+    </BazzarLayout>
   );
 }

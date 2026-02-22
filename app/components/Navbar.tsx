@@ -10,7 +10,7 @@ import Link from 'next/link';
 const Navbar = () => {
   const pathname = usePathname();
 
-  if (pathname?.startsWith('/StudentDashboard') || pathname?.startsWith('/Bazzar')) return null;
+  if (pathname === '/' || pathname?.startsWith('/StudentDashboard') || pathname?.startsWith('/Bazzar')) return null;
 
   return (
     <div

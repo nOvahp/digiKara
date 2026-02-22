@@ -65,24 +65,29 @@ const ProductCardWeb = ({ product }: { product: any }) => (
   </Link>
 );
 
-const ProductCardHorizontal = ({ title, category, price }: { title: string, category: string, price: string }) => (
-  <div className="flex flex-col bg-white rounded-xl overflow-hidden w-full max-w-[183px] mx-auto group border border-gray-100">
-    <div className="w-full aspect-[183/162] relative overflow-hidden bg-gray-100">
-      <Image src="https://placehold.co/183x162" alt={title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" unoptimized />
-    </div>
-    <div className="p-6 flex flex-col items-center gap-2.5 w-full">
-      <h3 className="text-[#252B42] text-base font-['PeydaWeb'] font-semibold text-center">{title}</h3>
-      <p className="text-[#737373] text-sm font-['PeydaWeb'] font-semibold">{category}</p>
-      <div className="flex items-center gap-1 mt-1">
-        <span className="text-[#23856D] text-base font-num-bold">{price}</span>
+const ProductCardHorizontal = ({ title, category, price, image }: { title: string, category: string, price: string, image?: string }) => {
+  const imageUrl = image?.startsWith('http') ? image : (image ? `https://backend.digikara.ir${image}` : "https://placehold.co/183x162");
+
+  return (
+    <div className="flex flex-col bg-white rounded-xl overflow-hidden w-full max-w-[183px] mx-auto group border border-gray-100">
+      <div className="w-full aspect-[183/162] relative overflow-hidden bg-gray-100">
+        <Image src={imageUrl} alt={title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" unoptimized />
+      </div>
+      <div className="p-6 flex flex-col items-center gap-2.5 w-full">
+        <h3 className="text-[#252B42] text-base font-['PeydaWeb'] font-semibold text-center">{title}</h3>
+        <p className="text-[#737373] text-sm font-['PeydaWeb'] font-semibold">{category}</p>
+        <div className="flex items-center gap-1 mt-1">
+          <span className="text-[#23856D] text-base font-num-bold">{price}</span>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default function HomePageWeb() {
   const [homeData, setHomeData] = useState<BazzarHomeData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [currentPopularPage, setCurrentPopularPage] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -102,6 +107,7 @@ export default function HomePageWeb() {
   const newCollectionProducts = products.filter((p) => p.isNewCollection);
   const bestSellerProducts = homeData?.most_sell || [];
   const popularProducts = homeData?.most_view || [];
+  const popularPageCount = Math.ceil(popularProducts.length / 2);
   const popularSchools = homeData?.popular_schools || [];
 
   return (
@@ -260,7 +266,7 @@ export default function HomePageWeb() {
                        <div className="col-span-2 lg:col-span-4 text-center text-gray-500 py-4">در حال بارگذاری...</div>
                   ) : bestSellerProducts.length > 0 ? (
                       bestSellerProducts.slice(0, 8).map((p) => (
-                          <ProductCardHorizontal key={p.id} title={p.title} category={"حجره"} price={typeof p.price === 'number' ? `${p.price.toLocaleString()} تومان` : p.price ? p.price.toString() : "0 تومان"} />
+                          <ProductCardHorizontal key={p.id} title={p.title} category={"حجره"} price={typeof p.price === 'number' ? `${p.price.toLocaleString()} تومان` : p.price ? p.price.toString() : "0 تومان"} image={p.image || p.image_path || undefined} />
                       ))
                   ) : (
                       <div className="col-span-2 lg:col-span-4 text-center text-gray-500 py-4">محصولی یافت نشد</div>
@@ -279,7 +285,7 @@ export default function HomePageWeb() {
                    {loading ? (
                        <div className="w-full text-center text-gray-500 py-10">در حال بارگذاری...</div>
                    ) : popularProducts.length > 0 ? (
-                       popularProducts.slice(0, 2).map((p) => (
+                       popularProducts.slice(currentPopularPage * 2, currentPopularPage * 2 + 2).map((p) => (
                            <div key={p.id} className="w-full max-w-[348px] flex flex-col items-center gap-5 text-center mx-auto">
                                <h3 className="text-[#252B42] text-2xl font-black">{p.title || "محصول محبوب"}</h3>
                                <p className="text-[#737373] text-sm font-light leading-relaxed truncate w-full">
@@ -288,15 +294,10 @@ export default function HomePageWeb() {
                                <div className="w-full h-[226px] relative mt-4">
                                    <Image src={p.image || p.image_path || "https://placehold.co/348x226"} alt={p.title || "Popular"} fill className="object-cover rounded-xl" unoptimized />
                                </div>
-                               <p className="text-[#252B42] text-sm font-semibold mt-2">حجره</p>
+                               
                                <span className="text-[#737373] text-sm font-num-bold">{p.rating || 0} امتیاز</span>
                                <span className="text-[#23856D] text-base font-num-bold">{typeof p.price === 'number' ? `${p.price.toLocaleString()} تومان` : p.price ? p.price.toString() : "0 تومان"}</span>
-                               <div className="flex gap-2">
-                                   <div className="w-4 h-4 rounded-full bg-[#23A6F0]"></div>
-                                   <div className="w-4 h-4 rounded-full bg-[#23856D]"></div>
-                                   <div className="w-4 h-4 rounded-full bg-[#E77C40]"></div>
-                                   <div className="w-4 h-4 rounded-full bg-[#252B42]"></div>
-                               </div>
+                               
                            </div>
                        ))
                    ) : (
@@ -304,13 +305,20 @@ export default function HomePageWeb() {
                    )}
               </div>
               {/* Pagination Dots */}
-              <div className="flex gap-2 mt-4 items-center h-2">
-                  <div className="w-2 h-2 rounded-full bg-[#8F8C86]/20"></div>
-                  <div className="w-2 h-2 rounded-full bg-[#8F8C86]/20"></div>
-                  <div className="w-5 h-2 rounded-full bg-[#FDD00A]"></div>
-                  <div className="w-2 h-2 rounded-full bg-[#8F8C86]/20"></div>
-                  <div className="w-2 h-2 rounded-full bg-[#8F8C86]/20"></div>
-              </div>
+              {popularPageCount > 1 && (
+                  <div className="flex gap-2 mt-4 items-center h-2">
+                      {Array.from({ length: popularPageCount }).map((_, idx) => (
+                          <button
+                              key={idx}
+                              onClick={() => setCurrentPopularPage(idx)}
+                              className={`h-2 rounded-full cursor-pointer transition-all duration-300 ${
+                                  idx === currentPopularPage ? 'w-5 bg-[#FDD00A]' : 'w-2 bg-[#8F8C86]/20 hover:bg-[#8F8C86]/40'
+                              }`}
+                              aria-label={`صفحه ${idx + 1}`}
+                          />
+                      ))}
+                  </div>
+              )}
           </div>
       </section>
 

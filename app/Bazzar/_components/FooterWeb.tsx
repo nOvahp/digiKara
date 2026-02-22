@@ -43,7 +43,7 @@ export default function FooterWeb() {
             <div className="flex flex-col items-start gap-5">
               <h3 className="text-[#252B42] text-base font-['PeydaWeb'] font-semibold tracking-wide">اطلاعات شرکت</h3>
               <div className="flex flex-col items-start gap-2.5">
-                <a href="#" className="text-[#737373] text-sm font-['PeydaWeb'] font-semibold tracking-wide hover:text-black">درباره ما</a>
+                <a href="/landing" className="text-[#737373] text-sm font-['PeydaWeb'] font-semibold tracking-wide hover:text-black">معرفی دیجی کارا</a>
                 <a href="#" className="text-[#737373] text-sm font-['PeydaWeb'] font-semibold tracking-wide hover:text-black">حامل</a>
                 <a href="#" className="text-[#737373] text-sm font-['PeydaWeb'] font-semibold tracking-wide hover:text-black">ما استخدام می کنیم</a>
                 <a href="#" className="text-[#737373] text-sm font-['PeydaWeb'] font-semibold tracking-wide hover:text-black">وبلاگ</a>
