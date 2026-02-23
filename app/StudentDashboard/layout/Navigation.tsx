@@ -48,11 +48,17 @@ export function Navigation() {
               <div className={getTextClasses(false)}>پروژه مدرسه </div>
             </div>
 
-            {/* Report */}
-            <div className={getItemClasses(false)}>
-              <FileText className={cn('w-6 h-6', getIconColor(false))} strokeWidth={1.5} />
-              <div className={getTextClasses(false)}>مدیریت درخواست ها</div>
-            </div>
+            {/* Requests */}
+            <Link
+              href="/StudentDashboard/StudentRequests"
+              className={getItemClasses(isActive('/StudentDashboard/StudentRequests'))}
+            >
+              <FileText
+                className={cn('w-6 h-6', getIconColor(isActive('/StudentDashboard/StudentRequests')))}
+                strokeWidth={1.5}
+              />
+              <div className={getTextClasses(isActive('/StudentDashboard/StudentRequests'))}>مدیریت درخواست ها</div>
+            </Link>
 
             {/* Home */}
             <Link

@@ -11,7 +11,12 @@ import { useAuth } from '@/app/providers/AuthProvider';
 import { Loader2, Camera, User, ChevronLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toEnglishDigits } from '@/lib/number';
-import { PersianDatePicker } from './components/PersianDatePicker';
+import { PersianBirthDateField } from './components/PersianBirthDateField';
+import DateObject from 'react-date-object';
+import persian from 'react-date-object/calendars/persian';
+import persian_fa from 'react-date-object/locales/persian_fa';
+import gregorian from 'react-date-object/calendars/gregorian';
+import gregorian_en from 'react-date-object/locales/gregorian_en';
 import Image from 'next/image';
 
 interface LoginViewCustomerRegisterProps {
@@ -60,7 +65,11 @@ export function LoginViewCustomerRegister({
     formData.append('firstname', toEnglishDigits(data.firstname));
     formData.append('lastname', toEnglishDigits(data.lastname));
     formData.append('gender', String(data.gender));
-    formData.append('birthday', toEnglishDigits(data.birthday));
+    // data.birthday is Jalali "YYYY/MM/DD" — convert to Gregorian via react-date-object
+    const jalaliDate = new DateObject({ date: data.birthday, calendar: persian, locale: persian_fa, format: 'YYYY/MM/DD' });
+    const gregorianDate = jalaliDate.convert(gregorian, gregorian_en);
+    const birthdayGregorian = gregorianDate.format('YYYY-MM-DD');
+    formData.append('birthday', birthdayGregorian);
     formData.append('password', toEnglishDigits(data.password));
     formData.append('password_confirmation', toEnglishDigits(data.password_confirmation));
     formData.append('phone', phone);
@@ -76,7 +85,7 @@ export function LoginViewCustomerRegister({
     if (result.success) {
       onNext();
     } else {
-      setServerError(result.message || 'ثبت نام با خطا مواجه شد');
+      setServerError(result.message || 'خطایی رخ داده است، لطفاً دوباره تلاش کنید');
     }
   };
 
@@ -165,20 +174,16 @@ export function LoginViewCustomerRegister({
             </div>
           </div>
 
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="birthday" className="text-xs font-bold mr-1">
-              تاریخ تولد
-            </Label>
-            <PersianDatePicker
-              value={form.watch('birthday')}
-              onChange={(date) => {
-                form.setValue('birthday', date, { shouldValidate: true });
-              }}
-            />
-            {form.formState.errors.birthday && (
-              <p className="text-red-500 text-xs">{form.formState.errors.birthday.message}</p>
-            )}
-          </div>
+          <PersianBirthDateField
+            label="تاریخ تولد"
+            name="birthday"
+            value={form.watch('birthday')}
+            onChange={(jalali) => form.setValue('birthday', jalali, { shouldValidate: true })}
+            maxYear={1403}
+            minYear={1320}
+            required
+            error={form.formState.errors.birthday?.message}
+          />
 
           <div className="flex flex-col gap-2">
             <Label className="text-xs font-bold mr-1">جنسیت</Label>

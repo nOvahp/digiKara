@@ -4,11 +4,9 @@ import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import {
   PERSIAN_MONTHS,
-  PERSIAN_DAYS,
   gregorianToJalali,
   jalaliToGregorian,
   getDaysInJalaliMonth,
-  formatPersianDate,
 } from '@/lib/persian-date';
 
 interface PersianDatePickerProps {
@@ -17,144 +15,189 @@ interface PersianDatePickerProps {
   className?: string;
 }
 
+function getTodayJalali(): [number, number, number] {
+  const today = new Date();
+  return gregorianToJalali(today.getFullYear(), today.getMonth() + 1, today.getDate());
+}
+
+function parseValueToJalali(value: string): [number, number, number] | null {
+  if (value && value.match(/^\d{4}-\d{2}-\d{2}$/)) {
+    const parts = value.split('-');
+    return gregorianToJalali(parseInt(parts[0]), parseInt(parts[1]), parseInt(parts[2]));
+  }
+  return null;
+}
+
 export function PersianDatePicker({ value, onChange, className = '' }: PersianDatePickerProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [viewDate, setViewDate] = useState<[number, number]>(() => {
-    if (value) {
-      const parts = value.split(/\/|-/);
-      if (parts.length === 3) {
-        return [parseInt(parts[0]), parseInt(parts[1])];
-      }
-    }
-    const today = new Date();
-    const [jy, jm] = gregorianToJalali(today.getFullYear(), today.getMonth() + 1, today.getDate());
-    return [jy, jm];
-  });
 
-  const [jy, jm] = viewDate;
-  const daysInMonth = getDaysInJalaliMonth(jm, jy);
+  const initialDate = (): [number, number, number] => {
+    const parsed = parseValueToJalali(value);
+    return parsed ?? getTodayJalali();
+  };
 
-  const handleDateClick = (day: number) => {
-    const [gy, gm, gd] = jalaliToGregorian(jy, jm, day);
+  const [selYear, setSelYear] = useState<number>(() => initialDate()[0]);
+  const [selMonth, setSelMonth] = useState<number>(() => initialDate()[1]);
+  const [selDay, setSelDay] = useState<number>(() => initialDate()[2]);
+
+  // Keep day within valid range when month/year changes
+  const clampDay = (day: number, month: number, year: number) =>
+    Math.min(day, getDaysInJalaliMonth(month, year));
+
+  const handlePrevYear = () => {
+    const newYear = selYear - 1;
+    setSelYear(newYear);
+    setSelDay((d) => clampDay(d, selMonth, newYear));
+  };
+  const handleNextYear = () => {
+    const newYear = selYear + 1;
+    setSelYear(newYear);
+    setSelDay((d) => clampDay(d, selMonth, newYear));
+  };
+
+  const handlePrevMonth = () => {
+    const newMonth = selMonth === 1 ? 12 : selMonth - 1;
+    const newYear = selMonth === 1 ? selYear - 1 : selYear;
+    setSelMonth(newMonth);
+    setSelYear(newYear);
+    setSelDay((d) => clampDay(d, newMonth, newYear));
+  };
+  const handleNextMonth = () => {
+    const newMonth = selMonth === 12 ? 1 : selMonth + 1;
+    const newYear = selMonth === 12 ? selYear + 1 : selYear;
+    setSelMonth(newMonth);
+    setSelYear(newYear);
+    setSelDay((d) => clampDay(d, newMonth, newYear));
+  };
+
+  const handlePrevDay = () => {
+    const maxDay = getDaysInJalaliMonth(selMonth, selYear);
+    setSelDay((d) => (d === 1 ? maxDay : d - 1));
+  };
+  const handleNextDay = () => {
+    const maxDay = getDaysInJalaliMonth(selMonth, selYear);
+    setSelDay((d) => (d === maxDay ? 1 : d + 1));
+  };
+
+  const handleConfirm = () => {
+    const [gy, gm, gd] = jalaliToGregorian(selYear, selMonth, selDay);
     const dateStr = `${gy}-${String(gm).padStart(2, '0')}-${String(gd).padStart(2, '0')}`;
     onChange(dateStr);
     setIsOpen(false);
   };
 
-  const handlePrevMonth = () => {
-    if (jm === 1) {
-      setViewDate([jy - 1, 12]);
-    } else {
-      setViewDate([jy, jm - 1]);
-    }
+  const handleOpen = () => {
+    // Reset picker to current value or today when opening
+    const d = parseValueToJalali(value) ?? getTodayJalali();
+    setSelYear(d[0]);
+    setSelMonth(d[1]);
+    setSelDay(d[2]);
+    setIsOpen(true);
   };
 
-  const handleNextMonth = () => {
-    if (jm === 12) {
-      setViewDate([jy + 1, 1]);
-    } else {
-      setViewDate([jy, jm + 1]);
-    }
-  };
-
-  const displayValue =
-    value && value.match(/^\d{4}-\d{2}-\d{2}$/)
-      ? (() => {
-          const parts = value.split('-');
-          const [pjy, pjm, pjd] = gregorianToJalali(
-            parseInt(parts[0]),
-            parseInt(parts[1]),
-            parseInt(parts[2])
-          );
-          return `${pjy}/${String(pjm).padStart(2, '0')}/${String(pjd).padStart(2, '0')}`;
-        })()
-      : 'انتخاب تاریخ';
+  const displayValue = (() => {
+    const parsed = parseValueToJalali(value);
+    if (!parsed) return 'انتخاب تاریخ تولد';
+    const [pjy, pjm, pjd] = parsed;
+    return `${pjy} / ${PERSIAN_MONTHS[pjm - 1]} / ${pjd}`;
+  })();
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full" dir="rtl">
       <button
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
-        className={`w-full h-[52px] bg-white rounded-xl border border-[#DCE4E8] px-3 text-right font-num-medium text-[#0D0D12] text-sm hover:border-[#FDD00A] focus:outline-none focus:border-[#FDD00A] transition-colors ${className}`}
+        onClick={handleOpen}
+        className={`w-full h-[52px] bg-white rounded-xl border border-[#DCE4E8] px-4 text-right font-num-medium text-[#0D0D12] text-sm hover:border-[#FDD00A] focus:outline-none focus:border-[#FDD00A] transition-colors ${className}`}
       >
         {displayValue}
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-2 z-50 bg-white border border-[#DFE1E7] rounded-xl shadow-lg p-4">
-          {/* Header with month/year and navigation */}
-          <div className="flex items-center justify-between mb-4">
+        <div className="absolute top-full left-0 right-0 mt-2 z-50 bg-white border border-[#DFE1E7] rounded-xl shadow-lg p-5 select-none">
+
+          {/* ── Year Row ── */}
+          <div className="flex items-center justify-between mb-3">
             <button
               type="button"
-              onClick={handlePrevMonth}
-              className="p-1 hover:bg-gray-100 rounded transition-colors"
+              onClick={handlePrevYear}
+              className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
             >
               <ChevronRight size={20} className="text-[#666D80]" />
             </button>
-            <div className="text-center font-num-medium font-semibold text-[#0D0D12]">
-              <span>{PERSIAN_MONTHS[jm - 1]}</span>
-              <span className="mx-2">{jy}</span>
+            <div className="flex flex-col items-center">
+              <span className="text-[10px] text-[#A0A9B4] mb-0.5">سال</span>
+              <span className="text-lg font-bold text-[#0D0D12] font-num-medium tracking-wider">
+                {selYear}
+              </span>
             </div>
             <button
               type="button"
-              onClick={handleNextMonth}
-              className="p-1 hover:bg-gray-100 rounded transition-colors"
+              onClick={handleNextYear}
+              className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
             >
               <ChevronLeft size={20} className="text-[#666D80]" />
             </button>
           </div>
 
-          {/* Day names */}
-          <div className="grid grid-cols-7 gap-2 mb-2">
-            {PERSIAN_DAYS.map((day) => (
-              <div
-                key={day}
-                className="text-center text-xs font-num-medium text-[#666D80] py-2"
-              >
-                {day}
-              </div>
-            ))}
+          <div className="border-t border-[#F0F2F5] my-2" />
+
+          {/* ── Month Row ── */}
+          <div className="flex items-center justify-between mb-3 mt-3">
+            <button
+              type="button"
+              onClick={handlePrevMonth}
+              className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+            >
+              <ChevronRight size={20} className="text-[#666D80]" />
+            </button>
+            <div className="flex flex-col items-center">
+              <span className="text-[10px] text-[#A0A9B4] mb-0.5">ماه</span>
+              <span className="text-base font-semibold text-[#0D0D12]">
+                {PERSIAN_MONTHS[selMonth - 1]}
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={handleNextMonth}
+              className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+            >
+              <ChevronLeft size={20} className="text-[#666D80]" />
+            </button>
           </div>
 
-          {/* Calendar grid */}
-          <div className="grid grid-cols-7 gap-2">
-            {Array.from({ length: daysInMonth }).map((_, index) => {
-              const day = index + 1;
-              const isSelected = (() => {
-                if (!value || !value.match(/^\d{4}-\d{2}-\d{2}$/)) return false;
-                const parts = value.split('-');
-                const [sjy, sjm, sjd] = gregorianToJalali(
-                  parseInt(parts[0]),
-                  parseInt(parts[1]),
-                  parseInt(parts[2])
-                );
-                return sjy === jy && sjm === jm && sjd === day;
-              })();
+          <div className="border-t border-[#F0F2F5] my-2" />
 
-              return (
-                <button
-                  key={day}
-                  type="button"
-                  onClick={() => handleDateClick(day)}
-                  className={`h-8 rounded-lg text-sm font-num-medium transition-colors ${
-                    isSelected
-                      ? 'bg-[#FDD00A] text-[#0D0D12] font-semibold'
-                      : 'text-[#0D0D12] hover:bg-gray-100'
-                  }`}
-                >
-                  {day}
-                </button>
-              );
-            })}
+          {/* ── Day Row ── */}
+          <div className="flex items-center justify-between mb-4 mt-3">
+            <button
+              type="button"
+              onClick={handlePrevDay}
+              className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+            >
+              <ChevronRight size={20} className="text-[#666D80]" />
+            </button>
+            <div className="flex flex-col items-center">
+              <span className="text-[10px] text-[#A0A9B4] mb-0.5">روز</span>
+              <span className="text-base font-semibold text-[#0D0D12] font-num-medium">
+                {selDay}
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={handleNextDay}
+              className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+            >
+              <ChevronLeft size={20} className="text-[#666D80]" />
+            </button>
           </div>
 
-          {/* Close button */}
+          {/* ── Confirm Button ── */}
           <button
             type="button"
-            onClick={() => setIsOpen(false)}
-            className="w-full mt-4 py-2 text-sm font-semibold text-[#666D80] hover:bg-gray-50 rounded-lg transition-colors"
+            onClick={handleConfirm}
+            className="w-full py-2.5 rounded-xl bg-[#FDD00A] text-[#0D0D12] text-sm font-bold transition-colors hover:bg-[#f5c800]"
           >
-            بستن
+            تایید
           </button>
         </div>
       )}

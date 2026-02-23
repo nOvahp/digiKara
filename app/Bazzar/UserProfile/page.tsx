@@ -63,8 +63,8 @@ export default function UserProfilePage() {
           <User className="w-10 h-10 text-[#FDD00A]" />
         </div>
         <div className="text-center space-y-2 px-6">
-          <h3 className="text-[#0C1415] text-xl font-['PeydaWeb'] font-bold">ورود به حساب کاربری</h3>
-          <p className="text-[#707F81] text-sm font-['PeydaWeb'] leading-relaxed">
+          <h3 className="text-[#0C1415] text-xl font-bold">ورود به حساب کاربری</h3>
+          <p className="text-[#707F81] text-sm font-medium leading-relaxed">
             برای مشاهده پروفایل کاربری خود در بازار، لطفا ابتدا وارد حساب خود شوید.
           </p>
         </div>

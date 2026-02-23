@@ -5,7 +5,59 @@ import { UserData, ApiResponse, UserSchema } from '../common/schemas';
 
 const USE_MOCK_BACKEND = process.env.NEXT_PUBLIC_USE_MOCK_BACKEND === 'true';
 
-// --- Interfaces ---
+// ─── Persian error translation ────────────────────────────────────────────────
+// Maps English backend/Laravel validation messages to Persian equivalents.
+const englishToPersian: Record<string, string> = {
+  // Birthday / date
+  'must be a valid date': 'تاریخ تولد وارد شده معتبر نیست',
+  'birthday field is required': 'وارد کردن تاریخ تولد الزامی است',
+  'birthday': 'تاریخ تولد وارد شده معتبر نیست',
+  // Name
+  'firstname field is required': 'وارد کردن نام الزامی است',
+  'lastname field is required': 'وارد کردن نام خانوادگی الزامی است',
+  // Phone
+  'phone has already been taken': 'این شماره موبایل قبلاً ثبت شده است',
+  'phone field is required': 'شماره موبایل الزامی است',
+  'the phone': 'شماره موبایل وارد شده معتبر نیست',
+  // Password
+  'password field is required': 'وارد کردن رمز عبور الزامی است',
+  'password confirmation does not match': 'تکرار رمز عبور با رمز عبور مطابقت ندارد',
+  'password must be at least': 'رمز عبور باید حداقل ۸ کاراکتر باشد',
+  // Gender
+  'gender field is required': 'انتخاب جنسیت الزامی است',
+  // Generic
+  'the given data was invalid': 'اطلاعات وارد شده معتبر نیست',
+  'unauthenticated': 'لطفاً دوباره وارد شوید',
+  'server error': 'خطای سرور، لطفاً دوباره تلاش کنید',
+  'network error': 'خطا در ارتباط با سرور، اینترنت خود را بررسی کنید',
+  'register failed': 'ثبت‌نام با خطا مواجه شد',
+  'login failed': 'ورود با خطا مواجه شد',
+};
+
+function translateApiError(message: string, errorsObj?: Record<string, string[]>): string {
+  // If backend sends field-level errors object, flatten and translate the first one
+  if (errorsObj && typeof errorsObj === 'object') {
+    const firstField = Object.keys(errorsObj)[0];
+    if (firstField) {
+      const firstMsg = errorsObj[firstField][0] || '';
+      const translated = translateSingleMessage(firstMsg);
+      if (translated !== firstMsg) return translated;
+    }
+  }
+  return translateSingleMessage(message);
+}
+
+function translateSingleMessage(message: string): string {
+  const lower = message.toLowerCase();
+  for (const [key, persian] of Object.entries(englishToPersian)) {
+    if (lower.includes(key.toLowerCase())) return persian;
+  }
+  // If already Persian (contains Persian chars), return as-is
+  if (/[\u0600-\u06FF]/.test(message)) return message;
+  return 'خطایی رخ داده است، لطفاً دوباره تلاش کنید';
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
 
 interface RequestOtpPayload {
   phone: string;
@@ -241,13 +293,15 @@ export const authService = {
       if (response.status === 'success' || response.code === 200) {
         return { success: true, message: response.message };
       }
-      return { success: false, message: response.message || 'Register failed' };
+      return { success: false, message: translateApiError(response.message || 'register failed') };
     } catch (error: unknown) {
-      let message = 'Register failed';
+      let rawMessage = 'register failed';
+      let errorsObj: Record<string, string[]> | undefined;
       if (axios.isAxiosError(error)) {
-        message = error.response?.data?.message || error.message || message;
+        rawMessage = error.response?.data?.message || error.message || rawMessage;
+        errorsObj = error.response?.data?.errors;
       }
-      return { success: false, message };
+      return { success: false, message: translateApiError(rawMessage, errorsObj) };
     }
   },
 

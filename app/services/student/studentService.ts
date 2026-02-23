@@ -5,6 +5,20 @@ export interface AddFavoritesPayload {
   favorite_student_ids: number[];
 }
 
+// ── Student Requests ─────────────────────────────────────────────────────────
+export type StudentRequestStatus = 'تایید شده' | 'در انتظار بررسی' | 'رد شده' | string;
+
+export interface StudentRequest {
+  id: number;
+  user_id: number;
+  school_id: number;
+  model_type: string;
+  model_data: Record<string, unknown>;
+  created_at: string;
+  status: StudentRequestStatus;
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
 export const studentService = {
   verifyNationalId: async (
     nationalCode: string,
@@ -172,6 +186,26 @@ export const studentService = {
         success: false,
         message,
       };
+    }
+  },
+
+  getStudentRequests: async (): Promise<{
+    success: boolean;
+    data?: StudentRequest[];
+    message?: string;
+  }> => {
+    try {
+      const response = await apiClient.get<ApiResponse<StudentRequest[]>>(
+        '/student/student_requests',
+      );
+      if (response.status === 'success' || response.code === 200) {
+        return { success: true, data: response.data };
+      }
+      return { success: false, message: response.message || 'خطا در دریافت درخواست‌ها' };
+    } catch (error: unknown) {
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
     }
   },
 };
