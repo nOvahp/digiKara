@@ -301,6 +301,47 @@ export const managerService = {
 
 
 
+  getSchoolProfile: async (): Promise<{
+    success: boolean;
+    data?: {
+      id?: number;
+      name?: string;
+      province?: string;
+      city?: string;
+      district?: string;
+      address?: string;
+      phone?: string;
+      postal_code?: string;
+    };
+    message?: string;
+  }> => {
+    try {
+      const response = await apiClient.get<ApiResponse<{
+        id?: number;
+        name?: string;
+        province?: string;
+        city?: string;
+        district?: string;
+        address?: string;
+        phone?: string;
+        postal_code?: string;
+      }>>('/manager/school');
+
+      if (response.status === 'success' || response.code === 200) {
+        return { success: true, data: response.data };
+      }
+      return {
+        success: false,
+        message: response.message || 'خطا در دریافت اطلاعات مدرسه',
+      };
+    } catch (error: unknown) {
+      console.error('getSchoolProfile Error:', error);
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
+    }
+  },
+
   // Manager Orders
   getManagerOrders: async (): Promise<{
     success: boolean;

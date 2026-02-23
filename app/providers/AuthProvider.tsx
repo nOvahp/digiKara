@@ -34,6 +34,7 @@ type AuthContextType = {
     password: string;
   }) => Promise<{ success: boolean; token?: string; message?: string }>;
   logoutCustomer: () => Promise<{ success: boolean; message?: string }>;
+  sendCustomerSms: (phone: string) => Promise<{ success: boolean; message?: string }>;
   reportIssue: (data: Record<string, unknown>) => Promise<{ success: boolean; message?: string }>;
   saveStudentData: (data: {
     meta: unknown;
@@ -144,6 +145,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return result;
   };
 
+  const sendCustomerSms = async (phone: string) => {
+    return await authService.sendCustomerSms(phone);
+  };
+
   const reportIssue = async (data: Record<string, unknown>) => {
     return await authService.reportIssue(data);
   };
@@ -172,6 +177,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signIn,
     registerCustomer,
     loginCustomer,
+    sendCustomerSms,
     reportIssue,
     saveStudentData,
     signOut,

@@ -703,7 +703,7 @@ function ColorPickerModal({ startColor, onClose, onConfirm }: ColorPickerModalPr
           <label className="text-right text-sm font-medium text-gray-600 font-['PeydaWeb']">
             پیش‌فرض‌ها
           </label>
-          <div className="grid grid-cols-6 gap-2">
+          <div className="flex flex-wrap gap-2">
             {[
               '#FF3B30',
               '#FF9500',

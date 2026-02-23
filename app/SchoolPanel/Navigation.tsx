@@ -54,7 +54,7 @@ export function Navigation() {
                 className={cn('w-6 h-6', getIconColor(isActive('/SchoolPanel/Reports')))}
                 strokeWidth={1.5}
               />
-              <div className={getTextClasses(isActive('/SchoolPanel/Reports'))}>گزارش</div>
+              <div className={getTextClasses(isActive('/SchoolPanel/Reports'))}>سفارش ها</div>
             </Link>
 
             {/* Home (Main Page) */}
@@ -90,7 +90,7 @@ export function Navigation() {
                     pathname.startsWith('/SchoolPanel/Timche'),
                 )}
               >
-                پروژه ها
+               محصولات
               </div>
             </Link>
 

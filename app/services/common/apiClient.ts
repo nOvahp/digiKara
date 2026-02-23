@@ -57,7 +57,8 @@ axiosInstance.interceptors.response.use(
     if (error.response?.status === 401) {
       removeToken();
       if (typeof window !== 'undefined') {
-        window.location.href = '/login';
+        const isBazzar = window.location.pathname.toLowerCase().startsWith('/bazzar');
+        window.location.href = isBazzar ? '/login?role=customer' : '/login';
       }
     }
 

@@ -253,7 +253,7 @@ const SchoolHomePage = () => {
       </div>
 
       {/* Recent Reports Section */}
-      <div className="flex flex-col gap-4 w-full mt-2">
+      {/* <div className="flex flex-col gap-4 w-full mt-2">
         <div className="flex justify-between items-center w-full">
           <h2 className="text-[#0D0D12] text-xl font-['PeydaWeb'] font-semibold">گزارش‌های اخیر</h2>
           <div className="flex items-center gap-1 cursor-pointer">
@@ -262,10 +262,10 @@ const SchoolHomePage = () => {
             </span>
             <ChevronLeft className="w-4 h-4 text-[#6C7278]" />
           </div>
-        </div>
+        </div> */}
 
         {/* Report Item 1 */}
-        <div className="w-full h-[61px] py-2 pl-[14px] pr-4 rounded-xl border border-[#DCE4E8] flex justify-start items-center gap-3">
+        {/* <div className="w-full h-[61px] py-2 pl-[14px] pr-4 rounded-xl border border-[#DCE4E8] flex justify-start items-center gap-3">
           <div className="w-[46px] h-[46px] bg-[#F8CB2E] rounded-lg flex items-center justify-center shadow-sm">
             <FileText className="w-6 h-6 text-[#0D0D12]" strokeWidth={1.5} />
           </div>
@@ -290,10 +290,10 @@ const SchoolHomePage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Cooperation Section */}
-      <div className="flex flex-col gap-4 w-full mt-2">
+      {/* <div className="flex flex-col gap-4 w-full mt-2">
         <div className="flex justify-between items-center w-full">
           <h2 className="text-[#0D0D12] text-l font-['PeydaWeb'] font-semibold">
             مشارکت های فعال با تیمچه های دیگر
@@ -351,7 +351,7 @@ const SchoolHomePage = () => {
             <ArrowLeft className="w-5 h-5 text-[#393E46]" />
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Smart Suggestions */}
       <div className="flex flex-col gap-4 w-full mt-2">

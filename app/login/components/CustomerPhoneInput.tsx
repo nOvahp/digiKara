@@ -21,7 +21,7 @@ export function CustomerPhoneInput({
   onNext: (phone: string, status?: number) => void;
   onCustomerLogin: (phone: string) => void;
 }) {
-  const { requestOtp } = useAuth();
+  const { requestOtp, sendCustomerSms } = useAuth();
   const [serverError, setServerError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -35,17 +35,23 @@ export function CustomerPhoneInput({
     setServerError('');
     const fullPhone = '0' + data.phoneNumber;
     const result = await requestOtp(fullPhone);
-    setIsLoading(false);
 
     if (result.success) {
       // status=3: existing customer with password, skip OTP entirely
       if (result.status === 3) {
+        setIsLoading(false);
         onCustomerLogin(fullPhone);
         return;
       }
+      // status=2: existing customer, trigger SMS OTP via dedicated endpoint
+      if (result.status === 2) {
+        await sendCustomerSms(fullPhone);
+      }
+      setIsLoading(false);
       // status=1: new customer, status=2: existing via OTP
       onNext(fullPhone, result.status);
     } else {
+      setIsLoading(false);
       setServerError(result.message || 'خطا در ارسال کد');
     }
   };

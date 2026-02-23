@@ -11,11 +11,13 @@ import { SmartSuggestions } from './features/overview/SmartSuggestions';
 import OrderReviews from './features/orders/OrderReviews';
 import { Navigation } from './layout/Navigation';
 import DashboardEmptyPage from './hojreCreation/page';
+import { shopService } from '../services/student/shopService';
 
 export function HomePage() {
   const router = useRouter();
-  const { user: authUser, isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
   const [hasHojre, setHasHojre] = React.useState<boolean | null>(null);
+  const [isApproved, setIsApproved] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     // If not loading and not authenticated, redirect
@@ -29,6 +31,16 @@ export function HomePage() {
     // Or we could derive it from authUser if available
     const created = localStorage.getItem('hojre_created');
     setHasHojre(created === 'true');
+
+    // Fetch fresh cell data to get latest approved status
+    if (created === 'true') {
+      shopService.getShop().then((res) => {
+        if (res.success && res.hasShop && res.data) {
+          const cellData = Array.isArray(res.data) ? res.data[0] : res.data;
+          setIsApproved(!!(cellData?.approved || cellData?.is_active || cellData?.active));
+        }
+      });
+    }
   }, []);
 
   if (isLoading) {
@@ -54,18 +66,6 @@ export function HomePage() {
   if (!hasHojre) {
     return <DashboardEmptyPage />;
   }
-
-  // Use authUser if available, otherwise fallback (though useAuth is preferred source of truth)
-  const userToUse = authUser || {};
-  console.log('Dashboard User Data:', userToUse);
-  
-  // Support both { cell: ... } and { user: { cell: ... } } structures
-  // AuthProvider usually returns flat UserData, but let's be safe matching original logic
-  const actualUser = ((userToUse as any)?.user || userToUse) as Record<string, unknown>;
-
-  // Robust check for cell: handle single object or array, and multiple field names
-  const cell = Array.isArray(actualUser?.cell) ? actualUser.cell[0] : actualUser?.cell;
-  const isApproved = !!(cell?.approved || cell?.is_active || cell?.active);
 
   return (
     <div className="w-full min-h-screen pb-24 font-['PeydaWeb']" dir="rtl">

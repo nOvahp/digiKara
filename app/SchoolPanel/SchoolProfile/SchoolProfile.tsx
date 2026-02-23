@@ -4,20 +4,20 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import {
   ChevronDown,
-  FileText,
-  Users,
-  Edit2,
   MoreHorizontal,
   MapPin,
   Phone,
-  LayoutGrid,
   Briefcase,
   Filter,
   Search,
   ChevronLeft,
   ChevronRight,
+  User,
+  CreditCard,
+  Map,
 } from 'lucide-react';
 import { cn } from '../../../lib/utils';
+import { managerService } from '../../services/manager/managerService';
 
 const toFarsiNumber = (n: number | string | undefined): string => {
   if (n === undefined || n === null) return '';
@@ -27,29 +27,44 @@ const toFarsiNumber = (n: number | string | undefined): string => {
 interface Student {
   id: number;
   name: string;
-  nationalId: string;
   grade: string;
   major: string;
   status: 'active' | 'inactive';
 }
 
-const studentsData: Student[] = Array.from({ length: 50 }).map((_, i) => ({
-  id: i + 1,
-  name:
-    [
-      'امیرعلی محمدی',
-      'پیمان فرهادی',
-      'محمدحسین احمدی',
-      'علیرضا حسینی',
-      'رضا کریمی',
-      'مهدی عباسی',
-      'حامد باقری',
-    ][i % 7] + ` ${toFarsiNumber(i + 1)}`,
-  nationalId: '0023456789',
-  grade: 'یازدهم',
-  major: 'شبکه و نرم افزار',
-  status: i % 4 === 0 ? 'inactive' : 'active',
-}));
+interface StudentRequest {
+  id: number;
+  user_id: number;
+  school_id: number;
+  firstname: string;
+  lastname: string;
+  school_name: string;
+  field: string;
+  grade: string;
+  status: string | number;
+  created_at: string;
+  model_data?: {
+    name?: string;
+    skill?: string;
+    experience?: string;
+    description?: string;
+  };
+}
+
+interface SchoolInfo {
+  name: string;
+  id: string;
+  location: string;
+  managerName: string;
+  nationalCode: string;
+  district: string;
+  phone: string;
+}
+
+const mapStudentStatus = (status: string | number): 'active' | 'inactive' => {
+  if (status === 2 || status === '2' || status === 'approved') return 'active';
+  return 'inactive';
+};
 
 export default function SchoolProfile() {
   const [expandedSections, setExpandedSections] = useState({
@@ -61,6 +76,25 @@ export default function SchoolProfile() {
   const toggleSection = (section: keyof typeof expandedSections) => {
     setExpandedSections((prev) => ({ ...prev, [section]: !prev[section] }));
   };
+
+  // Data state
+  const [students, setStudents] = useState<Student[]>([]);
+  const [schoolInfo, setSchoolInfo] = useState<SchoolInfo>({
+    name: '—',
+    id: '—',
+    location: '—',
+    managerName: '—',
+    nationalCode: '—',
+    district: '—',
+    phone: '—',
+  });
+  const [stats, setStats] = useState({
+    studentsCount: 0,
+    ordersCount: 0,
+    timcheCount: 0,
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Table State & Logic
   const [currentPage, setCurrentPage] = useState(1);
@@ -88,6 +122,71 @@ export default function SchoolProfile() {
     }
   }, []);
 
+  // Fetch all data from backend
+  React.useEffect(() => {
+    const load = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        // Read school info from localStorage (no dedicated GET /manager/school endpoint)
+        try {
+          const raw = localStorage.getItem('user_data');
+          if (raw) {
+            const u = JSON.parse(raw);
+            const firstName = u.firstname || '';
+            const lastName = u.lastname || '';
+            const fullName = [firstName, lastName].filter(Boolean).join(' ');
+            setSchoolInfo({
+              name: u.school || '—',
+              id: u.school_id ? String(u.school_id) : (u.id ? String(u.id) : '—'),
+              location: [u.province, u.city].filter(Boolean).join('، ') || '—',
+              managerName: fullName || '—',
+              nationalCode: u.national_code || '—',
+              district: u.district || '—',
+              phone: u.phone || '—',
+            });
+          }
+        } catch {
+          // localStorage unavailable
+        }
+
+        const [studentsRes, ordersRes, productsRes] = await Promise.all([
+          managerService.getStudentRequests(),
+          managerService.getManagerOrders(),
+          managerService.getManagerProducts(),
+        ]);
+
+        // Map API students to display format
+        const mappedStudents: Student[] = [];
+        if (studentsRes.success && studentsRes.data) {
+          (studentsRes.data as StudentRequest[]).forEach((s) => {
+            mappedStudents.push({
+              id: s.id,
+              name: `${s.firstname || ''} ${s.lastname || ''}`.trim() || '—',
+              grade: s.grade || '—',
+              major: s.field || '—',
+              status: mapStudentStatus(s.status),
+            });
+          });
+          setStudents(mappedStudents);
+        }
+
+        setStats({
+          studentsCount: mappedStudents.length,
+          ordersCount: (ordersRes.success && ordersRes.data) ? ordersRes.data.length : 0,
+          timcheCount: (productsRes.success && productsRes.data) ? productsRes.data.length : 0,
+        });
+      } catch {
+        setError('خطا در دریافت اطلاعات. لطفاً دوباره تلاش کنید.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    load();
+  }, []);
+
   const handleFilterChange = (value: string) => {
     setSelectedFilters((prev) => {
       if (prev.includes(value)) {
@@ -104,16 +203,18 @@ export default function SchoolProfile() {
     { label: 'غیرفعال', value: 'inactive' },
   ];
 
-  const filteredStudents = studentsData.filter((student) => {
+  const filteredStudents = students.filter((student) => {
     if (selectedFilters.length === 0) return true;
     return selectedFilters.includes(student.status);
   });
 
   const itemsPerPage = 8;
-  const totalPages = Math.ceil(filteredStudents.length / itemsPerPage);
+  const totalPages = Math.max(1, Math.ceil(filteredStudents.length / itemsPerPage));
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentStudents = filteredStudents.slice(indexOfFirstItem, indexOfLastItem);
+
+  const [expandedNameId, setExpandedNameId] = useState<number | null>(null);
 
   const handlePrevPage = () => {
     if (currentPage > 1) setCurrentPage((prev) => prev - 1);
@@ -128,11 +229,16 @@ export default function SchoolProfile() {
       {/* Header / Profile Summary */}
       <div className="w-full flex flex-col items-center gap-4 pt-6 px-0">
         <div className="w-full flex justify-between items-center mb-2">
-          <div className="text-[#0D0D12] text-xl font-['PeydaWeb'] font-semibold">
+          <div className="text-[#0D0D12] text-xl font-semibold">
             پروفایل مدارس
           </div>
-          {/* Placeholder for top left menu or notification if needed, usually empty in this design or back button */}
         </div>
+
+        {error && (
+          <div className="w-full bg-red-50 border border-red-200 rounded-xl p-3 text-red-600 text-sm font-['PeydaWeb'] text-center">
+            {error}
+          </div>
+        )}
 
         <div className="flex flex-col items-center gap-3">
           <div className="w-[120px] h-[120px] relative rounded-full overflow-hidden border border-[#DFE1E7]">
@@ -140,76 +246,67 @@ export default function SchoolProfile() {
           </div>
           <div className="flex flex-col items-center gap-1">
             <h1 className="text-[#222831] text-base font-num-medium font-extrabold">
-              مدرسه هنرهای زیبا
+              {loading ? '...' : schoolInfo.name}
             </h1>
             <div className="flex items-center gap-2 text-[#61656B] text-xs font-num-medium font-extrabold">
-              <span>شناسه: {toFarsiNumber(123456)}</span>
-              <span className="w-1 h-1 rounded-full bg-[#61656B]"></span>
-              <span>ابهر، زنجان</span>
+              {schoolInfo.id !== '—' && (
+                <>
+                  <span>شناسه: {toFarsiNumber(schoolInfo.id)}</span>
+                  <span className="w-1 h-1 rounded-full bg-[#61656B]"></span>
+                </>
+              )}
+              <span>{loading ? '...' : schoolInfo.location}</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Quick Access */}
-      <div className="w-full px-0 mt-6 flex flex-col gap-2">
+      {/* <div className="w-full px-0 mt-6 flex flex-col gap-2">
         <div className="text-[#0D0D12] text-xl font-['PeydaWeb'] font-semibold text-right">
           دسترسی سریع
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2"> */}
           {/* Reports */}
-          <button className="flex-1 bg-[#FDD00A] rounded-lg p-2 pr-4 flex items-center justify-between hover:bg-[#e5bc09] transition-colors">
+          {/* <button className="flex-1 bg-[#FDD00A] rounded-lg p-2 pr-4 flex items-center justify-between hover:bg-[#e5bc09] transition-colors">
             <span className="text-[#0F172A] text-sm font-['PeydaWeb'] font-semibold">گزارش ها</span>
             <div className="w-9 h-9 bg-white rounded-md flex items-center justify-center">
               <FileText className="w-5 h-5 text-[#0A0A0A]" strokeWidth={1.5} />
             </div>
-          </button>
+          </button> */}
           {/* Students */}
-          <button className="flex-1 bg-[#FDD00A] rounded-lg p-2 pr-4 flex items-center justify-between hover:bg-[#e5bc09] transition-colors">
+          {/* <button className="flex-1 bg-[#FDD00A] rounded-lg p-2 pr-4 flex items-center justify-between hover:bg-[#e5bc09] transition-colors">
             <span className="text-[#0F172A] text-sm font-['PeydaWeb'] font-semibold">
               دانش آموزان
             </span>
             <div className="w-9 h-9 bg-white rounded-md flex items-center justify-center">
               <Users className="w-5 h-5 text-[#0A0A0A]" strokeWidth={1.5} />
             </div>
-          </button>
+          </button> */}
           {/* Edit */}
-          <button className="flex-1 bg-[#FDD00A] rounded-lg p-2 pr-4 flex items-center justify-between hover:bg-[#e5bc09] transition-colors">
+          {/* <button className="flex-1 bg-[#FDD00A] rounded-lg p-2 pr-4 flex items-center justify-between hover:bg-[#e5bc09] transition-colors">
             <span className="text-[#0F172A] text-sm font-['PeydaWeb'] font-semibold">ویرایش</span>
             <div className="w-9 h-9 bg-white rounded-md flex items-center justify-center">
               <Edit2 className="w-5 h-5 text-[#0A0A0A]" strokeWidth={1.5} />
             </div>
           </button>
         </div>
-      </div>
+      </div> */}
 
       {/* Stats Grid */}
       <div className="w-full px-0 mt-8 flex flex-col gap-3">
         <div className="flex gap-3">
-          {/* Staff */}
-          <div className="flex-1 bg-white border border-[#DFE1E7] rounded-xl p-4 shadow-sm flex flex-col items-center gap-2">
-            <span className="text-[#818898] text-sm font-['PeydaWeb'] font-semibold">
-              کادر آموزشی
-            </span>
-            <span className="text-[#0D0D12] text-2xl font-num-medium font-semibold">
-              {toFarsiNumber(32)}
-            </span>
-            <span className="text-[#818898] text-xs font-['PeydaWeb'] font-light">
-              فعال در ترم جاری
-            </span>
-          </div>
           {/* Students */}
           <div className="flex-1 bg-white border border-[#DFE1E7] rounded-xl p-4 shadow-sm flex flex-col items-center gap-2">
             <span className="text-[#818898] text-sm font-['PeydaWeb'] font-semibold">
               کل دانش‌آموزان
             </span>
             <span className="text-[#0D0D12] text-2xl font-num-medium font-semibold">
-              {toFarsiNumber(450)}
+              {loading ? '...' : toFarsiNumber(stats.studentsCount)}
             </span>
-            <div className="text-xs">
-              <span className="text-[#818898] font-num-medium mx-1">{toFarsiNumber(15)}+</span>
-              <span className="text-[#818898] font-['PeydaWeb'] font-light">در ماه گذشته</span>
-            </div>
+            <span className="text-[#818898] text-xs font-['PeydaWeb'] font-light">
+              ثبت‌نام شده
+            </span>
           </div>
         </div>
         <div className="flex gap-3">
@@ -217,24 +314,23 @@ export default function SchoolProfile() {
           <div className="flex-1 bg-white border border-[#DFE1E7] rounded-xl p-4 shadow-sm flex flex-col items-center gap-2">
             <span className="text-[#818898] text-sm font-['PeydaWeb'] font-semibold">سفارشات</span>
             <span className="text-[#0D0D12] text-2xl font-num-medium font-semibold">
-              {toFarsiNumber(340)}
+              {loading ? '...' : toFarsiNumber(stats.ordersCount)}
             </span>
             <span className="text-[#818898] text-xs font-['PeydaWeb'] font-light">
-              در ماه گذشته
+              کل سفارشات
             </span>
           </div>
           {/* Active Timches */}
           <div className="flex-1 bg-white border border-[#DFE1E7] rounded-xl p-4 shadow-sm flex flex-col items-center gap-2">
             <span className="text-[#818898] text-sm font-['PeydaWeb'] font-semibold">
-              تیمچه های فعال
+             محصولات
             </span>
             <span className="text-[#0D0D12] text-2xl font-num-medium font-semibold">
-              {toFarsiNumber(8)}
+              {loading ? '...' : toFarsiNumber(stats.timcheCount)}
             </span>
-            <div className="text-xs">
-              <span className="text-[#818898] font-num-medium mx-1">{toFarsiNumber(1)}+</span>
-              <span className="text-[#818898] font-['PeydaWeb'] font-light">حمایت در ترم جاری</span>
-            </div>
+            <span className="text-[#818898] text-xs font-['PeydaWeb'] font-light">
+              محصولات ثبت شده
+            </span>
           </div>
         </div>
       </div>
@@ -257,46 +353,75 @@ export default function SchoolProfile() {
                 expandedSections.basic ? 'rotate-180' : '',
               )}
             />
-            <span className="text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold">
+            <span className="text-[#0D0D12] text-sm  font-semibold">
               اطلاعات پایه و تماس
             </span>
           </div>
 
           {expandedSections.basic && (
             <div className="flex flex-col gap-2 mt-2">
-              {/* Official Name */}
+              {/* Official School Name */}
               <div className="w-full bg-[#fcfcfc] border border-[#DCE4E8] rounded-xl p-3 flex items-center justify-between">
                 <div className="bg-[#F8CB2E] w-[46px] h-[46px] rounded-lg flex items-center justify-center shrink-0">
                   <Briefcase className="w-6 h-6 text-[#0D0D12]" />
                 </div>
                 <div className="flex-1 flex flex-col items-start pr-3">
-                  <span className="text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold">
-                    نام رسمی
+                  <span className="text-[#0D0D12] text-sm font-semibold">نام مدرسه</span>
+                  <span className="text-[#818898] text-[10px] font-semibold mt-1">
+                    {loading ? '...' : schoolInfo.name}
                   </span>
-                  <span className="text-[#818898] text-[10px] font-['PeydaWeb'] font-semibold mt-1">
-                    مدرسه فنی حرفه‌ای آینده‌سازان (دوره دوم)
-                  </span>
-                </div>
-                <div className="border border-[#DFE1E7] bg-white rounded-lg p-2 shadow-sm">
-                  <Edit2 className="w-4 h-4 text-[#818898]" />
                 </div>
               </div>
 
-              {/* Address */}
+              {/* Manager Name */}
+              <div className="w-full bg-[#fcfcfc] border border-[#DCE4E8] rounded-xl p-3 flex items-center justify-between">
+                <div className="bg-[#F8CB2E] w-[46px] h-[46px] rounded-lg flex items-center justify-center shrink-0">
+                  <User className="w-6 h-6 text-[#0D0D12]" />
+                </div>
+                <div className="flex-1 flex flex-col items-start pr-3">
+                  <span className="text-[#0D0D12] text-sm font-semibold">نام مدیر</span>
+                  <span className="text-[#818898] text-[10px] font-semibold mt-1">
+                    {loading ? '...' : schoolInfo.managerName}
+                  </span>
+                </div>
+              </div>
+
+              {/* National Code */}
+              <div className="w-full bg-[#fcfcfc] border border-[#DCE4E8] rounded-xl p-3 flex items-center justify-between">
+                <div className="bg-[#F8CB2E] w-[46px] h-[46px] rounded-lg flex items-center justify-center shrink-0">
+                  <CreditCard className="w-6 h-6 text-[#0D0D12]" />
+                </div>
+                <div className="flex-1 flex flex-col items-start pr-3">
+                  <span className="text-[#0D0D12] text-sm font-semibold">کد ملی</span>
+                  <span className="text-[#818898] text-[10px] font-semibold mt-1">
+                    {loading ? '...' : toFarsiNumber(schoolInfo.nationalCode)}
+                  </span>
+                </div>
+              </div>
+
+              {/* Province & City */}
               <div className="w-full bg-[#fcfcfc] border border-[#DCE4E8] rounded-xl p-3 flex items-center justify-between">
                 <div className="bg-[#F8CB2E] w-[46px] h-[46px] rounded-lg flex items-center justify-center shrink-0">
                   <MapPin className="w-6 h-6 text-[#0D0D12]" />
                 </div>
                 <div className="flex-1 flex flex-col items-start pr-3">
-                  <span className="text-[#0D0D12] text-sm font-['PeydaWeb'] font-semibold">
-                    آدرس
-                  </span>
-                  <span className="text-[#818898] text-[10px] font-['PeydaWeb'] font-semibold mt-1 text-right leading-tight">
-                    تهران، خیابان ولیعصر، نرسیده به میدان ونک، پلاک ۱۲
+                  <span className="text-[#0D0D12] text-sm font-semibold">استان - شهر</span>
+                  <span className="text-[#818898] text-[10px] font-semibold mt-1 text-right leading-tight">
+                    {loading ? '...' : schoolInfo.location}
                   </span>
                 </div>
-                <div className="border border-[#DFE1E7] bg-white rounded-lg p-2 shadow-sm">
-                  <Edit2 className="w-4 h-4 text-[#818898]" />
+              </div>
+
+              {/* District */}
+              <div className="w-full bg-[#fcfcfc] border border-[#DCE4E8] rounded-xl p-3 flex items-center justify-between">
+                <div className="bg-[#F8CB2E] w-[46px] h-[46px] rounded-lg flex items-center justify-center shrink-0">
+                  <Map className="w-6 h-6 text-[#0D0D12]" />
+                </div>
+                <div className="flex-1 flex flex-col items-start pr-3">
+                  <span className="text-[#0D0D12] text-sm font-semibold">منطقه</span>
+                  <span className="text-[#818898] text-[10px] font-semibold mt-1">
+                    {loading ? '...' : schoolInfo.district}
+                  </span>
                 </div>
               </div>
 
@@ -306,31 +431,10 @@ export default function SchoolProfile() {
                   <Phone className="w-6 h-6 text-[#0D0D12]" />
                 </div>
                 <div className="flex-1 flex flex-col items-start pr-3">
-                  <span className="text-[#0D0D12] text-xs font-['PeydaWeb'] font-black">تلفن</span>
-                  <span className="text-[#818898] text-[10px] font-['PeydaWeb'] font-semibold mt-1">
-                    {toFarsiNumber('021-88881234')}
+                  <span className="text-[#0D0D12] text-sm font-semibold">شماره موبایل</span>
+                  <span className="text-[#818898] text-[10px] font-semibold mt-1">
+                    {loading ? '...' : toFarsiNumber(schoolInfo.phone)}
                   </span>
-                </div>
-                <div className="border border-[#DFE1E7] bg-white rounded-lg p-2 shadow-sm">
-                  <Edit2 className="w-4 h-4 text-[#818898]" />
-                </div>
-              </div>
-
-              {/* Postal Code */}
-              <div className="w-full bg-[#fcfcfc] border border-[#DCE4E8] rounded-xl p-3 flex items-center justify-between">
-                <div className="bg-[#F8CB2E] w-[46px] h-[46px] rounded-lg flex items-center justify-center shrink-0">
-                  <LayoutGrid className="w-6 h-6 text-[#0D0D12]" />
-                </div>
-                <div className="flex-1 flex flex-col items-start pr-3">
-                  <span className="text-[#0D0D12] text-xs font-['PeydaWeb'] font-black">
-                    کد پستی
-                  </span>
-                  <span className="text-[#818898] text-[10px] font-['PeydaWeb'] font-semibold mt-1">
-                    {toFarsiNumber(1991645893)}
-                  </span>
-                </div>
-                <div className="border border-[#DFE1E7] bg-white rounded-lg p-2 shadow-sm">
-                  <Edit2 className="w-4 h-4 text-[#818898]" />
                 </div>
               </div>
             </div>
@@ -338,7 +442,7 @@ export default function SchoolProfile() {
         </div>
 
         {/* Majors */}
-        <div
+        {/* <div
           className="w-full bg-white border border-[#DFE1E7] rounded-xl py-3 flex items-center justify-between cursor-pointer"
           onClick={() => toggleSection('majors')}
         >
@@ -353,10 +457,10 @@ export default function SchoolProfile() {
               رشته ها و کارگاه های فعال
             </span>
           </div>
-        </div>
+        </div> */}
 
         {/* Licenses */}
-        <div
+        {/* <div
           className="w-full bg-white border border-[#DFE1E7] rounded-xl py-3 flex items-center justify-between cursor-pointer"
           onClick={() => toggleSection('licenses')}
         >
@@ -371,24 +475,12 @@ export default function SchoolProfile() {
               اطلاعات مجوز ها و اسناد
             </span>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* Active Users */}
       <div className="w-full px-0 mt-8 flex flex-col gap-4">
-        <div className="text-[#0D0D12] text-xl font-['PeydaWeb'] font-semibold text-right">
-          کاربران فعال
-        </div>
-
-        {/* Tabs */}
-        <div className="w-full bg-[#F6F6F6] border border-[#D7D8DA] rounded-lg p-1 flex">
-          <button className="flex-1 py-1 rounded-md text-[#0A0A0A] text-sm font-['PeydaWeb'] font-semibold">
-            کادر آموزشی
-          </button>
-          <button className="flex-1 py-1 bg-[#F7C61A] rounded-md text-[#0A0A0A] text-sm font-['PeydaWeb'] font-semibold shadow-sm">
-            دانش آموزان
-          </button>
-        </div>
+       
 
         {/* Table */}
         <div className="w-full bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] flex flex-col justify-start items-end overflow-hidden">
@@ -484,30 +576,52 @@ export default function SchoolProfile() {
               </div>
 
               {/* Body Rows */}
-              {currentStudents.map((student) => (
+              {loading ? (
+                <div className="flex items-center justify-center py-16 text-[#818898] text-sm font-medium">
+                  در حال بارگذاری...
+                </div>
+              ) : currentStudents.length === 0 ? (
+                <div className="flex items-center justify-center py-16 text-[#818898] text-sm font-medium">
+                  داده‌ای برای نمایش وجود ندارد
+                </div>
+              ) : (
+                currentStudents.map((student) => (
                 <div
                   key={student.id}
                   className="flex items-center py-3 px-3 border-b border-[#DFE1E7] last:border-0 hover:bg-gray-50 transition-colors group"
                 >
-                  <div className="w-[80px] flex items-center justify-center gap-2">
-                    <div className="w-4 h-4 border border-[#DFE1E7] rounded bg-white cursor-pointer"></div>
-                    <span className="text-[#0D0D12] font-num-medium font-semibold">
+                  <div className="w-[80px] flex items-center justify-center gap-2 shrink-0">
+                    <div className="w-4 h-4 border border-[#DFE1E7] rounded bg-white cursor-pointer shrink-0"></div>
+                    <span className="text-[#0D0D12] font-num-medium font-semibold whitespace-nowrap">
                       {toFarsiNumber(student.id)}
                     </span>
                   </div>
-                  <div className="flex-1 text-right pr-4 text-[#0D0D12] text-sm font-medium">
+                  <div
+                    className={cn(
+                      'flex-1 text-right pr-4 text-[#0D0D12] text-sm font-medium cursor-pointer select-none transition-all',
+                      expandedNameId === student.id
+                        ? 'whitespace-normal break-words'
+                        : 'truncate whitespace-nowrap min-w-0',
+                    )}
+                    onClick={() =>
+                      setExpandedNameId((prev) =>
+                        prev === student.id ? null : student.id,
+                      )
+                    }
+                    title={student.name}
+                  >
                     {student.name}
                   </div>
-                  <div className="w-[120px] text-center text-[#0D0D12] text-sm font-medium">
+                  <div className="w-[120px] shrink-0 text-center text-[#0D0D12] text-sm font-medium truncate whitespace-nowrap">
                     {student.grade}
                   </div>
-                  <div className="w-[150px] text-center text-[#0D0D12] text-sm font-medium">
+                  <div className="w-[150px] shrink-0 text-center text-[#0D0D12] text-sm font-medium truncate whitespace-nowrap">
                     {student.major}
                   </div>
-                  <div className="w-[78px] flex justify-center">
+                  <div className="w-[78px] shrink-0 flex justify-center">
                     <div
                       className={cn(
-                        'px-2 py-0.5 rounded-full text-xs font-num-medium',
+                        'px-2 py-0.5 rounded-full text-xs font-num-medium whitespace-nowrap',
                         student.status === 'active'
                           ? 'bg-[#ECF9F7] text-[#267666]'
                           : 'bg-[#FCE8EC] text-[#B21634]',
@@ -516,11 +630,12 @@ export default function SchoolProfile() {
                       {student.status === 'active' ? 'فعال' : 'غیرفعال'}
                     </div>
                   </div>
-                  <div className="w-[44px] flex justify-center">
+                  <div className="w-[44px] shrink-0 flex justify-center">
                     <MoreHorizontal className="w-5 h-5 text-[#818898]" />
                   </div>
                 </div>
-              ))}
+              ))
+              )}
             </div>
           </div>
 
@@ -552,12 +667,7 @@ export default function SchoolProfile() {
         </div>
       </div>
 
-      {/* Update Button */}
-      <div className="w-full px-0 mt-8 pb-8">
-        <button className="w-full bg-[#FDD00A] rounded-xl py-3 text-[#1A1C1E] text-lg font-['PeydaWeb'] font-semibold hover:bg-[#e5bc09] transition-colors">
-          بروز رسانی اطلاعات مدارس
-        </button>
-      </div>
+
     </div>
   );
 }

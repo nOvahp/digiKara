@@ -91,11 +91,16 @@ const HojreRequestsTable = () => {
     return matchesSearch && matchesStatus;
   });
 
+  // Sort newest first
+  const sortedRequests = [...filteredRequests].sort(
+    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+  );
+
   // Pagination Logic
-  const totalPages = Math.ceil(filteredRequests.length / itemsPerPage);
+  const totalPages = Math.ceil(sortedRequests.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredRequests.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = sortedRequests.slice(indexOfFirstItem, indexOfLastItem);
 
   // Reset pagination on filter change
   useEffect(() => {
@@ -154,11 +159,9 @@ const HojreRequestsTable = () => {
   return (
     <div className="w-full flex flex-col gap-1 mb-0" dir="rtl">
       {/* Title */}
-      {!isListEmpty && (
-        <div className="w-full text-[#0D0D12] text-18 font-semibold leading-tight tracking-wide text-right mb-4">
-          درخواست‌های ایجاد حجره
-        </div>
-      )}
+      <div className="w-full text-[#0D0D12] text-28 font-semibold leading-tight tracking-wide text-right mt-4 mb-2">
+        درخواست‌های ایجاد حجره
+      </div>
 
       <div
         className={`w-full ${!isListEmpty ? 'bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] overflow-hidden' : ''} flex flex-col justify-start items-end`}

@@ -140,18 +140,12 @@ export function LogInForm({
       } else {
         // First time user (user data is null), proceed to next onboarding step
         if (role === 'customer') {
-          // Check captured status
-          if (customerStatus === 1) {
-            // New User -> Register
-            onCustomerRegister?.(phone);
-          } else if (customerStatus === 2 || customerStatus === 3 || !customerStatus) {
-            if (result.token) {
-              router.push('/Bazzar');
-            } else {
-              onCustomerLogin?.(phone);
-            }
-          } else {
+          if (result.token) {
+            // Token received → user is authenticated, go to Bazzar
             router.push('/Bazzar');
+          } else {
+            // No token and no user data → needs registration
+            onCustomerRegister?.(phone);
           }
         } else if (onNext) {
           onNext();

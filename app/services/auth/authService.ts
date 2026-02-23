@@ -159,7 +159,8 @@ export const authService = {
       } as VerifyOtpPayload);
 
       if (response.status === 'success' || response.code === 200) {
-        const { token, user } = response.data;
+        const token = response.data?.token ?? undefined;
+        const user = response.data?.user ?? undefined;
 
         let validUser = user;
 
@@ -273,6 +274,25 @@ export const authService = {
       return { success: false, message: response.message || 'Login failed' };
     } catch (error: unknown) {
       let message = 'Login failed';
+      if (axios.isAxiosError(error)) {
+        message = error.response?.data?.message || error.message || message;
+      }
+      return { success: false, message };
+    }
+  },
+
+  sendCustomerSms: async (phone: string): Promise<{ success: boolean; message?: string }> => {
+    try {
+      const response = await apiClient.post<{ status?: string; code?: number; message?: string }>(
+        '/customers/send-sms',
+        { phone: String(phone) },
+      );
+      if (response.status === 'success' || response.code === 200) {
+        return { success: true, message: response.message };
+      }
+      return { success: false, message: response.message || 'خطا در ارسال پیامک' };
+    } catch (error: unknown) {
+      let message = 'خطا در ارسال پیامک';
       if (axios.isAxiosError(error)) {
         message = error.response?.data?.message || error.message || message;
       }

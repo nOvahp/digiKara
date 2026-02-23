@@ -42,9 +42,9 @@ const Projects = () => {
       </div>
 
       {/* Main Content Area */}
-      <div className="self-stretch flex flex-col justify-start items-start gap-4 w-full">
+      {/* <div className="self-stretch flex flex-col justify-start items-start gap-4 w-full"> */}
         {/* Cooperation Section */}
-        <div className="flex flex-col gap-4 w-full mt-2">
+        {/* <div className="flex flex-col gap-4 w-full mt-2">
           <div className="flex justify-between items-center w-full">
             <h2 className="text-[#0D0D12] text-md font-semibold">مشارکت فعال با تیمچه های دیگر</h2>
             <span className="text-[#6C7278] text-xs font-semibold cursor-pointer">مشاهده همه</span>
@@ -95,10 +95,10 @@ const Projects = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Requests Section */}
-        <div className="flex flex-col gap-4 w-full mt-2 relative">
+        {/* <div className="flex flex-col gap-4 w-full mt-2 relative">
           <div className="flex justify-between items-center w-full">
             <h2 className="text-[#0D0D12] text-base font-['PeydaWeb'] font-semibold">
               درخواست همکاری
@@ -106,10 +106,10 @@ const Projects = () => {
             <span className="text-[#6C7278] text-xs font-['PeydaWeb'] font-semibold cursor-pointer">
               مشاهده همه
             </span>
-          </div>
+          </div> */}
 
           {/* Request Item 1 */}
-          <div className="w-full h-[61px] py-2 pl-[14px] pr-4 rounded-xl border border-[#DCE4E8] flex justify-start items-center gap-3">
+          {/* <div className="w-full h-[61px] py-2 pl-[14px] pr-4 rounded-xl border border-[#DCE4E8] flex justify-start items-center gap-3">
             <div className="relative flex justify-start items-center gap-3">
               <div className="flex justify-start items-center gap-2.5">
                 <div className="w-[46.13px] h-[46.13px] bg-[#F8CB2E] rounded-lg" />
@@ -137,10 +137,10 @@ const Projects = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Request Item 2 */}
-          <div className="w-full h-[61px] py-2 pl-[14px] pr-4 rounded-xl border border-[#DCE4E8] flex justify-start items-center gap-3">
+          {/* <div className="w-full h-[61px] py-2 pl-[14px] pr-4 rounded-xl border border-[#DCE4E8] flex justify-start items-center gap-3">
             <div className="relative flex justify-start items-center gap-3">
               <div className="flex justify-start items-center gap-2.5">
                 <div className="w-[46.13px] h-[46.13px] bg-[#F8CB2E] rounded-lg" />
@@ -176,15 +176,11 @@ const Projects = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Projects Section */}
       <div className="self-stretch flex flex-col justify-start items-end gap-3 w-full">
-        <div className="self-stretch flex justify-start items-center mb-2">
-          <div className="text-center text-[#0D0D12] text-xl font-['PeydaWeb'] font-semibold leading-[27px]">
-            پروژه ها
-          </div>
-        </div>
+        
 
         {/* Tabs for Table */}
         <div className="self-stretch h-9 p-[3px] bg-[#F6F6F6] rounded-lg outline outline-1 outline-[#D7D8DA] -outline-offset-1 flex justify-center items-center">
