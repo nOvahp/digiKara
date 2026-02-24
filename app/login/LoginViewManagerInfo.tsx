@@ -20,7 +20,7 @@ interface LoginViewProps {
 }
 
 // Reusable Info Field Component
-const InfoField = ({ label, value, icon: Icon }: { label: string; value?: string; icon: React.ComponentType<{ className?: string }> }) => (
+const InfoField = ({ label, value, icon: Icon, isNum = false }: { label: string; value?: string; icon: React.ComponentType<{ className?: string }>; isNum?: boolean }) => (
   <div className="w-full">
     {/* Label with line connector (visual style from design) */}
     <div className="flex justify-end items-center mb-[-12px] pr-4 relative z-10">
@@ -33,7 +33,7 @@ const InfoField = ({ label, value, icon: Icon }: { label: string; value?: string
       <Icon className="w-5 h-5 text-[#DCE4E8] stroke-[1.5]" />
 
       {/* Value */}
-      <span className="text-[#393E46] text-sm font-bold truncate flex-1 text-right" dir="auto">
+      <span className={`text-[#393E46] text-sm truncate flex-1 text-right ${isNum ? 'font-num-medium' : 'font-bold'}`} dir="auto">
         {value || '---'}
       </span>
     </div>
@@ -112,9 +112,9 @@ export function LoginViewManagerInfo({ onNext, onReport, onBack }: LoginViewProp
         <div className="space-y-6 pt-2">
           <InfoField label="نام کامل" value={`${user.firstname} ${user.lastname}`} icon={User} />
 
-          <InfoField label="شماره موبایل" value={user.phone} icon={Phone} />
+          <InfoField label="شماره موبایل" value={user.phone} icon={Phone} isNum />
 
-          <InfoField label="کدملی" value={user.national_code} icon={CreditCard} />
+          <InfoField label="کدملی" value={user.national_code} icon={CreditCard} isNum />
 
           <InfoField
             label="استان - شهر"
@@ -122,9 +122,9 @@ export function LoginViewManagerInfo({ onNext, onReport, onBack }: LoginViewProp
             icon={MapPin}
           />
 
-          <InfoField label="منطقه" value={user.district} icon={Map} />
+          <InfoField label="منطقه" value={user.district} icon={Map} isNum />
 
-          <InfoField label="مدرسه" value={user.school} icon={School} />
+          <InfoField label="مدرسه" value={user.school} icon={School} isNum />
         </div>
       </div>
 

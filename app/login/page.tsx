@@ -114,55 +114,6 @@ export default function LoginPage() {
     }
   };
 
-  // --- Smart Navigation Logic ---
-  const handleNextStep = (currentUserData: UserData | null = user) => {
-    console.log('🚀 [Smart Nav] handleNextStep called with:', currentUserData);
-
-    // Save user data to localStorage for persistence across app
-    if (currentUserData) {
-      try {
-        console.log('Saving user_data to localStorage:', currentUserData);
-        localStorage.setItem('user_data', JSON.stringify(currentUserData));
-      } catch (e) {
-        console.error('Failed to save user data to localStorage', e);
-      }
-    } else {
-      console.warn('⚠️ handleNextStep: No currentUserData provided!');
-    }
-
-    // If no user data, fallback
-    if (!currentUserData) {
-      console.warn('Navigation: No user data found');
-      return;
-    }
-
-    // 1. Check Info Correct -> View 5 (Confirmation)
-    // If is_info_correct is FALSE or NULL, we go to View 5
-    console.log('Checking is_info_correct:', currentUserData.is_info_correct);
-    if (currentUserData.is_info_correct !== true) {
-      console.log('-> Going to View 5 (is_info_correct is not true)');
-      setStep(Step.VIEW_REPORT);
-      return;
-    }
-
-    // 2. Check Favorites -> View 6 (Interests)
-    // If favorites is FALSE or NULL, we go to View 6
-    if (currentUserData.favorites !== true) {
-      setStep(Step.VIEW_6);
-      return;
-    }
-
-    // 3. Check Meta -> View 7 (Experience)
-    // If meta is FALSE or NULL, we go to View 7
-    if (currentUserData.meta !== true) {
-      setStep(Step.VIEW_7);
-      return;
-    }
-
-    // 4. All Flags True -> Go to Final Destination
-    handleFinalRedirect();
-  };
-
   const handleFinalRedirect = React.useCallback(async () => {
     // Direct redirect based on role
     if (role === 'manager') {
@@ -225,9 +176,27 @@ export default function LoginPage() {
     checkHojre();
   }, [role, router, user]);
 
-  // Wrapper for LoginViewNationalID which passes userData directly
+  // Smart navigation after national ID: skip steps already completed
   const handleNationalIdNext = (userData: UserData) => {
-    handleNextStep(userData);
+    try {
+      localStorage.setItem('user_data', JSON.stringify(userData));
+    } catch (e) {
+      console.error('Failed to save user data to localStorage', e);
+    }
+
+    if (userData.is_info_correct !== true) {
+      setStep(Step.VIEW_REPORT);
+      return;
+    }
+    if (userData.favorites !== true) {
+      setStep(Step.VIEW_6);
+      return;
+    }
+    if (userData.meta !== true) {
+      setStep(Step.VIEW_7);
+      return;
+    }
+    handleFinalRedirect();
   };
 
   // Wrapper for subsequent steps which rely on stored context
@@ -274,6 +243,25 @@ export default function LoginPage() {
       handleFinalRedirect();
     }
   }, [handleFinalRedirect, step]);
+
+  // --- Browser Back Button Prevention for post-confirm steps ---
+  React.useEffect(() => {
+    const protectedSteps = [Step.VIEW_6, Step.VIEW_7];
+    if (!protectedSteps.includes(step)) return;
+
+    // NOTE: do NOT call pushState here on mount — Next.js App Router patches
+    // window.history.pushState, so calling it outside a popstate handler
+    // triggers the router to re-render the page, which re-runs the init
+    // useEffect and jumps the user back to LOGIN_LANDING immediately.
+    const handlePopState = () => {
+      // Push back to cancel the browser navigation, then show login landing.
+      window.history.pushState(null, '', window.location.href);
+      setStep(Step.LOGIN_LANDING);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [step]);
 
   // Simple Router based on Step
   switch (step) {

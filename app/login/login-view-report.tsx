@@ -134,40 +134,38 @@ export function LoginViewReport({ onLoginAgain, onBack }: LoginViewProps) {
   };
 
   return (
-    <div className="flex h-full w-full flex-col bg-white relative overflow-hidden">
-      {/* Top Background Gradient */}
-      <div className="absolute top-0 left-0 right-0 h-[230px] bg-[linear-gradient(180deg,#F7C309_0%,white_100%)] z-0 pointer-events-none" />
+    <div className="flex h-screen w-full flex-col bg-white relative overflow-hidden">
+      {/* Scrollable Content Area — includes header + gradient so everything scrolls together */}
+      <div className="relative flex-1 w-full max-w-[440px] mx-auto overflow-y-auto pb-48 no-scrollbar">
+        {/* Top Background Gradient — scrolls with content */}
+        <div className="absolute top-0 left-0 right-0 h-[230px] bg-[linear-gradient(180deg,#F7C309_0%,white_100%)] z-0 pointer-events-none" />
 
-      {/* Header Content */}
-      <div className="relative z-10 w-full px-6 pt-6 pb-2">
-        {/* Top Bar */}
-        <div className="flex justify-between items-center mb-8">
-          {/* Back Button */}
-          {(onBack || onLoginAgain) && (
-            <button
-              onClick={onBack || onLoginAgain}
-              className="w-10 h-10 flex items-center justify-center rounded-full bg-transparent hover:bg-white/20 transition-all text-[#393E46]"
-            >
-              <ChevronLeft className="w-6 h-6" />
-            </button>
-          )}
+        {/* Header */}
+        <div className="relative z-10 px-6 pt-6 pb-2">
+          {/* Top Bar */}
+          <div className="flex justify-between items-center mb-8">
+            {(onBack || onLoginAgain) && (
+              <button
+                onClick={onBack || onLoginAgain}
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-transparent hover:bg-white/20 transition-all text-[#393E46]"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+            )}
+            <span className="text-[#393E46] text-xl font-black">دیجی کارا</span>
+          </div>
 
-          <span className="text-[#393E46] text-xl font-black">دیجی کارا</span>
+          {/* Title */}
+          <div className="text-right space-y-2 mb-8">
+            <h1 className="text-[#393E46] text-3xl font-black">
+              {showSuccess ? 'تغییرات ثبت شد' : 'ویرایش اطلاعات'}
+            </h1>
+            <p className="text-[#393E46] text-sm font-semibold opacity-90">
+              {showSuccess ? 'اطلاعات شما با موفقیت بروزرسانی شد' : 'لطفا اطلاعات صحیح را وارد کنید'}
+            </p>
+          </div>
         </div>
-
-        {/* Title Section */}
-        <div className="text-right space-y-2 mb-8">
-          <h1 className="text-[#393E46] text-3xl font-black">
-            {showSuccess ? 'تغییرات ثبت شد' : 'ویرایش اطلاعات'}
-          </h1>
-          <p className="text-[#393E46] text-sm font-semibold opacity-90">
-            {showSuccess ? 'اطلاعات شما با موفقیت بروزرسانی شد' : 'لطفا اطلاعات صحیح را وارد کنید'}
-          </p>
-        </div>
-      </div>
-
-      {/* Scrollable Content Area */}
-      <div className="relative z-10 flex-1 w-full max-w-[440px] mx-auto overflow-y-auto px-6 pb-32 no-scrollbar">
+        <div className="relative z-10 px-6">
         {showSuccess ? (
           <div className="flex flex-col items-center gap-6 py-10 bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
             <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center animate-in zoom-in duration-500">
@@ -298,6 +296,7 @@ export function LoginViewReport({ onLoginAgain, onBack }: LoginViewProps) {
             </>
           )}
         </div>
+        </div>{/* end relative z-10 px-6 content wrapper */}
       </div>
     </div>
   );

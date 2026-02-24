@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { ChevronLeft, Loader2, CheckCircle2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Loader2, CheckCircle2 } from 'lucide-react';
 import { useAuth } from '@/app/providers/AuthProvider';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -19,19 +19,40 @@ interface FormState {
   businessCourse: string | null;
 }
 
-export function LoginView7({ onNext, onBack }: LoginViewProps) {
+const V7_DRAFT_KEY = 'login_view7_draft';
+
+const DEFAULT_FORM: FormState = {
+  productionExperience: null,
+  productionField: [],
+  salesExperience: null,
+  salesField: [],
+  businessCourse: null,
+};
+
+export function LoginView7({ onNext }: LoginViewProps) {
   const { saveStudentData } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
-  const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 3;
 
-  const [formState, setFormState] = useState<FormState>({
-    productionExperience: null,
-    productionField: [],
-    salesExperience: null,
-    salesField: [],
-    businessCourse: null,
+  // Restore draft from sessionStorage on mount
+  const [currentStep, setCurrentStep] = useState<number>(() => {
+    try {
+      const saved = sessionStorage.getItem(V7_DRAFT_KEY);
+      return saved ? (JSON.parse(saved).currentStep ?? 1) : 1;
+    } catch { return 1; }
   });
+
+  const [formState, setFormState] = useState<FormState>(() => {
+    try {
+      const saved = sessionStorage.getItem(V7_DRAFT_KEY);
+      return saved ? (JSON.parse(saved).formState ?? DEFAULT_FORM) : DEFAULT_FORM;
+    } catch { return DEFAULT_FORM; }
+  });
+
+  // Persist draft on every change
+  useEffect(() => {
+    try { sessionStorage.setItem(V7_DRAFT_KEY, JSON.stringify({ formState, currentStep })); } catch { /* ignore */ }
+  }, [formState, currentStep]);
 
   const fieldOptions = [
     'تولید محصولات هنری',
@@ -114,14 +135,6 @@ export function LoginView7({ onNext, onBack }: LoginViewProps) {
     }
   };
 
-  const handleBackStep = () => {
-    if (currentStep > 1) {
-      setCurrentStep((prev) => prev - 1);
-    } else if (onBack) {
-      onBack();
-    }
-  };
-
   const handleSubmit = async () => {
     setIsLoading(true);
     try {
@@ -140,6 +153,7 @@ export function LoginView7({ onNext, onBack }: LoginViewProps) {
       const result = await saveStudentData(payload);
 
       if (result.success) {
+        try { sessionStorage.removeItem(V7_DRAFT_KEY); } catch { /* ignore */ }
         if (onNext) onNext();
       } else {
         toast.error(result.message || 'خطا در ارسال اطلاعات');
@@ -244,13 +258,7 @@ export function LoginView7({ onNext, onBack }: LoginViewProps) {
 
       {/* Header Content */}
       <div className="relative z-10 w-full px-6 pt-6 pb-2">
-        <div className="flex justify-between items-center mb-8">
-          <button
-            onClick={handleBackStep}
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-transparent hover:bg-white/20 transition-all text-[#393E46]"
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </button>
+        <div className="flex justify-end items-center mb-8">
           <span className="text-[#393E46] text-xl font-black">دیجی کارا</span>
         </div>
 

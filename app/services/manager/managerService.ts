@@ -63,6 +63,17 @@ export interface ManagerProductResponsePayload extends ManagerProduct {
   oldProduct?: ManagerProduct;
 }
 
+export interface EditRequest {
+  id: number;
+  status?: string;
+  firstname?: string;
+  lastname?: string;
+  school_name?: string;
+  created_at?: string;
+  oldProduct?: ManagerProduct;
+  newProduct?: ManagerProduct;
+}
+
 export const managerService = {
   confirmInfo: async (): Promise<{ success: boolean; message?: string }> => {
     try {
@@ -406,6 +417,58 @@ export const managerService = {
       };
     } catch (error: unknown) {
       console.error('updateManagerOrder Error:', error);
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
+    }
+  },
+
+  getProductEditRequests: async (): Promise<{
+    success: boolean;
+    data?: EditRequest[];
+    message?: string;
+  }> => {
+    try {
+      const response = await apiClient.get<ApiResponse<EditRequest[]>>('/manager/student_requests');
+
+      if (response.status === 'success' || response.code === 200) {
+        return { success: true, data: response.data };
+      }
+      return {
+        success: false,
+        message: response.message || 'خطا در دریافت درخواست‌های ویرایش',
+      };
+    } catch (error: unknown) {
+      console.error('getProductEditRequests Error:', error);
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
+    }
+  },
+
+  approveProductEditRequest: async (
+    id: number,
+    status: 2 | 1 | 0,
+    description?: string | null,
+  ): Promise<{ success: boolean; message?: string }> => {
+    try {
+      const response = await apiClient.put<ApiResponse<unknown>>(
+        `/manager/student_requests/${id}`,
+        { status, description },
+      );
+
+      if (response.status === 'success' || response.code === 200) {
+        return {
+          success: true,
+          message: response.message || 'درخواست با موفقیت پردازش شد',
+        };
+      }
+      return {
+        success: false,
+        message: response.message || 'خطا در پردازش درخواست',
+      };
+    } catch (error: unknown) {
+      console.error('approveProductEditRequest Error:', error);
       let message = 'خطای شبکه';
       if (error instanceof Error) message = error.message;
       return { success: false, message };

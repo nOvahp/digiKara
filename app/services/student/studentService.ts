@@ -108,6 +108,12 @@ export const studentService = {
         message: response.message || 'خطا در تایید اطلاعات',
       };
     } catch (error: unknown) {
+      // "unauthorized" here means already confirmed — treat as a no-op, not a real error
+      const errObj = error as { message?: string; status?: number };
+      if (errObj?.message?.includes('unauthorized') || errObj?.status === 403) {
+        console.warn('confirmInfo: already confirmed, skipping.');
+        return { success: true, message: 'already confirmed' };
+      }
       console.error('confirmInfo Error:', error);
       let message = 'خطای شبکه';
       if (error instanceof Error) message = error.message;

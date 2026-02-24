@@ -16,17 +16,17 @@ export const dashboardService = {
     message?: string;
   }> => {
     try {
-      // Fetch products and orders in parallel
-      // Define partial types for what we need to calculate stats
+      // Fetch products, orders, and cell (hojre) in parallel
       type RawProduct = { approved?: boolean | number };
       type RawOrder = { status?: string };
+      type RawCell = { approved?: boolean | number; is_active?: boolean | number; active?: boolean | number };
 
-      const [productsResponse, ordersResponse] = await Promise.all([
+      const [productsResponse, ordersResponse, cellResponse] = await Promise.all([
         apiClient.get<ApiResponse<RawProduct[]>>('/student/products'),
         apiClient.get<ApiResponse<RawOrder[]>>('/student/orders'),
+        apiClient.get<ApiResponse<RawCell | RawCell[]>>('/student/cells'),
       ]);
 
-      // Calculate stats from the responses
       const products =
         productsResponse.status === 'success' || productsResponse.code === 200
           ? productsResponse.data || []
@@ -37,12 +37,19 @@ export const dashboardService = {
           ? ordersResponse.data || []
           : [];
 
+      // Hojre approval = the cell's own approval status, not product approvals
+      const cellRaw = cellResponse.status === 'success' || cellResponse.code === 200
+        ? cellResponse.data
+        : null;
+      const cellData: RawCell | null = Array.isArray(cellRaw) ? (cellRaw[0] ?? null) : (cellRaw ?? null);
+      const isCellApproved = !!(cellData?.approved || cellData?.is_active || cellData?.active);
+
       // Count active (approved) products
       const activeProductsCount = Array.isArray(products)
         ? products.filter((p) => p.approved === true || p.approved === 1).length
         : 0;
 
-      // Count new orders (orders with status "سفارش جدید" or similar)
+      // Count new orders
       const newOrdersCount = Array.isArray(orders)
         ? orders.filter(
             (o) =>
@@ -53,15 +60,12 @@ export const dashboardService = {
           ).length
         : 0;
 
-      // Check if any product is approved (store is active)
-      const hasApprovedProducts = activeProductsCount > 0;
-
       const stats: DashboardStats = {
-        storeStatus: hasApprovedProducts ? 'active' : 'pending',
+        storeStatus: isCellApproved ? 'active' : 'pending',
         newOrders: newOrdersCount,
         activeProducts: activeProductsCount,
-        totalEarnings: 0, // Calculate from orders if needed
-        isApproved: hasApprovedProducts,
+        totalEarnings: 0,
+        isApproved: isCellApproved,
       };
 
       return { success: true, data: stats };

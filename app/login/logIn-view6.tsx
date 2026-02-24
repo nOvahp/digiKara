@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, Wrench, Package, Tag, Cpu, Palette, Check } from 'lucide-react';
+import { Wrench, Package, Tag, Cpu, Palette, Check } from 'lucide-react';
 
 interface Interest {
   id: number;
@@ -54,8 +54,15 @@ const INTEREST_STYLES = [
   },
 ];
 
-export function LoginView6({ onNext, onBack }: LoginViewProps) {
-  const [selectedInterests, setSelectedInterests] = useState<number[]>([]);
+const V6_DRAFT_KEY = 'login_interests_draft';
+
+export function LoginView6({ onNext }: LoginViewProps) {
+  const [selectedInterests, setSelectedInterests] = useState<number[]>(() => {
+    try {
+      const saved = sessionStorage.getItem(V6_DRAFT_KEY);
+      return saved ? (JSON.parse(saved) as number[]) : [];
+    } catch { return []; }
+  });
   const [interests, setInterests] = useState<Interest[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -76,6 +83,11 @@ export function LoginView6({ onNext, onBack }: LoginViewProps) {
     fetchInterests();
   }, []);
 
+  // Persist draft on every change
+  useEffect(() => {
+    try { sessionStorage.setItem(V6_DRAFT_KEY, JSON.stringify(selectedInterests)); } catch { /* ignore */ }
+  }, [selectedInterests]);
+
   const toggleInterest = (id: number) => {
     setSelectedInterests((prev) =>
       prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
@@ -87,8 +99,9 @@ export function LoginView6({ onNext, onBack }: LoginViewProps) {
       try {
         const { studentService } = await import('@/app/services/student/studentService');
         const result = await studentService.addFavorites(selectedInterests);
-        if (result.success && onNext) {
-          onNext();
+        if (result.success) {
+          try { sessionStorage.removeItem(V6_DRAFT_KEY); } catch { /* ignore */ }
+          if (onNext) onNext();
         }
       } catch (error) {
         console.error('Failed to save interests', error);
@@ -107,16 +120,7 @@ export function LoginView6({ onNext, onBack }: LoginViewProps) {
       <div className="relative z-10 w-full px-6 pt-6 pb-2">
         {/* Top Bar */}
         <div className="flex justify-between items-center mb-8">
-          {/* Back Button */}
-          {onBack && (
-            <button
-              onClick={onBack}
-              className="w-10 h-10 flex items-center justify-center rounded-full bg-transparent hover:bg-white/20 transition-all text-[#393E46]"
-            >
-              <ChevronLeft className="w-6 h-6" />
-            </button>
-          )}
-
+  
           <span className="text-[#393E46] text-xl font-black">دیجی کارا</span>
         </div>
 

@@ -21,7 +21,7 @@ interface LoginViewProps {
 }
 
 // Reusable Info Field Component
-const InfoField = ({ label, value, icon: Icon }: { label: string; value?: string; icon: React.ComponentType<{ className?: string }> }) => (
+const InfoField = ({ label, value, icon: Icon, isNum = false }: { label: string; value?: string; icon: React.ComponentType<{ className?: string }>; isNum?: boolean }) => (
   <div className="w-full">
     {/* Label with line connector (visual style from design) */}
     <div className="flex justify-end items-center mb-[-12px] pr-4 relative z-10">
@@ -34,7 +34,7 @@ const InfoField = ({ label, value, icon: Icon }: { label: string; value?: string
       <Icon className="w-5 h-5 text-[#DCE4E8] stroke-[1.5]" />
 
       {/* Value */}
-      <span className="text-[#393E46] text-sm font-bold truncate flex-1 text-right" dir="auto">
+      <span className={`text-[#393E46] text-sm truncate flex-1 text-right ${isNum ? 'font-num-medium' : 'font-bold'}`} dir="auto">
         {value || '---'}
       </span>
     </div>
@@ -43,6 +43,7 @@ const InfoField = ({ label, value, icon: Icon }: { label: string; value?: string
 
 export function LoginView5({ onNext, onReport, onBack }: LoginViewProps) {
   const { user, isAuthenticated } = useAuth();
+  const [showConfirmPopup, setShowConfirmPopup] = React.useState(false);
 
   const handleContinue = async () => {
     try {
@@ -113,9 +114,9 @@ export function LoginView5({ onNext, onReport, onBack }: LoginViewProps) {
         <div className="space-y-6 pt-2">
           <InfoField label="نام کامل" value={`${user.firstname} ${user.lastname}`} icon={User} />
 
-          <InfoField label="شماره موبایل" value={user.phone} icon={Phone} />
+          <InfoField label="شماره موبایل" value={user.phone} icon={Phone} isNum />
 
-          <InfoField label="کدملی" value={user.national_code} icon={CreditCard} />
+          <InfoField label="کدملی" value={user.national_code} icon={CreditCard} isNum />
 
           <InfoField
             label="استان - شهر"
@@ -123,9 +124,9 @@ export function LoginView5({ onNext, onReport, onBack }: LoginViewProps) {
             icon={MapPin}
           />
 
-          <InfoField label="منطقه" value={user.district} icon={Map} />
+          <InfoField label="منطقه" value={user.district} icon={Map} isNum />
 
-          <InfoField label="مدرسه" value={user.school} icon={School} />
+          <InfoField label="مدرسه" value={user.school} icon={School} isNum />
 
           <InfoField
             label="پایه تحصیلی"
@@ -149,13 +150,48 @@ export function LoginView5({ onNext, onReport, onBack }: LoginViewProps) {
 
           {/* Confirm Button (Primary) */}
           <Button
-            onClick={handleContinue}
+            onClick={() => setShowConfirmPopup(true)}
             className="flex-1 bg-[#FDD00A] hover:bg-[#e5bc09] text-[#1A1C1E] font-bold h-14 rounded-2xl text-lg shadow-lg shadow-[#FDD00A]/20"
           >
             تایید اطلاعات
           </Button>
         </div>
       </div>
+
+      {/* Confirmation Popup */}
+      {showConfirmPopup && (
+        <div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/40 backdrop-blur-sm p-0" dir="rtl">
+          <div className="w-full max-w-[440px] bg-white rounded-t-3xl p-6 pb-10 flex flex-col gap-5 animate-in slide-in-from-bottom-4 duration-300">
+            {/* Icon */}
+            <div className="w-14 h-14 bg-[#FFFBEB] rounded-2xl flex items-center justify-center mx-auto">
+              <span className="text-2xl">✅</span>
+            </div>
+            {/* Text */}
+            <div className="text-center space-y-2">
+              <h2 className="text-[#1A1C1E] text-xl font-black">آیا مطمئن هستید؟</h2>
+              <p className="text-[#6C7278] text-sm font-medium leading-relaxed">
+                اطلاعات نمایش داده شده ثبت خواهند شد.<br />در صورت نیاز می‌توانید از «گزارش خطا» آن‌ها را اصلاح کنید.
+              </p>
+            </div>
+            {/* Buttons */}
+            <div className="flex flex-col gap-3 w-full">
+              <Button
+                onClick={() => { setShowConfirmPopup(false); handleContinue(); }}
+                className="w-full h-14 bg-[#FDD00A] hover:bg-[#e5bc09] text-[#1A1C1E] font-bold rounded-2xl text-base shadow-lg shadow-[#FDD00A]/20"
+              >
+                بله، تایید می‌کنم
+              </Button>
+              <Button
+                onClick={() => setShowConfirmPopup(false)}
+                variant="outline"
+                className="w-full h-12 bg-white border-2 border-[#E5E7EB] text-[#6C7278] font-bold rounded-2xl hover:bg-gray-50"
+              >
+                بازگشت
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
