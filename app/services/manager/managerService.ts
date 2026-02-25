@@ -74,6 +74,88 @@ export interface EditRequest {
   newProduct?: ManagerProduct;
 }
 
+// ─── Flat Product (from /manager/products) ────────────────────────────────────
+
+export interface ProductPriceVariant {
+  id: number;
+  title: string;
+  amount: number | string;
+  type: number;
+  discount_percent: string;
+  inventory: number;
+  warn_inventory: number;
+  type_inventory: number;
+}
+
+export interface FlatProduct {
+  id: number;
+  title: string;
+  description: string;
+  image_path: string;
+  category_id: number;
+  tag_path: string | null;
+  code: string;
+  inventory: number;
+  warn_inventory: number;
+  sold_count: number;
+  view_count: number;
+  like_count: number;
+  price: number;
+  type_inventory: number;
+  cell_id: number;
+  approved: boolean;
+  max_order: number;
+  prices?: ProductPriceVariant[];
+}
+
+// ─── Student Request (from /manager/student_requests) ────────────────────────
+
+export interface StudentRequestModelData {
+  price?: number | string;
+  title?: string;
+  tag_id?: number | null;
+  inventory?: number | string;
+  max_order?: number | string;
+  category_id?: string | number;
+  description?: string;
+  type_inventory?: number | string;
+  warn_inventory?: number | string;
+  code?: string;
+  image?: unknown[];
+  image_path?: string;
+  cell_id?: number;
+  school_id?: number;
+  prices?: {
+    type: string | number;
+    title: string;
+    amount: string | number;
+    inventory: string | number;
+    type_inventory: string | number;
+    warn_inventory: string | number;
+    discount_percent: string | number;
+  }[];
+}
+
+export interface StudentRequest {
+  id: number;
+  user_id: number;
+  school_id: number;
+  model_type: string;
+  model_data: StudentRequestModelData;
+  created_at: string;
+  status: string;
+  firstname: string;
+  lastname: string;
+  school_name: string;
+  field: string;
+  grade: string;
+}
+
+export interface StudentRequestDetail {
+  newProduct: StudentRequest;
+  oldProduct: FlatProduct | null;
+}
+
 export const managerService = {
   confirmInfo: async (): Promise<{ success: boolean; message?: string }> => {
     try {
@@ -469,6 +551,25 @@ export const managerService = {
       };
     } catch (error: unknown) {
       console.error('approveProductEditRequest Error:', error);
+      let message = 'خطای شبکه';
+      if (error instanceof Error) message = error.message;
+      return { success: false, message };
+    }
+  },
+
+  getStudentRequestDetailById: async (
+    id: number,
+  ): Promise<{ success: boolean; data?: StudentRequestDetail; message?: string }> => {
+    try {
+      const response = await apiClient.get<ApiResponse<StudentRequestDetail>>(
+        `/manager/student_requests/${id}`,
+      );
+      if (response.status === 'success' || response.code === 200) {
+        return { success: true, data: response.data };
+      }
+      return { success: false, message: response.message || 'خطا در دریافت جزئیات درخواست' };
+    } catch (error: unknown) {
+      console.error('getStudentRequestDetailById Error:', error);
       let message = 'خطای شبکه';
       if (error instanceof Error) message = error.message;
       return { success: false, message };

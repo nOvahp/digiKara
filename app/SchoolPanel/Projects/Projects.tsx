@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import ManagerProductsTable from '../components/ManagerProductsTable';
-import ManagerEditRequestsTable from '../components/ManagerEditRequestsTable';
+import ProductsTable from '../components/ProductsTable';
+import StudentRequestsTable from '../components/StudentRequestsTable';
 
 const toFarsiNumber = (n: number | string | undefined): string => {
   if (n === undefined || n === null) return '';
@@ -11,7 +11,7 @@ const toFarsiNumber = (n: number | string | undefined): string => {
 
 const Projects = () => {
   // Tab State
-  const [activeTab, setActiveTab] = useState<'products' | 'edits'>('products');
+  const [activeTab, setActiveTab] = useState<'products' | 'requests'>('products');
 
   return (
     <div
@@ -186,23 +186,19 @@ const Projects = () => {
             onClick={() => setActiveTab('products')}
             className={`flex-1 h-[29px] px-3 py-1 rounded-md flex justify-center items-center gap-2.5 cursor-pointer transition-all ${activeTab === 'products' ? 'bg-[#FDD00A] shadow-sm outline outline-1 outline-[#D7D8DA] -outline-offset-1' : 'hover:bg-white/50'}`}
           >
-            <div className="text-[#0A0A0A] text-sm font-semibold leading-5">
-              مدیریت محصولات
-            </div>
+            <div className="text-[#0A0A0A] text-sm font-semibold leading-5">محصولات</div>
           </div>
           <div
-            onClick={() => setActiveTab('edits')}
-            className={`flex-1 h-[29px] px-3 py-1 rounded-md flex justify-center items-center gap-2.5 cursor-pointer transition-all ${activeTab === 'edits' ? 'bg-[#FDD00A] shadow-sm outline outline-1 outline-[#D7D8DA] -outline-offset-1' : 'hover:bg-white/50'}`}
+            onClick={() => setActiveTab('requests')}
+            className={`flex-1 h-[29px] px-3 py-1 rounded-md flex justify-center items-center gap-2.5 cursor-pointer transition-all ${activeTab === 'requests' ? 'bg-[#FDD00A] shadow-sm outline outline-1 outline-[#D7D8DA] -outline-offset-1' : 'hover:bg-white/50'}`}
           >
-            <div className="text-[#0A0A0A] text-sm font-semibold leading-5">
-              ویرایش محصولات
-            </div>
+            <div className="text-[#0A0A0A] text-sm font-semibold leading-5">درخواست‌های دانش آموزان</div>
           </div>
         </div>
 
         {/* Table Container */}
         <div className="w-full">
-          {activeTab === 'products' ? <ManagerProductsTable /> : <ManagerEditRequestsTable />}
+          {activeTab === 'products' ? <ProductsTable /> : <StudentRequestsTable />}
         </div>
       </div>
     </div>
