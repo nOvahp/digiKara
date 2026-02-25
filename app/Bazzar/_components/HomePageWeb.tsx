@@ -15,7 +15,7 @@ import { products } from '../../data/product';
 import FooterWeb from './FooterWeb';
 
 // UI Helpers
-const CategoryItemWeb = ({ title, icon }: { title: string; icon?: string | null }) => {
+const CategoryItemWeb = ({ title, icon, href = '/Bazzar/Categories' }: { title: string; icon?: string | null; href?: string }) => {
   const icons: Record<string, React.ElementType> = {
     'لوازم جانبی': Briefcase,
     'عطر و ادکلن': Heart,
@@ -31,7 +31,7 @@ const CategoryItemWeb = ({ title, icon }: { title: string; icon?: string | null 
   const Icon = icons[title] || Grid;
 
   return (
-    <div className="flex flex-col items-center gap-3 w-32 shrink-0 cursor-pointer group">
+    <Link href={href} className="flex flex-col items-center gap-3 w-32 shrink-0 cursor-pointer group">
       <div className="w-[128px] h-[128px] rounded-3xl border-2 border-gray-200 flex items-center justify-center transition-all group-hover:border-[#FDD00A] group-hover:bg-[#FDD00A]/10 overflow-hidden relative">
         {icon ? (
           <Image src={icon} alt={title} fill sizes="60px" className="object-cover p-3" unoptimized />
@@ -42,7 +42,7 @@ const CategoryItemWeb = ({ title, icon }: { title: string; icon?: string | null 
       <span className="text-[#1F2029] text-xl font-['PeydaWeb'] font-semibold text-center mt-2">
         {title}
       </span>
-    </div>
+    </Link>
   );
 };
 
@@ -65,11 +65,11 @@ const ProductCardWeb = ({ product }: { product: any }) => (
   </Link>
 );
 
-const ProductCardHorizontal = ({ title, category, price, image }: { title: string, category: string, price: string, image?: string }) => {
+const ProductCardHorizontal = ({ id, title, category, price, image }: { id?: number; title: string, category: string, price: string, image?: string }) => {
   const imageUrl = image?.startsWith('http') ? image : (image ? `https://backend.digikara.ir${image}` : "https://placehold.co/183x162");
 
   return (
-    <div className="flex flex-col bg-white rounded-xl overflow-hidden w-full max-w-[183px] mx-auto group border border-gray-100">
+    <Link href={`/Bazzar/ProductDetails?id=${id ?? 1}`} className="flex flex-col bg-white rounded-xl overflow-hidden w-full max-w-[183px] mx-auto group border border-gray-100 hover:shadow-md transition-shadow">
       <div className="w-full aspect-[183/162] relative overflow-hidden bg-gray-100">
         <Image src={imageUrl} alt={title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" unoptimized />
       </div>
@@ -80,7 +80,7 @@ const ProductCardHorizontal = ({ title, category, price, image }: { title: strin
           <span className="text-[#23856D] text-base font-num-bold">{price}</span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
@@ -165,10 +165,9 @@ export default function HomePageWeb() {
             <p className="text-[#737373] text-[18px] lg:text-[20px] font-semibold font-['PeydaWeb'] leading-[30px] tracking-[0.20px] w-full text-left" dir="rtl">۵۰٪ تخفیف برای اولین معامله</p>
             
             <div className="flex flex-col xl:flex-row gap-[20px] mt-2 w-full sm:w-auto self-start mr-auto">
-                <button className="bg-[#FDD00A] text-[#393E46] px-[30px] py-[12px] lg:py-[15px] rounded-[17px] text-[18px] lg:text-[25.81px] font-semibold font-['PeydaWeb'] hover:bg-[#ebd152] transition-colors flex justify-center items-center">
+                <Link href="/Bazzar/Search" className="bg-[#FDD00A] text-[#393E46] px-[30px] py-[12px] lg:py-[15px] rounded-[17px] text-[18px] lg:text-[25.81px] font-semibold font-['PeydaWeb'] hover:bg-[#ebd152] transition-colors flex justify-center items-center">
                     همین حالا خرید کنید
-                </button>
-               
+                </Link>
             </div>
         </div>
 
@@ -225,12 +224,12 @@ export default function HomePageWeb() {
                 ))}
               </div>
               <div className="flex gap-6 mt-8">
-                  <button className="bg-[#FDD00A] text-white px-8 py-3 rounded-2xl shadow-[0_15px_30px_rgba(253,208,10,0.4)] text-xl font-medium hover:scale-105 transition-transform">
+                  <Link href="/Bazzar/Search" className="bg-[#FDD00A] text-white px-8 py-3 rounded-2xl shadow-[0_15px_30px_rgba(253,208,10,0.4)] text-xl font-medium hover:scale-105 transition-transform">
                       همین حالا خرید کنید
-                  </button>
-                  <button className="bg-[#FDD00A] text-[#393E46] px-8 py-3 rounded-2xl text-xl font-semibold hover:bg-[#ebd152] transition-colors">
+                  </Link>
+                  <Link href="/Bazzar/Search" className="bg-[#FDD00A] text-[#393E46] px-8 py-3 rounded-2xl text-xl font-semibold hover:bg-[#ebd152] transition-colors">
                       محصولات بیشتر
-                  </button>
+                  </Link>
               </div>
           </section>
       </div>
@@ -266,7 +265,7 @@ export default function HomePageWeb() {
                        <div className="col-span-2 lg:col-span-4 text-center text-gray-500 py-4">در حال بارگذاری...</div>
                   ) : bestSellerProducts.length > 0 ? (
                       bestSellerProducts.slice(0, 8).map((p) => (
-                          <ProductCardHorizontal key={p.id} title={p.title} category={"حجره"} price={typeof p.price === 'number' ? `${p.price.toLocaleString()} تومان` : p.price ? p.price.toString() : "0 تومان"} image={p.image || p.image_path || undefined} />
+                          <ProductCardHorizontal key={p.id} id={p.id} title={p.title} category={"حجره"} price={typeof p.price === 'number' ? `${p.price.toLocaleString()} تومان` : p.price ? p.price.toString() : "0 تومان"} image={p.image || p.image_path || undefined} />
                       ))
                   ) : (
                       <div className="col-span-2 lg:col-span-4 text-center text-gray-500 py-4">محصولی یافت نشد</div>
@@ -286,19 +285,19 @@ export default function HomePageWeb() {
                        <div className="w-full text-center text-gray-500 py-10">در حال بارگذاری...</div>
                    ) : popularProducts.length > 0 ? (
                        popularProducts.slice(currentPopularPage * 2, currentPopularPage * 2 + 2).map((p) => (
-                           <div key={p.id} className="w-full max-w-[348px] flex flex-col items-center gap-5 text-center mx-auto">
-                               <h3 className="text-[#252B42] text-2xl font-black">{p.title || "محصول محبوب"}</h3>
+                           <Link key={p.id} href={`/Bazzar/ProductDetails?id=${p.id}`} className="w-full max-w-[348px] flex flex-col items-center gap-5 text-center mx-auto group">
+                               <h3 className="text-[#252B42] text-2xl font-black group-hover:text-[#FDD00A] transition-colors">{p.title || "محصول محبوب"}</h3>
                                <p className="text-[#737373] text-sm font-light leading-relaxed truncate w-full">
                                    بخش ویژه
                                </p>
                                <div className="w-full h-[226px] relative mt-4">
-                                   <Image src={p.image || p.image_path || "https://placehold.co/348x226"} alt={p.title || "Popular"} fill className="object-cover rounded-xl" unoptimized />
+                                   <Image src={p.image || p.image_path || "https://placehold.co/348x226"} alt={p.title || "Popular"} fill className="object-cover rounded-xl group-hover:scale-105 transition-transform duration-500" unoptimized />
                                </div>
                                
                                <span className="text-[#737373] text-sm font-num-bold">{p.rating || 0} امتیاز</span>
                                <span className="text-[#23856D] text-base font-num-bold">{typeof p.price === 'number' ? `${p.price.toLocaleString()} تومان` : p.price ? p.price.toString() : "0 تومان"}</span>
                                
-                           </div>
+                           </Link>
                        ))
                    ) : (
                        <div className="w-full text-center text-gray-500 py-10">محصولی یافت نشد</div>
@@ -335,16 +334,16 @@ export default function HomePageWeb() {
                        <div className="w-full text-center text-gray-500 py-4">در حال بارگذاری...</div>
                   ) : popularSchools.length > 0 ? (
                       popularSchools.map((school) => (
-                          <div key={school.id} className="flex flex-col items-center gap-4 shrink-0">
-                              <div className="w-[189px] h-[176px] relative rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                                  {school.image_path ? (
-                                      <Image src={school.image_path} alt={school.name} fill className="object-cover" unoptimized />
-                                  ) : (
-                                       <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400 text-sm">بدون تصویر</div>
-                                  )}
+                          <Link key={school.id} href="/login?role=school" className="flex flex-col items-center gap-4 shrink-0 group">
+                              <div className="w-[189px] h-[176px] relative rounded-xl overflow-hidden shadow-sm group-hover:shadow-md transition-shadow">
+                                  <Image src={school.image_path || '/honarestan1.png'} alt={school.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" unoptimized />
                               </div>
-                              <p className="text-[#1F2029] text-xl font-light mt-2">{school.name}</p>
-                          </div>
+                              <p className="text-[#1F2029] text-xl font-light mt-2 group-hover:text-[#FDD00A] transition-colors font-['PeydaWeb']">
+                                  {school.name.split(/(\d+)/).map((part, i) =>
+                                      /\d+/.test(part) ? <span key={i} className="font-num-medium">{part}</span> : part
+                                  )}
+                              </p>
+                          </Link>
                       ))
                   ) : (
                       !loading && <div className="w-full text-center text-gray-500 py-4">مدرسه‌ای یافت نشد</div>

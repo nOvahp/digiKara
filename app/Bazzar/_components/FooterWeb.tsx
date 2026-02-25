@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Twitter, Instagram, Facebook } from 'lucide-react';
 
 export default function FooterWeb() {
@@ -72,14 +73,13 @@ export default function FooterWeb() {
               </div>
             </div>
 
-            {/* Column 4 */}
+            {/* Column 4 — Login Panels */}
             <div className="flex flex-col items-start gap-5">
-              <h3 className="text-[#252B42] text-base font-['PeydaWeb'] font-semibold tracking-wide">قانونی</h3>
+              <h3 className="text-[#252B42] text-base font-['PeydaWeb'] font-semibold tracking-wide">ورود به پنل‌ها</h3>
               <div className="flex flex-col items-start gap-2.5">
-                <a href="#" className="text-[#737373] text-sm font-['PeydaWeb'] font-semibold tracking-wide hover:text-black">درباره ما</a>
-                <a href="#" className="text-[#737373] text-sm font-['PeydaWeb'] font-semibold tracking-wide hover:text-black">حامل</a>
-                <a href="#" className="text-[#737373] text-sm font-['PeydaWeb'] font-semibold tracking-wide hover:text-black">ما استخدام می کنیم</a>
-                <a href="#" className="text-[#737373] text-sm font-['PeydaWeb'] font-semibold tracking-wide hover:text-black">وبلاگ</a>
+                <Link href="/login?role=customer" className="text-[#737373] text-sm font-['PeydaWeb'] font-semibold tracking-wide hover:text-black transition-colors">ورود مشتری</Link>
+                <Link href="/login?role=student" className="text-[#737373] text-sm font-['PeydaWeb'] font-semibold tracking-wide hover:text-black transition-colors">ورود دانش‌آموز</Link>
+                <Link href="/login?role=school" className="text-[#737373] text-sm font-['PeydaWeb'] font-semibold tracking-wide hover:text-black transition-colors">ورود مدرسه</Link>
               </div>
             </div>
           </div>

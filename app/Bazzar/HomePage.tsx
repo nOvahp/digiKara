@@ -482,8 +482,10 @@ export default function HomePage() {
                   />
                 </div>
                 <div className="flex flex-col items-center w-full">
-                  <span className="text-[#1F2029] text-[10px] font-light opacity-60 text-center">
-                    {school.name}
+                  <span className="text-[#1F2029] text-[10px] font-light opacity-60 text-center font-['PeydaWeb']">
+                    {school.name.split(/(\d+)/).map((part, i) =>
+                      /\d+/.test(part) ? <span key={i} className="font-num-medium">{part}</span> : part
+                    )}
                   </span>
                 </div>
               </div>

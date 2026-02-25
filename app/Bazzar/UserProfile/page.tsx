@@ -75,6 +75,33 @@ export default function UserProfilePage() {
           ورود / ثبت‌نام
         </button>
 
+        <div className="w-full max-w-[280px] flex flex-col gap-3 mt-4">
+          <button
+            onClick={() => router.push('/login?role=student')}
+            className="w-full bg-white rounded-2xl p-4 border border-gray-100 shadow-sm flex items-center justify-between hover:bg-gray-50 transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-green-50 text-green-600 flex items-center justify-center">
+                <GraduationCap className="w-4 h-4" />
+              </div>
+              <span className="text-[#0C1415] text-sm font-['PeydaWeb'] font-bold">ورود به پنل دانش‌آموز</span>
+            </div>
+            <ChevronLeft className="w-4 h-4 text-gray-400" />
+          </button>
+          <button
+            onClick={() => router.push('/login?role=school')}
+            className="w-full bg-white rounded-2xl p-4 border border-gray-100 shadow-sm flex items-center justify-between hover:bg-gray-50 transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                <School className="w-4 h-4" />
+              </div>
+              <span className="text-[#0C1415] text-sm font-['PeydaWeb'] font-bold">ورود به پنل مدرسه</span>
+            </div>
+            <ChevronLeft className="w-4 h-4 text-gray-400" />
+          </button>
+        </div>
+
         <button
           onClick={() => router.push('/Bazzar')}
           className="absolute top-4 left-4 w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center hover:bg-gray-50 transition-colors"
@@ -175,14 +202,19 @@ export default function UserProfilePage() {
         <span className="text-[#707F81] text-[13px] font-['PeydaWeb'] font-medium">{label}</span>
       </div>
       <div className="flex items-center gap-2">
-        <span
-          className={cn(
-            'text-[#0C1415] text-sm font-semibold text-left',
-            isNum ? 'font-num-bold' : "font-['PeydaWeb']",
-          )}
-        >
-          {value || '---'}
-        </span>
+        {isNum ? (
+          <span className="text-[#0C1415] text-sm text-left font-num-medium">
+            {value || '---'}
+          </span>
+        ) : (
+          <span className="text-[#0C1415] text-sm text-left font-['PeydaWeb'] font-semibold">
+            {value
+              ? String(value).split(/(\d+)/).map((part, i) =>
+                  /\d+/.test(part) ? <span key={i} className="font-num-medium">{part}</span> : part
+                )
+              : '---'}
+          </span>
+        )}
       </div>
     </div>
   );
@@ -256,7 +288,7 @@ export default function UserProfilePage() {
           </div>
 
           <div className="flex flex-col items-center gap-1.5 z-0">
-            <h2 className="text-[#0C1415] text-[22px] font-['PeydaWeb'] font-black tracking-tight">
+            <h2 className="text-[#0C1415] text-[22px] font-black tracking-tight">
               {user.firstname && user.lastname
                 ? `${user.firstname} ${user.lastname}`
                 : 'کاربر مهمان'}
@@ -301,7 +333,7 @@ export default function UserProfilePage() {
           <SectionCard title="اطلاعات تحصیلی" icon={GraduationCap}>
             <InfoRow icon={School} label="مدرسه" value={user.school} />
             <InfoRow icon={FileText} label="رشته تحصیلی" value={user.field} />
-            <InfoRow icon={CheckCircle2} label="پایه تحصیلی" value={user.grade} />
+            <InfoRow icon={CheckCircle2} label="پایه تحصیلی" value={user.grade} isNum />
           </SectionCard>
 
           {/* Location Info Card */}
@@ -320,12 +352,45 @@ export default function UserProfilePage() {
                   <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center">
                       <Package className="w-5 h-5" />
                   </div>
-                  <span className="text-[#0C1415] text-[15px] font-['PeydaWeb'] font-bold">سفارشات من</span>
+                  <span className="text-[#0C1415] text-[15px] font-bold">سفارشات من</span>
               </div>
                <div className="flex items-center gap-2">
-                   <span className="text-gray-400 text-xs font-['PeydaWeb']">مشاهده همه</span>
+                   <span className="text-gray-400 text-xs font-medium">مشاهده همه</span>
                    <ChevronLeft className="w-4 h-4 text-gray-400" />
                </div>
+          </button>
+
+          {/* Panel Links */}
+          <button
+              onClick={() => router.push('/login?role=student')}
+              className="w-full bg-white rounded-2xl p-4 border border-gray-100 shadow-sm flex items-center justify-between hover:bg-gray-50 transition-colors"
+          >
+              <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-green-50 text-green-600 flex items-center justify-center">
+                      <GraduationCap className="w-5 h-5" />
+                  </div>
+                  <span className="text-[#0C1415] text-[15px] font-bold">پنل دانش‌آموز</span>
+              </div>
+              <div className="flex items-center gap-2">
+                  <span className="text-gray-400 text-xs font-medium">ورود</span>
+                  <ChevronLeft className="w-4 h-4 text-gray-400" />
+              </div>
+          </button>
+
+          <button
+              onClick={() => router.push('/login?role=school')}
+              className="w-full bg-white rounded-2xl p-4 border border-gray-100 shadow-sm flex items-center justify-between hover:bg-gray-50 transition-colors"
+          >
+              <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                      <School className="w-5 h-5" />
+                  </div>
+                  <span className="text-[#0C1415] text-[15px] font-bold">پنل مدرسه</span>
+              </div>
+              <div className="flex items-center gap-2">
+                  <span className="text-gray-400 text-xs font-medium">ورود</span>
+                  <ChevronLeft className="w-4 h-4 text-gray-400" />
+              </div>
           </button>
 
           {/* Logout Button */}
@@ -343,7 +408,7 @@ export default function UserProfilePage() {
           </button>
 
           <div className="w-full text-center pb-6">
-            <span className="text-[10px] text-gray-300 font-['PeydaWeb']">نسخه 1.2.0</span>
+            <span className="text-[10px] text-gray-300 font-medium">نسخه 1.2.0</span>
           </div>
         </div>
       </div>

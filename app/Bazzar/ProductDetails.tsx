@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -30,6 +30,7 @@ export default function ProductDetails() {
   const [similarProducts, setSimilarProducts] = useState<BazzarProduct[]>([]);
   const [selectedPriceId, setSelectedPriceId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,6 +65,12 @@ export default function ProductDetails() {
     return () => {
       document.body.classList.remove('full-width');
     };
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 200);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const showPlaceholder = loading || !product;
@@ -104,15 +111,19 @@ export default function ProductDetails() {
             </div>
           )}
 
-          {/* Header Controls (Overlay) */}
-          <div className="absolute top-0 left-0 w-full p-0 flex justify-between items-center z-10 pt-4 px-6">
+          {/* Header Controls (Floating) */}
+          <div className={`fixed top-0 left-0 right-0 max-w-[440px] mx-auto w-full flex justify-between items-center z-40 pt-4 px-6 pb-3 transition-all duration-300 ${
+            scrolled ? 'bg-white/90 backdrop-blur-md shadow-sm' : 'bg-transparent'
+          }`}>
             <Link href="/Bazzar">
               <div className="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center cursor-pointer shadow-sm hover:bg-white transition-colors">
                 <ArrowLeft className="w-5 h-5 text-[#0C1415]" strokeWidth={2} />
               </div>
             </Link>
 
-            <span className="text-white text-lg font-['PeydaWeb'] font-bold drop-shadow-md">
+            <span className={`text-lg font-['PeydaWeb'] font-bold transition-colors duration-300 ${
+              scrolled ? 'text-[#0C1415]' : 'text-white drop-shadow-md'
+            }`}>
               جزئیات محصول
             </span>
 
