@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -25,12 +25,12 @@ const SectionHeader = ({
 }) => (
   <div className="w-full flex justify-between items-center mb-4">
     <div className="flex flex-col items-start gap-1">
-      <h2 className="text-[#0C1415] text-lg font-['PeydaWeb'] font-semibold">{title}</h2>
+      <h2 className="text-[#0C1415] text-lg  font-semibold">{title}</h2>
       {subtitle && (
-        <p className="text-[#4E4E4E] text-xs font-['PeydaWeb'] font-light">{subtitle}</p>
+        <p className="text-[#4E4E4E] text-xs  font-light">{subtitle}</p>
       )}
     </div>
-    <span className="text-[#FDD00A] text-xs font-['PeydaWeb'] font-light cursor-pointer">
+    <span className="text-[#FDD00A] text-xs font-light cursor-pointer">
       {moreText}
     </span>
   </div>
@@ -71,7 +71,7 @@ const ProductCard = ({
     </div>
     <div className="w-full flex flex-col items-start gap-1">
       <div className="w-full flex justify-between items-center">
-        <h3 className="text-[#1F2029] text-sm font-['PeydaWeb'] font-light text-right overflow-hidden whitespace-nowrap text-ellipsis max-w-[100px]">
+        <h3 className="text-[#1F2029] text-sm font-light text-right overflow-hidden whitespace-nowrap text-ellipsis max-w-[100px]">
           {title}
         </h3>
         <div className="flex items-center gap-1 opacity-90">
@@ -114,7 +114,7 @@ const CategoryItem = ({ title, icon }: { title: string; icon?: string | null }) 
           <Icon className="w-8 h-8 text-[#393E46]" strokeWidth={1.5} />
         )}
       </div>
-      <span className="text-[#1F2029] text-xs font-['PeydaWeb'] font-semibold text-center">
+      <span className="text-[#1F2029] text-xs font-semibold text-center">
         {title}
       </span>
     </div>
@@ -168,9 +168,9 @@ export default function HomePage() {
         <div className="w-full flex justify-between items-center">
           {/* Location */}
           <div className="flex flex-col items-start gap-0.5">
-            <span className="text-[#707F81] text-xs font-['PeydaWeb'] font-light">موقعیت</span>
+            <span className="text-[#707F81] text-xs font-light">موقعیت</span>
             <div className="flex items-center gap-1">
-              <span className="text-[#0C1415] text-sm font-['PeydaWeb'] font-semibold">
+              <span className="text-[#0C1415] text-sm font-semibold">
                 تهران، ایران
               </span>
               <MapPin size={16} className="text-[#FDD00A] fill-[#FDD00A]" />
@@ -179,7 +179,7 @@ export default function HomePage() {
           {/* Toggle */}
           
             <div className="h-[29px] px-3 bg-[#FDD00A] shadow-sm rounded-md flex items-center justify-center">
-              <span className="text-[#393E46] text-sm font-['PeydaWeb'] font-semibold">
+              <span className="text-[#393E46] text-sm font-semibold">
                 خرید کالا
               </span>
             </div>
@@ -249,8 +249,8 @@ export default function HomePage() {
             dir="rtl"
           >
             <div className="flex flex-col items-end gap-1 z-10">
-              <h2 className="text-[#0C1415] text-lg font-['PeydaWeb'] font-bold">مجموعه جدید</h2>
-              <p className="text-[#4E4E4E] text-xs font-['PeydaWeb'] font-light">
+              <h2 className="text-[#0C1415] text-lg font-bold">مجموعه جدید</h2>
+              <p className="text-[#4E4E4E] text-xs font-light">
                 ۵۰٪ تخفیف برای اولین معامله
               </p>
             </div>
@@ -260,7 +260,7 @@ export default function HomePage() {
                 href="/Bazzar/ProductDetails"
                 className="bg-[#FDD00A] px-4 py-2 rounded-lg shadow-sm flex items-center justify-center cursor-pointer"
               >
-                <span className="text-[#393E46] text-xs font-['PeydaWeb'] font-bold">
+                <span className="text-[#393E46] text-xs font-bold">
                   همین حالا خرید کنید
                 </span>
               </Link>
@@ -271,11 +271,11 @@ export default function HomePage() {
         {/* Categories */}
         <div className="w-full flex flex-col gap-3" dir="rtl">
           <div className="w-full flex justify-between items-center">
-            <span className="text-[#0C1415] text-lg font-['PeydaWeb'] font-semibold">
+            <span className="text-[#0C1415] text-lg font-semibold">
               دسته بندی
             </span>
             <Link href="/Bazzar/Categories">
-              <span className="text-[#FDD00A] text-xs font-['PeydaWeb'] font-light cursor-pointer">
+              <span className="text-[#FDD00A] text-xs font-light cursor-pointer">
                 مشاهده همه
               </span>
             </Link>
@@ -304,11 +304,11 @@ export default function HomePage() {
         {/* Special Sale (Flash Sale) */}
         <div className="w-full flex flex-col gap-3">
           <div className="w-full flex justify-between items-center">
-            <span className="text-[#0C1415] text-lg font-['PeydaWeb'] font-semibold">
+            <span className="text-[#0C1415] text-lg font-semibold">
               فروش ویژه
             </span>
             <div className="flex items-center gap-1">
-              <span className="text-[#707F81] text-xs font-['PeydaWeb'] font-light">
+              <span className="text-[#707F81] text-xs font-light">
                 بسته شدن در:
               </span>
               <div className="flex items-center gap-1" dir="ltr">
@@ -432,7 +432,7 @@ export default function HomePage() {
                   <div className="self-stretch flex-col justify-start items-start gap-2.5 flex">
                     <div className="self-stretch flex-col justify-start items-start gap-[7px] flex">
                       <div className="self-stretch justify-between items-center inline-flex">
-                        <div className="text-[#1F2029] text-sm font-['PeydaWeb'] font-light text-right overflow-hidden whitespace-nowrap text-ellipsis max-w-[100px]">
+                        <div className="text-[#1F2029] text-sm font-light text-right overflow-hidden whitespace-nowrap text-ellipsis max-w-[100px]">
                           {product.title}
                         </div>
                         <div className="justify-start items-center gap-1 flex opacity-90">
@@ -482,7 +482,7 @@ export default function HomePage() {
                   />
                 </div>
                 <div className="flex flex-col items-center w-full">
-                  <span className="text-[#1F2029] text-[10px] font-['PeydaWeb'] font-light opacity-60 text-center">
+                  <span className="text-[#1F2029] text-[10px] font-light opacity-60 text-center">
                     {school.name}
                   </span>
                 </div>

@@ -89,18 +89,17 @@ const ProductsTable = () => {
 
   if (loading)
     return (
-      <div className="w-full h-40 flex items-center justify-center text-gray-500 font-['PeydaWeb']">
+      <div className="w-full h-40 flex items-center justify-center text-gray-500 font-medium">
         در حال بارگذاری...
       </div>
     );
 
   return (
     <div
-      className={`w-full ${!isListEmpty ? 'bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] overflow-hidden' : ''} flex flex-col justify-start items-end`}
+      className={`w-full ${!isListEmpty ? 'bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] overflow-hidden' : ''} flex flex-col justify-start items-stretch`}
     >
       {/* Header / Filters */}
-      <div className={`w-full h-16 px-5 py-2 ${!isListEmpty ? 'border-b border-[#DFE1E7] bg-white' : ''} flex justify-between items-center mb-4`}>
-        <div />
+      <div className={`w-full h-16 px-5 py-2 ${!isListEmpty ? 'border-b border-[#DFE1E7] bg-white' : ''} flex justify-end items-center mb-4`} dir="rtl">
         <div className="flex justify-start items-center gap-2 w-full max-w-md">
           <div className="flex-1 relative">
             <input
@@ -108,7 +107,7 @@ const ProductsTable = () => {
               placeholder="جستجو بر اساس نام یا کد محصول..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full h-10 pr-9 pl-4 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] text-sm text-[#0D0D12] focus:outline-blue-500 transition-colors font-['PeydaWeb']"
+              className="w-full h-10 pr-9 pl-4 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] text-sm text-[#0D0D12] focus:outline-blue-500 transition-colors font-medium"
             />
             <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#818898]" />
           </div>
@@ -166,14 +165,14 @@ const ProductsTable = () => {
           <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center">
             <Search className="w-8 h-8 text-gray-400" />
           </div>
-          <div className="text-[#0D0D12] font-semibold font-['PeydaWeb']">محصولی یافت نشد</div>
-          <div className="text-[#666D80] text-sm font-['PeydaWeb']">نتیجه‌ای با این مشخصات پیدا نشد.</div>
+          <div className="text-[#0D0D12] font-semibold">محصولی یافت نشد</div>
+          <div className="text-[#666D80] text-sm font-medium">نتیجه‌ای با این مشخصات پیدا نشد.</div>
         </div>
       ) : (
         <div className="w-full overflow-x-auto no-scrollbar">
           <div className="min-w-[900px] flex flex-col">
             {/* Table Header */}
-            <div className="w-full bg-[#F6F8FA] border-b border-[#DFE1E7] flex justify-end items-center px-2">
+            <div className="w-full bg-[#F6F8FA] border-b border-[#DFE1E7] flex justify-start items-center px-2" dir="rtl">
               {[
                 { label: '#', w: 'w-14' },
                 { label: 'تصویر', w: 'w-[80px]' },
@@ -184,7 +183,7 @@ const ProductsTable = () => {
                 { label: 'وضعیت', w: 'w-[120px]' },
               ].map((col) => (
                 <div key={col.label} className={`${col.w} h-10 px-3 flex justify-center items-center`}>
-                  <span className="text-center text-[#666D80] text-xs font-semibold font-['PeydaWeb']">{col.label}</span>
+                  <span className="text-center text-[#666D80] text-xs font-semibold">{col.label}</span>
                 </div>
               ))}
             </div>
@@ -202,7 +201,8 @@ const ProductsTable = () => {
                 <div
                   key={product.id}
                   onClick={() => setSelectedProduct(product)}
-                  className="w-full h-16 border-b border-[#DFE1E7] flex justify-end items-center px-2 hover:bg-gray-50 transition-colors cursor-pointer"
+                  className="w-full h-16 border-b border-[#DFE1E7] flex justify-start items-center px-2 hover:bg-gray-50 transition-colors cursor-pointer"
+                  dir="rtl"
                 >
                   <div className="w-14 h-16 px-3 flex justify-center items-center">
                     <span className="text-[#C0C4CC] text-xs font-num-medium">{toFarsiNumber(itemIndex)}</span>
@@ -217,7 +217,7 @@ const ProductsTable = () => {
                     )}
                   </div>
                   <div className="w-[200px] h-16 px-3 flex justify-center items-center">
-                    <span className="text-center text-[#0D0D12] text-sm font-semibold font-['PeydaWeb'] truncate w-full" dir="auto">
+                    <span className="text-center text-[#0D0D12] text-sm font-semibold truncate w-full" dir="auto">
                       {product.title}
                     </span>
                   </div>

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect } from 'react';
 import { Search, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -120,7 +120,7 @@ const StudentRequestsTable = () => {
 
   if (loading)
     return (
-      <div className="w-full h-40 flex items-center justify-center text-gray-500 font-['PeydaWeb']">
+      <div className="w-full h-40 flex items-center justify-center text-gray-500">
         در حال بارگذاری...
       </div>
     );
@@ -142,7 +142,7 @@ const StudentRequestsTable = () => {
               <button
                 key={t}
                 onClick={() => setFilterType(t)}
-                className={`h-7 px-3 rounded-full text-xs font-semibold font-['PeydaWeb'] transition-all border ${active ? 'bg-[#0A33FF] text-white border-[#0A33FF]' : 'bg-white text-[#666D80] border-[#DFE1E7] hover:bg-gray-50'}`}
+                className={`h-7 px-3 rounded-full text-xs font-semibold transition-all border ${active ? 'bg-[#0A33FF] text-white border-[#0A33FF]' : 'bg-white text-[#666D80] border-[#DFE1E7] hover:bg-gray-50'}`}
               >
                 {labels[t]}
               </button>
@@ -158,7 +158,7 @@ const StudentRequestsTable = () => {
               placeholder="جستجو در درخواست‌ها..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full h-10 pr-9 pl-4 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] text-sm text-[#0D0D12] focus:outline-blue-500 transition-colors font-['PeydaWeb']"
+              className="w-full h-10 pr-9 pl-4 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] text-sm text-[#0D0D12] focus:outline-blue-500 transition-colors"
             />
             <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#818898]" />
           </div>
@@ -220,8 +220,8 @@ const StudentRequestsTable = () => {
           <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center">
             <Search className="w-8 h-8 text-gray-400" />
           </div>
-          <div className="text-[#0D0D12] font-semibold font-['PeydaWeb']">درخواستی یافت نشد</div>
-          <div className="text-[#666D80] text-sm font-['PeydaWeb']">نتیجه‌ای با این مشخصات پیدا نشد.</div>
+          <div className="text-[#0D0D12] font-semibold">درخواستی یافت نشد</div>
+          <div className="text-[#666D80] text-sm">نتیجه‌ای با این مشخصات پیدا نشد.</div>
         </div>
       ) : (
         <div className="w-full overflow-x-auto no-scrollbar">
@@ -240,7 +240,7 @@ const StudentRequestsTable = () => {
                 { label: 'عملیات',    w: 'w-[100px]' },
               ].map((col) => (
                 <div key={col.label} className={`${col.w} h-10 px-2 flex justify-center items-center`}>
-                  <span className="text-center text-[#666D80] text-xs font-semibold font-['PeydaWeb']">{col.label}</span>
+                  <span className="text-center text-[#666D80] text-xs font-semibold">{col.label}</span>
                 </div>
               ))}
             </div>
@@ -264,7 +264,7 @@ const StudentRequestsTable = () => {
                   </div>
                   <div className="w-[110px] h-16 px-2 flex justify-center items-center">
                     <span
-                      className="px-2 py-1 rounded-lg text-[11px] font-semibold font-['PeydaWeb'] whitespace-nowrap"
+                      className="px-2 py-1 rounded-lg text-[11px] font-semibold whitespace-nowrap"
                       style={{ backgroundColor: typeStyle.bg, color: typeStyle.color }}
                     >
                       {typeStyle.short}
@@ -280,17 +280,17 @@ const StudentRequestsTable = () => {
                     )}
                   </div>
                   <div className="w-[180px] h-16 px-2 flex justify-center items-center">
-                    <span className="text-center text-[#0D0D12] text-sm font-semibold font-['PeydaWeb'] truncate w-full" dir="auto">
+                    <span className="text-center text-[#0D0D12] text-sm font-semibold truncate w-full" dir="auto">
                       {req.model_data?.title || '—'}
                     </span>
                   </div>
                   <div className="w-[160px] h-16 px-2 flex justify-center items-center">
-                    <span className="text-center text-[#0D0D12] text-sm font-['PeydaWeb'] truncate w-full">
+                    <span className="text-center text-[#0D0D12] text-sm truncate w-full">
                       {req.firstname} {req.lastname}
                     </span>
                   </div>
                   <div className="w-[150px] h-16 px-2 flex justify-center items-center">
-                    <span className="text-center text-[#666D80] text-xs font-['PeydaWeb'] truncate w-full">
+                    <span className="text-center text-[#666D80] text-xs truncate w-full">
                       {req.school_name}
                     </span>
                   </div>
@@ -301,7 +301,7 @@ const StudentRequestsTable = () => {
                   </div>
                   <div className="w-[130px] h-16 px-2 flex justify-center items-center">
                     <span
-                      className="px-2 py-0.5 rounded-2xl text-[11px] font-medium font-['PeydaWeb'] whitespace-nowrap"
+                      className="px-2 py-0.5 rounded-2xl text-[11px] font-medium whitespace-nowrap"
                       style={{ backgroundColor: statusStyle.bg, color: statusStyle.color }}
                     >
                       {req.status}
@@ -311,12 +311,12 @@ const StudentRequestsTable = () => {
                     {isPending ? (
                       <button
                         onClick={(e) => { e.stopPropagation(); setSelectedRequest(req); }}
-                        className="h-8 px-3 bg-[#0A33FF] hover:bg-blue-600 text-white rounded-lg text-xs font-semibold font-['PeydaWeb'] transition-colors whitespace-nowrap"
+                        className="h-8 px-3 bg-[#0A33FF] hover:bg-blue-600 text-white rounded-lg text-xs font-semibold transition-colors whitespace-nowrap"
                       >
                         بررسی
                       </button>
                     ) : (
-                      <span className="text-[#C0C4CC] text-xs font-['PeydaWeb']">بررسی شده</span>
+                      <span className="text-[#C0C4CC] text-xs">بررسی شده</span>
                     )}
                   </div>
                 </div>

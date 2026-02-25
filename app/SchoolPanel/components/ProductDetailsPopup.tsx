@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useRef, useEffect, useState } from 'react';
 import { X, CheckCircle, AlertCircle, Info } from 'lucide-react';
@@ -93,7 +93,7 @@ const ProductDetailsPopup = ({ product: initialProduct, onClose }: Props) => {
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center text-gray-400 gap-2">
               <Info className="w-8 h-8" />
-              <span className="text-sm font-['PeydaWeb']">تصویر ندارد</span>
+              <span className="text-sm">تصویر ندارد</span>
             </div>
           )}
           <div className="absolute top-4 left-4 z-10">
@@ -111,7 +111,7 @@ const ProductDetailsPopup = ({ product: initialProduct, onClose }: Props) => {
           <div className="flex flex-col px-5 pt-5 pb-8 gap-5">
             {/* Title + Status */}
             <div className="flex justify-between items-start gap-3">
-              <h1 className="text-right text-[#0D0D12] text-xl font-semibold font-['PeydaWeb'] leading-relaxed">
+              <h1 className="text-right text-[#0D0D12] text-xl font-semibold leading-relaxed">
                 {product.title}
               </h1>
               <div
@@ -129,14 +129,14 @@ const ProductDetailsPopup = ({ product: initialProduct, onClose }: Props) => {
             {/* Price + Inventory */}
             <div className="flex justify-between items-center p-3 bg-gray-50 rounded-xl border border-gray-100">
               <div className="flex items-center gap-1.5">
-                <span className="text-[#666D80] text-xs font-['PeydaWeb']">موجودی:</span>
+                <span className="text-[#666D80] text-xs">موجودی:</span>
                 <span className="text-[#0D0D12] text-sm font-bold font-num-medium">
                   {toFarsiNumber(product.inventory)} عدد
                 </span>
               </div>
               <div>
                 <span className="text-[#0047AB] text-lg font-bold font-num-medium">{formatPrice(product.price)}</span>
-                <span className="text-[#666D80] text-xs font-['PeydaWeb'] mr-1">ریال</span>
+                <span className="text-[#666D80] text-xs mr-1">ریال</span>
               </div>
             </div>
 
@@ -148,7 +148,7 @@ const ProductDetailsPopup = ({ product: initialProduct, onClose }: Props) => {
                 { label: 'حداقل موجودی هشدار', value: toFarsiNumber(product.warn_inventory) },
               ].map(({ label, value }) => (
                 <div key={label} className="flex justify-between items-center py-2.5 border-b border-gray-100 last:border-0">
-                  <span className="text-[#666D80] text-sm font-['PeydaWeb']">{label}</span>
+                  <span className="text-[#666D80] text-sm">{label}</span>
                   <span className="text-[#0D0D12] text-sm font-semibold font-num-medium">{value}</span>
                 </div>
               ))}
@@ -163,7 +163,7 @@ const ProductDetailsPopup = ({ product: initialProduct, onClose }: Props) => {
               ].map(({ label, value }) => (
                 <div key={label} className="flex flex-col items-center gap-1 p-3 bg-gray-50 rounded-xl border border-gray-100">
                   <span className="text-[#0D0D12] text-base font-bold font-num-medium">{value}</span>
-                  <span className="text-[#818898] text-xs font-['PeydaWeb']">{label}</span>
+                  <span className="text-[#818898] text-xs">{label}</span>
                 </div>
               ))}
             </div>
@@ -171,53 +171,82 @@ const ProductDetailsPopup = ({ product: initialProduct, onClose }: Props) => {
             {/* Description */}
             {product.description && (
               <div className="flex flex-col gap-2">
-                <span className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb']">توضیحات</span>
-                <p className="text-[#6D7280] text-sm font-['PeydaWeb'] leading-relaxed whitespace-pre-wrap">
+                <span className="text-[#0D0D12] text-sm font-semibold">توضیحات</span>
+                <p className="text-[#6D7280] text-sm leading-relaxed whitespace-pre-wrap">
                   {product.description}
                 </p>
               </div>
             )}
 
-            {/* Prices / Variants table */}
+            {/* Prices / Variants */}
             {!isLoading && product.prices && product.prices.length > 0 && (
               <div className="flex flex-col gap-3">
-                <span className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb']">
+                <span className="text-[#0D0D12] text-sm font-semibold">
                   قیمت‌گذاری به تفکیک ویژگی
                 </span>
-                <div className="w-full overflow-x-auto rounded-xl border border-[#DFE1E7]">
-                  <table className="w-full text-sm" dir="rtl">
-                    <thead>
-                      <tr className="bg-[#F6F8FA] border-b border-[#DFE1E7]">
-                        {['ویژگی', 'نوع', 'قیمت (ریال)', 'تخفیف %', 'موجودی'].map((h) => (
-                          <th
-                            key={h}
-                            className="px-3 py-2 text-center text-xs text-[#666D80] font-semibold font-['PeydaWeb'] whitespace-nowrap"
-                          >
-                            {h}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {product.prices.map((variant: ProductPriceVariant) => (
-                        <tr key={variant.id} className="border-b border-[#DFE1E7] last:border-0 hover:bg-gray-50">
-                          <td className="px-3 py-2 text-center text-[#0D0D12] font-['PeydaWeb']">{variant.title}</td>
-                          <td className="px-3 py-2 text-center text-[#666D80] font-['PeydaWeb']">
+                <div className="flex flex-col gap-2">
+                  {product.prices.map((variant: ProductPriceVariant, i) => (
+                    <div
+                      key={variant.id}
+                      className="w-full rounded-xl border border-[#DFE1E7] overflow-hidden"
+                      dir="rtl"
+                    >
+                      {/* Variant header */}
+                      <div className="flex items-center justify-between px-4 py-2.5 bg-[#F6F8FA] border-b border-[#DFE1E7]">
+                        <div className="flex items-center gap-2">
+                          <span className="text-[#0D0D12] text-sm font-bold">{variant.title}</span>
+                          <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-[#F0F4FF] text-[#3B5BDB]">
                             {PRICE_TYPE_LABELS[variant.type] || String(variant.type)}
-                          </td>
-                          <td className="px-3 py-2 text-center font-num-medium text-[#0D0D12]">
-                            {formatPrice(variant.amount)}
-                          </td>
-                          <td className="px-3 py-2 text-center font-num-medium text-[#B98900]">
-                            {toFarsiNumber(variant.discount_percent)}٪
-                          </td>
-                          <td className="px-3 py-2 text-center font-num-medium text-[#0D0D12]">
-                            {toFarsiNumber(variant.inventory)}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                          </span>
+                        </div>
+                        <span className="text-[#818898] text-xs font-num-medium">ویژگی {toFarsiNumber(i + 1)}</span>
+                      </div>
+                      {/* Variant fields */}
+                      <div className="flex flex-col divide-y divide-[#F3F4F6]">
+                        {[
+                          {
+                            label: 'قیمت',
+                            value: (
+                              <span className="text-[#0047AB] font-bold font-num-medium text-sm">
+                                {formatPrice(variant.amount)} ریال
+                              </span>
+                            ),
+                          },
+                          {
+                            label: 'تخفیف',
+                            value: Number(variant.discount_percent) > 0 ? (
+                              <span className="text-white text-xs font-bold font-num-medium bg-[#E03131] px-2 py-0.5 rounded-full">
+                                {toFarsiNumber(variant.discount_percent)}٪
+                              </span>
+                            ) : (
+                              <span className="text-[#C0C4CC] text-sm">ندارد</span>
+                            ),
+                          },
+                          {
+                            label: 'موجودی',
+                            value: (
+                              <span className="text-[#0D0D12] font-semibold font-num-medium text-sm">
+                                {toFarsiNumber(variant.inventory)} عدد
+                              </span>
+                            ),
+                          },
+                          {
+                            label: 'هشدار موجودی',
+                            value: (
+                              <span className="text-[#0D0D12] font-num-medium text-sm">
+                                {toFarsiNumber(variant.warn_inventory)} عدد
+                              </span>
+                            ),
+                          },
+                        ].map(({ label, value }) => (
+                          <div key={label} className="flex items-center justify-between px-4 py-2.5">
+                            <span className="text-[#666D80] text-sm">{label}</span>
+                            {value}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
