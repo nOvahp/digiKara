@@ -28,6 +28,8 @@ export default function AddAddressPage() {
     city_id: '',
   });
 
+  const [fieldErrors, setFieldErrors] = useState<{ title?: string; address?: string }>({});
+
   useEffect(() => {
     let isMounted = true;
     const fetchProvinces = async () => {
@@ -94,6 +96,22 @@ export default function AddAddressPage() {
   ) => {
     const { name, value } = e.target;
 
+    // Postal code: strip anything that is not a digit
+    if (name === 'postal_code') {
+      const digitsOnly = value.replace(/\D/g, '');
+      setFormData((prev) => ({ ...prev, postal_code: digitsOnly }));
+      return;
+    }
+
+    // Text fields: warn when Latin characters are typed
+    if (name === 'title' || name === 'address') {
+      const hasLatin = /[a-zA-Z]/.test(value);
+      setFieldErrors((prev) => ({
+        ...prev,
+        [name]: hasLatin ? 'لطفاً متن را به فارسی بنویسید' : undefined,
+      }));
+    }
+
     setFormData((prev) => ({
       ...prev,
       [name]:
@@ -134,7 +152,7 @@ export default function AddAddressPage() {
       {/* Header */}
       <div className="w-full max-w-[440px] flex justify-between items-center px-0 py-4 shrink-0">
         <div className="flex items-center justify-between w-full relative">
-          <span className="text-[#0C1415] text-base font-['PeydaWeb'] font-semibold">
+          <span className="text-[#0C1415] text-base  font-semibold">
             افزودن آدرس جدید
           </span>
           <button
@@ -154,8 +172,14 @@ export default function AddAddressPage() {
             value={formData.title}
             onChange={handleChange}
             placeholder="مثال: خانه، محل کار"
-            className="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-[#FDD00A] outline-none transition-colors"
+            lang="fa"
+            className={`w-full p-3 border rounded-xl bg-gray-50 focus:bg-white outline-none transition-colors ${
+              fieldErrors.title ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-[#FDD00A]'
+            }`}
           />
+          {fieldErrors.title && (
+            <span className="text-red-500 text-xs font-['PeydaWeb']">{fieldErrors.title}</span>
+          )}
         </div>
 
         <div className="flex gap-4">
@@ -201,7 +225,10 @@ export default function AddAddressPage() {
             name="postal_code"
             value={formData.postal_code}
             onChange={handleChange}
-            className="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-[#FDD00A] outline-none transition-colors text-left"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            maxLength={10}
+            className="w-full p-3 font-num-medium border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-[#FDD00A] outline-none transition-colors text-left"
             dir="ltr"
           />
         </div>
@@ -213,8 +240,14 @@ export default function AddAddressPage() {
             value={formData.address}
             onChange={handleChange}
             rows={4}
-            className="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-[#FDD00A] outline-none transition-colors resize-none"
+            lang="fa"
+            className={`w-full p-3 border rounded-xl bg-gray-50 focus:bg-white outline-none transition-colors resize-none ${
+              fieldErrors.address ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-[#FDD00A]'
+            }`}
           />
+          {fieldErrors.address && (
+            <span className="text-red-500 text-xs font-['PeydaWeb']">{fieldErrors.address}</span>
+          )}
         </div>
       </div>
 

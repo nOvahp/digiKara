@@ -59,7 +59,7 @@ export default function DigiKaraCart() {
     if (!isAuthLoading) {
       fetchOrders();
     }
-  }, [setCartItems, isAuthenticated, isAuthLoading]);
+  }, [isAuthenticated, isAuthLoading]);
 
   // ----------------------------------------------------------------------
   // Not Logged In State

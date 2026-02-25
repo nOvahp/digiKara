@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { ArrowLeft, MapPin, Plus, Circle, Pencil, Trash2 } from 'lucide-react';
 
 import { bazzarService } from '@/app/services/bazzarService';
+import { useOrder } from '@/app/Bazzar/OrderContext';
 
 interface Address {
   id: string;
@@ -15,6 +16,7 @@ interface Address {
 
 export default function AddressPage() {
   const router = useRouter();
+  const { setSelectedAddressId } = useOrder();
   const [selectedId, setSelectedId] = useState<string>('');
   const [addresses, setAddresses] = useState<Address[]>([]);
 
@@ -181,7 +183,10 @@ export default function AddressPage() {
       <div className="fixed bottom-[85px] left-0 right-0 z-40 w-full max-w-[440px] mx-auto p-6 bg-gradient-to-t from-white to-transparent pointer-events-none">
         <div className="w-full rounded-2xl p-3 pointer-events-auto">
           <button
-            onClick={() => router.back()} // Go back to confirm selection
+            onClick={() => {
+              if (selectedId) setSelectedAddressId(selectedId);
+              router.back();
+            }}
             className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-3 hover:bg-[#e5bc09] transition-colors shadow-sm"
           >
             <span className="text-[#1A1C1E] text-[17px] font-['PeydaWeb'] font-semibold">

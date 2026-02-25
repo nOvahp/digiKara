@@ -3,39 +3,102 @@
 import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Check, MapPin, Truck, ShoppingBag } from 'lucide-react';
-import { useCart } from '@/app/Bazzar/CartContext';
-import { bazzarService, Address } from '@/app/services/bazzarService';
+import { ArrowLeft, Check, MapPin, Truck, ShoppingBag, Loader2, AlertTriangle } from 'lucide-react';
+import { bazzarService, Address, CartItem } from '@/app/services/bazzarService';
+import { useOrder } from '@/app/Bazzar/OrderContext';
 
-
+const DELIVERY_LABELS: Record<number, string> = {
+  1: 'اقتصادی',
+  2: 'معمولی',
+  3: 'باری',
+  4: 'فوری',
+};
 
 export default function FinalCheckPage() {
   const router = useRouter();
-  const { items } = useCart();
-  const [selectedAddress, setSelectedAddress] = React.useState<Address | null>(null);
+  const { selectedAddressId, selectedDeliveryType } = useOrder();
+
+  const [orderItems, setOrderItems] = React.useState<CartItem[]>([]);
+  const [addresses, setAddresses] = React.useState<Address[]>([]);
+  const [loadingItems, setLoadingItems] = React.useState(true);
+  const [submitting, setSubmitting] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+  const [loadError, setLoadError] = React.useState<string | null>(null);
 
   React.useEffect(() => {
-    const fetchAddress = async () => {
+    const load = async () => {
       try {
-        const response = await bazzarService.getAddresses();
-        if (response && response.data && response.data.length > 0) {
-          // Default to the first address for now, or implement selection logic
-          setSelectedAddress(response.data[0]);
-        } else {
-          setSelectedAddress(null);
-        }
-      } catch (error) {
-        console.error('Failed to fetch addresses:', error);
+        const [reviewRes, addressRes] = await Promise.all([
+          bazzarService.getOrderReview(),
+          bazzarService.getAddresses(),
+        ]);
+        if (reviewRes?.data) setOrderItems(reviewRes.data);
+        if (addressRes?.data) setAddresses(addressRes.data);
+      } catch (err: unknown) {
+        const msg = (err as { message?: string })?.message ?? 'خطا در دریافت اطلاعات سبد خرید';
+        console.error('Failed to load order review:', err);
+        setLoadError(msg);
+      } finally {
+        setLoadingItems(false);
       }
     };
-    fetchAddress();
+    load();
   }, []);
+
+  const selectedAddress: Address | undefined = selectedAddressId
+    ? addresses.find((a) => String(a.id) === selectedAddressId)
+    : addresses[0];
+
+  const handleContinue = async () => {
+    const addressId = selectedAddressId ?? (addresses[0] ? String(addresses[0].id) : null);
+    if (!addressId) {
+      setError('لطفاً یک آدرس انتخاب کنید');
+      return;
+    }
+    setError(null);
+    setSubmitting(true);
+    try {
+      await bazzarService.submitOrderReview({
+        address_id: addressId,
+        delivery_type: selectedDeliveryType,
+      });
+      router.push('/Bazzar/DigiKaraCart/PaymentMethode');
+    } catch (err: unknown) {
+      const msg = (err as { message?: string })?.message ?? 'خطا در ثبت سفارش';
+      setError(msg);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div
       className="w-full h-[100dvh] bg-white flex flex-col items-center relative overflow-hidden"
       dir="rtl"
     >
+      {/* ─── LOAD ERROR FULL-PAGE STATE ─── */}
+      {!loadingItems && loadError && (
+        <div className="absolute inset-0 z-50 bg-white flex flex-col items-center justify-center px-8 gap-6">
+          <div className="w-24 h-24 rounded-full bg-red-50 flex items-center justify-center">
+            <AlertTriangle className="w-12 h-12 text-red-500" strokeWidth={1.5} />
+          </div>
+          <div className="flex flex-col items-center gap-2 text-center">
+            <h2 className="text-[#0C1415] text-xl font-['PeydaWeb'] font-bold">خطا در بارگذاری سبد خرید</h2>
+            <p className="text-[#707F81] text-sm font-['PeydaWeb'] leading-6">{loadError}</p>
+            <p className="text-[#ACB5BB] text-xs font-['PeydaWeb'] mt-1">
+              ممکن است سبد خرید شما خالی باشد یا مشکلی در اتصال پیش آمده باشد.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => router.push('/Bazzar')}
+            className="w-full max-w-[320px] h-[52px] bg-[#FDD00A] rounded-xl flex items-center justify-center font-['PeydaWeb'] font-semibold text-[#1A1C1E] hover:bg-[#e5bc09] transition-colors"
+          >
+            بازگشت به صفحه اصلی
+          </button>
+        </div>
+      )}
+
       {/* Header */}
       <div className="w-full max-w-[440px] flex justify-between items-center px-0 py-4 shrink-0">
         <div className="flex items-center justify-between w-full relative">
@@ -71,7 +134,7 @@ export default function FinalCheckPage() {
                     {selectedAddress.title || selectedAddress.city || 'آدرس'}
                   </span>
                   <p className="text-[#707F81] text-xs font-['PeydaWeb'] font-light leading-5">
-                    {selectedAddress.address}
+                    {selectedAddress.address ?? selectedAddress.details}
                   </p>
                 </div>
               </div>
@@ -87,7 +150,7 @@ export default function FinalCheckPage() {
               <p className="text-[#707F81] text-sm font-medium">هنوز آدرسی ثبت نکرده‌اید</p>
               <button
                 onClick={() => router.push('/Bazzar/DigiKaraCart/Address/Add')}
-                className="px-5 py-2 bg-[#FDD00A] rounded-lg text-[#1A1C1E] text-sm  font-semibold hover:bg-[#e5bc09] transition-colors"
+                className="px-5 py-2 bg-[#FDD00A] rounded-lg text-[#1A1C1E] text-sm font-semibold hover:bg-[#e5bc09] transition-colors"
               >
                 افزودن آدرس جدید
               </button>
@@ -111,11 +174,7 @@ export default function FinalCheckPage() {
               </div>
               <div className="flex flex-col gap-1 text-right">
                 <span className="text-[#0C1415] text-sm font-['PeydaWeb'] font-semibold">
-                  اقتصادی
-                </span>
-                <span className="text-[#707F81] text-xs font-['PeydaWeb'] font-light">
-                  تاریخ تحویل تخمینی <span className="font-num-medium">3</span> مهر{' '}
-                  <span className="font-num-medium">1404</span>
+                  {DELIVERY_LABELS[selectedDeliveryType] ?? 'اقتصادی'}
                 </span>
               </div>
             </div>
@@ -134,36 +193,36 @@ export default function FinalCheckPage() {
         <div className="w-full flex flex-col gap-6 py-6">
           <h3 className="text-[#0C1415] text-base font-semibold">لیست سفارش</h3>
 
-          {items.length === 0 ? (
+          {loadingItems ? (
+            <div className="flex justify-center py-10">
+              <Loader2 className="w-8 h-8 animate-spin text-[#3C5A5D]" />
+            </div>
+          ) : orderItems.length === 0 ? (
             <div className="w-full text-center text-[#707F81] py-8 text-sm font-medium">
               سبد خرید خالی است
             </div>
           ) : (
-            items.map((item, index) => (
+            orderItems.map((item) => (
               <div key={item.id} className="flex gap-4 items-center justify-start w-full">
-                <div className="w-[84px] h-[84px] bg-[#F6F6F6] rounded-lg shrink-0 overflow-hidden relative group">
+                <div className="w-[84px] h-[84px] bg-[#F6F6F6] rounded-lg shrink-0 overflow-hidden relative">
                   <Image
                     src={item.image}
-                    alt={item.name}
+                    alt={item.title}
                     fill
                     sizes="84px"
                     className="object-cover"
                     unoptimized
                   />
-                  {/* Shadow effect only on first item or if needed, let's keep it simple or strictly per design */}
-                  {index === 0 && (
-                    <div className="absolute -bottom-2 -left-2 w-full h-4 bg-black/80 blur-lg opacity-20 rotate-1"></div>
-                  )}
                 </div>
                 <div className="flex-1 flex flex-col items-start gap-1">
-                  <span className="text-[#0C1415] text-sm font-medium line-clamp-1 text-right">
-                    {item.name}
+                  <span className="text-[#0C1415] text-sm font-medium line-clamp-2 text-right">
+                    {item.title}
                   </span>
                   <span className="text-[#707F81] text-xs font-medium text-right">
-                    {item.shopName || 'فروشگاه'}
+                    تعداد: <span className="font-num-medium">{item.quantity}</span>
                   </span>
                   <span className="text-[#0C1415] text-sm font-num-medium mt-1 text-right">
-                    {(item.price * item.count).toLocaleString()} ریال
+                    {(item.price * item.quantity).toLocaleString()} ریال
                   </span>
                 </div>
               </div>
@@ -174,17 +233,27 @@ export default function FinalCheckPage() {
 
       {/* Bottom Bar - Floating */}
       <div className="fixed bottom-[85px] left-0 right-0 z-40 w-full max-w-[440px] mx-auto p-6 pointer-events-none">
-        <div className="w-full pointer-events-auto">
-          {/* Next Button */}
+        <div className="w-full pointer-events-auto flex flex-col gap-2">
+          {error && (
+            <p className="text-red-500 text-xs text-center font-['PeydaWeb']">{error}</p>
+          )}
           <button
-            onClick={() => router.push('/Bazzar/DigiKaraCart/PaymentMethode')}
-            className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-3 hover:bg-[#e5bc09] transition-colors shadow-sm"
+            onClick={handleContinue}
+            disabled={submitting}
+            className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-3 hover:bg-[#e5bc09] transition-colors shadow-sm disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            <span className="text-[#1A1C1E] text-[17px] font-semibold">ادامه به پرداخت</span>
-            <ShoppingBag className="w-5 h-5 text-[#1A1C1E]" />
+            {submitting ? (
+              <Loader2 className="w-5 h-5 animate-spin text-[#1A1C1E]" />
+            ) : (
+              <>
+                <span className="text-[#1A1C1E] text-[17px] font-semibold">ادامه به پرداخت</span>
+                <ShoppingBag className="w-5 h-5 text-[#1A1C1E]" />
+              </>
+            )}
           </button>
         </div>
       </div>
     </div>
   );
 }
+

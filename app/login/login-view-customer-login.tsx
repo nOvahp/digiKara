@@ -26,6 +26,7 @@ export function LoginViewCustomerLogin({ phone, onBack }: LoginViewCustomerLogin
   const [isLoading, setIsLoading] = useState(false);
   const [serverError, setServerError] = useState('');
   const [timeLeft, setTimeLeft] = useState(0);
+  const smsSendingRef = React.useRef(false);
 
   // Countdown timer for OTP resend
   useEffect(() => {
@@ -67,9 +68,12 @@ export function LoginViewCustomerLogin({ phone, onBack }: LoginViewCustomerLogin
   });
 
   const handleSwitchToOtp = async () => {
+    if (smsSendingRef.current || isLoading) return;
+    smsSendingRef.current = true;
     setIsLoading(true);
     setServerError('');
     const result = await sendCustomerSms(phone);
+    smsSendingRef.current = false;
     setIsLoading(false);
     if (result.success) {
       otpForm.reset();
@@ -81,10 +85,12 @@ export function LoginViewCustomerLogin({ phone, onBack }: LoginViewCustomerLogin
   };
 
   const handleResendOtp = async () => {
-    if (timeLeft > 0) return;
+    if (timeLeft > 0 || smsSendingRef.current || isLoading) return;
+    smsSendingRef.current = true;
     setIsLoading(true);
     setServerError('');
     const result = await sendCustomerSms(phone);
+    smsSendingRef.current = false;
     setIsLoading(false);
     if (result.success) {
       setTimeLeft(RESEND_DELAY);

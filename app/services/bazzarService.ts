@@ -278,4 +278,25 @@ export const bazzarService = {
   removeFromFavorites: async (productId: number): Promise<ApiResponse<null>> => {
     return await apiClient.delete<ApiResponse<null>>(`/customers/favorites/${productId}`);
   },
+
+  // ─── Order Review ────────────────────────────────────────────────────────────
+
+  getOrderReview: async (): Promise<CartResponse> => {
+    return await apiClient.get<CartResponse>('/customers/orders/review');
+  },
+
+  submitOrderReview: async (data: { address_id: string; delivery_type: number }): Promise<ApiResponse<null>> => {
+    return await apiClient.put<ApiResponse<null>>('/customers/orders/review', data);
+  },
+
+  // ─── Checkout ────────────────────────────────────────────────────────────────
+
+  getCheckout: async (): Promise<{ status: string; message: string; data: { total_price: number; discount: number; shipping_cost: number; final_price: number }; code: number }> => {
+    return await apiClient.get('/customers/orders/checkout');
+  },
+
+  submitCheckout: async (redirectUrl?: string): Promise<ApiResponse<{ token?: string } | null>> => {
+    const body = redirectUrl ? { redirect_url: redirectUrl } : {};
+    return await apiClient.put<ApiResponse<{ token?: string } | null>>('/customers/orders/checkout', body);
+  },
 };

@@ -3,10 +3,12 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Truck, Zap, Package, Circle } from 'lucide-react';
+import { useOrder } from '@/app/Bazzar/OrderContext';
 
 export default function SendTypePage() {
   const router = useRouter();
-  const [selectedId, setSelectedId] = useState<string>('1');
+  const { selectedDeliveryType, setSelectedDeliveryType } = useOrder();
+  const [selectedId, setSelectedId] = useState<string>(String(selectedDeliveryType));
 
   const options = [
     {
@@ -128,7 +130,10 @@ export default function SendTypePage() {
         <div className="w-full pointer-events-auto">
           {/* Confirm Button */}
           <button
-            onClick={() => router.back()} // Confirming presumably goes back to FinalCheck with selection
+            onClick={() => {
+              setSelectedDeliveryType(Number(selectedId));
+              router.back();
+            }}
             className="w-full h-[57px] bg-[#FDD00A] rounded-xl flex items-center justify-center gap-3 hover:bg-[#e5bc09] transition-colors shadow-sm"
           >
             <span className="text-[#1A1C1E] text-[17px] font-['PeydaWeb'] font-semibold">

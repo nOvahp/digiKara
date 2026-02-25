@@ -21,7 +21,7 @@ export function CustomerPhoneInput({
   onNext: (phone: string, status?: number) => void;
   onCustomerLogin: (phone: string) => void;
 }) {
-  const { requestOtp, sendCustomerSms } = useAuth();
+  const { requestOtp } = useAuth();
   const [serverError, setServerError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -43,12 +43,10 @@ export function CustomerPhoneInput({
         onCustomerLogin(fullPhone);
         return;
       }
-      // status=2: existing customer, trigger SMS OTP via dedicated endpoint
-      if (result.status === 2) {
-        await sendCustomerSms(fullPhone);
-      }
-      setIsLoading(false);
       // status=1: new customer, status=2: existing via OTP
+      // Note: /customers/otp already sends the SMS for all statuses —
+      // calling sendCustomerSms here would cause a duplicate SMS (rate-limit error).
+      setIsLoading(false);
       onNext(fullPhone, result.status);
     } else {
       setIsLoading(false);
