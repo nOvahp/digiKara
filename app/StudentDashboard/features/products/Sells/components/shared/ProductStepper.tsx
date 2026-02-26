@@ -100,7 +100,7 @@ const StepItem = React.forwardRef<
         {label}
       </span>
       <div
-        className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold font-['PeydaFaNum'] leading-[21px] tracking-wide transition-colors ${
+        className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-num-medium leading-[21px] tracking-wide transition-colors ${
           isActive
             ? 'bg-[#FFD369] text-white'
             : isDisabled

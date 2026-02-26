@@ -3,15 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { MapPin, Gem, Palette, Hammer, Shirt, Armchair } from 'lucide-react';
+import { MapPin, Gem, Palette, Hammer, Shirt, Armchair, ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 
 import SearchBar from '../components/SearchBar';
 import FilterModal from '../components/FilterModal';
 import ActiveFilters from '../components/ActiveFilters';
-import { products } from '../data/product';
-
-import { bazzarService, BazzarHomeData } from '../services/bazzarService';
+import { bazzarService, BazzarHomeData, BazzarProduct } from '../services/bazzarService';
 
 // Helper Components
 const SectionHeader = ({
@@ -121,12 +119,61 @@ const CategoryItem = ({ title, icon }: { title: string; icon?: string | null }) 
   );
 };
 
+const BANNERS = [
+  {
+    image: '/BazzarHeader.png',
+    title: 'مجموعه جدید',
+    subtitle: '۵۰٪ تخفیف برای اولین معامله',
+    cta: 'همین حالا خرید کنید',
+    href: '/Bazzar/Search',
+    bg: 'bg-white',
+  },
+  {
+    image: '/BazzarHeader.png',
+    title: 'فروش ویژه',
+    subtitle: 'تخفیف‌های شگفت‌انگیز تا پایان هفته',
+    cta: 'مشاهده تخفیف‌ها',
+    href: '/Bazzar/Search',
+    bg: 'bg-amber-50',
+  },
+  {
+    image: '/BazzarHeader.png',
+    title: 'صنایع دستی',
+    subtitle: 'بهترین آثار هنرمندان',
+    cta: 'کشف کنید',
+    href: '/Bazzar/Search',
+    bg: 'bg-sky-50',
+  },
+  {
+    image: '/BazzarHeader.png',
+    title: 'پرفروش‌ترین‌ها',
+    subtitle: 'محبوب‌ترین محصولات حجره‌داران',
+    cta: 'مشاهده همه',
+    href: '/Bazzar/Search',
+    bg: 'bg-emerald-50',
+  },
+];
+
 export default function HomePage() {
   const router = useRouter();
   // Timer Mock
   const timeLeft = { h: 12, m: 56, s: 2 };
   const [homeData, setHomeData] = useState<BazzarHomeData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const isHovered = React.useRef(false);
+
+  const slidePrev = () => setActiveSlide((s) => (s === 0 ? BANNERS.length - 1 : s - 1));
+  const slideNext = () => setActiveSlide((s) => (s === BANNERS.length - 1 ? 0 : s + 1));
+
+  // Autoplay: advance every 4 s, pause on hover
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      if (!isHovered.current) slideNext();
+    }, 4000);
+    return () => clearInterval(timer);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Filter State
   const [showFilters, setShowFilters] = useState(false);
@@ -150,12 +197,10 @@ export default function HomePage() {
     fetchData();
   }, []);
 
-  const specialSaleProducts = products.filter((p) => p.isSpecialSale);
-  const newCollectionProducts = products.filter((p) => p.isNewCollection);
-  // Fallback if API hasn't loaded yet or returns empty, though we usually prefer showing skeletons or null
-  // Here we will use homeData if available for specific sections
+  const specialSaleProducts: BazzarProduct[] = []; // no API field — always empty
+  const newCollectionProducts = homeData?.new_products || [];
   const bestSellerProducts = homeData?.most_sell || [];
-  const suggestedProducts = products.filter((p) => p.isSuggested);
+  const suggestedProducts: BazzarProduct[] = []; // no API field — always empty
   const popularProducts = homeData?.most_view || [];
 
   return (
@@ -235,36 +280,69 @@ export default function HomePage() {
           }}
         />
 
-        {/* Hero Banner (Image Background + Text Overlay) */}
+        {/* Hero Banner Slider */}
         <div
-          className="w-full relative rounded-lg overflow-hidden group cursor-pointer h-[300px]"
-          dir="ltr"
+          className="w-full relative"
+          onMouseEnter={() => { isHovered.current = true; }}
+          onMouseLeave={() => { isHovered.current = false; }}
         >
-          {/* Background Image */}
-          <Image src="/BazzarHeader.png" alt="Hero Banner" fill sizes="100vw" className="object-cover" priority unoptimized />
+          {/* Track */}
+          <div className="w-full overflow-hidden rounded-xl">
+            <div
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{ transform: `translateX(${activeSlide * 100}%)` }}
+            >
+              {BANNERS.map((banner, idx) => (
+                <div
+                  key={idx}
+                  className="w-full shrink-0 h-[300px] relative"
+                  style={{
+                    backgroundImage: `url(${banner.image})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'right center',
+                  }}
+                >
+                  {/* Text — top left, no background */}
+                  <div className="absolute left-0 top-0 flex flex-col items-start justify-start gap-3 p-5" dir="rtl">
+                    <h2 className="text-[#0C1415] text-lg font-bold leading-tight">{banner.title}</h2>
+                    <p className="text-[#4E4E4E] text-xs font-light">{banner.subtitle}</p>
+                    <Link
+                      href={banner.href}
+                      className="bg-[#FDD00A] px-4 py-2 rounded-lg shadow-sm"
+                    >
+                      <span className="text-[#393E46] text-xs font-bold">{banner.cta}</span>
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
 
-          {/* Content Overlay */}
-          <div
-            className="w-[50%] absolute inset-0 p-2 flex flex-col items-start justify-start gap-3"
-            dir="rtl"
+          {/* Prev / Next buttons */}
+          <button
+            onClick={slidePrev}
+            className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/80 hover:bg-white shadow flex items-center justify-center"
           >
-            <div className="flex flex-col items-end gap-1 z-10">
-              <h2 className="text-[#0C1415] text-lg font-bold">مجموعه جدید</h2>
-              <p className="text-[#4E4E4E] text-xs font-light">
-                ۵۰٪ تخفیف برای اولین معامله
-              </p>
-            </div>
+            <ChevronLeft size={18} />
+          </button>
+          <button
+            onClick={slideNext}
+            className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/80 hover:bg-white shadow flex items-center justify-center"
+          >
+            <ChevronRight size={18} />
+          </button>
 
-            <div className="z-10 mt-3">
-              <Link
-                href="/Bazzar/ProductDetails"
-                className="bg-[#FDD00A] px-4 py-2 rounded-lg shadow-sm flex items-center justify-center cursor-pointer"
-              >
-                <span className="text-[#393E46] text-xs font-bold">
-                  همین حالا خرید کنید
-                </span>
-              </Link>
-            </div>
+          {/* Dot indicators */}
+          <div className="flex justify-center gap-1.5 mt-3">
+            {BANNERS.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setActiveSlide(idx)}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  idx === activeSlide ? 'w-5 bg-[#FDD00A]' : 'w-1.5 bg-gray-300'
+                }`}
+              />
+            ))}
           </div>
         </div>
 
@@ -329,17 +407,25 @@ export default function HomePage() {
 
           {/* Horizontal Scroll Products */}
           <div className="flex gap-4 overflow-x-auto pb-4 pt-2 pl-6 -ml-6 w-[calc(100%+24px)] scrollbar-hide pr-1">
-            {specialSaleProducts.map((product, index) => (
-              <ProductCard
-                key={product.id}
-                id={product.id}
-                title={product.title}
-                price={product.price}
-                rating={product.rating}
-                image={product.image}
-                priority={index === 0}
-              />
-            ))}
+            {specialSaleProducts.length > 0 ? (
+              specialSaleProducts.map((product, index) => (
+                <ProductCard
+                  key={product.id}
+                  id={product.id}
+                  title={product.title}
+                  price={
+                    typeof product.price === 'number'
+                      ? `${product.price.toLocaleString()} ریال`
+                      : product.price
+                  }
+                  rating={product.rating || 0}
+                  image={product.image || product.image_path || undefined}
+                  priority={index === 0}
+                />
+              ))
+            ) : (
+              <div className="w-full text-center text-gray-500 text-xs py-4">محصولی یافت نشد</div>
+            )}
           </div>
         </div>
 
@@ -347,16 +433,24 @@ export default function HomePage() {
         <div className="w-full flex flex-col gap-3">
           <SectionHeader title="مجموعه جدید" subtitle="۵۰٪ تخفیف برای اولین معامله" />
           <div className="flex gap-4 overflow-x-auto pb-4 pt-2 pl-6 -ml-6 w-[calc(100%+24px)] scrollbar-hide pr-1">
-            {newCollectionProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                id={product.id}
-                title={product.title}
-                price={product.price}
-                rating={product.rating}
-                image={product.image}
-              />
-            ))}
+            {newCollectionProducts.length > 0 ? (
+              newCollectionProducts.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  id={product.id}
+                  title={product.title}
+                  price={
+                    typeof product.price === 'number'
+                      ? `${product.price.toLocaleString()} ریال`
+                      : product.price
+                  }
+                  rating={product.rating || 0}
+                  image={product.image || product.image_path || undefined}
+                />
+              ))
+            ) : (
+              <div className="w-full text-center text-gray-500 text-xs py-4">محصولی یافت نشد</div>
+            )}
           </div>
         </div>
 
@@ -389,16 +483,24 @@ export default function HomePage() {
         <div className="w-full flex flex-col gap-3">
           <SectionHeader title="پیشنهادی برای شما" moreText="مشاهده همه" />
           <div className="flex gap-4 overflow-x-auto pb-4 pt-2 pl-6 -ml-6 w-[calc(100%+24px)] scrollbar-hide pr-1">
-            {suggestedProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                id={product.id}
-                title={product.title}
-                price={product.price}
-                rating={product.rating}
-                image={product.image}
-              />
-            ))}
+            {suggestedProducts.length > 0 ? (
+              suggestedProducts.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  id={product.id}
+                  title={product.title}
+                  price={
+                    typeof product.price === 'number'
+                      ? `${product.price.toLocaleString()} ریال`
+                      : product.price
+                  }
+                  rating={product.rating || 0}
+                  image={product.image || product.image_path || undefined}
+                />
+              ))
+            ) : (
+              <div className="w-full text-center text-gray-500 text-xs py-4">محصولی یافت نشد</div>
+            )}
           </div>
         </div>
 

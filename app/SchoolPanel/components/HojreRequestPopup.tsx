@@ -285,6 +285,7 @@ const HojreRequestPopup = ({ requestId, onClose, onApprove }: HojreRequestPopupP
             onConfirm={handleConfirmation}
             loading={isApproving}
             title="بررسی نهایی حجره"
+            itemLabel="نام حجره"
             itemName={modelData?.name || 'حجره'}
             />
         )}

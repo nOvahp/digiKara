@@ -11,7 +11,6 @@ import {
 } from 'lucide-react';
 import { UserIcon, Search02Icon, ShoppingCart01Icon, FavouriteIcon } from 'hugeicons-react';
 import { bazzarService, BazzarHomeData, BazzarProduct } from '../../services/bazzarService';
-import { products } from '../../data/product';
 import FooterWeb from './FooterWeb';
 
 // UI Helpers
@@ -103,8 +102,8 @@ export default function HomePageWeb() {
     fetchData();
   }, []);
 
-  const specialSaleProducts = products.filter((p) => p.isSpecialSale);
-  const newCollectionProducts = products.filter((p) => p.isNewCollection);
+  const specialSaleProducts: never[] = []; // no API field — always empty
+  const newCollectionProducts = homeData?.new_products || [];
   const bestSellerProducts = homeData?.most_sell || [];
   const popularProducts = homeData?.most_view || [];
   const popularPageCount = Math.ceil(popularProducts.length / 2);
@@ -219,9 +218,15 @@ export default function HomePageWeb() {
                   </div>
               </div>
               <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-                {(specialSaleProducts.length > 0 ? specialSaleProducts : Array(6).fill({ title: "طراحی گرافیک", price: "600,000 تومان" })).slice(0, 6).map((product, idx) => (
-                    <ProductCardWeb key={idx} product={product} />
-                ))}
+                {loading ? (
+                  <div className="col-span-6 text-center text-gray-500 py-10">در حال بارگذاری...</div>
+                ) : specialSaleProducts.length > 0 ? (
+                  specialSaleProducts.slice(0, 6).map((product) => (
+                    <ProductCardWeb key={product.id} product={product} />
+                  ))
+                ) : (
+                  <div className="col-span-6 text-center text-gray-500 py-10">محصولی برای فروش ویژه یافت نشد</div>
+                )}
               </div>
               <div className="flex gap-6 mt-8">
                   <Link href="/Bazzar/Search" className="bg-[#FDD00A] text-white px-8 py-3 rounded-2xl shadow-[0_15px_30px_rgba(253,208,10,0.4)] text-xl font-medium hover:scale-105 transition-transform">
@@ -268,7 +273,7 @@ export default function HomePageWeb() {
                           <ProductCardHorizontal key={p.id} id={p.id} title={p.title} category={"حجره"} price={typeof p.price === 'number' ? `${p.price.toLocaleString()} تومان` : p.price ? p.price.toString() : "0 تومان"} image={p.image || p.image_path || undefined} />
                       ))
                   ) : (
-                      <div className="col-span-2 lg:col-span-4 text-center text-gray-500 py-4">محصولی یافت نشد</div>
+                      <div className="col-span-2 lg:col-span-4 text-center text-gray-500 py-4">محصولی برای پرفروش‌ترین‌ها یافت نشد</div>
                   )}
               </div>
           </div>

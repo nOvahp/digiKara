@@ -267,151 +267,103 @@ const HojreRequestsTable = () => {
         ) : (
           /* Table */
           <div className="w-full overflow-x-auto no-scrollbar">
-            <div className="min-w-[1000px] flex flex-col">
-              {/* Table Header */}
-              <div className="w-full bg-[#F6F8FA] border-b border-[#DFE1E7] flex justify-start items-center px-2">
-                <div className="w-14 h-10 px-3 flex justify-center items-center">
-                  <div className="text-center text-[#666D80] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">
-                    #
-                  </div>
-                </div>
-                <div className="flex-[2] min-w-[200px] h-10 px-3 flex justify-start items-center">
-                  <div className="text-right text-[#666D80] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">
-                    اطلاعات حجره
-                  </div>
-                </div>
-                <div className="flex-1 min-w-[150px] h-10 px-3 flex justify-start items-center">
-                  <div className="text-right text-[#666D80] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">
-                    مدرسه / پایه
-                  </div>
-                </div>
-                <div className="w-[130px] h-10 px-3 flex justify-center items-center">
-                  <div className="text-center text-[#666D80] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">
-                    تاریخ درخواست
-                  </div>
-                </div>
-                <div className="w-[110px] h-10 px-3 flex justify-center items-center">
-                  <div className="text-center text-[#666D80] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">
-                    وضعیت
-                  </div>
-                </div>
-                <div className="w-[140px] h-10 px-3 flex justify-center items-center">
-                  <div className="text-center text-[#666D80] text-sm font-['PeydaWeb'] font-semibold leading-[21px] tracking-wide">
-                    عملیات
-                  </div>
-                </div>
-              </div>
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="bg-[#F6F8FA] border-b border-[#DFE1E7]">
+                  <th className="h-10 px-4 text-center text-[#666D80] text-sm font-semibold whitespace-nowrap">#</th>
+                  <th className="h-10 px-4 text-right text-[#666D80] text-sm font-semibold whitespace-nowrap">اطلاعات حجره</th>
+                  <th className="h-10 px-4 text-center text-[#666D80] text-sm font-semibold whitespace-nowrap">وضعیت</th>
+                  <th className="h-10 px-4 text-center text-[#666D80] text-sm font-semibold whitespace-nowrap">عملیات</th>
+                  <th className="h-10 px-4 text-right text-[#666D80] text-sm font-semibold whitespace-nowrap">مدرسه / پایه</th>
+                  <th className="h-10 px-4 text-center text-[#666D80] text-sm font-semibold whitespace-nowrap">تاریخ درخواست</th>
+                </tr>
+              </thead>
 
-              {/* Table Body */}
+              <tbody>
               {currentItems.map((req, idx) => {
                 const itemIndex = indexOfFirstItem + idx + 1;
-                // Status logic
                 const isApproved = req.status === 'تایید شده';
                 const isRejected = req.status === 'رد شده';
                 let statusBg = '#FFF4E5';
                 let statusColor = '#B98900';
-                
-                if (isApproved) {
-                  statusBg = '#ECF9F7';
-                  statusColor = '#267666';
-                } else if (isRejected) {
-                  statusBg = '#FEE2E2';
-                  statusColor = '#DC2626';
-                }
+                if (isApproved) { statusBg = '#ECF9F7'; statusColor = '#267666'; }
+                else if (isRejected) { statusBg = '#FEE2E2'; statusColor = '#DC2626'; }
                 const statusLabel = req.status || 'در انتظار تایید';
 
                 return (
-                  <div
+                  <tr
                     key={req.id}
                     onClick={() => setSelectedRequestId(req.id)}
-                    className="w-full h-16 border-b border-[#DFE1E7] flex justify-start items-center px-2 hover:bg-gray-50 transition-colors group cursor-pointer"
+                    className="border-b border-[#DFE1E7] hover:bg-gray-50 transition-colors cursor-pointer"
                   >
                     {/* Index */}
-                    <div className="w-14 h-16 px-3 flex justify-center items-center">
-                      <span className="text-center text-[#0D0D12] text-sm font-num-medium font-medium">
-                        {toFarsiNumber(itemIndex)}
-                      </span>
-                    </div>
+                    <td className="h-16 px-4 text-center whitespace-nowrap">
+                      <span className="text-[#0D0D12] text-sm font-num-medium">{toFarsiNumber(itemIndex)}</span>
+                    </td>
 
                     {/* Hojre Info */}
-                    <div className="flex-[2] min-w-[200px] h-16 px-3 flex justify-start items-center gap-3">
-                      <div className="w-10 h-10 relative bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-                        {req.model_data.logo ? (
-                          <Image
-                            src={`https://digikara.back.adiaweb.dev/storage/${req.model_data.logo}`}
-                            alt={req.model_data.name}
-                            fill
-                            className="object-cover"
-                            unoptimized
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
-                            Logo
-                          </div>
-                        )}
+                    <td className="h-16 px-4 whitespace-nowrap">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 relative bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+                          {req.model_data.logo ? (
+                            <Image
+                              src={`https://digikara.back.adiaweb.dev/storage/${req.model_data.logo}`}
+                              alt={req.model_data.name}
+                              fill
+                              className="object-cover"
+                              unoptimized
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">Logo</div>
+                          )}
+                        </div>
+                        <div className="flex flex-col gap-0.5">
+                          <span className="text-[#0D0D12] text-sm font-semibold whitespace-nowrap">{req.model_data.name}</span>
+                          <span className="text-[#666D80] text-xs font-medium whitespace-nowrap">{req.firstname} {req.lastname}</span>
+                        </div>
                       </div>
-                      <div className="flex flex-col gap-0.5 max-w-[calc(100%-3rem)]">
-                        <span className="text-[#0D0D12] text-sm font-medium font-semibold truncate">
-                          {req.model_data.name}
-                        </span>
-                        <span className="text-[#666D80] text-xs font-medium truncate">
-                          {req.firstname} {req.lastname}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* School Info */}
-                    <div className="flex-1 min-w-[150px] h-16 px-3 flex flex-col justify-center items-start gap-0.5">
-                      <span className="text-[#0D0D12] text-sm font-medium font-semibold truncate max-w-full">
-                        {req.school_name}
-                      </span>
-                      <span className="text-[#666D80] text-xs font-medium truncate max-w-full">
-                        {req.grade} - {req.field}
-                      </span>
-                    </div>
-
-                    {/* Date */}
-                    <div className="w-[130px] h-16 px-3 flex justify-center items-center">
-                      <span
-                        className="text-[#0D0D12] text-sm font-num-medium font-semibold"
-                        dir="ltr"
-                      >
-                        {toFarsiNumber(new Date(req.created_at).toLocaleDateString('fa-IR'))}
-                      </span>
-                    </div>
+                    </td>
 
                     {/* Status */}
-                    <div className="w-[110px] h-16 px-3 flex justify-center items-center">
-                      <div
-                        className="px-2 py-0.5 rounded-2xl flex justify-center items-center"
-                        style={{ backgroundColor: statusBg }}
-                      >
-                        <span
-                          className="text-[12px] font-num-medium whitespace-nowrap"
-                          style={{ color: statusColor }}
-                        >
-                          {statusLabel}
-                        </span>
+                    <td className="h-16 px-4 text-center whitespace-nowrap">
+                      <div className="inline-flex px-2 py-0.5 rounded-2xl" style={{ backgroundColor: statusBg }}>
+                        <span className="text-[12px] font-num-medium whitespace-nowrap" style={{ color: statusColor }}>{statusLabel}</span>
                       </div>
-                    </div>
+                    </td>
 
                     {/* Actions */}
-                    <div className="w-[140px] h-16 px-3 flex justify-center items-center gap-2">
+                    <td className="h-16 px-4 text-center whitespace-nowrap">
                       {!isApproved ? (
                         <button
                           onClick={(e) => handleApprove(e, req)}
-                          className="h-8 px-4 bg-[#0A33FF] hover:bg-blue-600 text-white rounded-lg text-xs font-semibold transition-colors"
+                          className="h-8 px-4 bg-[#0A33FF] hover:bg-blue-600 text-white rounded-lg text-xs font-semibold transition-colors whitespace-nowrap"
                         >
                           بررسی درخواست
                         </button>
                       ) : (
                         <span className="text-gray-400 text-xs">---</span>
                       )}
-                    </div>
-                  </div>
+                    </td>
+
+                    {/* School Info */}
+                    <td className="h-16 px-4 whitespace-nowrap">
+                      <div className="flex flex-col gap-0.5">
+                        <span className="text-[#0D0D12] text-sm font-semibold whitespace-nowrap">{req.school_name}</span>
+                        <span className="text-[#666D80] text-xs font-medium whitespace-nowrap">{req.grade} - {req.field}</span>
+                      </div>
+                    </td>
+
+                    {/* Date */}
+                    <td className="h-16 px-4 text-center whitespace-nowrap">
+                      <span className="text-[#0D0D12] text-sm font-num-medium font-semibold" dir="ltr">
+                        {toFarsiNumber(new Date(req.created_at).toLocaleDateString('fa-IR'))}
+                      </span>
+                    </td>
+                  </tr>
                 );
               })}
-            </div>
+              </tbody>
+            </table>
           </div>
         )}
 
@@ -464,6 +416,7 @@ const HojreRequestsTable = () => {
           onConfirm={handleConfirmation}
           loading={isApproving}
           title="تایید درخواست حجره"
+          itemLabel="نام حجره"
           itemName={selectedRequest?.model_data?.name || 'حجره'}
         />
       </div>

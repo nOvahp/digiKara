@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Search, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import { managerService, FlatProduct } from '@/app/services/manager/managerService';
 import Image from 'next/image';
 import ProductDetailsPopup from './ProductDetailsPopup';
@@ -30,8 +30,6 @@ const ProductsTable = () => {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState<string>('all');
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const filterRef = React.useRef<HTMLDivElement>(null);
   const itemsPerPage = 7;
 
   const fetchProducts = async () => {
@@ -75,16 +73,6 @@ const ProductsTable = () => {
   const handlePrevPage = () => { if (currentPage > 1) setCurrentPage((p) => p - 1); };
   const handleNextPage = () => { if (currentPage < totalPages) setCurrentPage((p) => p + 1); };
 
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
-        setIsFilterOpen(false);
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
   const isListEmpty = !loading && filteredProducts.length === 0;
 
   if (loading)
@@ -99,63 +87,37 @@ const ProductsTable = () => {
       className={`w-full ${!isListEmpty ? 'bg-white shadow-[0px_2px_4px_-1px_rgba(13,13,18,0.06)] rounded-xl outline outline-1 outline-[#DFE1E7] overflow-hidden' : ''} flex flex-col justify-start items-stretch`}
     >
       {/* Header / Filters */}
-      <div className={`w-full h-16 px-5 py-2 ${!isListEmpty ? 'border-b border-[#DFE1E7] bg-white' : ''} flex justify-end items-center mb-4`} dir="rtl">
-        <div className="flex justify-start items-center gap-2 w-full max-w-md">
-          <div className="flex-1 relative">
-            <input
-              type="text"
-              placeholder="جستجو بر اساس نام یا کد محصول..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full h-10 pr-9 pl-4 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] text-sm text-[#0D0D12] focus:outline-blue-500 transition-colors font-medium"
-            />
-            <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#818898]" />
-          </div>
-          <div className="flex items-center gap-2" ref={filterRef}>
-            <div className="relative">
-              <div
-                className={`h-10 px-4 rounded-xl outline outline-1 outline-[#DFE1E7] flex justify-center items-center gap-2 cursor-pointer transition-colors ${isFilterOpen ? 'bg-gray-100 ring-2 ring-blue-100' : 'bg-white hover:bg-gray-50'}`}
-                onClick={() => setIsFilterOpen(!isFilterOpen)}
-              >
-                <Filter className={`w-4 h-4 ${filterStatus !== 'all' ? 'text-[#F7C61A]' : 'text-[#818898]'}`} />
-                <span className="text-xs font-semibold text-[#666D80]">
-                  {filterStatus === 'all' ? 'همه' : filterStatus === 'approved' ? 'تایید شده' : 'در انتظار'}
-                </span>
-              </div>
-              {isFilterOpen && (
-                <div
-                  className="absolute top-12 left-0 z-50 w-48 bg-white rounded-xl shadow-[0px_4px_24px_rgba(0,0,0,0.08)] border border-[#EFF0F2] p-2 flex flex-col gap-1"
-                  dir="rtl"
-                >
-                  <div className="text-[#666D80] text-xs font-medium px-2 py-1 mb-1 border-b border-gray-100 text-right">
-                    فیلتر بر اساس وضعیت
-                  </div>
-                  {[
-                    { label: 'همه', value: 'all' },
-                    { label: 'تایید شده', value: 'approved' },
-                    { label: 'در انتظار تایید', value: 'pending' },
-                  ].map((option) => (
-                    <div
-                      key={option.value}
-                      className="flex items-center gap-2 px-2 py-1.5 hover:bg-gray-50 rounded-lg cursor-pointer"
-                      onClick={() => { setFilterStatus(option.value); setIsFilterOpen(false); }}
-                    >
-                      <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${filterStatus === option.value ? 'bg-[#F7C61A] border-[#F7C61A]' : 'border-[#DFE1E7] bg-white'}`}>
-                        {filterStatus === option.value && (
-                          <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
-                            <path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                        )}
-                      </div>
-                      <span className={`text-sm ${filterStatus === option.value ? 'text-[#0D0D12] font-semibold' : 'text-[#666D80] font-medium'}`}>
-                        {option.label}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
+      <div className={`w-full px-5 py-3 ${!isListEmpty ? 'border-b border-[#DFE1E7] bg-white' : ''} flex flex-col gap-3 mb-4`} dir="rtl">
+        {/* Status pills */}
+        <div className="flex items-center gap-2">
+          {[
+            { label: 'همه', value: 'all' },
+            { label: 'تایید شده', value: 'approved' },
+            { label: 'در انتظار تایید', value: 'pending' },
+          ].map((option) => (
+            <button
+              key={option.value}
+              onClick={() => setFilterStatus(option.value)}
+              className={`h-7 px-3 rounded-full text-xs font-semibold transition-all border ${
+                filterStatus === option.value
+                  ? 'bg-[#0A33FF] text-white border-[#0A33FF]'
+                  : 'bg-white text-[#666D80] border-[#DFE1E7] hover:bg-gray-50'
+              }`}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+        {/* Search */}
+        <div className="relative w-full max-w-md">
+          <input
+            type="text"
+            placeholder="جستجو بر اساس نام یا کد محصول..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full h-10 pr-9 pl-4 bg-white rounded-xl outline outline-1 outline-[#DFE1E7] text-sm text-[#0D0D12] focus:outline-blue-500 transition-colors font-medium"
+          />
+          <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#818898]" />
         </div>
       </div>
 

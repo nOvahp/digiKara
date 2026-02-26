@@ -1,8 +1,8 @@
 import React from 'react';
+import NavBar from './NavBar';
 import { CartProvider } from './CartContext';
 import { FavoritesProvider } from './FavoritesContext';
 import { OrderProvider } from './OrderContext';
-import NavBar from './NavBar';
 
 export default function BazzarLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -10,7 +10,9 @@ export default function BazzarLayout({ children }: { children: React.ReactNode }
       <FavoritesProvider>
         <OrderProvider>
           {children}
-          <NavBar />
+          <div className="block lg:hidden">
+            <NavBar />
+          </div>
         </OrderProvider>
       </FavoritesProvider>
     </CartProvider>

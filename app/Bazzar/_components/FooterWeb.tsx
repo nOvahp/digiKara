@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Twitter, Instagram, Facebook } from 'lucide-react';
+import { Twitter, Instagram, Facebook, MapPin, Phone } from 'lucide-react';
 
 export default function FooterWeb() {
   return (
@@ -97,9 +97,27 @@ export default function FooterWeb() {
                 مشترک شوید
               </button>
             </div>
-            <p className="text-[#737373] text-xs font-['PeydaWeb'] font-light tracking-wide -mt-3">
-              لورم ایپسوم متن ساختگی با تولید سادگی
-            </p>
+           
+
+            {/* Address & Phone */}
+            <div className="flex flex-col items-start gap-3 mt-2">
+              <div className="flex items-start gap-2">
+                <MapPin size={16} className="text-[#FFC938] mt-0.5 shrink-0" />
+                <span className="text-[#737373] text-sm font-medium leading-relaxed">
+                  تهران، خیابان ژاندارمری، پلاک ۴۸، واحد ۳
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Phone size={16} className="text-[#FFC938] shrink-0" />
+                <a
+                  href="tel:09190159522"
+                  className="text-[#737373] text-sm font-num-medium hover:text-black transition-colors tracking-wide"
+                  dir="ltr"
+                >
+                  ۰۹۱۹۰۱۵۹۵۲۲
+                </a>
+              </div>
+            </div>
           </div>
           
         </div>

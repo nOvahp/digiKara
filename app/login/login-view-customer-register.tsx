@@ -173,7 +173,7 @@ export function LoginViewCustomerRegister({
               )}
             </div>
           </div>
-
+{/* 
           <PersianBirthDateField
             label="تاریخ تولد"
             name="birthday"
@@ -183,7 +183,7 @@ export function LoginViewCustomerRegister({
             minYear={1320}
             required
             error={form.formState.errors.birthday?.message}
-          />
+          /> */}
 
           <div className="flex flex-col gap-2">
             <Label className="text-xs font-bold mr-1">جنسیت</Label>

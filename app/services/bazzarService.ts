@@ -70,6 +70,7 @@ export interface BazzarHomeData {
   categories: BazzarCategory[];
   most_sell: BazzarProduct[];
   most_view: BazzarProduct[];
+  new_products: BazzarProduct[];
   popular_schools: BazzarSchool[];
 }
 
