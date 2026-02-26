@@ -100,7 +100,7 @@ export default function SellsPage() {
   // Form logic removed (handled in AddProductFlow)
 
   return (
-    <div className="w-full min-h-screen bg-transparent flex flex-col relative " dir="ltr">
+    <div className="max-w-[440px] mx-auto min-h-screen bg-transparent flex flex-col relative" dir="ltr">
       <div className="sticky top-0 z-50">
         <DashboardNavBar />
       </div>
@@ -113,7 +113,7 @@ export default function SellsPage() {
           </div>
 
           {/* Order Management Button */}
-          <div
+          {/* <div
             onClick={() => router.push('/StudentDashboard/ManageOrders')}
             className="w-full h-[57px] px-[26px] py-[14px] bg-[#FDD00A] rounded-xl flex justify-center items-center gap-2 cursor-pointer hover:opacity-90 transition-opacity"
           >
@@ -121,12 +121,12 @@ export default function SellsPage() {
               مدیریت سفارشات
             </div>
             <ClipboardList className="w-6 h-6 text-[#1A1C1E]" strokeWidth={1.5} />
-          </div>
+          </div> */}
 
           {/* Add Product Button */}
           <button
             onClick={() => setActivePopup('step1')}
-            className="w-full h-[57px] px-[26px] py-[14px] bg-white rounded-xl border border-[#DFE1E7] flex justify-center items-center gap-2 hover:bg-gray-50 transition-colors"
+            className="w-full h-[57px] px-[26px] py-[14px] bg-[#FDD00A] rounded-xl border border-[#DFE1E7] flex justify-center items-center gap-2 hover:bg-gray-50 transition-colors"
           >
             <div className="text-center text-[#1A1C1E] text-[17.58px] font-semibold leading-6">
               اضافه کردن محصول
@@ -173,9 +173,7 @@ export default function SellsPage() {
         <ProductTable products={productsList} loading={isLoading} onDelete={handleDeleteProduct} />
       </div>
 
-      <div className="fixed bottom-0 w-full z-50">
-        <Navigation />
-      </div>
+      <Navigation />
 
       <AddProductFlow
         isOpen={activePopup === 'step1'}

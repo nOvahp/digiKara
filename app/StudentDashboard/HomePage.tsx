@@ -68,22 +68,20 @@ export function HomePage() {
   }
 
   return (
-    <div className="w-full min-h-screen pb-24 font-['PeydaWeb']" dir="rtl">
+    <div className="max-w-[440px] mx-auto min-h-screen pb-24 font-['PeydaWeb']" dir="rtl">
       <DashboardNavBar />
 
       <div className="px-4 flex flex-col gap-6 mt-6">
         <DashboardOverview isApproved={isApproved} />
         <QuickAccess />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6">
           <Progress />
           <SmartSuggestions />
         </div>
         <OrderReviews />
       </div>
 
-      <div className="fixed bottom-0 w-full z-50">
-        <Navigation />
-      </div>
+      <Navigation />
     </div>
   );
 }

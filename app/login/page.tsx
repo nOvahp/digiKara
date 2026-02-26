@@ -18,6 +18,7 @@ import { LogInForm } from './logInForm';
 import { useAuth } from '@/app/providers/AuthProvider';
 import { LoginViewManagerInfo } from './LoginViewManagerInfo';
 import { LoginViewManagerReport } from './LoginViewManagerReport';
+import { LoginViewManagerNationalID } from './LoginViewManagerNationalID';
 import { LoginViewCustomerRegister } from './login-view-customer-register';
 import { LoginViewCustomerLogin } from './login-view-customer-login';
 import { StudentPhoneInput } from './components/StudentPhoneInput';
@@ -48,6 +49,7 @@ enum Step {
   FINAL = 10,
 
   // Manager Flows
+  MANAGER_NATIONAL_ID = 10.5,
   MANAGER_INFO = 11,
   MANAGER_REPORT = 12,
 
@@ -108,7 +110,7 @@ export default function LoginPage() {
     }
 
     if (role === 'manager') {
-      setStep(Step.MANAGER_INFO);
+      setStep(Step.MANAGER_NATIONAL_ID);
     } else {
       setStep(Step.FINAL); // Or dashboard for students who data is OK
     }
@@ -348,7 +350,7 @@ export default function LoginPage() {
           defaultPhone={phone || undefined}
           defaultCustomerStatus={customerOtpStatus}
           onNext={() =>
-            role === 'manager' ? setStep(Step.MANAGER_INFO) : setStep(Step.NATIONAL_ID)
+            role === 'manager' ? setStep(Step.MANAGER_NATIONAL_ID) : setStep(Step.NATIONAL_ID)
           }
           onExistingUser={handleLoginSuccess}
           onBack={() => {
@@ -409,6 +411,20 @@ export default function LoginPage() {
         <div className="flex w-full h-full items-center justify-center bg-white">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
         </div>
+      );
+
+    // Manager Post-Login
+    case Step.MANAGER_NATIONAL_ID:
+      return (
+        <LoginViewManagerNationalID
+          onNext={(u) => {
+            try {
+              localStorage.setItem('user_data', JSON.stringify(u));
+            } catch {}
+            setStep(Step.MANAGER_INFO);
+          }}
+          onBack={() => setStep(Step.LOGIN_FORM)}
+        />
       );
 
     case Step.MANAGER_INFO:

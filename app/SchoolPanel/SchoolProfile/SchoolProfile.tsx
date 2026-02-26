@@ -419,7 +419,7 @@ export default function SchoolProfile() {
                 </div>
                 <div className="flex-1 flex flex-col items-start pr-3">
                   <span className="text-[#0D0D12] text-sm font-semibold">منطقه</span>
-                  <span className="text-[#818898] text-[10px] font-semibold mt-1">
+                  <span className="text-[#818898] text-[10px] font-semibold font-num-medium mt-1">
                     {loading ? '...' : schoolInfo.district}
                   </span>
                 </div>

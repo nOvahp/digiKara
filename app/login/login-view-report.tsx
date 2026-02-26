@@ -175,7 +175,7 @@ export function LoginViewReport({ onLoginAgain, onBack }: LoginViewProps) {
               <p className="text-[#393E46] text-base font-bold leading-relaxed">
                 {successMessage || 'گزارش شما با موفقیت در سیستم ثبت شد.'}
               </p>
-              <div className="bg-[#F3F6FC] rounded-xl px-4 py-2 inline-block dir-ltr text-[#393E46] font-bold">
+              <div className="bg-[#F3F6FC] rounded-xl px-4 py-2 inline-block dir-ltr text-[#393E46] font-num-bold">
                 {user?.phone}
               </div>
             </div>

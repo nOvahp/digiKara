@@ -58,7 +58,7 @@ function StatusBadge({ status }: { status: string }) {
   };
   const style = map[status] ?? { bg: 'bg-[#F2F4F7]', text: 'text-[#344054]', dot: 'bg-[#667085]' };
   return (
-    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold ${style.bg} ${style.text}`}>
+    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold whitespace-nowrap ${style.bg} ${style.text}`}>
       <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${style.dot}`} />
       {status}
     </span>
@@ -69,19 +69,21 @@ function StatusBadge({ status }: { status: string }) {
 
 function SkeletonRows({ cols }: { cols: number }) {
   return (
-    <>
-      {Array.from({ length: 4 }).map((_, i) => (
-        <div
-          key={i}
-          className="grid items-center px-3 py-3 border-b border-[#F3F4F6] animate-pulse gap-2"
-          style={{ gridTemplateColumns: `36px repeat(${cols - 1}, 1fr)` }}
-        >
-          {Array.from({ length: cols }).map((__, j) => (
-            <div key={j} className="h-3 bg-gray-200 rounded" />
+    <div className="overflow-x-auto w-full">
+      <table className="w-full border-collapse" style={{ minWidth: 420 }}>
+        <tbody>
+          {Array.from({ length: 4 }).map((_, i) => (
+            <tr key={i} className="border-b border-[#F3F4F6] animate-pulse">
+              {Array.from({ length: cols }).map((__, j) => (
+                <td key={j} className="px-3 py-3">
+                  <div className="h-3 bg-gray-200 rounded" />
+                </td>
+              ))}
+            </tr>
           ))}
-        </div>
-      ))}
-    </>
+        </tbody>
+      </table>
+    </div>
   );
 }
 
@@ -313,91 +315,109 @@ type RowClickFn = (req: StudentRequest) => void;
 
 function HojreTable({ rows, page, onRowClick }: { rows: StudentRequest[]; page: number; onRowClick: RowClickFn }) {
   return (
-    <>
-      <div className="grid grid-cols-[36px_1fr_1fr_90px_68px] px-3 py-2 bg-[#F9FAFB] border-b border-[#DFE1E7]">
-        <span className="text-[10px] font-bold text-[#9CA3AF]">#</span>
-        <span className="text-[10px] font-bold text-[#9CA3AF]">نام حجره</span>
-        <span className="text-[10px] font-bold text-[#9CA3AF]">تخصص</span>
-        <span className="text-[10px] font-bold text-[#9CA3AF] text-center">تاریخ</span>
-        <span className="text-[10px] font-bold text-[#9CA3AF] text-left">وضعیت</span>
-      </div>
-      {rows.map((req, idx) => {
-        const d = req.model_data as Record<string, unknown>;
-        return (
-          <div
-            key={req.id}
-            onClick={() => onRowClick(req)}
-            className="grid grid-cols-[36px_1fr_1fr_90px_68px] items-center px-3 py-3 border-b border-[#F3F4F6] last:border-b-0 hover:bg-amber-50/50 active:bg-amber-50 cursor-pointer transition-colors gap-1"
-          >
-            <span className="text-xs text-[#9CA3AF]">{toFarsi((page - 1) * ITEMS_PER_PAGE + idx + 1)}</span>
-            <span className="text-xs text-[#0D0D12] font-medium truncate min-w-0">{str(d.name)}</span>
-            <span className="text-xs text-[#6B7280] font-medium truncate min-w-0">{str(d.skill)}</span>
-            <span className="text-[10px] text-[#6B7280] font-medium text-center">{formatJalali(req.created_at)}</span>
-            <div className="flex justify-end"><StatusBadge status={req.status} /></div>
-          </div>
-        );
-      })}
-    </>
+    <div className="overflow-x-auto w-full">
+      <table className="w-full border-collapse" style={{ minWidth: 420 }}>
+        <thead>
+          <tr className="bg-[#F9FAFB] border-b border-[#DFE1E7]">
+            <th className="text-[10px] font-bold text-[#9CA3AF] text-right px-3 py-2 whitespace-nowrap w-7">#</th>
+            <th className="text-[10px] font-bold text-[#9CA3AF] text-right px-3 py-2 whitespace-nowrap">نام حجره</th>
+            <th className="text-[10px] font-bold text-[#9CA3AF] text-right px-3 py-2 whitespace-nowrap">تخصص</th>
+            <th className="text-[10px] font-bold text-[#9CA3AF] text-center px-3 py-2 whitespace-nowrap w-24">تاریخ</th>
+            <th className="text-[10px] font-bold text-[#9CA3AF] text-center px-3 py-2 whitespace-nowrap w-24">وضعیت</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((req, idx) => {
+            const d = req.model_data as Record<string, unknown>;
+            return (
+              <tr
+                key={req.id}
+                onClick={() => onRowClick(req)}
+                className="border-b border-[#F3F4F6] last:border-b-0 hover:bg-amber-50/50 active:bg-amber-50 cursor-pointer transition-colors"
+              >
+                <td className="text-xs text-[#9CA3AF] px-3 py-3 whitespace-nowrap w-7">{toFarsi((page - 1) * ITEMS_PER_PAGE + idx + 1)}</td>
+                <td className="text-xs text-[#0D0D12] font-medium px-3 py-3 max-w-[120px] truncate">{str(d.name)}</td>
+                <td className="text-xs text-[#6B7280] font-medium px-3 py-3 max-w-[100px] truncate">{str(d.skill)}</td>
+                <td className="text-[10px] text-[#6B7280] font-medium text-center px-3 py-3 whitespace-nowrap w-24">{formatJalali(req.created_at)}</td>
+                <td className="px-3 py-3 text-center w-24"><StatusBadge status={req.status} /></td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
 function ProductTable({ rows, page, onRowClick }: { rows: StudentRequest[]; page: number; onRowClick: RowClickFn }) {
   return (
-    <>
-      <div className="grid grid-cols-[36px_1fr_80px_80px_68px] px-3 py-2 bg-[#F9FAFB] border-b border-[#DFE1E7]">
-        <span className="text-[10px] font-bold text-[#9CA3AF]">#</span>
-        <span className="text-[10px] font-bold text-[#9CA3AF]">نام محصول</span>
-        <span className="text-[10px] font-bold text-[#9CA3AF] text-center">قیمت</span>
-        <span className="text-[10px] font-bold text-[#9CA3AF] text-center">تاریخ</span>
-        <span className="text-[10px] font-bold text-[#9CA3AF] text-left">وضعیت</span>
-      </div>
-      {rows.map((req, idx) => {
-        const d = req.model_data as Record<string, unknown>;
-        return (
-          <div
-            key={req.id}
-            onClick={() => onRowClick(req)}
-            className="grid grid-cols-[36px_1fr_80px_80px_68px] items-center px-3 py-3 border-b border-[#F3F4F6] last:border-b-0 hover:bg-amber-50/50 active:bg-amber-50 cursor-pointer transition-colors gap-1"
-          >
-            <span className="text-xs text-[#9CA3AF]">{toFarsi((page - 1) * ITEMS_PER_PAGE + idx + 1)}</span>
-            <span className="text-xs text-[#0D0D12] font-medium truncate min-w-0">{str(d.title)}</span>
-            <span className="text-[10px] text-[#6B7280] font-medium text-center">{toPersianPrice(d.price)}</span>
-            <span className="text-[10px] text-[#6B7280] font-medium text-center">{formatJalali(req.created_at)}</span>
-            <div className="flex justify-end"><StatusBadge status={req.status} /></div>
-          </div>
-        );
-      })}
-    </>
+    <div className="overflow-x-auto w-full">
+      <table className="w-full border-collapse" style={{ minWidth: 420 }}>
+        <thead>
+          <tr className="bg-[#F9FAFB] border-b border-[#DFE1E7]">
+            <th className="text-[10px] font-bold text-[#9CA3AF] text-right px-3 py-2 whitespace-nowrap w-7">#</th>
+            <th className="text-[10px] font-bold text-[#9CA3AF] text-right px-3 py-2 whitespace-nowrap">نام محصول</th>
+            <th className="text-[10px] font-bold text-[#9CA3AF] text-center px-3 py-2 whitespace-nowrap w-28">قیمت</th>
+            <th className="text-[10px] font-bold text-[#9CA3AF] text-center px-3 py-2 whitespace-nowrap w-24">تاریخ</th>
+            <th className="text-[10px] font-bold text-[#9CA3AF] text-center px-3 py-2 whitespace-nowrap w-24">وضعیت</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((req, idx) => {
+            const d = req.model_data as Record<string, unknown>;
+            return (
+              <tr
+                key={req.id}
+                onClick={() => onRowClick(req)}
+                className="border-b border-[#F3F4F6] last:border-b-0 hover:bg-amber-50/50 active:bg-amber-50 cursor-pointer transition-colors"
+              >
+                <td className="text-xs text-[#9CA3AF] px-3 py-3 whitespace-nowrap w-7">{toFarsi((page - 1) * ITEMS_PER_PAGE + idx + 1)}</td>
+                <td className="text-xs text-[#0D0D12] font-medium px-3 py-3 max-w-[140px] truncate">{str(d.title)}</td>
+                <td className="text-[10px] text-[#6B7280] font-medium text-center px-3 py-3 whitespace-nowrap w-28">{toPersianPrice(d.price)}</td>
+                <td className="text-[10px] text-[#6B7280] font-medium text-center px-3 py-3 whitespace-nowrap w-24">{formatJalali(req.created_at)}</td>
+                <td className="px-3 py-3 text-center w-24"><StatusBadge status={req.status} /></td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
 function EditProductTable({ rows, page, onRowClick }: { rows: StudentRequest[]; page: number; onRowClick: RowClickFn }) {
   return (
-    <>
-      <div className="grid grid-cols-[36px_1fr_80px_80px_68px] px-3 py-2 bg-[#F9FAFB] border-b border-[#DFE1E7]">
-        <span className="text-[10px] font-bold text-[#9CA3AF]">#</span>
-        <span className="text-[10px] font-bold text-[#9CA3AF]">نام محصول</span>
-        <span className="text-[10px] font-bold text-[#9CA3AF] text-center">قیمت جدید</span>
-        <span className="text-[10px] font-bold text-[#9CA3AF] text-center">تاریخ</span>
-        <span className="text-[10px] font-bold text-[#9CA3AF] text-left">وضعیت</span>
-      </div>
-      {rows.map((req, idx) => {
-        const d = req.model_data as Record<string, unknown>;
-        return (
-          <div
-            key={req.id}
-            onClick={() => onRowClick(req)}
-            className="grid grid-cols-[36px_1fr_80px_80px_68px] items-center px-3 py-3 border-b border-[#F3F4F6] last:border-b-0 hover:bg-amber-50/50 active:bg-amber-50 cursor-pointer transition-colors gap-1"
-          >
-            <span className="text-xs text-[#9CA3AF]">{toFarsi((page - 1) * ITEMS_PER_PAGE + idx + 1)}</span>
-            <span className="text-xs text-[#0D0D12] font-medium truncate min-w-0">{str(d.title)}</span>
-            <span className="text-[10px] text-[#6B7280] font-medium text-center">{toPersianPrice(d.price)}</span>
-            <span className="text-[10px] text-[#6B7280] font-medium text-center">{formatJalali(req.created_at)}</span>
-            <div className="flex justify-end"><StatusBadge status={req.status} /></div>
-          </div>
-        );
-      })}
-    </>
+    <div className="overflow-x-auto w-full">
+      <table className="w-full border-collapse" style={{ minWidth: 420 }}>
+        <thead>
+          <tr className="bg-[#F9FAFB] border-b border-[#DFE1E7]">
+            <th className="text-[10px] font-bold text-[#9CA3AF] text-right px-3 py-2 whitespace-nowrap w-7">#</th>
+            <th className="text-[10px] font-bold text-[#9CA3AF] text-right px-3 py-2 whitespace-nowrap">نام محصول</th>
+            <th className="text-[10px] font-bold text-[#9CA3AF] text-center px-3 py-2 whitespace-nowrap w-28">قیمت جدید</th>
+            <th className="text-[10px] font-bold text-[#9CA3AF] text-center px-3 py-2 whitespace-nowrap w-24">تاریخ</th>
+            <th className="text-[10px] font-bold text-[#9CA3AF] text-center px-3 py-2 whitespace-nowrap w-24">وضعیت</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((req, idx) => {
+            const d = req.model_data as Record<string, unknown>;
+            return (
+              <tr
+                key={req.id}
+                onClick={() => onRowClick(req)}
+                className="border-b border-[#F3F4F6] last:border-b-0 hover:bg-amber-50/50 active:bg-amber-50 cursor-pointer transition-colors"
+              >
+                <td className="text-xs text-[#9CA3AF] px-3 py-3 whitespace-nowrap w-7">{toFarsi((page - 1) * ITEMS_PER_PAGE + idx + 1)}</td>
+                <td className="text-xs text-[#0D0D12] font-medium px-3 py-3 max-w-[140px] truncate">{str(d.title)}</td>
+                <td className="text-[10px] text-[#6B7280] font-medium text-center px-3 py-3 whitespace-nowrap w-28">{toPersianPrice(d.price)}</td>
+                <td className="text-[10px] text-[#6B7280] font-medium text-center px-3 py-3 whitespace-nowrap w-24">{formatJalali(req.created_at)}</td>
+                <td className="px-3 py-3 text-center w-24"><StatusBadge status={req.status} /></td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
@@ -428,23 +448,23 @@ export default function StudentRequests() {
   const countOf    = (type: string) => allRequests.filter((r) => r.model_type === type).length;
 
   return (
-    <div className="w-full min-h-screen bg-[#F9FAFB] flex flex-col relative font-['PeydaWeb']" dir="rtl">
+    <div className="max-w-[440px] mx-auto min-h-screen flex flex-col items-center relative font-['PeydaWeb']" dir="rtl">
 
       {/* Sticky top bar */}
       <div className="sticky top-0 z-40 w-full bg-white" dir="ltr">
         <DashboardNavBar />
       </div>
 
-      <div className="w-full max-w-md mx-auto flex flex-col gap-5 px-4 pt-6 pb-32">
+      <div className="w-full flex flex-col gap-5 px-4 pt-6 pb-32">
 
         {/* Page header */}
         <div className="flex items-center gap-2">
           <ClipboardList className="w-5 h-5 text-[#F7C61A]" />
-          <h1 className="text-[#0D0D12] text-xl font-bold">مدیریت درخواست‌ها</h1>
+          <h1 className="text-[#0D0D12] text-xl font-bold"> سفارشات</h1>
         </div>
 
         {/* Horizontal tab bar */}
-        <div className="w-full bg-white rounded-xl border border-[#DFE1E7] shadow-sm overflow-hidden">
+        <div className="w-full bg-white rounded-xl border border-[#DFE1E7] shadow-sm">
           <div className="flex border-b border-[#DFE1E7]">
             {TABS.map(({ label, value, Icon }) => {
               const isActive = activeTab === value;
@@ -478,7 +498,7 @@ export default function StudentRequests() {
           {/* Sub-header */}
           <div className="px-4 py-2.5 border-b border-[#F3F4F6] flex items-center justify-between">
             <span className="text-xs text-[#0D0D12] font-semibold">{activeTab}</span>
-            <span className="text-[10px] text-[#9CA3AF]">{toFarsi(filtered.length)} درخواست</span>
+            <span className="text-[10px] text-[#9CA3AF] font-medium">{toFarsi(filtered.length)} درخواست</span>
           </div>
 
           {/* Hint */}
@@ -535,9 +555,7 @@ export default function StudentRequests() {
       </div>
 
       {/* Bottom navigation */}
-      <div dir="ltr">
-        <Navigation />
-      </div>
+      <Navigation />
 
       {/* Detail modal */}
       {selected && (

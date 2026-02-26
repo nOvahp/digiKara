@@ -24,6 +24,9 @@ type AuthContextType = {
   verifyNationalId: (
     nationalId: string,
   ) => Promise<{ success: boolean; user?: UserData; message?: string }>;
+  verifyManagerNationalId: (
+    nationalId: string,
+  ) => Promise<{ success: boolean; user?: UserData; message?: string }>;
   signIn: (
     phoneNumber: string,
     password: string,
@@ -120,6 +123,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return { success: false, message: result.message };
   };
 
+  const verifyManagerNationalId = async (nationalId: string) => {
+    const result = await authService.verifyManagerNationalId(nationalId);
+
+    if (result.success && result.user) {
+      setUser(result.user);
+      return { success: true, user: result.user };
+    }
+
+    return { success: false, message: result.message };
+  };
+
   const signIn = async (phoneNumber: string, password: string) => {
     const result = await authService.login(phoneNumber, password);
 
@@ -174,6 +188,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     requestOtp,
     verifyOtp,
     verifyNationalId,
+    verifyManagerNationalId,
     signIn,
     registerCustomer,
     loginCustomer,

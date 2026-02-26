@@ -5,10 +5,10 @@ import { ChevronRight, ChevronLeft, Info, X, Plus, Trash2, Check } from 'lucide-
 // ... interfaces
 
 const VARIANT_OPTIONS = [
-  { id: 1, label: 'رنگ', icon: '🎨' },
-  { id: 6, label: 'وزن', icon: '⚖️' },
-  { id: 2, label: 'سایز', icon: '📏' },
-  { id: 7, label: 'حجم', icon: '🧊' },
+  { id: 1, label: 'رنگ', icon: '🎨', required: false },
+  { id: 6, label: 'وزن', icon: '⚖️', required: true },
+  { id: 2, label: 'سایز', icon: '📏', required: true },
+  { id: 7, label: 'حجم', icon: '🧊', required: false },
 ];
 
 const COLORS = [
@@ -106,6 +106,30 @@ export function NewProductPage2({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [featureInputs, setFeatureInputs] = useState<Record<string, string>>({});
+  const [validationError, setValidationError] = useState<string | null>(null);
+
+  const handleNext = () => {
+    const variants = formData.variantFeatures || [];
+    const hasWeight = variants.find((v) => v.id === 6);
+    const hasSize = variants.find((v) => v.id === 2);
+    const weightFilled = hasWeight && (hasWeight.values || []).some((v) => v.trim() !== '');
+    const sizeFilled = hasSize && (hasSize.values || []).some((v) => v.trim() !== '');
+
+    if (!weightFilled && !sizeFilled) {
+      setValidationError('وزن و سایز الزامی هستند');
+      return;
+    }
+    if (!weightFilled) {
+      setValidationError('وزن الزامی است');
+      return;
+    }
+    if (!sizeFilled) {
+      setValidationError('سایز الزامی است');
+      return;
+    }
+    setValidationError(null);
+    onNext();
+  };
 
   // Initialize variant features if not present
   useEffect(() => {
@@ -213,18 +237,30 @@ export function NewProductPage2({
               {/* Dropdown Menu */}
               {isDropdownOpen && (
                 <div className="absolute top-[60px] left-0 right-0 bg-white rounded-xl shadow-lg border border-[#E4E2E4] overflow-hidden flex flex-col z-30 animate-in fade-in zoom-in-95 duration-200">
+                  {/* Transport info hint */}
+                  <div className="px-4 pt-3 pb-2 flex items-start gap-2 bg-amber-50 border-b border-amber-100 font-medium">
+                    <Info className="w-4 h-4 text-amber-500 mt-0.5 shrink-0" />
+                    <p className="text-[11px] text-amber-700 font-medium leading-tight text-right">
+                      اطلاعات <span className="font-bold">وزن</span> و <span className="font-bold">سایز</span> برای محاسبه هزینه حمل‌ونقل الزامی است. رنگ و حجم اختیاری هستند.
+                    </p>
+                  </div>
                   {VARIANT_OPTIONS.map((opt) => {
                     const isSelected = formData.variantFeatures?.some((v) => v.id === opt.id);
                     return (
                       <div
                         key={opt.id}
-                        onClick={() => toggleVariantFeature(opt.id)}
-                        className="w-full px-4 py-3 flex justify-between items-center hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-0"
+                        onClick={() => { toggleVariantFeature(opt.id); setValidationError(null); }}
+                        className="w-full px-4 py-3 flex justify-between items-center hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-0 font-medium"
                       >
                         <div className="flex items-center gap-2">
                           <span className="text-[#262527] font-semibold font-['PeydaWeb']">
                             {opt.label}
                           </span>
+                          {opt.required ? (
+                            <span className="text-[10px] bg-red-50 text-red-500 border border-red-200 rounded-full px-2 py-0.5 font-medium">الزامی</span>
+                          ) : (
+                            <span className="text-[10px] bg-gray-100 text-gray-400 border border-gray-200 rounded-full px-2 py-0.5 font-medium">اختیاری</span>
+                          )}
                         </div>
                         <div
                           className={`w-5 h-5 rounded border ${isSelected ? 'bg-[#FDD00A] border-[#FDD00A]' : 'border-[#DFE1E7]'} flex items-center justify-center`}
@@ -244,6 +280,16 @@ export function NewProductPage2({
                   </div>
                 </div>
               )}
+
+              {/* Validation error */}
+              {validationError && (
+                <div className="mt-2 flex items-center gap-2 bg-red-50 border border-red-200 rounded-xl px-3 py-2.5">
+                  <Info className="w-4 h-4 text-red-500 shrink-0" />
+                  <p className="text-right text-red-600 text-xs font-light leading-tight flex-1">
+                    <span className="font-bold">{validationError}</span> — این اطلاعات برای محاسبه هزینه حمل‌ونقل محصول شما ضروری است. لطفاً از منوی بالا انتخاب کنید و مقدار را وارد نمایید.
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* Selected Variant Inputs */}
@@ -255,7 +301,7 @@ export function NewProductPage2({
                 >
                   {/* Label Section */}
                   <div className="w-[80px] h-full flex items-center justify-center border-l border-[#DFE1E7]">
-                    <span className="text-[#262527] font-semibold font-['PeydaWeb']">
+                    <span className="text-[#262527] font-semibold ">
                       {feature.title}
                     </span>
                   </div>
@@ -573,7 +619,7 @@ export function NewProductPage2({
           </button>
 
           <button
-            onClick={onNext}
+            onClick={handleNext}
             className="flex-1 h-10 px-4 py-3.5 bg-gradient-to-t from-[rgba(255,255,255,0)] to-[rgba(255,255,255,0.15)] bg-[#FDD00A] shadow-[0px_1px_2px_rgba(13,13,18,0.06)] rounded-xl border border-[#FDD00A] flex justify-center items-center gap-2 hover:opacity-90 transition-opacity h-[57px]"
           >
             <span className="text-center text-[#1A1C1E] text-[17.58px] font-semibold font-['PeydaWeb'] leading-[24.61px]">

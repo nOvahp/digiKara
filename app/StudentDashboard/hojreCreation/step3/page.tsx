@@ -103,7 +103,7 @@ export default function ShopIdentityPage() {
 
           {/* Step 2 (Active - Yellow) */}
           <div className="flex justify-start items-center gap-2 shrink-0 whitespace-nowrap">
-            <div className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">
+            <div className="text-[#0D0D12] text-sm font-semibold leading-[21px] tracking-wide">
               هویت بصری و عمومی
             </div>
             <div className="w-6 h-6 bg-[#FDD00A] rounded-full flex items-center justify-center text-white text-sm font-bold font-['PeydaFaNum']">
@@ -211,7 +211,7 @@ export default function ShopIdentityPage() {
           ) : (
             <div className="w-full h-14 rounded-xl border border-[#DFE1E7] flex justify-center items-center gap-2 bg-white hover:bg-gray-50 transition-colors">
               <div className="text-[#1A1C1E] text-[17.58px] font-semibold font-medium leading-normal">
-                بارگذاری تصویر نماد فروشگاه
+            وگو حجره ات رو اینجا بارگزاری کن
               </div>
               <ImageIcon className="w-6 h-6 text-[#1A1C1E]" />
             </div>
@@ -234,7 +234,7 @@ export default function ShopIdentityPage() {
         <div className="flex flex-col gap-2">
           <div className="flex justify-end">
             <label className="text-right text-[#666D80] text-sm font-semibold font-medium leading-tight tracking-wide">
-              نام فروشگاه
+            نام حجره
             </label>
           </div>
           <Input
@@ -259,7 +259,7 @@ export default function ShopIdentityPage() {
           </div>
           <Textarea
             {...register('shopDescription')}
-            placeholder="یک جمله برای معرفی کسب‌وکار (برای سئو و زیر نام فروشگاه)"
+            placeholder="کارت چیه ؟ یه توضیح از کسب و کارت برای مشتری ها بنویس "
             className="h-[176px] bg-white rounded-xl border border-[#DFE1E7] text-right placeholder:text-[#DFE1E7] placeholder:font-medium text-[#1A1C1E] resize-none"
             dir="rtl"
           />

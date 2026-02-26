@@ -192,7 +192,7 @@ const Projects = () => {
             onClick={() => setActiveTab('requests')}
             className={`flex-1 h-[29px] px-3 py-1 rounded-md flex justify-center items-center gap-2.5 cursor-pointer transition-all ${activeTab === 'requests' ? 'bg-[#FDD00A] shadow-sm outline outline-1 outline-[#D7D8DA] -outline-offset-1' : 'hover:bg-white/50'}`}
           >
-            <div className="text-[#0A0A0A] text-sm font-semibold leading-5">درخواست‌های دانش آموزان</div>
+            <div className="text-[#0A0A0A] text-sm font-semibold leading-5">درخواست‌ ها   </div>
           </div>
         </div>
 

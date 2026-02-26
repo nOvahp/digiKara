@@ -70,7 +70,7 @@ export function DashboardOverview({ isApproved: propIsApproved }: { isApproved?:
       {/* Header Section */}
       <div className="w-full flex justify-between items-center px-0.5">
         <div className="text-[#222831] text-lg font-semibold leading-relaxed">
-          عملکرد این ماهت عالیه!
+       شروع موفقت آمیزی داشتی!
         </div>
         <PersianDate />
       </div>

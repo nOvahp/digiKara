@@ -27,6 +27,15 @@ export function Navigation() {
   const getIconColor = (active: boolean) => (active ? 'text-[#F7C61A]' : 'text-[#605F5F]');
 
   const [hasHojre, setHasHojre] = React.useState(false);
+  const [showRedirect, setShowRedirect] = React.useState(false);
+
+  const handleEducationClick = () => {
+    setShowRedirect(true);
+    setTimeout(() => {
+      window.open('https://digikara.c60.darkube.app/auth/login', '_blank');
+      setShowRedirect(false);
+    }, 1200);
+  };
   const [isMounted, setIsMounted] = React.useState(false);
 
   React.useEffect(() => {
@@ -57,7 +66,7 @@ export function Navigation() {
                 className={cn('w-6 h-6', getIconColor(isActive('/StudentDashboard/StudentRequests')))}
                 strokeWidth={1.5}
               />
-              <div className={getTextClasses(isActive('/StudentDashboard/StudentRequests'))}>مدیریت درخواست ها</div>
+              <div className={getTextClasses(isActive('/StudentDashboard/StudentRequests'))}>  سفارشات</div>
             </Link>
 
             {/* Home */}
@@ -96,13 +105,23 @@ export function Navigation() {
             </Link>
 
             {/* Education */}
-            <Link
-              href="https://digikara.c60.darkube.app/auth/login"
+            <button
+              onClick={handleEducationClick}
               className={getItemClasses(false)}
             >
               <BookOpen className={cn('w-6 h-6', getIconColor(false))} strokeWidth={1.5} />
               <div className={getTextClasses(false)}>آموزش</div>
-            </Link>
+            </button>
+
+            {/* Redirect Toast */}
+            {showRedirect && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
+                <div className="bg-[#0D0D12] text-white text-sm font-semibold px-5 py-3 rounded-xl shadow-lg flex items-center gap-2 animate-in fade-in duration-200" dir="rtl">
+                  <BookOpen className="w-4 h-4 text-[#FDD00A] shrink-0" />
+                  در حال انتقال به صفحه آموزش...
+                </div>
+              </div>
+            )}
           </div>
 
           {/* iOS Home Indicator Mockup */}

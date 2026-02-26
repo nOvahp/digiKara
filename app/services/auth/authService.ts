@@ -406,4 +406,43 @@ export const authService = {
       return { success: false, message };
     }
   },
+
+  verifyManagerNationalId: async (
+    nationalId: string,
+  ): Promise<{ success: boolean; user?: UserData; message?: string }> => {
+    try {
+      const response = await apiClient.post<ApiResponse<UserData>>(
+        '/manager/users/check/national_code',
+        {
+          national_code: nationalId,
+        },
+      );
+
+      if (response.status === 'success' || response.code === 200) {
+        const resData = response.data as unknown as Record<string, unknown>;
+        const toBool = (val: unknown) => val === true || val === 'true' || val === 1;
+
+        const user: UserData = {
+          ...response.data,
+          is_info_correct: toBool(resData.is_info_correct),
+          favorites: toBool(resData.favorites),
+          meta: toBool(resData.meta),
+        };
+        return { success: true, user };
+      }
+
+      return { success: false, message: response.message || 'خطا در بررسی کد ملی' };
+    } catch (error: unknown) {
+      let message = 'خطای شبکه';
+      if (error && typeof error === 'object' && 'message' in error) {
+        // apiClient interceptor rejects with a plain object { success, message, ... }
+        message = (error as { message: string }).message || message;
+      } else if (axios.isAxiosError(error)) {
+        message = error.response?.data?.message || message;
+      } else if (error instanceof Error) {
+        message = error.message;
+      }
+      return { success: false, message };
+    }
+  },
 };
