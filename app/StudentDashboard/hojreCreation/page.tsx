@@ -45,32 +45,32 @@ export default function DashboardEmptyPage() {
         {/* Text */}
         <div className="flex flex-col items-center gap-2 text-center">
           <h2 className="text-[#0A0A0A] text-lg font-semibold font-['PeydaWeb'] leading-7">
-           تبریک! شما با موفقیت وارد شدید.
+          وقتشه کسب‌وکارت رو شروع کنی! 
           </h2>
           <p className="text-[#737373] text-sm font-light font-['PeydaWeb'] leading-tight max-w-[300px]">
-            برای شروع، یک حجره ایجاد کنید و محصولات خود را برای نمایش به دیگران اضافه کنید.
+          با ساخت اولین حجره، مهارت‌هات رو به محصول تبدیل کن و فضای واقعی بازار رو تجربه کن.
           </p>
         </div>
 
         {/* Actions */}
         <div className="flex items-center gap-3 mt-4 w-full justify-center">
           {/* Education Button */}
-          {/* <Link href="https://digikara.c60.darkube.app/auth/login" target="_blank">
+          <Link href="https://digikara.c60.darkube.app/auth/login" target="_blank">
             <Button
               variant="outline"
               className="h-8 px-4 bg-white border-gray-200 text-[#666D80] text-sm font-semibold hover:bg-gray-50 flex items-center gap-2"
             >
-              <span>آموزش</span>
+              <span>چطوری حجره بسازم؟</span>
               <ArrowUpRight className="w-4 h-4 text-[#737373]" />
             </Button>
-          </Link> */}
+          </Link>
 
           {/* Create Shop Button */}
           <Button
             onClick={() => router.push('/StudentDashboard/hojreCreation/step2')}
             className="h-8 px-4 bg-[#FDD00A] hover:bg-[#eac009] text-[#0A0A0A] text-xs font-semibold shadow-sm border-none"
           >
-            ساخت حجره جدید
+           ساخت اولین حجره
           </Button>
         </div>
       </div>
