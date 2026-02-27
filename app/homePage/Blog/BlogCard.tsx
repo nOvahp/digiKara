@@ -19,14 +19,14 @@ const BlogCard = ({
   count = '5412',
 }: Partial<BlogCardProps>) => {
   return (
-    <Card className="w-full md:w-[90%] lg:w-[700px] mx-auto lg:mx-0 group relative overflow-hidden rounded-[16px] md:rounded-[24px] border border-[#CACACA] bg-white shadow-none transition-all duration-300 hover:shadow-lg h-[160px] md:h-[180px] lg:h-[200px]">
+    <Card className="w-full mx-auto lg:mx-0 group relative overflow-hidden rounded-[16px] md:rounded-[24px] border border-[#CACACA] bg-white shadow-none transition-all duration-300 hover:shadow-lg h-[160px] md:h-[180px] lg:h-[200px]">
       <div className="absolute left-0 top-0 h-full w-[140px] md:w-[240px] lg:w-[330px] z-0">
         <Image src={image} alt={title} fill className="object-cover object-center" />
 
         <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/50 to-white" />
       </div>
 
-      <div className="relative z-0 flex h-full flex-col justify-start p-4 md:p-5 lg:p-6 lg:py-[24px] lg:px-[62px] ml-[130px] md:ml-[230px] lg:ml-[160px]">
+      <div className="relative z-0 flex h-full flex-col justify-start p-4 md:p-5 lg:p-6 lg:py-[24px] lg:px-[62px] ml-[100px] md:ml-[200px] lg:ml-[160px]">
         <div className="flex flex-col gap-2 md:gap-3 lg:gap-4 w-fit ml-auto">
           <h3 className="text-right text-[16px] md:text-[20px] lg:text-[24px] 2xl:text-[32px] font-black leading-[20px] md:leading-[26px] lg:leading-[28.8px] 2xl:leading-[40px] text-[#222325]">
             {title}

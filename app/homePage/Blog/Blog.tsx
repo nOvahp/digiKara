@@ -8,28 +8,24 @@ import BlogButton from './BlogButton';
 
 const Blog = () => {
   return (
-    <div className="relative w-full flex flex-col lg:block mb-[10%]">
-      <div className="lg:hidden w-full relative mb-6 flex justify-center items-center left-[8%]">
+    <div className="w-full mb-16 lg:mb-24">
+      {/* Mobile */}
+      <div className="lg:hidden flex flex-col gap-4 mb-4">
+        {/* 1. Title */}
+        <div className="w-full text-center">
+          <span className="font-['PeydaWeb'] font-extrabold text-4xl text-[#1A1C1E] leading-tight whitespace-nowrap">
+            محصولات هنرستان‌ها
+          </span>
+        </div>
+        {/* 2. Image */}
         <Image
           src="/man bought a lot of gifts at the store.png"
           alt="Blog Illustration"
-          width={1000}
-          height={1000}
-          className="w-full h-auto object-contain object-center"
+          width={500}
+          height={500}
+          className="w-[60%] h-auto object-contain mx-auto"
         />
-      </div>
-
-      <div className="hidden lg:block absolute -left-[35%]  xl:-left-[15%] 2xl:-left-[5%] top-[0%] pointer-events-none z-20">
-        <Image
-          src="/man bought a lot of gifts at the store.png"
-          alt="Blog Illustration"
-          width={600}
-          height={600}
-          className="object-contain  w-[600px] h-[600px] 2xl:w-[800px] 2xl:h-[800px]"
-        />
-      </div>
-
-      <div className="relative z-10 flex flex-col gap-6 justify-start items-end w-full lg:w-auto">
+        {/* 3. Cards */}
         {blogData.map((item, index) => (
           <BlogCard
             key={index}
@@ -39,7 +35,37 @@ const Blog = () => {
             image={item.image}
           />
         ))}
-        <BlogButton />
+        
+      </div>
+
+      {/* Desktop - two-column flex row */}
+      <div className="hidden lg:flex flex-row items-start gap-6 xl:gap-10">
+        {/* Left column: title top, image bottom */}
+        <div className="flex flex-col items-start w-[36%] xl:w-[38%] shrink-0 pt-2 min-h-[640px] xl:min-h-[720px]">
+          <span className="font-['PeydaWeb'] font-extrabold text-4xl xl:text-5xl 2xl:text-6xl text-[#1A1C1E] leading-tight whitespace-nowrap">
+            محصولات هنرستان‌ها
+          </span>
+          <Image
+            src="/man bought a lot of gifts at the store.png"
+            alt="Blog Illustration"
+            width={480}
+            height={480}
+            className="w-full h-auto object-contain mt-auto"
+          />
+        </div>
+        {/* Right column: cards */}
+        <div className="flex flex-col gap-4 xl:gap-6 flex-1 items-end max-w-[580px] xl:max-w-none ml-auto">
+          {blogData.map((item, index) => (
+            <BlogCard
+              key={index}
+              title={item.title}
+              description={item.description}
+              count={item.count}
+              image={item.image}
+            />
+          ))}
+          
+        </div>
       </div>
     </div>
   );

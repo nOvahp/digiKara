@@ -17,7 +17,7 @@ const ServicesSection = () => {
 
         <ServicesGrid />
 
-        <ServicesButton />
+        
 
         <ServicesIllustration />
       </div>

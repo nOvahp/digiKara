@@ -27,7 +27,7 @@ const PartnersCard = ({
             {category}
           </div>
         </div>
-        <div className="text-[#222325] text-[24px] font-bold leading-[28.80px] text-right">
+        <div className="text-[#222325] text-[18px] lg:text-[20px] xl:text-[24px] font-bold leading-[1.3] text-right">
           {title}
         </div>
       </CardContent>

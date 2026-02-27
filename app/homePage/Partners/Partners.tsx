@@ -9,28 +9,29 @@ import { partnersData } from './partnersData';
 
 const Partners = () => {
   return (
-    <div className="w-full flex flex-col lg:flex-row-reverse items-start justify-between gap-6 lg:gap-12 relative mb-[10%]">
-      <div className="contents lg:flex lg:flex-col lg:w-[40%]">
-        <div className="order-1 w-full ">
-          <PartnersTitle />
-        </div>
+    <div className="w-full flex flex-col lg:flex-row-reverse items-start justify-between gap-6 lg:gap-10 xl:gap-12 relative mb-[10%]">
+      {/* Left column */}
+      <div className="flex flex-col items-center lg:items-start w-full lg:w-[38%] xl:w-[40%] shrink-0">
+        <PartnersTitle />
 
-        <div className="order-3 w-full mt-8 lg:-mt-[8%] 2xl:-mt-[5%] flex justify-center lg:justify-end z-20 pointer-events-none">
-          <Image
-            src="/man is thinking about launching a proje1ct.png"
-            alt="Partners Illustration"
-            width={500}
-            height={500}
-            className="object-contain 2xl:w-[650px] 2xl:h-[650px]"
-          />
-        </div>
-
-        <div className="order-4 w-full mt-0 lg:-mt-22 xl:ml-30 lg:ml-15 xl:-mt-34 flex justify-center lg:justify-start relative z-30">
-          <PartnerButton />
+        <div className="w-full flex flex-col items-center mt-6 lg:mt-4 xl:-mt-[8%] 2xl:-mt-[5%]">
+          <div className="pointer-events-none w-full flex justify-center lg:justify-end">
+            <Image
+              src="/man is thinking about launching a proje1ct.png"
+              alt="Partners Illustration"
+              width={500}
+              height={500}
+              className="object-contain w-[70%] lg:w-full 2xl:w-[650px] 2xl:h-[650px]"
+            />
+          </div>
+          <div className="flex justify-center mt-4">
+            <PartnerButton />
+          </div>
         </div>
       </div>
 
-      <div className="order-2 w-full lg:w-[55%] flex flex-col gap-6">
+      {/* Right column: cards */}
+      <div className="w-full lg:flex-1 flex flex-col gap-4 lg:gap-6">
         {partnersData.map((item, index) => (
           <PartnersCard
             key={index}

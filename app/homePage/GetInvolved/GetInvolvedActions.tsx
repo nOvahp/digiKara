@@ -1,36 +1,21 @@
-import React from 'react';
-import ChamferedButton from '@/app/components/ChamferedButton';
+﻿import React from 'react';
 
 const GetInvolvedActions = () => {
   return (
-    <div className="flex flex-wrap justify-center w-full h-[50%] items-center gap-6">
-      <ChamferedButton
-        cutSide="right"
-        borderColor="#5E6B7E"
-        backgroundColor="#f0f0f0"
-        hoverColor="transparent"
-        className="w-auto"
+    <div className="flex flex-wrap justify-center w-full items-center gap-4">
+      <button
+        type="button"
+        className="bg-[#FBCE09] text-[#4A4A4A] h-11 px-6 rounded-xl shadow-sm ring-1 ring-[#E5E5E5] font-extrabold text-sm xl:text-base cursor-pointer hover:opacity-90 transition-opacity whitespace-nowrap"
       >
-        <div className="flex items-center gap-2 px-6 py-2">
-          <span className="text-[#222325] xl:text-lg lg:text-[14px] text-[12px] font-extrabold uppercase">
-            مشاهده دمــــــــــو
-          </span>
-        </div>
-      </ChamferedButton>
+        مشاهده دمو
+      </button>
 
-      <ChamferedButton
-        cutSide="left"
-        borderColor="#5E6B7E"
-        backgroundColor="#f0f0f0"
-        hoverColor="transparent"
-        className="w-auto"
+      <button
+        type="button"
+        className="bg-[#0A33FF] text-white h-11 px-6 rounded-xl shadow-sm ring-1 ring-[#E5E5E5] font-extrabold text-sm xl:text-base cursor-pointer hover:opacity-90 transition-opacity whitespace-nowrap"
       >
-        <div className="flex items-center gap-2 px-6 py-2">
-          <span className="text-[#222325] xl:text-lg lg:text-[14px] text-[12px] font-extrabold uppercase">
-            ثبت‌نام رایگان مدارس
-          </span>
-        </div>
-      </ChamferedButton>
+        ثبتنام رایگان مدارس
+      </button>
     </div>
   );
 };
