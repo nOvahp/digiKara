@@ -158,10 +158,10 @@ export function LoginViewReport({ onLoginAgain, onBack }: LoginViewProps) {
           {/* Title */}
           <div className="text-right space-y-2 mb-8">
             <h1 className="text-[#393E46] text-3xl font-black">
-              {showSuccess ? 'تغییرات ثبت شد' : 'ویرایش اطلاعات'}
+              {showSuccess ? 'تغییرات ثبت شد' : 'ویرایش اطلاعات '}
             </h1>
             <p className="text-[#393E46] text-sm font-semibold opacity-90">
-              {showSuccess ? 'اطلاعات شما با موفقیت بروزرسانی شد' : 'لطفا اطلاعات صحیح را وارد کنید'}
+              {showSuccess ? 'اطلاعات شما با موفقیت بروزرسانی شد' : 'هر قسمتی که اشتباه ثبت شده رو اصلاح کن تا پروفایلت دقیقِ دقیق بشه!'}
             </p>
           </div>
         </div>
@@ -200,7 +200,7 @@ export function LoginViewReport({ onLoginAgain, onBack }: LoginViewProps) {
             </div>
 
             <PillInput
-              label="مدرسه"
+              label="مدرسه / هنرستان"
               name="school"
               value={formData.school}
               onChange={handleChange}
@@ -283,7 +283,7 @@ export function LoginViewReport({ onLoginAgain, onBack }: LoginViewProps) {
                 disabled={isLoading}
                 className="w-full h-[54px] bg-[#FDD00A] hover:bg-[#e5bc09] text-[#1A1C1E] font-bold rounded-2xl text-lg shadow-lg shadow-[#FDD00A]/20"
               >
-                {isLoading ? <Loader2 className="animate-spin text-black" /> : 'ثبت تغییرات'}
+                {isLoading ? <Loader2 className="animate-spin text-black" /> : 'ذخیره تغییرات'}
               </Button>
 
               <Button
@@ -291,7 +291,7 @@ export function LoginViewReport({ onLoginAgain, onBack }: LoginViewProps) {
                 variant="outline"
                 className="w-full h-[54px] bg-white border-2 border-[#E5E7EB] text-[#6C7278] font-bold rounded-2xl hover:bg-gray-50"
               >
-                انصراف
+                برگشت به صفحه قبل
               </Button>
             </>
           )}

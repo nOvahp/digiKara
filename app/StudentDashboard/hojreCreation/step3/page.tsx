@@ -1,7 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ChevronRight, Image as ImageIcon } from 'lucide-react';
+import { ChevronRight, Image as ImageIcon, Info } from 'lucide-react';
+import { ImageGuideModal } from './ImageGuideModal';
+import { NameGuideModal } from './NameGuideModal';
+import { DescriptionGuideModal } from './DescriptionGuideModal';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -33,6 +36,9 @@ export default function ShopIdentityPage() {
   const { state, updateState } = useShopCreation();
   const [logoPreview, setLogoPreview] = useState<string | null>(state.logoPreview);
   const [logoError, setLogoError] = useState<string | null>(null);
+  const [isImageGuideOpen, setIsImageGuideOpen] = useState(false);
+  const [isNameGuideOpen, setIsNameGuideOpen] = useState(false);
+  const [isDescriptionGuideOpen, setIsDescriptionGuideOpen] = useState(false);
 
   const {
     register,
@@ -76,6 +82,10 @@ export default function ShopIdentityPage() {
   };
 
   return (
+    <>
+    <ImageGuideModal isOpen={isImageGuideOpen} onClose={() => setIsImageGuideOpen(false)} />
+    <NameGuideModal isOpen={isNameGuideOpen} onClose={() => setIsNameGuideOpen(false)} />
+    <DescriptionGuideModal isOpen={isDescriptionGuideOpen} onClose={() => setIsDescriptionGuideOpen(false)} />
     <div className="w-full min-h-screen bg-white flex flex-col items-center font-sans pb-24">
       {/* Header */}
       <div className="w-full max-w-md px-4 pt-4 flex flex-col items-center gap-4">
@@ -93,7 +103,7 @@ export default function ShopIdentityPage() {
             <div className="text-[#818898] text-sm font-semibold leading-[21px] tracking-wide">
               دسته بندی و محصول اولیه
             </div>
-            <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center text-white text-sm font-num-bold ">
+            <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center text-white text-sm font-num-medium">
               3
             </div>
           </div>
@@ -106,7 +116,7 @@ export default function ShopIdentityPage() {
             <div className="text-[#0D0D12] text-sm font-semibold leading-[21px] tracking-wide">
               هویت بصری و عمومی
             </div>
-            <div className="w-6 h-6 bg-[#FDD00A] rounded-full flex items-center justify-center text-white text-sm font-bold font-['PeydaFaNum']">
+            <div className="w-6 h-6 bg-[#FDD00A] rounded-full flex items-center justify-center text-white text-sm font-num-medium">
               2
             </div>
           </div>
@@ -123,7 +133,7 @@ export default function ShopIdentityPage() {
             <div className="text-[#818898] text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">
               منشور کارآفرینی
             </div>
-            <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center text-white text-sm font-bold font-['PeydaFaNum']">
+            <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center text-white text-sm font-num-medium">
               1
             </div>
           </div>
@@ -136,6 +146,18 @@ export default function ShopIdentityPage() {
         className="flex-1 w-full max-w-md px-4 mt-6 flex flex-col gap-6 overflow-y-auto"
       >
         {/* Logo Upload */}
+        <div className="flex flex-col gap-1.5">
+        <div className="flex justify-between items-center">
+          <button
+            type="button"
+            onClick={() => setIsImageGuideOpen(true)}
+            className="flex items-center gap-1 text-[#3C5A5D] text-xs font-semibold font-['PeydaWeb'] hover:opacity-80 transition-opacity"
+          >
+            <span>چه عکسی مناسبه؟</span>
+            <Info className="w-3.5 h-3.5" />
+          </button>
+          <span className="text-right text-[#666D80] text-sm font-semibold font-medium leading-tight tracking-wide">لوگو یا تصویر</span>
+        </div>
         <label htmlFor="logo-upload" className="w-full cursor-pointer flex justify-center">
           {logoPreview ? (
             <div
@@ -210,8 +232,8 @@ export default function ShopIdentityPage() {
             </div>
           ) : (
             <div className="w-full h-14 rounded-xl border border-[#DFE1E7] flex justify-center items-center gap-2 bg-white hover:bg-gray-50 transition-colors">
-              <div className="text-[#1A1C1E] text-[17.58px] font-semibold font-medium leading-normal">
-            وگو حجره ات رو اینجا بارگزاری کن
+              <div className="text-[#1A1C1E] text-[14.58px] font-semibold font-medium leading-normal">
+       لوگو یا عکس پروفایل حجره‌ت رو اینجا آپلود کن
               </div>
               <ImageIcon className="w-6 h-6 text-[#1A1C1E]" />
             </div>
@@ -229,17 +251,26 @@ export default function ShopIdentityPage() {
             {logoError}
           </span>
         )}
+        </div>
 
         {/* Shop Name */}
         <div className="flex flex-col gap-2">
-          <div className="flex justify-end">
+          <div className="flex justify-between items-center">
+            <button
+              type="button"
+              onClick={() => setIsNameGuideOpen(true)}
+              className="flex items-center gap-1 text-[#3C5A5D] text-xs font-semibold font-['PeydaWeb'] hover:opacity-80 transition-opacity"
+            >
+              <span>چه اسمی بهتره؟</span>
+              <Info className="w-3.5 h-3.5" />
+            </button>
             <label className="text-right text-[#666D80] text-sm font-semibold font-medium leading-tight tracking-wide">
             نام حجره
             </label>
           </div>
           <Input
             {...register('shopName')}
-            placeholder="نامی که مشتری میبیند (مثلاً: پوشاک برتر)"
+            placeholder=" اسمی که قراره روی تابلوی حجره‌ت بخوره"
             className="h-[52px] bg-white rounded-xl border border-[#DFE1E7] text-right placeholder:text-[#DFE1E7] placeholder:font-medium text-[#1A1C1E]"
             dir="rtl"
           />
@@ -252,14 +283,23 @@ export default function ShopIdentityPage() {
 
         {/* Description */}
         <div className="flex flex-col gap-2">
-          <div className="flex justify-end">
+          <div className="flex justify-between items-center">
+            <button
+              type="button"
+              onClick={() => setIsDescriptionGuideOpen(true)}
+              className="flex items-center gap-1 text-[#3C5A5D] text-xs font-semibold font-['PeydaWeb'] hover:opacity-80 transition-opacity"
+            >
+              <span>چی بنویسم؟</span>
+              <Info className="w-3.5 h-3.5" />
+            </button>
             <label className="text-right text-[#666D80] text-sm font-semibold font-medium leading-tight tracking-wide">
-              توضیحات کوتاه
+            معرفی کوتاه حجره
             </label>
           </div>
           <Textarea
             {...register('shopDescription')}
-            placeholder="کارت چیه ؟ یه توضیح از کسب و کارت برای مشتری ها بنویس "
+            placeholder="تو چند خط به مشتری‌ها بگو تخصصت چیه و تو این حجره قراره چه چیزهای جذابی براشون آماده کنی...
+"
             className="h-[176px] bg-white rounded-xl border border-[#DFE1E7] text-right placeholder:text-[#DFE1E7] placeholder:font-medium text-[#1A1C1E] resize-none"
             dir="rtl"
           />
@@ -277,17 +317,19 @@ export default function ShopIdentityPage() {
             onClick={() => router.push('/StudentDashboard/hojreCreation/step2')}
             className="w-[100px] h-14 rounded-xl border border-[#DFE1E7] flex justify-center items-center text-[#1A1C1E] text-lg font-semibold hover:bg-gray-50 transition-colors shrink-0"
           >
-           <span className="text-base sm:text-lg">بازگشت</span>
+           <span className="text-base sm:text-lg">مرحله قبل
+</span>
           </button>
 
           <button
             type="submit"
             className="flex-1 h-14 bg-[#FDD00A] active:bg-[#eac009] rounded-xl flex justify-center items-center text-[#1A1C1E] text-lg font-semibold transition-colors"
           >
-            <span className="text-base sm:text-lg">ادامه</span>
+            <span className="text-base sm:text-lg">بریم مرحله بعد </span>
           </button>
         </div>
       </form>
     </div>
+    </>
   );
 }

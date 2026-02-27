@@ -31,7 +31,7 @@ export default function CreateShopCharterPage() {
             <div className="text-[#818898] text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">
               دسته بندی و محصول اولیه
             </div>
-            <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center text-white text-sm font-bold font-['PeydaFaNum']">
+            <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center text-white text-sm font-num-medium">
               3
             </div>
           </div>
@@ -44,7 +44,7 @@ export default function CreateShopCharterPage() {
             <div className="text-[#818898] text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">
               هویت بصری و عمومی
             </div>
-            <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center text-white text-sm font-bold font-['PeydaFaNum']">
+            <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center text-white text-sm font-num-medium">
               2
             </div>
           </div>
@@ -57,7 +57,7 @@ export default function CreateShopCharterPage() {
             <div className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">
               منشور کارآفرینی
             </div>
-            <div className="w-6 h-6 bg-[#FDD00A] rounded-full flex items-center justify-center text-white text-sm font-bold font-['PeydaFaNum']">
+            <div className="w-6 h-6 bg-[#FDD00A] rounded-full flex items-center justify-center text-white text-sm font-num-medium">
               1
             </div>
           </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ChevronRight, ChevronDown } from 'lucide-react';
+import { ChevronRight, ChevronDown, Info } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm, Controller } from 'react-hook-form';
@@ -16,6 +16,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { WorkCategoryGuideModal } from './WorkCategoryGuideModal';
+import { AbilitiesGuideModal } from './AbilitiesGuideModal';
+import { ExperienceGuideModal } from './ExperienceGuideModal';
 
 // Schema Validation
 const formSchema = z.object({
@@ -48,6 +51,10 @@ export default function ShopCategoryPage() {
   const activeStepRef = React.useRef<HTMLDivElement>(null);
   const { state, updateState } = useShopCreation();
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
+  const [experienceUnit, setExperienceUnit] = React.useState<'سال' | 'ماه'>('سال');
+  const [isWorkCategoryGuideOpen, setIsWorkCategoryGuideOpen] = React.useState(false);
+  const [isAbilitiesGuideOpen, setIsAbilitiesGuideOpen] = React.useState(false);
+  const [isExperienceGuideOpen, setIsExperienceGuideOpen] = React.useState(false);
 
   const {
     register,
@@ -153,6 +160,10 @@ export default function ShopCategoryPage() {
   };
 
   return (
+    <>
+    <WorkCategoryGuideModal isOpen={isWorkCategoryGuideOpen} onClose={() => setIsWorkCategoryGuideOpen(false)} />
+    <AbilitiesGuideModal isOpen={isAbilitiesGuideOpen} onClose={() => setIsAbilitiesGuideOpen(false)} />
+    <ExperienceGuideModal isOpen={isExperienceGuideOpen} onClose={() => setIsExperienceGuideOpen(false)} />
     <div className="w-full min-h-screen bg-white flex flex-col items-center font-sans pb-24">
       {/* Header */}
       <div className="w-full max-w-md px-4 pt-4 flex flex-col items-center gap-4">
@@ -173,7 +184,7 @@ export default function ShopCategoryPage() {
             <div className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">
               دسته بندی و توانمندی ها
             </div>
-            <div className="w-6 h-6 bg-[#FDD00A] rounded-full flex items-center justify-center text-white text-sm font-num-bold">
+            <div className="w-6 h-6 bg-[#FDD00A] rounded-full flex items-center justify-center text-white text-sm font-num-medium">
               3
             </div>
           </div>
@@ -186,7 +197,7 @@ export default function ShopCategoryPage() {
             <div className="text-[#818898] text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">
               هویت بصری و عمومی
             </div>
-            <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center text-white text-sm font-num-bold">
+            <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center text-white text-sm font-num-medium">
               2
             </div>
           </div>
@@ -199,7 +210,7 @@ export default function ShopCategoryPage() {
             <div className="text-[#818898] text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">
               منشور کارآفرینی
             </div>
-            <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center text-white text-sm font-bold font-['PeydaFaNum']">
+            <div className="w-6 h-6 bg-[#DFE1E7] rounded-full flex items-center justify-center text-white text-sm font-num-medium">
               1
             </div>
           </div>
@@ -213,7 +224,15 @@ export default function ShopCategoryPage() {
       >
         {/* Work Category (Select) */}
         <div className="flex flex-col gap-2">
-          <div className="flex justify-end">
+          <div className="flex justify-between items-center">
+            <button
+              type="button"
+              onClick={() => setIsWorkCategoryGuideOpen(true)}
+              className="flex items-center gap-1 text-[#3C5A5D] text-xs font-semibold font-['PeydaWeb'] hover:opacity-80 transition-opacity"
+            >
+              <span>راسته کاری چیه؟</span>
+              <Info className="w-3.5 h-3.5" />
+            </button>
             <label className="text-right text-[#666D80] text-sm font-semibold font-medium leading-tight tracking-wide">
               راسته کاری
             </label>
@@ -241,7 +260,7 @@ export default function ShopCategoryPage() {
                       ? 'صنایع دستی'
                       : field.value === 'services'
                       ? 'خدمات'
-                      : 'مثلاً: پوشاک، کالای دیجیتال، مواد غذایی'}
+                      : '...مثلاً: گرافیک، صنایع چوب، حسابداری، کامپیوتر'}
                   </span>
                 </div>
 
@@ -285,14 +304,22 @@ export default function ShopCategoryPage() {
 
         {/* Abilities (Input) */}
         <div className="flex flex-col gap-2">
-          <div className="flex justify-end">
+          <div className="flex justify-between items-center">
+            <button
+              type="button"
+              onClick={() => setIsAbilitiesGuideOpen(true)}
+              className="flex items-center gap-1 text-[#3C5A5D] text-xs font-semibold font-['PeydaWeb'] hover:opacity-80 transition-opacity"
+            >
+              <span>کدوماش رو بنویسم؟</span>
+              <Info className="w-3.5 h-3.5" />
+            </button>
             <label className="text-right text-[#666D80] text-sm font-semibold font-medium leading-tight tracking-wide">
-              توانمندی ها
+           مهارت‌های اصلی تو 
             </label>
           </div>
           <Input
             {...register('abilities')}
-            placeholder="مثلاً: دوخت، برش، طراحی و ..."
+            placeholder="مثلاً: طراحی لوگو، معرق‌کاری، برنامه‌نویسی پایتون، دوخت مانتو..."
             className="h-[52px] bg-white rounded-xl border border-[#DFE1E7] text-right placeholder:text-[#DFE1E7] placeholder:font-medium text-[#1A1C1E] font-medium"
             dir="rtl"
           />
@@ -305,9 +332,17 @@ export default function ShopCategoryPage() {
 
         {/* Experience (Input with Suffix) */}
         <div className="flex flex-col gap-2">
-          <div className="flex justify-end">
+          <div className="flex justify-between items-center">
+            <button
+              type="button"
+              onClick={() => setIsExperienceGuideOpen(true)}
+              className="flex items-center gap-1 text-[#3C5A5D] text-xs font-semibold font-['PeydaWeb'] hover:opacity-80 transition-opacity"
+            >
+              <span>تجربه ندارم، چی بنویسم؟</span>
+              <Info className="w-3.5 h-3.5" />
+            </button>
             <label className="text-right text-[#666D80] text-sm font-semibold font-medium leading-tight tracking-wide">
-              تجربه در راسته کاری
+              چقدر تو این زمینه تجربه داری؟
             </label>
           </div>
           <div className="relative w-full h-[52px]">
@@ -326,16 +361,37 @@ export default function ShopCategoryPage() {
                 },
               })}
               type="number"
-              className="w-full h-full bg-white rounded-xl border border-[#DFE1E7] text-right pr-6 pl-[60px] placeholder:text-[#DFE1E7] text-[#1A1C1E] font-num-medium outline-none focus:ring-1 focus:ring-ring"
+              className="w-full h-full bg-white rounded-xl border border-[#DFE1E7] text-right pr-6 pl-[100px] placeholder:text-[#DFE1E7] text-[#1A1C1E] font-num-medium outline-none focus:ring-1 focus:ring-ring"
               dir="ltr"
               placeholder="مثلاً: ۲"
             />
 
             {/* Suffix Container (Left aligned) */}
-            <div className="absolute top-0 left-0 h-full flex items-center pl-4 gap-3">
-              {/* Suffix Text */}
-              <div className="text-[#DFE1E7] text-base font-semibold tracking-wide">
-                سال
+            <div className="absolute top-0 left-0 h-full flex items-center pl-2 gap-1">
+              {/* Unit Toggle */}
+              <div className="flex items-center bg-[#F4F4F4] rounded-lg p-0.5">
+                <button
+                  type="button"
+                  onClick={() => setExperienceUnit('ماه')}
+                  className={`px-2 py-1 rounded-md text-xs font-semibold font-['PeydaWeb'] transition-colors ${
+                    experienceUnit === 'ماه'
+                      ? 'bg-white text-[#1A1C1E] shadow-sm'
+                      : 'text-[#888B90]'
+                  }`}
+                >
+                  ماه
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setExperienceUnit('سال')}
+                  className={`px-2 py-1 rounded-md text-xs font-semibold font-['PeydaWeb'] transition-colors ${
+                    experienceUnit === 'سال'
+                      ? 'bg-white text-[#1A1C1E] shadow-sm'
+                      : 'text-[#888B90]'
+                  }`}
+                >
+                  سال
+                </button>
               </div>
               {/* Separator Line */}
               <div className="w-[1px] h-6 bg-[#DFE1E7]" />
@@ -355,17 +411,18 @@ export default function ShopCategoryPage() {
             onClick={handleBack}
             className="w-[100px] h-14 rounded-xl border border-[#DFE1E7] flex justify-center items-center text-[#1A1C1E] text-lg font-semibold hover:bg-gray-50 transition-colors shrink-0"
           >
-           <span className="text-base sm:text-lg">بازگشت</span>
+           <span className="text-base sm:text-lg">مرحله قبل</span>
           </button>
 
           <button
             type="submit"
             className="flex-1 h-14 bg-[#FDD00A] active:bg-[#eac009] rounded-xl flex justify-center items-center text-[#1A1C1E] text-lg font-semibold transition-colors"
           >
-            <span className="text-base sm:text-lg">ساخت حجره</span>
+            <span className="text-base sm:text-lg">راه‌اندازی حجره </span>
           </button>
         </div>
       </form>
     </div>
+    </>
   );
 }

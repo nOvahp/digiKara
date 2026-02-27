@@ -102,9 +102,9 @@ export function LoginView5({ onNext, onReport, onBack }: LoginViewProps) {
 
         {/* Title Section */}
         <div className="text-right space-y-2 mb-8">
-          <h1 className="text-[#393E46] text-3xl font-black">تایید اطلاعات</h1>
+          <h1 className="text-[#393E46] text-3xl font-black">اطلاعاتت درسته؟ </h1>
           <p className="text-[#393E46] text-sm font-semibold opacity-90">
-            اطلاعات خود را بررسی کنید و در صورت صحت تایید کنید.
+            یه نگاه به اطلاعات زیر بنداز؛ اگه همه‌چیز مرتبه، تاییدش کن تا بریم برای شروع کار!
           </p>
         </div>
       </div>
@@ -112,24 +112,24 @@ export function LoginView5({ onNext, onReport, onBack }: LoginViewProps) {
       {/* Scrollable Content Area */}
       <div className="relative z-10 flex-1 w-full max-w-[440px] mx-auto overflow-y-auto px-6 pb-32 no-scrollbar">
         <div className="space-y-6 pt-2">
-          <InfoField label="نام کامل" value={`${user.firstname} ${user.lastname}`} icon={User} />
+          <InfoField label="نام و نام خانوادگی" value={`${user.firstname} ${user.lastname}`} icon={User} />
 
           <InfoField label="شماره موبایل" value={user.phone} icon={Phone} isNum />
 
-          <InfoField label="کدملی" value={user.national_code} icon={CreditCard} isNum />
+          <InfoField label="کد ملی" value={user.national_code} icon={CreditCard} isNum />
 
           <InfoField
-            label="استان - شهر"
+            label="استان و شهر"
             value={`${user.province || ''} - ${user.city || ''}`}
             icon={MapPin}
           />
 
-          <InfoField label="منطقه" value={user.district} icon={Map} isNum />
+          <InfoField label="منطقه تحصیلی" value={user.district} icon={Map} isNum />
 
-          <InfoField label="مدرسه" value={user.school} icon={School} isNum />
+          <InfoField label="نام مدرسه / هنرستان" value={user.school} icon={School} isNum />
 
           <InfoField
-            label="پایه تحصیلی"
+            label="پایه و رشته تحصیلی"
             value={`${user.grade}${user.field ? ` - ${user.field}` : ''}`}
             icon={GraduationCap}
           />
@@ -145,7 +145,7 @@ export function LoginView5({ onNext, onReport, onBack }: LoginViewProps) {
             variant="outline"
             className="flex-[0.4] bg-white border-[#DCE4E8] text-[#98B0BC] font-bold h-14 rounded-2xl hover:bg-red-50 hover:text-red-500 hover:border-red-200"
           >
-            گزارش خطا
+            اطلاعاتم اشتباهه! 
           </Button>
 
           {/* Confirm Button (Primary) */}
@@ -153,7 +153,7 @@ export function LoginView5({ onNext, onReport, onBack }: LoginViewProps) {
             onClick={() => setShowConfirmPopup(true)}
             className="flex-1 bg-[#FDD00A] hover:bg-[#e5bc09] text-[#1A1C1E] font-bold h-14 rounded-2xl text-lg shadow-lg shadow-[#FDD00A]/20"
           >
-            تایید اطلاعات
+            بله، همه‌چیز درسته 
           </Button>
         </div>
       </div>
@@ -164,13 +164,13 @@ export function LoginView5({ onNext, onReport, onBack }: LoginViewProps) {
           <div className="w-full max-w-[440px] bg-white rounded-t-3xl p-6 pb-10 flex flex-col gap-5 animate-in slide-in-from-bottom-4 duration-300">
             {/* Icon */}
             <div className="w-14 h-14 bg-[#FFFBEB] rounded-2xl flex items-center justify-center mx-auto">
-              <span className="text-2xl">✅</span>
+              <span className="text-2xl">✔️</span>
             </div>
             {/* Text */}
             <div className="text-center space-y-2">
-              <h2 className="text-[#1A1C1E] text-xl font-black">آیا مطمئن هستید؟</h2>
+              <h2 className="text-[#1A1C1E] text-xl font-black">همه‌چیز مرتبه؟ </h2>
               <p className="text-[#6C7278] text-sm font-medium leading-relaxed">
-                اطلاعات نمایش داده شده ثبت خواهند شد.<br />در صورت نیاز می‌توانید از «گزارش خطا» آن‌ها را اصلاح کنید.
+                اطلاعاتت تو سیستم ثبت میشه. خیالت راحت، بعداً هم می‌تونی از بخش پروفایلت ویرایششون کنی.
               </p>
             </div>
             {/* Buttons */}
@@ -179,14 +179,14 @@ export function LoginView5({ onNext, onReport, onBack }: LoginViewProps) {
                 onClick={() => { setShowConfirmPopup(false); handleContinue(); }}
                 className="w-full h-14 bg-[#FDD00A] hover:bg-[#e5bc09] text-[#1A1C1E] font-bold rounded-2xl text-base shadow-lg shadow-[#FDD00A]/20"
               >
-                بله، تایید می‌کنم
+                بله، ثبت بشه 
               </Button>
               <Button
                 onClick={() => setShowConfirmPopup(false)}
                 variant="outline"
                 className="w-full h-12 bg-white border-2 border-[#E5E7EB] text-[#6C7278] font-bold rounded-2xl hover:bg-gray-50"
               >
-                بازگشت
+                می‌خوام یه نگاه دیگه بندازم
               </Button>
             </div>
           </div>
