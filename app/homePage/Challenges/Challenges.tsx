@@ -36,7 +36,7 @@ const Challenges = () => {
           ))}
         </div>
 
-        <div className="w-full flex justify-center items-center gap-[32px] mt-[40px] lg:mt-0">
+        {/* <div className="w-full flex justify-center items-center gap-[32px] mt-[40px] lg:mt-0">
           <div className="text-[#808080] text-[14px] lg:text-[18px] 2xl:text-[22px] font-normal leading-[27px] cursor-pointer hover:text-black transition-colors">
             مطالعه بیشتر
           </div>
@@ -50,7 +50,7 @@ const Challenges = () => {
               </span>
             </Link>
           </ChamferedButton>
-        </div>
+        </div> */}
       </div>
 
       <div className="relative hidden lg:flex justify-start items-center gap-[10px]">

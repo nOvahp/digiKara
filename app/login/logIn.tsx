@@ -22,15 +22,16 @@ export function Login({ onNext }: { onNext?: (selectedRole: 'student' | 'manager
       <LoginHeader imageSrc={headerImg} />
       <div className="flex flex-col items-center justify-start bg-background rounded-t-3xl z-10 px-6 pt-0 gap-4">
         <div className="w-full text-right mb-2">
-          <h2 className="text-xl font-black text-[#393E46]">خوش آمدید</h2>
-          <p className="text-[#6C7278] text-sm mt-1">لطفا نقش خود را انتخاب کنید</p>
+          <h2 className="text-xl font-black text-[#393E46]">.سلام! به دیجی‌کارا خوش اومدی  </h2>
+          
+          <p className="text-[#6C7278] text-sm mt-1">برای شروع، بگو کی هستی؟      </p>
         </div>
 
         <Button
           onClick={() => handleRoleSelect('student')}
           className="w-full bg-[#F3F6FC] hover:bg-[#FDD00A] hover:text-[#1A1C1E] text-[#393E46] font-bold py-8 text-lg rounded-2xl transition-all shadow-sm border border-transparent hover:border-[#FDD00A]"
         >
-          ورود دانش آموز
+       من دانش آموز/ کارآفرینم 
         </Button>
 
         <Button
@@ -38,7 +39,8 @@ export function Login({ onNext }: { onNext?: (selectedRole: 'student' | 'manager
           variant="outline"
           className="w-full border-2 border-[#DCE4E8] text-[#393E46] font-bold py-8 text-lg rounded-2xl hover:bg-gray-50 hover:border-gray-300"
         >
-          ورود مدیر مدرسه
+         من مدیر مدرسه ام
+
         </Button>
 
         {/*

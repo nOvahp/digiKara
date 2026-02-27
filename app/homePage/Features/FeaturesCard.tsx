@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Image, { StaticImageData } from 'next/image';
-import { ChevronLeft } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface FeaturesCardProps {
@@ -13,8 +12,8 @@ interface FeaturesCardProps {
 
 const FeaturesCard = ({ title, description, image }: FeaturesCardProps) => {
   return (
-    <Card className="w-[260px] sm:w-[300px] h-auto min-h-[280px] md:w-[420px] md:h-[355px] rounded-[24px] border-[#CACACA] shadow-none hover:shadow-[0px_20px_32px_rgba(0,0,0,0.25)] transition-all duration-300 overflow-hidden relative bg-white border-none">
-      <div className="relative w-full h-full md:absolute md:inset-0 bg-white rounded-[24px] border border-[#CACACA]">
+    <Card className="w-[260px] sm:w-[300px] h-[440px] sm:h-[460px] md:w-[420px] md:h-[460px] rounded-[24px] border-[#CACACA] shadow-none hover:shadow-[0px_20px_32px_rgba(0,0,0,0.25)] transition-all duration-300 overflow-hidden relative bg-white border-none">
+      <div className="relative w-full h-full bg-white rounded-[24px] border border-[#CACACA]">
         <div className="flex flex-col h-full relative">
           <CardHeader className="text-right pt-[30px] pr-[10px] pl-[10px] pb-0">
             <CardTitle className="text-[#222325] text-[20px] md:text-[30px] 2xl:text-[40px] font-black leading-[28px] md:leading-[38.4px] 2xl:leading-[50px]">
@@ -28,24 +27,32 @@ const FeaturesCard = ({ title, description, image }: FeaturesCardProps) => {
             </p>
           </CardContent>
 
-          <div className="mt-[20px] sm:mt-auto  flex flex-col items-end md:flex-row md:items-end md:justify-end w-full pl-[40px] pb-[40px] pr-[40px] ">
-            <div className="relative flex items-center gap-2 cursor-pointer z-10 transition-transform hover:scale-105 mb-2 md:mb-2">
-              <span className="text-[#222325] text-[14px] md:text-[18px] 2xl:text-[22px] font-medium leading-[22px] md:leading-[27px]">
+          {/* بیشتر بدانید — in-flow on mobile, hidden on desktop (desktop uses absolute version below) */}
+          <div className="mt-[20px] flex justify-end pl-[40px] pr-[40px] md:hidden">
+            <div className="flex items-center gap-2 cursor-pointer transition-transform hover:scale-105">
+              <span className="text-[#222325] text-[14px] font-medium leading-[22px]">
                 بیشتر بدانید
               </span>
-              <div className="bg-[#222325] rounded-full p-1">
-                <ChevronLeft className="w-4 h-4 text-white" />
-              </div>
+              <span className="text-[#222325] text-[18px] leading-none">←</span>
             </div>
+          </div>
 
-            <div className="relative right-auto bottom-auto md:absolute md:right-0 md:bottom-0 w-[170px] h-[170px] md:w-[230px] md:h-[230px] self-center">
-              <Image
-                src={image}
-                alt="Feature Illustration"
-                fill
-                className="object-contain object-bottom"
-              />
-            </div>
+          {/* Desktop: بیشتر بدانید — absolute bottom-left */}
+          <div className="hidden md:flex absolute bottom-[28px] left-[24px] items-center gap-2 cursor-pointer transition-transform hover:scale-105 z-10">
+            <span className="text-[#222325] text-[18px] 2xl:text-[22px] font-medium leading-[27px]">
+              بیشتر بدانید
+            </span>
+            <span className="text-[#222325] text-[22px] leading-none">←</span>
+          </div>
+
+          {/* Image — absolute bottom: centered on mobile, right-aligned on desktop */}
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:right-0 w-[220px] h-[220px] md:w-[200px] md:h-[200px]">
+            <Image
+              src={image}
+              alt="Feature Illustration"
+              fill
+              className="object-contain object-bottom"
+            />
           </div>
         </div>
       </div>

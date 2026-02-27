@@ -59,13 +59,13 @@ export function StudentPhoneInput({
 
         <div className="flex flex-col flex-1 w-full max-w-md mt-10">
           <div className="mb-10 text-right space-y-4">
-            <h1 className="text-[#393E46] text-4xl font-black leading-tight">ورود دانش آموز</h1>
-            <p className="text-[#393E46] text-sm font-semibold opacity-80">اینجا حساب کاربری خود را ایجاد کنید</p>
+            <h1 className="text-[#393E46] text-4xl font-black leading-tight">بریم برای شروع!  </h1>
+            <p className="text-[#393E46] text-sm font-semibold opacity-80">شماره موبایلت رو وارد کن تا کد تایید رو برات بفرستیم.      </p>
           </div>
 
           <form onSubmit={phoneForm.handleSubmit(onSubmitPhone)} className="flex flex-col gap-6">
             <div className="space-y-2">
-              <Label htmlFor="phone" className="text-[#ACB5BB] text-xs font-bold block px-2">شماره تلفن</Label>
+              <Label htmlFor="phone" className="text-[#ACB5BB] text-xs font-bold block px-2">شماره موبایل</Label>
               <div dir="ltr" className="relative flex items-center bg-white rounded-full border border-[#DCE4E8] p-2 hover:border-[#FDD00A] transition-colors shadow-sm h-14">
                 <div className="flex items-center gap-2 pr-4 border-r border-gray-100 mr-2" dir="ltr">
                   <div className="w-6 h-4 bg-white relative overflow-hidden flex flex-col rounded-[2px] shadow-sm border border-gray-100">
@@ -100,7 +100,7 @@ export function StudentPhoneInput({
               <div className="bg-red-50 text-red-600 text-xs font-bold p-3 rounded-xl text-center border border-red-100">{serverError}</div>
             )}
             <Button type="submit" className="w-full bg-[#FDD00A] hover:bg-[#e5bc09] text-[#1A1C1E] font-bold py-7 text-lg rounded-xl shadow-[#FDD00A]/20 transition-all" disabled={isLoading}>
-              {isLoading ? <Loader2 className="animate-spin w-5 h-5 text-[#1A1C1E]" /> : 'ادامه'}
+              {isLoading ? <Loader2 className="animate-spin w-5 h-5 text-[#1A1C1E]" /> : 'دریافت کد تایید'}
             </Button>
           </form>
         </div>

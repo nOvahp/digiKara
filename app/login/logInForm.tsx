@@ -212,7 +212,7 @@ export function LogInForm({
             <p className="text-[#393E46] text-sm font-semibold opacity-80">
               {stage === 'PHONE_ENTRY'
                 ? 'اینجا حساب کاربری خود را ایجاد کنید'
-                : `کد ارسال شده به ${toPersianDigits(phoneForm.getValues('phoneNumber'))} را وارد کنید`}
+                : "یه کد ۵ رقمی برات پیامک کردیم، اینجا بنویسش."}
             </p>
           </div>
 
@@ -302,7 +302,7 @@ export function LogInForm({
                   onClick={handleEditPhone}
                   className="text-[#4365DE] text-xs font-bold bg-blue-50 px-3 py-1.5 rounded-lg hover:bg-blue-100 transition-colors"
                 >
-                  ویرایش شماره
+                 تغییر شماره
                 </button>
                 <p className="text-[#6C7278] text-sm font-num-bold dir-ltr">
                   {toPersianDigits(phoneForm.getValues('phoneNumber'))}
@@ -341,7 +341,7 @@ export function LogInForm({
                 {timeLeft > 0 ? (
                   <div className="flex items-center gap-2 text-[#6C7278] font-num-bold bg-gray-50 px-4 py-2 rounded-full">
                     <Loader2 className="w-4 h-4 animate-spin opacity-50" />
-                    <span>{formatTime(timeLeft)} تا ارسال مجدد</span>
+                    <span> تا ارسال دورباره کد ({formatTime(timeLeft)})</span>
                   </div>
                 ) : (
                   <button
@@ -362,7 +362,7 @@ export function LogInForm({
                 {isLoading ? (
                   <Loader2 className="animate-spin w-5 h-5 text-[#1A1C1E]" />
                 ) : (
-                  'تایید و ورود'
+                  'تایید و ادامه'
                 )}
               </Button>
             </form>
