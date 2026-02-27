@@ -39,7 +39,7 @@ const Hero = () => {
             </p>
 
             {/*
-              Button row (RTL flex-row on sm+):
+              .Button row (RTL flex-row on sm+):
                 first DOM  → right = Blue  (Primary)
                 second DOM → left  = Yellow (Secondary)
               Mobile (flex-col): Blue on top as primary CTA
