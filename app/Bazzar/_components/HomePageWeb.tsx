@@ -102,7 +102,7 @@ export default function HomePageWeb() {
     fetchData();
   }, []);
 
-  const specialSaleProducts: never[] = []; // no API field — always empty
+  const specialSaleProducts: BazzarProduct[] = []; // no API field — always empty
   const newCollectionProducts = homeData?.new_products || [];
   const bestSellerProducts = homeData?.most_sell || [];
   const popularProducts = homeData?.most_view || [];
