@@ -118,7 +118,7 @@ export function LoginView6({ onNext }: LoginViewProps) {
 
       {/* Header Content */}
       <div className="relative z-10 w-full px-6 pt-6 pb-2">
-        {/* Top Bar */}
+        {/* Top Bar. */}
         <div className="flex justify-end items-center mb-8">
   
           <span className="text-[#393E46] text-xl font-black">دیجی کارا</span>
