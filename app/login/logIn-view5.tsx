@@ -104,7 +104,7 @@ export function LoginView5({ onNext, onReport, onBack }: LoginViewProps) {
         <div className="text-right space-y-2 mb-8">
           <h1 className="text-[#393E46] text-3xl font-black">اطلاعاتت درسته؟ </h1>
           <p className="text-[#393E46] text-sm font-semibold opacity-90">
-            یه نگاه به اطلاعات زیر بنداز؛ اگه همه‌چیز مرتبه، تاییدش کن تا بریم برای شروع کار!
+          یه نگاه به اطلاعات زیر بنداز؛ اگه همه‌چیز مرتبه، تاییدش کن تا بریم برای شروع کار
           </p>
         </div>
       </div>
@@ -145,7 +145,7 @@ export function LoginView5({ onNext, onReport, onBack }: LoginViewProps) {
             variant="outline"
             className="flex-[0.4] bg-white border-[#DCE4E8] text-[#98B0BC] font-bold h-14 rounded-2xl hover:bg-red-50 hover:text-red-500 hover:border-red-200"
           >
-            اطلاعاتم اشتباهه! 
+            !اطلاعاتم اشتباهه
           </Button>
 
           {/* Confirm Button (Primary) */}

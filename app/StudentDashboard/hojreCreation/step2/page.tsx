@@ -55,7 +55,7 @@ export default function CreateShopCharterPage() {
           {/* Step 1 (Active) */}
           <div className="flex justify-start items-center gap-2 shrink-0 whitespace-nowrap">
             <div className="text-[#0D0D12] text-sm font-semibold font-['PeydaWeb'] leading-[21px] tracking-wide">
-              منشور کارآفرینی
+            قول و قرار ما
             </div>
             <div className="w-6 h-6 bg-[#FDD00A] rounded-full flex items-center justify-center text-white text-sm font-num-medium">
               1
